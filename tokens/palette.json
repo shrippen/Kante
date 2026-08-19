@@ -27,6 +27,13 @@
     "red":      { "bright": "#fb4934", "neutral": "#cc241d", "faded": "#9d0006" },
     "purple":   { "bright": "#d3869b", "neutral": "#b16286", "faded": "#8f3f71" }
   },
+  "typography": {
+    "heading": "Rajdhani",
+    "headingWeights": [600, 700],
+    "headingSource": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap",
+    "body": "system-sans",
+    "mono": "JetBrains Mono, Fira Code, Cascadia Code, Consolas, monospace"
+  },
   "badges": {
     "labelColor": "1c1c20",
     "version":    "e8dcc4",
