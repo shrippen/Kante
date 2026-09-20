@@ -8,8 +8,10 @@
 
 :root {
   /* ── Backgrounds ── */
+  --bg-void:  #141312;   /* landing-page ground, darker than bg-hard */
   --bg-hard:  #1d2021;   /* deepest: hero gradient, code blocks */
   --bg0:      #282828;   /* page / widget background */
+  --bg-panel: #2a2826;   /* landing-page cards and panels */
   --bg1:      #3c3836;   /* cards, elevated surfaces */
   --bg2:      #504945;   /* borders, dividers */
 
@@ -44,6 +46,9 @@
   /* ── Layout ── */
   --radius:   12px;
   --max-w:    860px;
+  --max-w-wide: 1280px;  /* landing hero and feature rows */
+  --gutter:   clamp(1rem, 5.6vw, 4.5rem);
+  --chamfer:  16px;      /* top-right corner cut on boxes */
 
   /* ── Typography ── */
   --font-heading: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,

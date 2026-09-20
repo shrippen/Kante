@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PROJECT_NAME — PROJECT_TAGLINE</title>
+<title>PROJECT_NAME — PROJECT_TAGLINE_EN</title>
 <meta name="description" content="PROJECT_DESCRIPTION">
-<meta property="og:title" content="PROJECT_NAME — PROJECT_TAGLINE">
+<meta property="og:title" content="PROJECT_NAME — PROJECT_TAGLINE_EN">
 <meta property="og:description" content="PROJECT_DESCRIPTION">
 <meta property="og:image" content="PROJECT_OG_IMAGE_URL">
 <meta property="og:url" content="PROJECT_PAGE_URL">
@@ -13,91 +13,92 @@
 <script defer src="https://um.arianw.de/script.js" data-website-id="PROJECT_UMAMI_ID"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://shrippen.github.io/DesignDefault/v1/shrippen.css">
+<script src="https://shrippen.github.io/DesignDefault/v1/shrippen.js"></script>
+<!--
+  Every visible text exists twice: lang="en" (default) and lang="de".
+  Long project names: split with <br> (e.g. Kur<br>rent) or set --title-size on the h1.
+-->
 </head>
 <body>
 
-<!-- Optional: nav for multi-section pages -->
-<!--
 <nav class="nav"><div class="nav-inner">
   <a class="nav-brand" href="#"><img src="icon.svg" alt="">PROJECT_NAME</a>
-  <div class="nav-links"><a href="#features">Features</a><a href="#setup">Setup</a><a href="PROJECT_GITHUB_URL">GitHub</a></div>
-</div></nav>
--->
-
-<section class="hero">
-  <img class="hero-icon" src="icon.svg" alt="PROJECT_NAME icon">
-  <h1>PROJECT_NAME</h1>
-  <p class="tagline">PROJECT_TAGLINE_LONG</p>
-
-  <div class="badges">
-    <a href="PROJECT_RELEASE_URL"><img alt="Version" src="https://img.shields.io/badge/version-VERSION-e8dcc4?labelColor=1c1c20"></a>
-    <img alt="TECH_BADGE" src="https://img.shields.io/badge/TECH_LABEL-TECH_VALUE-83a598?labelColor=1c1c20">
-    <img alt="License" src="https://img.shields.io/badge/license-LICENSE-a89984?labelColor=1c1c20">
-  </div>
-
-  <!-- If the project has an install one-liner, include this block -->
-  <div class="install-card">
-    <label>Install with one command</label>
-    <div class="cmd-row">
-      <div class="cmd-box" id="cmd">INSTALL_COMMAND_HERE</div>
-      <button class="copy-btn" id="copyBtn" title="Copy to clipboard" onclick="copyCmd()">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-      </button>
+  <div class="nav-links">
+    <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a>
+    <a href="PROJECT_GITHUB_URL/blob/main/ROADMAP.md">Roadmap</a>
+    <a class="nav-hl" href="PROJECT_GITHUB_URL">GitHub</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="de" aria-pressed="false">DE</button>
     </div>
-    <p class="install-note">INSTALL_NOTE</p>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <div class="hero-main">
+    <h1>PROJECT_NAME</h1>
+    <p class="tagline" lang="en">PROJECT_TAGLINE_LONG_EN</p>
+    <p class="tagline" lang="de">PROJECT_TAGLINE_LONG_DE</p>
   </div>
 
-  <div class="install-links">
-    <a class="btn btn-primary" href="PROJECT_DOWNLOAD_URL">
-      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Download vVERSION
-    </a>
-    <a class="btn btn-ghost" href="PROJECT_GITHUB_URL">
-      <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 014 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      GitHub
-    </a>
-  </div>
-</section>
+  <div class="hero-side">
+    <!-- Only if the project has an install one-liner -->
+    <div class="install-card">
+      <label>Installation</label>
+      <div class="cmd-row">
+        <div class="cmd-box">INSTALL_COMMAND_HERE</div>
+        <button class="copy-btn" type="button" title="Copy" aria-label="Copy">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </button>
+      </div>
+      <p class="install-note" lang="en">INSTALL_NOTE_EN</p>
+      <p class="install-note" lang="de">INSTALL_NOTE_DE</p>
+      <div class="install-links">
+        <a class="btn btn-primary" href="PROJECT_DOWNLOAD_URL">Download</a>
+        <a class="btn btn-ghost" href="PROJECT_GITHUB_URL">GitHub</a>
+      </div>
+    </div>
 
-<section class="screenshot-wrap">
-  <img src="screenshot.jpg" alt="PROJECT_NAME screenshot" loading="lazy">
-</section>
+    <div class="hero-shot">
+      <img src="screenshot.jpg" alt="PROJECT_NAME screenshot">
+    </div>
+  </div>
+</header>
 
-<section class="features">
-  <div class="feat">
-    <h3>Feature 1</h3>
-    <p>Description of feature 1.</p>
+<main>
+<section class="features" id="features">
+  <div class="feat" data-tier="red">
+    <span class="feat-tag"><span lang="en">Tier red</span><span lang="de">Stufe rot</span></span>
+    <h3 lang="en">Feature 1</h3><h3 lang="de">Funktion 1</h3>
+    <p lang="en">Description of feature 1.</p><p lang="de">Beschreibung von Funktion 1.</p>
   </div>
-  <div class="feat">
-    <h3>Feature 2</h3>
-    <p>Description of feature 2.</p>
+  <div class="feat" data-tier="yellow">
+    <span class="feat-tag"><span lang="en">Tier yellow</span><span lang="de">Stufe gelb</span></span>
+    <h3 lang="en">Feature 2</h3><h3 lang="de">Funktion 2</h3>
+    <p lang="en">Description of feature 2.</p><p lang="de">Beschreibung von Funktion 2.</p>
   </div>
-  <div class="feat">
-    <h3>Feature 3</h3>
-    <p>Description of feature 3.</p>
+  <div class="feat" data-tier="blue">
+    <span class="feat-tag"><span lang="en">Tier blue</span><span lang="de">Stufe blau</span></span>
+    <h3 lang="en">Feature 3</h3><h3 lang="de">Funktion 3</h3>
+    <p lang="en">Description of feature 3.</p><p lang="de">Beschreibung von Funktion 3.</p>
   </div>
 </section>
 
 <section class="section">
-  <h2>Prerequisites</h2>
-  <ul>
-    <li>Prerequisite 1</li>
-    <li>Prerequisite 2</li>
-  </ul>
+  <h2 lang="en">Prerequisites</h2><h2 lang="de">Voraussetzungen</h2>
+  <ul lang="en"><li>Prerequisite 1</li><li>Prerequisite 2</li></ul>
+  <ul lang="de"><li>Voraussetzung 1</li><li>Voraussetzung 2</li></ul>
 </section>
 
 <section class="section">
-  <h2>How it works</h2>
-  <ul>
-    <li>Step 1</li>
-    <li>Step 2</li>
-  </ul>
+  <h2 lang="en">How it works</h2><h2 lang="de">So funktioniert es</h2>
+  <ul lang="en"><li>Step 1</li><li>Step 2</li></ul>
+  <ul lang="de"><li>Schritt 1</li><li>Schritt 2</li></ul>
 </section>
 
-<!-- Optional components (uncomment as needed) -->
-<!--
+<!-- Optional components (uncomment as needed)
 <section class="section">
   <h2>Setup</h2>
   <ol class="steps"><li>Step one</li><li>Step two</li></ol>
@@ -115,20 +116,11 @@
 
 <div class="section"><div class="callout callout-warn"><strong>Note:</strong> Disclaimer text.</div></div>
 -->
+</main>
 
 <footer>
-  <p>LICENSE · Made by <a href="https://github.com/shrippen">shrippen</a> · <a href="PROJECT_GITHUB_URL/issues">Issues</a></p>
+  <p>LICENSE · <a href="https://github.com/shrippen">shrippen</a> · vVERSION · <a href="PROJECT_GITHUB_URL/issues">Issues</a></p>
 </footer>
 
-<script>
-function copyCmd(){
-  var t=document.getElementById('cmd').textContent;
-  navigator.clipboard.writeText(t).then(function(){
-    var b=document.getElementById('copyBtn');
-    b.classList.add('copied');
-    setTimeout(function(){b.classList.remove('copied')},1500);
-  });
-}
-</script>
 </body>
 </html>

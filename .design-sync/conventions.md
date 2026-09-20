@@ -1,72 +1,80 @@
 # shrippen landing-page design system
 
-Dark-first, Gruvbox-derived CSS system for single-page project landing pages. There is **no JavaScript component library and no CSS framework**: you write plain HTML using the class names below, styled by one stylesheet.
+Dark, Gruvbox-derived CSS system for single-page project landing pages. There is **no JavaScript component library and no CSS framework**: write plain HTML with the class names below, styled by one stylesheet plus one tiny script.
 
 ## Setup
 
-Link `styles.css` (it carries all tokens and components) and load the heading font before it. Never inline a copy of the CSS and never invent new hex values.
+Link `styles.css` (all tokens and components), load `shrippen.js` **synchronously in `<head>`** (language switch, nav reveal, copy button), and start from `<html lang="en">`. Never inline a copy of the CSS and never invent hex values.
 
 ```html
-<link rel="stylesheet" href="styles.css">
-<body>
-  <section class="hero">…</section>
-  <footer>…</footer>
-</body>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <script src="shrippen.js"></script>
+</head>
 ```
 
-`styles.css` sets the page background, text color, and resets margins, so no wrapper element is needed. Headings use `var(--font-heading)` (Rajdhani, bundled in `fonts/`); body text uses the system sans stack.
+`styles.css` paints the page ground (`--bg-void`) and resets margins; no wrapper is needed. Headings use Rajdhani, code and labels JetBrains Mono, body text the system sans (fonts are bundled in `fonts/`).
 
-## Styling idiom: CSS custom properties + named component classes
+## Language: English by default, DE switch
 
-Use tokens via `var(--*)` for any glue styling, never raw colors:
+Every visible text exists twice, as paired elements: `<p lang="en">…</p><p lang="de">…</p>` (inline: `<span lang="en">`). CSS hides the inactive one. Put the switch in the nav: `.lang > button[data-lang="en"|"de"]`. The choice is stored in `localStorage`. Never write single-language copy.
 
-- Surfaces: `--bg-hard` (code, hero depth), `--bg0` (page), `--bg1` (cards), `--bg2` (borders)
-- Text: `--fg0` (headings only), `--fg1` (body), `--fg2` (secondary), `--fg3` (footer, placeholders)
-- Brand: `--accent` (warm cream, icons and numerals)
-- Semantic: `--blue` (links, primary action), `--aqua` success, `--green`, `--yellow` warning, `--orange`, `--red` error, `--purple`; neutral variants end in `-n` (`--blue-n`)
-- Shape: `--radius` (12px), `--max-w` (860px content width)
+## Styling idiom: tokens + named component classes
+
+Use tokens via `var(--*)` for glue styling, never raw colors:
+
+- Surfaces: `--bg-void` (page), `--bg-panel` (cards), `--bg-hard` (code), `--bg1`, `--bg2` (borders)
+- Text: `--fg0` (headings), `--fg1` (body), `--fg2` (secondary), `--fg3` (labels, footer)
+- Accent: `--yellow` (install box, highlights, active states), `--accent` (cream, icons)
+- Priority tiers: `--red`, `--yellow`, `--blue`. Also `--aqua` (success), `--green`, `--orange`, `--purple`
+- Shape: `--chamfer` (16px). **Boxes have only the top-right corner cut** and no border radius; buttons are square.
+- Layout: `--max-w-wide` (1280px), `--max-w` (860px prose), `--gutter`
 - Type: `--font-heading`, `--font-sans`, `--font-mono`
 
-There is no light mode. Emojis are not used as icons; use inline SVG (24×24, `stroke="currentColor"`, class `feat-icon` inside feature cards).
+Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter-spacing. Icons are inline SVG (24×24, `stroke="currentColor"`), never emojis. No light mode.
 
-## Components (class vocabulary)
+## Components
 
 | Component | Classes |
 |---|---|
-| Nav (optional) | `nav > .nav-inner > a.nav-brand + .nav-links` |
-| Hero | `section.hero > img.hero-icon, h1, p.tagline, .badges, .install-card, .install-links` |
-| Badges | `.badges` containing shields.io `<img>` (labelColor 1c1c20; value e8dcc4 version, 83a598 tech, a89984 license) |
-| Install card | `.install-card > label, .cmd-row > .cmd-box + button.copy-btn, p.install-note` (add `.copied` to the button for 1.5s on success) |
-| Buttons | `.btn.btn-primary`, `.btn.btn-ghost`, wrapped in `.install-links` |
-| Screenshot | `.screenshot-wrap > img` |
-| Feature grid | `.features > .feat > svg.feat-icon?, h3, p` |
+| Nav | `nav.nav > .nav-inner > a.nav-brand + .nav-links`. The brand fades in when the hero leaves the viewport (`.brand-on`, set by the script). `.nav-links` holds `a`, `a.nav-hl` (yellow) and `.lang` |
+| Hero | `header.hero > .hero-main (h1, p.tagline) + .hero-side (.install-card, .hero-shot)`. The h1 is the bare project name, uppercase; split long names with `<br>` or set `--title-size` |
+| Install box | `.install-card > label, .cmd-row > .cmd-box + button.copy-btn, p.install-note, .install-links` (yellow; the script handles copying) |
+| Buttons | `.btn.btn-primary` and `.btn.btn-ghost` inside the yellow box; `.btn.btn-accent` on the dark page |
+| Screenshot | `.hero-shot > img`, same width as the install box |
+| Feature boxes | `.features > .feat[data-tier="red|yellow|blue"] > span.feat-tag, h3, p` (colour bar on top) |
 | Prose section | `.section > h2, p, ul` |
-| Steps | `ol.steps > li` (numbers are automatic) |
+| Steps | `ol.steps > li` |
 | Table | `.table-wrap > table.table` |
-| Code block | `.codeblock` (spans `.c` comment, `.k` keyword) |
-| Callout | `.callout`, plus `.callout-warn`, `.callout-danger`, `.callout-ok` |
-| Footer | bare `<footer>` |
+| Code block | `.codeblock` (`.c` comment, `.k` keyword) |
+| Callout | `.callout` + `.callout-warn`, `.callout-danger`, `.callout-ok` |
+| Badges | `.badges` with shields.io images (optional) |
+| Footer | `<footer><p>…</p></footer>`: short yellow line left, mono meta right |
 
-Page order: nav (optional), hero, screenshot, features, sections (prerequisites, steps, tables), footer. Content is centered in an 860px column; layout glue of your own should use `max-width:var(--max-w);margin:0 auto;padding:0 1.5rem`.
+Page order: nav, hero, feature boxes, sections, footer. The hero puts the name first with no sentence above it; the tagline sits directly under the name.
 
 ## Where the truth lives
 
-Read `styles.css` before styling: it holds every token and component rule. Each component folder under `components/` has a `.prompt.md` with usage notes and a rendered `.html` example to copy from.
+Read `styles.css` before styling: it holds every token and rule. Each component folder has a `.prompt.md` and a rendered `.html` example to copy from.
 
 ## Example
 
 ```html
-<section class="hero">
-  <img class="hero-icon" src="icon.svg" alt="">
-  <h1>Kurrent</h1>
-  <p class="tagline">A KDE Plasma 6 task manager</p>
-  <div class="install-links">
-    <a class="btn btn-primary" href="#">Download</a>
-    <a class="btn btn-ghost" href="#">GitHub</a>
+<header class="hero">
+  <div class="hero-main">
+    <h1>Kur<br>rent</h1>
+    <p class="tagline" lang="en">Tasks in the Plasma panel.</p>
+    <p class="tagline" lang="de">Aufgaben im Plasma-Panel.</p>
   </div>
-</section>
+  <div class="hero-side">
+    <div class="install-card"><label>Installation</label>
+      <div class="cmd-row"><div class="cmd-box">[INSTALL COMMAND]</div></div>
+      <div class="install-links"><a class="btn btn-primary" href="#">Download</a><a class="btn btn-ghost" href="#">GitHub</a></div>
+    </div>
+  </div>
+</header>
 <section class="features">
-  <div class="feat"><h3>Fast</h3><p>Opens instantly.</p></div>
+  <div class="feat" data-tier="red"><span class="feat-tag">Tier red</span><h3>Priority</h3><p>Short text.</p></div>
 </section>
-<footer><p>GPL-3.0 · Made by shrippen</p></footer>
 ```
