@@ -11,8 +11,11 @@ Link `styles.css` (all tokens and components), load `shrippen.js` **synchronousl
 <head>
   <link rel="stylesheet" href="styles.css">
   <script src="shrippen.js"></script>
+  <script defer src="https://um.arianw.de/script.js" data-website-id="056d39ee-6a9d-4b14-9902-5a1ac399df08"></script>
 </head>
 ```
+
+**Every landing page carries the Umami tracker line above**, identical on all pages. Never remove it or change the website ID.
 
 `styles.css` paints the page ground (`--bg-void`) and resets margins; no wrapper is needed. Headings use Rajdhani, code and labels JetBrains Mono, body text the system sans (fonts are bundled in `fonts/`).
 
@@ -48,7 +51,8 @@ Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter
 | Steps | `ol.steps > li` |
 | Table | `.table-wrap > table.table` |
 | Code block | `.codeblock` (`.c` comment, `.k` keyword) |
-| Callout | `.callout` + `.callout-warn`, `.callout-danger`, `.callout-ok` |
+| Banner | `.banner` > `.banner-inner` > `.banner-title` + `.banner-text`, `.banner-danger`. Full-width status notice, the first element of `<body>` above the nav, for pages that are not ready yet |
+| Callout | `.callout` + `.callout-warn`, `.callout-danger`, `.callout-ok`. A project notice (vibe-coded, experimental, unofficial) is one `.callout-warn` inside `<div class="section">`, always the first element in `<main>`, before the facts strip and the features |
 | Facts | `section.facts > .fact > b + span` (3–4 true figures, e.g. counts of views, languages, backends) |
 | Showcase | `section.showcase > .showcase-text (span.showcase-tag, h2, p, ul) + figure (img, figcaption)`; `.rev` flips the row, `figure.native` keeps small crops at natural size |
 | Flow | `.flow > .flow-node (b, span) + span.flow-arrow + …`; `.hl` on the node the user touches |

@@ -166,6 +166,10 @@ kbd{font-family:var(--font-mono);font-size:.78em;padding:.05rem .4rem;border:1px
 .feat h3{font-family:var(--font-heading);font-size:1.75rem;font-weight:700;text-transform:uppercase;
   letter-spacing:.02em;line-height:1.05;color:var(--fg0)}
 .feat p{font-size:.95rem;color:var(--fg2);line-height:1.6}
+.section+.features{padding-top:1.5rem}
+.feat-img{display:block;width:40px;height:40px}
+.feat-links{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.06em}
+.feat-muted{color:var(--fg3)}
 
 /* ── Prose sections ── */
 .section{max-width:var(--max-w-wide);margin:0 auto;padding:3rem var(--gutter) 0}
@@ -185,7 +189,7 @@ kbd{font-family:var(--font-mono);font-size:.78em;padding:.05rem .4rem;border:1px
   font-family:var(--font-heading);font-weight:700;display:flex;align-items:center;justify-content:center}
 
 /* ── Table ── */
-.table-wrap{overflow-x:auto;border:1px solid var(--bg1);background:var(--bg-panel)}
+.table-wrap{overflow-x:auto;border:1px solid var(--bg1);background:var(--bg-panel);margin-bottom:1rem}
 .table{width:100%;border-collapse:collapse;font-size:.9rem}
 .table th{font-family:var(--font-heading);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg0);
   text-align:left;background:var(--bg1);padding:.65rem .9rem;white-space:nowrap}
@@ -193,7 +197,7 @@ kbd{font-family:var(--font-mono);font-size:.78em;padding:.05rem .4rem;border:1px
 .table code{color:var(--fg1)}
 
 /* ── Code block ── */
-.codeblock{background:var(--bg-hard);border:1px solid var(--bg1);padding:1rem 1.2rem;overflow-x:auto;
+.codeblock{margin-bottom:1rem;background:var(--bg-hard);border:1px solid var(--bg1);padding:1rem 1.2rem;overflow-x:auto;
   font-family:var(--font-mono);font-size:.85rem;line-height:1.55;color:var(--fg1);white-space:pre}
 .codeblock .c{color:var(--fg3)}
 .codeblock .k{color:var(--blue)}
@@ -204,6 +208,18 @@ kbd{font-family:var(--font-mono);font-size:.78em;padding:.05rem .4rem;border:1px
 .callout-warn{border-top-color:var(--yellow)}
 .callout-danger{border-top-color:var(--red)}
 .callout-ok{border-top-color:var(--aqua)}
+
+/* ── Banner: full-width status notice above the nav (e.g. "not ready for primetime") ── */
+.banner{position:relative;background:var(--yellow);color:var(--bg-void);padding:1.2rem 0}
+.banner::before,.banner::after{content:"";position:absolute;left:0;right:0;height:12px;
+  background:repeating-linear-gradient(-45deg,var(--bg-void) 0 12px,var(--yellow) 12px 24px)}
+.banner::before{top:0}
+.banner::after{bottom:0}
+.banner-inner{max-width:var(--max-w-wide);margin:0 auto;padding:.9rem var(--gutter);display:flex;flex-direction:column;gap:.5rem}
+.banner-title{font-family:var(--font-heading);font-weight:700;text-transform:uppercase;letter-spacing:.04em;line-height:1;font-size:clamp(2rem,7.5vw,5.2rem)}
+.banner-text{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;max-width:60rem}
+.banner-danger{background:var(--red)}
+.banner-danger::before,.banner-danger::after{background:repeating-linear-gradient(-45deg,var(--bg-void) 0 12px,var(--red) 12px 24px)}
 
 /* ── Footer signature: logo, name, link columns, short yellow line and meta ── */
 .foot{margin-top:5rem;border-top:1px solid var(--bg1);background:var(--bg-void)}

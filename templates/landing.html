@@ -10,12 +10,13 @@
 <meta property="og:image" content="PROJECT_OG_IMAGE_URL">
 <meta property="og:url" content="PROJECT_PAGE_URL">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<script defer src="https://um.arianw.de/script.js" data-website-id="PROJECT_UMAMI_ID"></script>
+<!-- Umami tracker: mandatory on every landing page, same tag and ID everywhere, do not change -->
+<script defer src="https://um.arianw.de/script.js" data-website-id="056d39ee-6a9d-4b14-9902-5a1ac399df08"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://shrippen.github.io/DesignDefault/v1/shrippen.css">
-<script src="https://shrippen.github.io/DesignDefault/v1/shrippen.js"></script>
+<link rel="stylesheet" href="https://shrippen.github.io/v1/shrippen.css">
+<script src="https://shrippen.github.io/v1/shrippen.js"></script>
 <!--
   Assets (icon.svg, screenshot.jpg, social image) live in this project's docs/ folder, next to this file.
   Every visible text exists twice: lang="en" (default) and lang="de".
@@ -70,6 +71,9 @@
 </header>
 
 <main>
+<!-- Notice (vibe-coded, experimental, not official): ONE callout, always the first element in main, before the facts strip and the features. Uncomment if needed:
+<div class="section"><div class="callout callout-warn"><span lang="en"><strong>Note:</strong> Disclaimer text.</span><span lang="de"><strong>Hinweis:</strong> Hinweistext.</span></div></div>
+-->
 <section class="features" id="features">
   <div class="feat" data-tier="red">
     <span class="feat-tag"><span lang="en">Tier red</span><span lang="de">Stufe rot</span></span>
@@ -116,7 +120,6 @@
   </table></div>
 </section>
 
-<div class="section"><div class="callout callout-warn"><strong>Note:</strong> Disclaimer text.</div></div>
 -->
 </main>
 
@@ -134,6 +137,7 @@
         <a href="PROJECT_GITHUB_URL">GitHub</a><a href="PROJECT_GITHUB_URL/issues">Issues</a></div>
     </nav>
   </div>
+  <!-- Based on or forked from another project? Append: · <a href="UPSTREAM_URL">based on NAME</a> (with EN/DE spans) -->
   <div class="foot-meta"><p>LICENSE · shrippen · vVERSION</p></div>
 </footer>
 

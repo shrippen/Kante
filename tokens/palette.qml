@@ -3,7 +3,7 @@ import QtQuick 2.15
 
 /*
  * shrippen Design Default — QML palette reference.
- * https://github.com/shrippen/DesignDefault
+ * https://github.com/shrippen/shrippen.github.io
  *
  * In Plasma widgets, use Kirigami.Theme.* for all dynamic/interactive colors.
  * Use these only for brand accent elements (icon fills, priority bands,
