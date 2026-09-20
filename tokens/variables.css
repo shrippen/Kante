@@ -24,6 +24,7 @@
 
   /* ── Semantic colors (Gruvbox bright) ── */
   --blue:     #83a598;   /* links, primary action */
+  --blue-hover: #6d9181; /* primary button hover (~10% darker) */
   --aqua:     #8ec07c;   /* success, confirm */
   --green:    #b8bb26;   /* positive diff, badges */
   --yellow:   #fabd2f;   /* warning, attention */
