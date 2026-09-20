@@ -32,14 +32,14 @@ Use tokens via `var(--*)` for glue styling, never raw colors:
 - Layout: `--max-w-wide` (1280px), `--max-w` (860px prose), `--gutter`
 - Type: `--font-heading`, `--font-sans`, `--font-mono`
 
-Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter-spacing. Icons are inline SVG (24×24, `stroke="currentColor"`), never emojis. No light mode.
+Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter-spacing. Each project's logo is `icon.svg` (cream, yellow accent) with a fully monochrome twin `icon-mono.svg`, both in the project's `docs/` folder. Icons are inline SVG (24×24, `stroke="currentColor"`), never emojis. No light mode.
 
 ## Components
 
 | Component | Classes |
 |---|---|
 | Nav | `nav.nav > .nav-inner > a.nav-brand + .nav-links`. The brand fades in when the hero leaves the viewport (`.brand-on`, set by the script). `.nav-links` holds `a`, `a.nav-hl` (yellow) and `.lang` |
-| Hero | `header.hero > .hero-main (h1, p.tagline) + .hero-side (.install-card, .hero-shot)`. The h1 is the bare project name, uppercase; split long names with `<br>` or set `--title-size` |
+| Hero | `header.hero > img.hero-wm (watermark: icon-mono.svg, alt="") + .hero-main (h1, p.tagline) + .hero-side (.install-card, .hero-shot)`. The watermark is faint, scrolls with the page, is never fixed and may bleed below a short hero (the content after the hero paints above it). The h1 is the bare project name, uppercase; on desktop split the name with `<br class="split">` (keep a space before it when splitting between words, e.g. `Kimai <br class="split">Abrechnung`). The split is removed on tablet and phone, where the name is written out and sized to the width; set `--title-size-narrow` (about `154/longest-word-length` vw) and, for very long names, `--title-size` |
 | Install box | `.install-card > label, .cmd-row > .cmd-box + button.copy-btn, p.install-note, .install-links` (yellow; the script handles copying) |
 | Buttons | `.btn.btn-primary` and `.btn.btn-ghost` inside the yellow box; `.btn.btn-accent` on the dark page |
 | Screenshot | `.hero-shot > img`, same width as the install box |
@@ -49,10 +49,16 @@ Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter
 | Table | `.table-wrap > table.table` |
 | Code block | `.codeblock` (`.c` comment, `.k` keyword) |
 | Callout | `.callout` + `.callout-warn`, `.callout-danger`, `.callout-ok` |
+| Facts | `section.facts > .fact > b + span` (3–4 true figures, e.g. counts of views, languages, backends) |
+| Showcase | `section.showcase > .showcase-text (span.showcase-tag, h2, p, ul) + figure (img, figcaption)`; `.rev` flips the row, `figure.native` keeps small crops at natural size |
+| Flow | `.flow > .flow-node (b, span) + span.flow-arrow + …`; `.hl` on the node the user touches |
+| Tokens | `.tokens > .tok[data-k="text\|date\|prio\|tag\|project"] > code + small` for input syntax |
+| FAQ | `.faq > details > summary + div > p` (inside a `.section`) |
+| Key cap | `<kbd>` |
 | Badges | `.badges` with shields.io images (optional) |
-| Footer | `<footer><p>…</p></footer>`: short yellow line left, mono meta right |
+| Footer | `footer.foot > .foot-inner (.foot-brand: img icon.svg (colour logo) + .foot-name + .foot-tag; nav.foot-cols with two `div` columns of `h4` + links) + .foot-meta > p` (license · author · version; the short yellow line is drawn by CSS) |
 
-Page order: nav, hero, feature boxes, sections, footer. The hero puts the name first with no sentence above it; the tagline sits directly under the name.
+Page order: nav, hero, facts (optional), feature boxes, showcases, sections (steps, tables, install, config, FAQ, roadmap), footer. Rich pages alternate `.showcase` and `.showcase.rev` rows, each pairing one pixelated screenshot with a short text. The hero puts the name first with no sentence above it; the tagline sits directly under the name.
 
 ## Where the truth lives
 
@@ -63,7 +69,7 @@ Read `styles.css` before styling: it holds every token and rule. Each component 
 ```html
 <header class="hero">
   <div class="hero-main">
-    <h1>Kur<br>rent</h1>
+    <h1>Kur<br class="split">rent</h1>
     <p class="tagline" lang="en">Tasks in the Plasma panel.</p>
     <p class="tagline" lang="de">Aufgaben im Plasma-Panel.</p>
   </div>

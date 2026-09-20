@@ -17,8 +17,9 @@
 <link rel="stylesheet" href="https://shrippen.github.io/DesignDefault/v1/shrippen.css">
 <script src="https://shrippen.github.io/DesignDefault/v1/shrippen.js"></script>
 <!--
+  Assets (icon.svg, screenshot.jpg, social image) live in this project's docs/ folder, next to this file.
   Every visible text exists twice: lang="en" (default) and lang="de".
-  Long project names: split with <br> (e.g. Kur<br>rent) or set --title-size on the h1.
+  Project name in the h1: on desktop it may be split over lines with <br class="split"> (e.g. Kur<br class="split">rent). The split disappears on tablet and phone, where the name is written out and sized to its longest word (--title-size-narrow). For a split between words keep a space before the <br>. Very long names: also set --title-size (desktop).
 -->
 </head>
 <body>
@@ -37,8 +38,9 @@
 </div></nav>
 
 <header class="hero">
+  <img class="hero-wm" src="icon-mono.svg" alt="" aria-hidden="true">
   <div class="hero-main">
-    <h1>PROJECT_NAME</h1>
+    <h1>PROJECT_NAME</h1> <!-- e.g. <h1>Kur<br class="split">rent</h1> -->
     <p class="tagline" lang="en">PROJECT_TAGLINE_LONG_EN</p>
     <p class="tagline" lang="de">PROJECT_TAGLINE_LONG_DE</p>
   </div>
@@ -118,8 +120,21 @@
 -->
 </main>
 
-<footer>
-  <p>LICENSE · <a href="https://github.com/shrippen">shrippen</a> · vVERSION · <a href="PROJECT_GITHUB_URL/issues">Issues</a></p>
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <img src="icon.svg" alt="">
+      <div><span class="foot-name">PROJECT_NAME</span>
+        <span class="foot-tag"><span lang="en">PROJECT_TAGLINE_EN</span><span lang="de">PROJECT_TAGLINE_DE</span></span></div>
+    </div>
+    <nav class="foot-cols" aria-label="Footer">
+      <div><h4><span lang="en">Project</span><span lang="de">Projekt</span></h4>
+        <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a></div>
+      <div><h4><span lang="en">Source</span><span lang="de">Quelltext</span></h4>
+        <a href="PROJECT_GITHUB_URL">GitHub</a><a href="PROJECT_GITHUB_URL/issues">Issues</a></div>
+    </nav>
+  </div>
+  <div class="foot-meta"><p>LICENSE · shrippen · vVERSION</p></div>
 </footer>
 
 </body>
