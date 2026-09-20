@@ -1,43 +1,118 @@
 {
   "meta": {
     "name": "shrippen Design Default",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "source": "https://github.com/shrippen/DesignDefault",
     "base": "Gruvbox Dark (morhetz)"
   },
   "backgrounds": {
-    "bg-hard":  "#1d2021",
-    "bg0":      "#282828",
-    "bg1":      "#3c3836",
-    "bg2":      "#504945"
+    "bg-void": "#141312",
+    "bg-hard": "#1d2021",
+    "bg0": "#282828",
+    "bg1": "#3c3836",
+    "bg2": "#504945",
+    "bg-panel": "#2a2826"
   },
   "foregrounds": {
-    "fg0":      "#fbf1c7",
-    "fg1":      "#ebdbb2",
-    "fg2":      "#d5c4a1",
-    "fg3":      "#a89984"
+    "fg0": "#fbf1c7",
+    "fg1": "#ebdbb2",
+    "fg2": "#d5c4a1",
+    "fg3": "#a89984"
   },
   "accent": "#e8dcc4",
   "semantic": {
-    "blue":     { "bright": "#83a598", "neutral": "#458588", "faded": "#076678" },
-    "aqua":     { "bright": "#8ec07c", "neutral": "#689d6a", "faded": "#427b58" },
-    "green":    { "bright": "#b8bb26", "neutral": "#98971a", "faded": "#79740e" },
-    "yellow":   { "bright": "#fabd2f", "neutral": "#d79921", "faded": "#b57614" },
-    "orange":   { "bright": "#fe8019", "neutral": "#d65d0e", "faded": "#af3a03" },
-    "red":      { "bright": "#fb4934", "neutral": "#cc241d", "faded": "#9d0006" },
-    "purple":   { "bright": "#d3869b", "neutral": "#b16286", "faded": "#8f3f71" }
+    "blue": {
+      "bright": "#83a598",
+      "neutral": "#458588",
+      "faded": "#076678"
+    },
+    "aqua": {
+      "bright": "#8ec07c",
+      "neutral": "#689d6a",
+      "faded": "#427b58"
+    },
+    "green": {
+      "bright": "#b8bb26",
+      "neutral": "#98971a",
+      "faded": "#79740e"
+    },
+    "yellow": {
+      "bright": "#fabd2f",
+      "neutral": "#d79921",
+      "faded": "#b57614"
+    },
+    "orange": {
+      "bright": "#fe8019",
+      "neutral": "#d65d0e",
+      "faded": "#af3a03"
+    },
+    "red": {
+      "bright": "#fb4934",
+      "neutral": "#cc241d",
+      "faded": "#9d0006"
+    },
+    "purple": {
+      "bright": "#d3869b",
+      "neutral": "#b16286",
+      "faded": "#8f3f71"
+    }
   },
   "typography": {
     "heading": "Rajdhani",
-    "headingWeights": [600, 700],
+    "headingWeights": [
+      600,
+      700
+    ],
     "headingSource": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap",
     "body": "system-sans",
     "mono": "JetBrains Mono, Fira Code, Cascadia Code, Consolas, monospace"
   },
   "badges": {
     "labelColor": "1c1c20",
-    "version":    "e8dcc4",
-    "tech":       "83a598",
-    "license":    "a89984"
+    "version": "e8dcc4",
+    "tech": "83a598",
+    "license": "a89984"
+  },
+  "roles": {
+    "field": "bg-hard (dark) / bg1 (light)",
+    "score": "yellow",
+    "hl": "orange"
+  },
+  "light": {
+    "name": "Leinen",
+    "usage": "opt-in via data-theme=\"light\"; token names are roles, not lightness",
+    "backgrounds": {
+      "bg-void": "#f0e9d6",
+      "bg-hard": "#e6dec6",
+      "bg0": "#f0e9d6",
+      "bg-panel": "#f7f2e4",
+      "bg1": "#fbf8ee",
+      "bg2": "#d3c8ac"
+    },
+    "foregrounds": {
+      "fg0": "#282828",
+      "fg1": "#3c3836",
+      "fg2": "#665c54",
+      "fg3": "#6a5f52"
+    },
+    "accent": "#3c3836",
+    "semantic": {
+      "blue": "#076678",
+      "blue-hover": "#05505f",
+      "aqua": "#427b58",
+      "green": "#4f5d0a",
+      "yellow": "#8a5a00",
+      "orange": "#af3a03",
+      "red": "#9d0006",
+      "purple": "#8f3f71"
+    },
+    "alternative": {
+      "name": "Sand",
+      "bg-void": "#ebe3cf",
+      "bg-panel": "#f4eedd",
+      "bg1": "#f9f5e8",
+      "bg-hard": "#e0d6bb",
+      "bg2": "#cdc1a3"
+    }
   }
 }
