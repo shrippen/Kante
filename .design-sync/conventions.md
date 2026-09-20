@@ -61,6 +61,13 @@ Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter
 | Key cap | `<kbd>` |
 | Badges | `.badges` with shields.io images (optional) |
 | Footer | `footer.foot > .foot-inner (.foot-brand: img icon.svg (colour logo) + .foot-name + .foot-tag; nav.foot-cols with two `div` columns of `h4` + links) + .foot-meta > p` (license · author · version; the short yellow line is drawn by CSS) |
+| Tile (app) | `.tiles > button.tile[data-tier="green\|yellow\|red"][aria-selected] > .tile-img (svg/img + .tile-crop[--in] + .tile-check) + .tile-meta (.tile-name, .tile-conf, .tile-sub)`; `.tile-sm` compact. Green = `--aqua`; status = bar + icon + number, never colour alone |
+| Crop editor (app) | `.toolbar` (with `.seg`) + `.stage > svg/img + .cand[--l,--t,--r,--b,--c] > .cand-tag + .cropbox[--l,--t,--r,--b] > .handle[data-h] + .readout`, then `.strip > button[data-tier][aria-current]`. The stage is rectangular on purpose and dark in both themes |
+| Bands (app) | `.bands > .band[data-tier] > .band-head + .tile-sm…`; drag states `.band.is-over`, `.tile.is-dragging`, count `.drag-badge` |
+| Controls (app) | `.field > label + .input\|.select\|.seg\|.range\|.switch`; `.field-hint`; `.panel-grid`. Range track tint via `--zones`. Fields use the `--field` role |
+| Status (app) | `.pill[data-state="analyzing\|reviewing\|locked\|applied\|failed"]`, `.progress > .progress-head + .progress-bar > i[--p][data-tier]`, `.toast[data-kind="ok\|error"]` |
+| Dialog (app) | `.scrim (+ .is-fixed) > .dialog > h3 + .dialog-facts + .callout + .dialog-actions`; lock a screen with `.is-locked` on its container and `[data-lockable]` on controls to disable |
+| Buttons on the dark page | `.btn-accent` (primary) and `.btn-outline` (secondary); `.btn-ghost` only inside the yellow box. `button.btn` needs no reset |
 
 Page order: nav, hero, facts (optional), feature boxes, showcases, sections (steps, tables, install, config, FAQ, roadmap), footer. Rich pages alternate `.showcase` and `.showcase.rev` rows, each pairing one pixelated screenshot with a short text. The hero puts the name first with no sentence above it; the tagline sits directly under the name.
 

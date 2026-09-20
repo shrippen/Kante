@@ -47,6 +47,7 @@
   --field:    var(--bg-hard); /* input fields, nested surfaces */
   --score:    var(--yellow);  /* scores, points, "how good is it" */
   --hl:       var(--orange);  /* active nav item, current selection */
+  --scrim:    rgba(20,19,18,.62); /* dimmed area behind dialogs and outside a crop */
 
   /* ── Layout ── */
   --radius:   12px;
@@ -102,4 +103,5 @@
   --purple:   #8f3f71;
 
   --field:    var(--bg1);
+  --scrim:    rgba(40,40,40,.5);
 }
