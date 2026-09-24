@@ -421,7 +421,7 @@ button.btn-outline{border:2px solid var(--fg3)}
 .cand[hidden]{display:none}
 .cand-tag.is-right{left:auto;right:14px}
 .cand-tag{position:absolute;left:14px;bottom:100%;background:var(--c,var(--blue));color:var(--bg-void);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;padding:.05rem .35rem;white-space:nowrap}
-.readout{position:absolute;right:.5rem;bottom:.5rem;background:var(--bg-void);border:1px solid var(--bg2);padding:.15rem .5rem;font-family:var(--font-mono);font-size:.68rem;color:var(--fg2);font-variant-numeric:tabular-nums}
+.readout{pointer-events:none;position:absolute;right:.5rem;bottom:.5rem;background:var(--bg-void);border:1px solid var(--bg2);padding:.15rem .5rem;font-family:var(--font-mono);font-size:.68rem;color:var(--fg2);font-variant-numeric:tabular-nums}
 .strip{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.3rem}
 .strip button{--tier:var(--aqua);flex:0 0 5.2rem;aspect-ratio:3/2;background:var(--bg0);border:2px solid transparent;border-top:3px solid var(--tier);padding:0;cursor:pointer;overflow:hidden}
 .strip button[data-tier="yellow"]{--tier:var(--yellow)}.strip button[data-tier="red"]{--tier:var(--red)}
