@@ -47,6 +47,11 @@ Container ─► KnustExtension::prepend
 - Dashboard-Zähler färben ihren Balken über `:has()` (Chrome 105+, Firefox 121+, Safari 15.4+).
 - Login im Hell-Modus tauscht das Logo per `content: url()`; wo das nicht greift, bleibt das cremefarbene Logo für dunklen Grund.
 
+## Repository
+
+Entwicklung: <https://git.arianw.de/shrippen/kimai-knust-bundle>
+Öffentlicher Spiegel: <https://github.com/shrippen/kimai-knust-bundle> (Gitea pusht automatisch dorthin, dort nichts direkt ändern)
+
 ## Lizenz
 
 GPL-3.0-or-later, siehe [LICENSE](LICENSE).
