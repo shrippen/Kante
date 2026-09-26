@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0
+
+Schnittstelle für Plugins.
+
+- Öffentliche Variablen `--knust-font-num`, `--knust-font-display`, `--knust-mark-radius`, `--knust-tier-0` bis `-3`,
+  `--knust-map-filter` (Kartenkacheln im Dunkelmodus)
+- Gestaltung der Kit-Kennzeichnungen aus kimai-plugin-ui 0.4: `kpu-num` in Monospace, `kpu-tier` als Band mit
+  Stufenbalken, `kpu-mark` eckig
+- `PLUGINS.md`: Regeln für bestehende und künftige Plugins
+
 ## 1.0.0
 
 Erste Veröffentlichung für Kimai 2.67.

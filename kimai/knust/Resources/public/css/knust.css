@@ -17,6 +17,9 @@
  *   9. Literal colours        rules where Kimai's build has hex values
  *  10. Screens                header, toolbar, timer, tables, dashboard,
  *                             modal, login, kpu kit (canvas drafts A–F)
+ *
+ * Public tokens --knust-* (after the palette) and the kit markers
+ * .kpu-num / .kpu-tier / .kpu-mark are the plugin API, see PLUGINS.md.
  */
 
 /* ── 1. Fonts (Latin subset, see Resources/public/fonts) ── */
@@ -91,6 +94,26 @@
     --shr-blue-n: #458588;    --shr-blue-n-rgb: 69, 133, 136;
     --shr-aqua-n: #689d6a;    --shr-aqua-n-rgb: 104, 157, 106;
     --shr-purple-n: #b16286;  --shr-purple-n-rgb: 177, 98, 134;
+}
+
+/* Public tokens for plugins (see PLUGINS.md). Stable: renaming or removing
+ * one is a major version. Plugins always read them with a fallback,
+ * e.g. var(--knust-mark-radius, 50%), so they work without Knust. */
+:root,
+[data-bs-theme] {
+    --knust-font-num: var(--shr-font-mono);
+    --knust-font-display: var(--shr-font-heading);
+    --knust-mark-radius: 0;
+    --knust-tier-0: var(--shr-fg3);
+    --knust-tier-1: var(--shr-yellow);
+    --knust-tier-2: var(--shr-orange);
+    --knust-tier-3: var(--shr-red);
+    --knust-map-filter: none;
+}
+
+/* Map tiles are light images; in dark mode they are inverted and warmed */
+[data-bs-theme=dark] {
+    --knust-map-filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) sepia(.2);
 }
 
 /* ── 3. Tabler mapping ──
@@ -912,6 +935,34 @@ div.kpu-bulk-bar {
     font-size: .65rem;
     letter-spacing: .1em;
     text-transform: uppercase;
+}
+
+/* Kit markers (kit 0.4, PLUGINS.md): plugins say what an element is */
+.kpu-num {
+    font-family: var(--knust-font-num);
+}
+
+.table td.kpu-num {
+    font-size: .8125rem;
+}
+
+/* Tier = design system band: tinted fill, bar on top, label in the tier colour.
+ * !important because the plugin keeps its Tabler fill (bg-yellow …) for Kimai without Knust. */
+.kpu-tier[data-kpu-tier] {
+    --knust-tier: var(--knust-tier-0);
+    background: color-mix(in srgb, var(--knust-tier) 14%, var(--tblr-bg-surface)) !important;
+    color: var(--knust-tier) !important;
+    box-shadow: inset 0 4px 0 var(--knust-tier);
+    font-family: var(--knust-font-num);
+    letter-spacing: .06em;
+}
+
+.kpu-tier[data-kpu-tier="1"] { --knust-tier: var(--knust-tier-1); }
+.kpu-tier[data-kpu-tier="2"] { --knust-tier: var(--knust-tier-2); }
+.kpu-tier[data-kpu-tier="3"] { --knust-tier: var(--knust-tier-3); }
+
+:root .kpu-mark {
+    border-radius: var(--knust-mark-radius);
 }
 
 /* Toasts (Kimai and kpu undo toast): callout with a coloured top edge */

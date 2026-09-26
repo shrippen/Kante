@@ -16,6 +16,12 @@ Einstellung: System → Einstellungen → „Knust“ → Akzentfarbe (Blau, Gel
 Hell/Dunkel wählt jeder Benutzer selbst (Profil → Einstellungen → Theme).
 Logo: shrippen-Wortmarke als Standard; `theme.branding.company` oder `theme.branding.logo` haben Vorrang.
 
+## Für Plugins
+
+Plugins kennzeichnen, was ein Element ist (`kpu-num`, `kpu-tier`, `kpu-mark` aus kimai-plugin-ui 0.4), und nutzen
+`--knust-*`-Variablen nur mit Rückfallwert. Sie fragen nicht ab, ob Knust installiert ist; Exporte bleiben neutral.
+Regeln und Variablen: [PLUGINS.md](PLUGINS.md).
+
 ## Aufbau
 
 ```
