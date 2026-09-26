@@ -1,9 +1,10 @@
 {
   "meta": {
-    "name": "shrippen Design Default",
-    "version": "1.1.0",
+    "name": "Kante",
+    "version": "1.2.0",
     "source": "https://github.com/shrippen/shrippen.github.io",
-    "base": "Gruvbox Dark (morhetz)"
+    "base": "Gruvbox Dark (morhetz)",
+    "formerly": "shrippen Design Default"
   },
   "backgrounds": {
     "bg-void": "#141312",
@@ -65,7 +66,19 @@
     ],
     "headingSource": "https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap",
     "body": "system-sans",
-    "mono": "JetBrains Mono, Fira Code, Cascadia Code, Consolas, monospace"
+    "mono": "JetBrains Mono, Fira Code, Cascadia Code, Consolas, monospace",
+    "headingCase": "uppercase",
+    "headingLetterSpacing": 0.08,
+    "labelFont": "mono",
+    "labelCase": "uppercase",
+    "labelLetterSpacing": 0.14,
+    "figures": "mono (timers, times, durations, amounts)",
+    "bundled": [
+      "Rajdhani-600.ttf",
+      "Rajdhani-700.ttf",
+      "JetBrainsMono-400.ttf",
+      "JetBrainsMono-500.ttf"
+    ]
   },
   "badges": {
     "labelColor": "1c1c20",
@@ -113,6 +126,86 @@
       "bg1": "#f9f5e8",
       "bg-hard": "#e0d6bb",
       "bg2": "#cdc1a3"
+    }
+  },
+  "shape": {
+    "chamfer": 16,
+    "chamferSmall": 10,
+    "note": "only the top-right corner is cut; no border radius; buttons are square. Web: --chamfer. Apps: KanteStyle.chamfer / chamferSmall (scaled with the platform grid unit)."
+  },
+  "app": {
+    "usage": "Qt Quick / Kirigami apps and Plasma widgets (qml/Kante). Surfaces are tints with alpha so a blurred or translucent platform ground shows through; colour only in small opaque areas.",
+    "dark": {
+      "text": "fg1",
+      "strongText": "fg0",
+      "mutedText": "#bdae93",
+      "disabledText": "fg3",
+      "ground": "bg-hard",
+      "accent": "yellow",
+      "accentText": "yellow",
+      "accentForeground": "bg-hard",
+      "positive": "aqua",
+      "neutral": "orange",
+      "negative": "red",
+      "info": "blue",
+      "card": [
+        "bg1",
+        0.6
+      ],
+      "sunken": [
+        "bg-void",
+        0.5
+      ],
+      "frame": [
+        "fg1",
+        0.16
+      ],
+      "rule": [
+        "fg1",
+        0.14
+      ],
+      "dialog": [
+        "bg0",
+        0.97
+      ]
+    },
+    "light": {
+      "text": "fg1",
+      "strongText": "fg0",
+      "mutedText": "fg2",
+      "disabledText": "fg3",
+      "ground": "bg-void",
+      "accent": "#d79921",
+      "accentText": "yellow",
+      "accentForeground": "fg0",
+      "positive": "aqua",
+      "neutral": "orange",
+      "negative": "red",
+      "info": "blue",
+      "card": [
+        "bg1",
+        0.7
+      ],
+      "sunken": [
+        "bg-hard",
+        0.6
+      ],
+      "frame": [
+        "fg1",
+        0.18
+      ],
+      "rule": [
+        "fg1",
+        0.14
+      ],
+      "dialog": [
+        "bg-panel",
+        0.98
+      ]
+    },
+    "notes": {
+      "mutedText": "#bdae93 is fg3 one step lighter, for secondary text on glass (4.5:1 on the darkest tint)",
+      "accent (light)": "#d79921 is yellow neutral: a button fill that works on linen; text in the accent uses accentText (#8a5a00)"
     }
   }
 }

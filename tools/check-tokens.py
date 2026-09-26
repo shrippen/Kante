@@ -5,6 +5,8 @@
     property that re-sets a token locally (e.g. `.stage{--bg1:#3c3836}`), and its value
     must be one of the hex values defined in tokens/variables.css.
   - font-family always comes from a token: var(--font-heading|--font-sans|--font-mono) or inherit.
+  - Web and apps share one palette: every colour in tokens/palette.json (dark and the
+    light theme "Leinen") has the same value as its custom property in tokens/variables.css.
 
 Scans css/*.css, templates/*.html and docs/index.html (in HTML only <style>, style="…"
 and fill/stroke/color attributes). Exits 1 on any finding.
@@ -59,7 +61,34 @@ def check(path):
             yield f"{rel}:{line(m.start())}: font-family {value!r}, use var(--font-heading|sans|mono)"
 
 
+def css_block(text, selector):
+    """Custom properties of the first block with this selector: {name: value}."""
+    start = text.index(selector)
+    body = text[text.index("{", start) + 1:text.index("}", start)]
+    body = re.sub(r"/\*.*?\*/", "", body, flags=re.S)
+    return {m.group(1): m.group(2).strip().lower() for m in re.finditer(r"--([\w-]+)\s*:\s*([^;]+);", body)}
+
+
+def check_shared_palette():
+    """palette.json (apps, QML) and variables.css (web) must not drift apart."""
+    import json
+    palette = json.loads((REPO / "tokens/palette.json").read_text())
+    css = (REPO / "tokens/variables.css").read_text()
+    dark, light = css_block(css, ":root {"), css_block(css, ':root[data-theme="light"]')
+    expected = [(":root", dark, "accent", palette["accent"])]
+    for group in ("backgrounds", "foregrounds"):
+        expected += [(":root", dark, k, v) for k, v in palette[group].items()]
+    expected += [(":root", dark, k, v["bright"]) for k, v in palette["semantic"].items()]
+    lt = palette["light"]
+    expected += [("light", light, "accent", lt["accent"])]
+    for group in ("backgrounds", "foregrounds", "semantic"):
+        expected += [("light", light, k, v) for k, v in lt[group].items()]
+    for block, props, name, value in expected:
+        if props.get(name) != value.lower():
+            yield f"tokens/palette.json {name} = {value} but tokens/variables.css ({block}) has {props.get(name)}"
+
+
 files = sorted(REPO.glob("css/*.css")) + sorted(REPO.glob("templates/*.html")) + [REPO / "docs/index.html"]
-problems = [p for f in files if f.exists() for p in check(f)]
+problems = [p for f in files if f.exists() for p in check(f)] + list(check_shared_palette())
 print("\n".join(problems) or f"token check ok ({len(files)} files)")
 sys.exit(1 if problems else 0)

@@ -1,4 +1,4 @@
-/* shrippen Design Default v1 — language switch, nav brand reveal, copy button.
+/* Kante v1 — language switch, nav brand reveal, copy button.
  * Load synchronously in <head> so the stored language applies before first paint. */
 (function () {
   var d = document, h = d.documentElement, KEY = 'shrippen-lang';
