@@ -19,14 +19,14 @@ QQC2.ToolButton {
     Rectangle {
         z: -1
         anchors.fill: parent
-        visible: KanteStyle.active && (control.hovered || control.down || control.checked || control.visualFocus)
+        visible: KanteStyle.themed && (control.hovered || control.down || control.checked || control.visualFocus)
         color: control.checked ? KanteStyle.accentColor : KanteStyle.sunkenColor
         border.width: control.visualFocus && !control.checked ? 1 : 0
         border.color: KanteStyle.accentColor
     }
 
     RowLayout {
-        visible: KanteStyle.active
+        visible: KanteStyle.themed
         x: control.leftPadding + Math.max(0, (control.availableWidth - width) / 2)
         y: control.topPadding
         width: Math.min(implicitWidth, control.availableWidth)
@@ -60,14 +60,14 @@ QQC2.ToolButton {
         target: control.background
         property: "opacity"
         value: 0
-        when: KanteStyle.active && control.background !== null
+        when: KanteStyle.themed && control.background !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: control.contentItem
         property: "opacity"
         value: 0
-        when: KanteStyle.active && control.contentItem !== null
+        when: KanteStyle.themed && control.contentItem !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
 }

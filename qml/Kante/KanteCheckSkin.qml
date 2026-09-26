@@ -21,7 +21,7 @@ Item {
 
     readonly property Item indicator: control ? control.indicator : null
 
-    visible: KanteStyle.active && indicator !== null
+    visible: KanteStyle.themed && indicator !== null
     x: indicator ? indicator.x : 0
     y: indicator ? indicator.y : 0
     width: shape === KanteCheckSkin.Shape.Box ? Math.round(Kirigami.Units.gridUnit * 0.9) : Math.round(Kirigami.Units.gridUnit * 1.8)
@@ -33,7 +33,7 @@ Item {
         target: skin.indicator
         property: "opacity"
         value: 0
-        when: KanteStyle.active && skin.indicator !== null
+        when: KanteStyle.themed && skin.indicator !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
 

@@ -52,21 +52,21 @@ QQC2.Dialog {
         target: control
         property: "background"
         value: control.kanteBackground
-        when: KanteStyle.active
+        when: KanteStyle.themed
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: control
         property: "header"
         value: control.kanteHeader
-        when: KanteStyle.active
+        when: KanteStyle.themed
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: control
         property: "footer"
         value: control.kanteFooter
-        when: KanteStyle.active
+        when: KanteStyle.themed
         restoreMode: Binding.RestoreBindingOrValue
     }
 }

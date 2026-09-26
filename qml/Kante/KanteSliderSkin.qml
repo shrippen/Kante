@@ -12,7 +12,7 @@ Item {
 
     required property Item control
 
-    visible: KanteStyle.active
+    visible: KanteStyle.themed
     anchors.fill: parent
     opacity: control && control.enabled ? 1 : 0.5
 
@@ -24,14 +24,14 @@ Item {
         target: skin.control ? skin.control.background : null
         property: "opacity"
         value: 0
-        when: KanteStyle.active && skin.control !== null && skin.control.background !== null
+        when: KanteStyle.themed && skin.control !== null && skin.control.background !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: skin.control ? skin.control.handle : null
         property: "opacity"
         value: 0
-        when: KanteStyle.active && skin.control !== null && skin.control.handle !== null
+        when: KanteStyle.themed && skin.control !== null && skin.control.handle !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
 

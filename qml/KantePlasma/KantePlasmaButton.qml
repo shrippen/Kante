@@ -1,20 +1,21 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls as QQC2
 import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
-import "."
+import org.kde.plasma.components as PlasmaComponents3
+import "../Kante"
 
 /**
- * Push button.
- *   System  a plain button of the active style (unchanged).
+ * Push button of a Plasma widget (PlasmaComponents3).
+ *   System  a plain Plasma button (unchanged).
  *   Kante   square, uppercase Rajdhani, thin frame; `emphasis` fills it with
  *           the accent (primary action) or the negative color (stop, delete).
  *
- * In Kante the style's frame and content stay (they size the button) but are
- * hidden; frame, icon and text are drawn here.
+ * In Kante the Plasma frame and content stay (they size the button) but are
+ * hidden; frame, icon and text are drawn here, so disabled buttons fade
+ * instead of taking the Plasma theme's disabled colors.
  */
-QQC2.Button {
+PlasmaComponents3.Button {
     id: control
 
     enum Emphasis {
@@ -23,11 +24,11 @@ QQC2.Button {
         Destructive
     }
 
-    property int emphasis: KanteButton.Emphasis.Normal
+    property int emphasis: KantePlasmaButton.Emphasis.Normal
 
-    readonly property bool filled: emphasis !== KanteButton.Emphasis.Normal
-    readonly property color kanteFill: emphasis === KanteButton.Emphasis.Primary ? KanteStyle.accentColor
-        : (emphasis === KanteButton.Emphasis.Destructive ? KanteStyle.negativeTextColor : "transparent")
+    readonly property bool filled: emphasis !== KantePlasmaButton.Emphasis.Normal
+    readonly property color kanteFill: emphasis === KantePlasmaButton.Emphasis.Primary ? KanteStyle.accentColor
+        : (emphasis === KantePlasmaButton.Emphasis.Destructive ? KanteStyle.negativeTextColor : "transparent")
     readonly property color kanteInk: filled ? KanteStyle.accentForegroundColor : KanteStyle.textColor
 
     Rectangle {
@@ -65,7 +66,7 @@ QQC2.Button {
             isMask: true
         }
 
-        QQC2.Label {
+        PlasmaComponents3.Label {
             visible: control.display !== T.AbstractButton.IconOnly && control.text.length > 0
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter

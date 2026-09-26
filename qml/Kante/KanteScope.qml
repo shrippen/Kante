@@ -19,17 +19,17 @@ Item {
 
     visible: false
 
-    Binding { target: scope.theme; property: "inherit"; value: false; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "textColor"; value: KanteStyle.textColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "disabledTextColor"; value: KanteStyle.disabledTextColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "backgroundColor"; value: KanteStyle.dialogColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "alternateBackgroundColor"; value: KanteStyle.cardColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "highlightColor"; value: KanteStyle.accentColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "highlightedTextColor"; value: KanteStyle.accentForegroundColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "focusColor"; value: KanteStyle.accentColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "hoverColor"; value: KanteStyle.accentColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "linkColor"; value: KanteStyle.infoColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "positiveTextColor"; value: KanteStyle.positiveTextColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "neutralTextColor"; value: KanteStyle.neutralTextColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
-    Binding { target: scope.theme; property: "negativeTextColor"; value: KanteStyle.negativeTextColor; when: KanteStyle.active && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "inherit"; value: false; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "textColor"; value: KanteStyle.textColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "disabledTextColor"; value: KanteStyle.disabledTextColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "backgroundColor"; value: KanteStyle.dialogColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "alternateBackgroundColor"; value: KanteStyle.cardColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "highlightColor"; value: KanteStyle.accentColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "highlightedTextColor"; value: KanteStyle.accentForegroundColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "focusColor"; value: KanteStyle.accentColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "hoverColor"; value: KanteStyle.accentColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "linkColor"; value: KanteStyle.infoColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "positiveTextColor"; value: KanteStyle.positiveTextColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "neutralTextColor"; value: KanteStyle.neutralTextColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
+    Binding { target: scope.theme; property: "negativeTextColor"; value: KanteStyle.negativeTextColor; when: KanteStyle.themed && scope.theme !== null; restoreMode: Binding.RestoreBindingOrValue }
 }

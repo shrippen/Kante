@@ -6,12 +6,22 @@ import org.kde.kirigami as Kirigami
  * Colors, fonts and shapes of a Kante app. Views read them here instead of
  * Kirigami.Theme, so the style is switched in one place.
  *
- *   KanteStyle.Kind.System  the platform theme (Kirigami.Theme), unchanged
- *   KanteStyle.Kind.Kante   Kante: Gruvbox dark or "Leinen" light (follows
- *                           the platform theme's brightness), Rajdhani
- *                           titles, JetBrains Mono figures, top-right cut
- *                           corners. Surfaces are tints: a translucent or
- *                           blurred platform ground shows through.
+ *   KanteStyle.Kind.System      the platform theme (Kirigami.Theme), unchanged
+ *   KanteStyle.Kind.Kante       Kante: Gruvbox dark or "Leinen" light (follows
+ *                               the platform theme's brightness), Rajdhani
+ *                               titles, JetBrains Mono figures, top-right cut
+ *                               corners, square controls. Surfaces are tints:
+ *                               a translucent or blurred platform ground shows
+ *                               through.
+ *   KanteStyle.Kind.KanteLight  Kante shapes on the platform theme: every color
+ *                               is Kirigami.Theme (live, follows any color
+ *                               scheme), controls stay the platform's. Kante
+ *                               adds cut corners and accent bars on cards,
+ *                               Rajdhani titles, JetBrains Mono figures and
+ *                               section labels, and the Kante layouts.
+ *
+ *   active  Kante or Kante Light: shapes, type, layouts
+ *   themed  Kante only: own palette, own control skins
  *
  * The app binds `kind` (e.g. from a "Style" setting). In the System kind
  * every role forwards Kirigami.Theme, so a view written against KanteStyle
@@ -24,11 +34,15 @@ QtObject {
 
     enum Kind {
         System,
-        Kante
+        Kante,
+        KanteLight
     }
 
     property int kind: KanteStyle.Kind.System
-    readonly property bool active: kind === KanteStyle.Kind.Kante
+    /** Kante shapes, type and layouts (Kante and Kante Light). */
+    readonly property bool active: kind !== KanteStyle.Kind.System
+    /** Kante's own palette and control skins (Kante only). */
+    readonly property bool themed: kind === KanteStyle.Kind.Kante
 
     /** Force the dark palette (e.g. an Android app that always runs Material Dark). */
     property bool preferDark: false
@@ -37,31 +51,31 @@ QtObject {
     readonly property bool light: !preferDark && Kirigami.Theme.backgroundColor.hslLightness > 0.5
     readonly property QtObject palette: light ? KantePalette.light : KantePalette.dark
 
-    // ── Theme roles (both kinds) ─────────────────────────────────────────
-    readonly property color textColor: active ? palette.text : Kirigami.Theme.textColor
-    readonly property color disabledTextColor: active ? palette.disabledText : Kirigami.Theme.disabledTextColor
-    readonly property color backgroundColor: active ? palette.ground : Kirigami.Theme.backgroundColor
-    readonly property color highlightColor: active ? palette.accent : Kirigami.Theme.highlightColor
-    readonly property color positiveTextColor: active ? palette.positive : Kirigami.Theme.positiveTextColor
-    readonly property color neutralTextColor: active ? palette.neutral : Kirigami.Theme.neutralTextColor
-    readonly property color negativeTextColor: active ? palette.negative : Kirigami.Theme.negativeTextColor
+    // ── Theme roles (palette only in Kante; Kante Light keeps the theme) ──
+    readonly property color textColor: themed ? palette.text : Kirigami.Theme.textColor
+    readonly property color disabledTextColor: themed ? palette.disabledText : Kirigami.Theme.disabledTextColor
+    readonly property color backgroundColor: themed ? palette.ground : Kirigami.Theme.backgroundColor
+    readonly property color highlightColor: themed ? palette.accent : Kirigami.Theme.highlightColor
+    readonly property color positiveTextColor: themed ? palette.positive : Kirigami.Theme.positiveTextColor
+    readonly property color neutralTextColor: themed ? palette.neutral : Kirigami.Theme.neutralTextColor
+    readonly property color negativeTextColor: themed ? palette.negative : Kirigami.Theme.negativeTextColor
 
     readonly property font defaultFont: Kirigami.Theme.defaultFont
     readonly property font smallFont: Kirigami.Theme.smallFont
 
     // ── Surfaces (System values match a plain Kirigami look) ─────────────
-    readonly property color strongTextColor: active ? palette.strongText : Kirigami.Theme.textColor
-    readonly property color mutedTextColor: active ? palette.mutedText : tint(Kirigami.Theme.textColor, 0.75)
+    readonly property color strongTextColor: themed ? palette.strongText : Kirigami.Theme.textColor
+    readonly property color mutedTextColor: themed ? palette.mutedText : tint(Kirigami.Theme.textColor, 0.75)
     /** Fill of primary buttons and accent bars; accent-colored text uses accentTextColor. */
-    readonly property color accentColor: active ? palette.accent : Kirigami.Theme.highlightColor
-    readonly property color accentTextColor: active ? palette.accentText : Kirigami.Theme.highlightColor
-    readonly property color accentForegroundColor: active ? palette.accentForeground : Kirigami.Theme.highlightedTextColor
-    readonly property color infoColor: active ? palette.info : Kirigami.Theme.linkColor
-    readonly property color cardColor: active ? palette.card : tint(Kirigami.Theme.textColor, 0.04)
-    readonly property color sunkenColor: active ? palette.sunken : tint(Kirigami.Theme.textColor, 0.06)
-    readonly property color frameColor: active ? palette.frame : tint(Kirigami.Theme.textColor, 0.12)
-    readonly property color ruleColor: active ? palette.rule : tint(Kirigami.Theme.textColor, 0.12)
-    readonly property color dialogColor: active ? palette.dialog : Kirigami.Theme.backgroundColor
+    readonly property color accentColor: themed ? palette.accent : Kirigami.Theme.highlightColor
+    readonly property color accentTextColor: themed ? palette.accentText : Kirigami.Theme.highlightColor
+    readonly property color accentForegroundColor: themed ? palette.accentForeground : Kirigami.Theme.highlightedTextColor
+    readonly property color infoColor: themed ? palette.info : Kirigami.Theme.linkColor
+    readonly property color cardColor: themed ? palette.card : tint(Kirigami.Theme.textColor, 0.04)
+    readonly property color sunkenColor: themed ? palette.sunken : tint(Kirigami.Theme.textColor, 0.06)
+    readonly property color frameColor: themed ? palette.frame : tint(Kirigami.Theme.textColor, 0.12)
+    readonly property color ruleColor: themed ? palette.rule : tint(Kirigami.Theme.textColor, 0.12)
+    readonly property color dialogColor: themed ? palette.dialog : Kirigami.Theme.backgroundColor
 
     /** Top-right corner cut of cards (px), scaled with the grid unit; 0 in System. */
     readonly property int chamfer: active ? Math.round(KantePalette.chamfer * Kirigami.Units.gridUnit / 18) : 0
@@ -79,11 +93,23 @@ QtObject {
 
     readonly property string monoFamily: active ? monoFace.font.family : "monospace"
 
-    /** Uppercase heading (Kante: Rajdhani Bold); System: the default font, bold. */
-    function headingFont(pointSize) {
+    /** Page and app titles: uppercase Rajdhani in Kante and Kante Light; System: the default font, bold. */
+    function titleFont(pointSize) {
         if (!active) {
             return Qt.font({ family: defaultFont.family, pointSize: pointSize, bold: true })
         }
+        return kanteHeading(pointSize)
+    }
+
+    /** Card and button headings: uppercase Rajdhani in Kante; otherwise the default font, bold. */
+    function headingFont(pointSize) {
+        if (!themed) {
+            return Qt.font({ family: defaultFont.family, pointSize: pointSize, bold: true })
+        }
+        return kanteHeading(pointSize)
+    }
+
+    function kanteHeading(pointSize) {
         return Qt.font({
             family: headingFace.font.family,
             pointSize: pointSize,
@@ -93,7 +119,7 @@ QtObject {
         })
     }
 
-    /** Figures (timers, times, durations, amounts): JetBrains Mono in Kante. */
+    /** Figures (timers, times, durations, amounts): JetBrains Mono in Kante and Kante Light. */
     function monoFont(pointSize, bold) {
         if (!active) {
             return Qt.font({ family: "monospace", pointSize: pointSize, bold: !!bold })

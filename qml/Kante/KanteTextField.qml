@@ -17,7 +17,7 @@ QQC2.TextField {
     Rectangle {
         z: -1
         anchors.fill: parent
-        visible: KanteStyle.active && control.kanteFrame
+        visible: KanteStyle.themed && control.kanteFrame
         color: KanteStyle.sunkenColor
         opacity: control.enabled ? 1 : 0.5
         border.width: 1
@@ -28,35 +28,35 @@ QQC2.TextField {
         target: control.background
         property: "opacity"
         value: 0
-        when: KanteStyle.active && control.background !== null
+        when: KanteStyle.themed && control.background !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: control
         property: "color"
         value: KanteStyle.textColor
-        when: KanteStyle.active
+        when: KanteStyle.themed
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: control
         property: "placeholderTextColor"
         value: KanteStyle.disabledTextColor
-        when: KanteStyle.active
+        when: KanteStyle.themed
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: control
         property: "selectionColor"
         value: KanteStyle.accentColor
-        when: KanteStyle.active
+        when: KanteStyle.themed
         restoreMode: Binding.RestoreBindingOrValue
     }
     Binding {
         target: control
         property: "selectedTextColor"
         value: KanteStyle.accentForegroundColor
-        when: KanteStyle.active
+        when: KanteStyle.themed
         restoreMode: Binding.RestoreBindingOrValue
     }
 }

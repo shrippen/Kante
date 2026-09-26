@@ -25,7 +25,7 @@ Item {
         target: skin.dialog
         property: "background"
         value: skin.kanteBackground
-        when: KanteStyle.active && skin.dialog !== null
+        when: KanteStyle.themed && skin.dialog !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
 }

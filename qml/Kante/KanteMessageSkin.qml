@@ -41,7 +41,7 @@ Item {
         target: skin.message
         property: "background"
         value: skin.kanteBackground
-        when: KanteStyle.active && skin.message !== null
+        when: KanteStyle.themed && skin.message !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
 }

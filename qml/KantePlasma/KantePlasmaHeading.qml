@@ -1,17 +1,17 @@
 import QtQuick
-import QtQuick.Controls as QQC2
-import org.kde.kirigami as Kirigami
-import "."
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.components as PlasmaComponents3
+import "../Kante"
 
 /**
- * Heading.
- *   System  Kirigami.Heading (unchanged).
+ * Heading of a Plasma widget (PlasmaExtras.Heading).
+ *   System  PlasmaExtras.Heading (unchanged).
  *   Kante   level 4 and below (sections): small uppercase monospace label
  *           followed by a thin rule; above: uppercase Rajdhani title.
  *   Kante Light  the same section labels in theme colors, and the Rajdhani
  *           title for `pageTitle`; other headings stay the platform's.
  */
-Kirigami.Heading {
+PlasmaExtras.Heading {
     id: control
 
     readonly property bool sectionLabel: level >= 4
@@ -22,7 +22,7 @@ Kirigami.Heading {
 
     // Kante draws its own text over the hidden original; the heading's own font
     // and color stay untouched, so switching back to System restores them exactly.
-    QQC2.Label {
+    PlasmaComponents3.Label {
         id: kanteText
         visible: control.kanteDrawn
         anchors.left: parent.left

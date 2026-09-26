@@ -26,7 +26,7 @@ Item {
         target: skin.popup
         property: "background"
         value: skin.kanteBackground
-        when: KanteStyle.active && skin.popup !== null
+        when: KanteStyle.themed && skin.popup !== null
         restoreMode: Binding.RestoreBindingOrValue
     }
 }

@@ -44,6 +44,59 @@ TestCase {
         verify(KanteStyle.sunkenColor.a < 1)
     }
 
+    // Kante Light: Kante shapes and type, every color live from the platform theme.
+    function test_kanteLightKeepsThemeColors() {
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        verify(KanteStyle.active)
+        verify(!KanteStyle.themed)
+        compare(KanteStyle.textColor, Kirigami.Theme.textColor)
+        compare(KanteStyle.backgroundColor, Kirigami.Theme.backgroundColor)
+        compare(KanteStyle.accentColor, Kirigami.Theme.highlightColor)
+        compare(KanteStyle.negativeTextColor, Kirigami.Theme.negativeTextColor)
+        verify(KanteStyle.chamfer > 0)
+        compare(KanteStyle.titleFont(12).capitalization, Font.AllUppercase)
+        verify(KanteStyle.headingFont(12).capitalization !== Font.AllUppercase)
+    }
+
+    Component {
+        id: buttonComponent
+        KanteButton { text: "Start" }
+    }
+
+    // Controls stay the platform's in Kante Light: no Kante frame, platform background visible.
+    function test_kanteLightKeepsPlatformControls() {
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        var b = createTemporaryObject(buttonComponent, tc)
+        verify(b.background === null || b.background.opacity === 1)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(b.background === null || b.background.opacity === 0)
+    }
+
+    // Kante Light: section labels and the page title are Kante, other headings the platform's.
+    function test_kanteLightHeadings() {
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        var section = createTemporaryObject(headingComponent, tc)
+        verify(section.kanteDrawn)
+        compare(section.color.a, 0)
+        var sub = createTemporaryObject(level2Component, tc)
+        verify(!sub.kanteDrawn)
+        verify(sub.color.a > 0)
+        var title = createTemporaryObject(titleComponent, tc)
+        verify(title.kanteDrawn)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(sub.kanteDrawn)
+    }
+
+    Component {
+        id: level2Component
+        KanteHeading { level: 2; text: "Week" }
+    }
+
+    Component {
+        id: titleComponent
+        KanteHeading { level: 3; pageTitle: true; text: "Plasmai" }
+    }
+
     function test_fontsLoad() {
         tryVerify(function() { return KanteStyle.headingFace.status === FontLoader.Ready }, 3000)
         tryVerify(function() { return KanteStyle.monoFace.status === FontLoader.Ready }, 3000)
