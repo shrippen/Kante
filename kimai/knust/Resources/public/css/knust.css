@@ -1,0 +1,935 @@
+/*
+ * Knust — shrippen theme for Kimai 2.67 (Tabler 1.4 / Bootstrap 5)
+ * https://github.com/shrippen/shrippen.github.io
+ *
+ * Loaded after Kimai's app.css through ThemeEvent::STYLESHEET, so equal
+ * selectors win. Only CSS custom properties and a few component rules:
+ * Kimai's markup stays untouched, plugins that use var(--tblr-*) follow.
+ *
+ *   1. Fonts
+ *   2. Palette per theme      --shr-*      (Leinen light, Gruvbox dark)
+ *   3. Tabler mapping         --tblr-*     (surfaces, text, colour scale)
+ *   4. Accent                 data-bs-theme-primary → --tblr-primary
+ *   5. Derived tints          -lt, -darken, subtle
+ *   6. Type                   Rajdhani headings, JetBrains Mono labels
+ *   7. Shape                  chamfer, tier bar, square controls
+ *   8. Components             sidebar, header, tables, forms, buttons
+ *   9. Literal colours        rules where Kimai's build has hex values
+ *  10. Screens                header, toolbar, timer, tables, dashboard,
+ *                             modal, login, kpu kit (canvas drafts A–F)
+ */
+
+/* ── 1. Fonts (Latin subset, see Resources/public/fonts) ── */
+
+@font-face { font-family: 'Rajdhani'; font-weight: 600; font-display: swap; src: url('../fonts/Rajdhani-600.woff2') format('woff2'); }
+@font-face { font-family: 'Rajdhani'; font-weight: 700; font-display: swap; src: url('../fonts/Rajdhani-700.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 400; font-display: swap; src: url('../fonts/JetBrainsMono-400.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 500; font-display: swap; src: url('../fonts/JetBrainsMono-500.woff2') format('woff2'); }
+
+/* ── 2. Palette ──
+ * Values from tokens/variables.css. Names describe roles, not lightness.
+ * Every colour also exists as "r, g, b" because Bootstrap utilities need
+ * rgba(var(--tblr-x-rgb), opacity).
+ */
+
+:root,
+[data-bs-theme=light] {
+    --shr-void: #f0e9d6;
+    --shr-hard: #e6dec6;
+    --shr-panel: #f7f2e4;
+    --shr-bg1: #fbf8ee;
+    --shr-bg2: #d3c8ac;
+    --shr-fg0: #282828;
+    --shr-fg0-rgb: 40, 40, 40;
+    --shr-fg1: #3c3836;
+    --shr-fg1-rgb: 60, 56, 54;
+    --shr-fg2: #665c54;
+    --shr-fg2-rgb: 102, 92, 84;
+    --shr-fg3: #6a5f52;
+    --shr-on-accent: #fbf8ee;
+
+    --shr-blue: #076678;      --shr-blue-rgb: 7, 102, 120;
+    --shr-aqua: #427b58;      --shr-aqua-rgb: 66, 123, 88;
+    --shr-green: #4f5d0a;     --shr-green-rgb: 79, 93, 10;
+    --shr-yellow: #8a5a00;    --shr-yellow-rgb: 138, 90, 0;
+    --shr-orange: #af3a03;    --shr-orange-rgb: 175, 58, 3;
+    --shr-red: #9d0006;       --shr-red-rgb: 157, 0, 6;
+    --shr-purple: #8f3f71;    --shr-purple-rgb: 143, 63, 113;
+    --shr-blue-n: #458588;    --shr-blue-n-rgb: 69, 133, 136;
+    --shr-aqua-n: #689d6a;    --shr-aqua-n-rgb: 104, 157, 106;
+    --shr-purple-n: #b16286;  --shr-purple-n-rgb: 177, 98, 134;
+
+    --shr-chamfer: 16px;
+    --shr-hl: var(--shr-orange);
+    --shr-font-heading: 'Rajdhani', var(--shr-font-sans);
+    --shr-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --shr-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+}
+
+[data-bs-theme=dark] {
+    --shr-void: #141312;
+    --shr-hard: #1d2021;
+    --shr-panel: #2a2826;
+    --shr-bg1: #3c3836;
+    --shr-bg2: #504945;
+    --shr-fg0: #fbf1c7;
+    --shr-fg0-rgb: 251, 241, 199;
+    --shr-fg1: #ebdbb2;
+    --shr-fg1-rgb: 235, 219, 178;
+    --shr-fg2: #d5c4a1;
+    --shr-fg2-rgb: 213, 196, 161;
+    --shr-fg3: #a89984;
+    --shr-on-accent: #1d2021;
+
+    --shr-blue: #83a598;      --shr-blue-rgb: 131, 165, 152;
+    --shr-aqua: #8ec07c;      --shr-aqua-rgb: 142, 192, 124;
+    --shr-green: #b8bb26;     --shr-green-rgb: 184, 187, 38;
+    --shr-yellow: #fabd2f;    --shr-yellow-rgb: 250, 189, 47;
+    --shr-orange: #fe8019;    --shr-orange-rgb: 254, 128, 25;
+    --shr-red: #fb4934;       --shr-red-rgb: 251, 73, 52;
+    --shr-purple: #d3869b;    --shr-purple-rgb: 211, 134, 155;
+    --shr-blue-n: #458588;    --shr-blue-n-rgb: 69, 133, 136;
+    --shr-aqua-n: #689d6a;    --shr-aqua-n-rgb: 104, 157, 106;
+    --shr-purple-n: #b16286;  --shr-purple-n-rgb: 177, 98, 134;
+}
+
+/* ── 3. Tabler mapping ──
+ * Declared on :root and on every [data-bs-theme] scope (Kimai's sidebar
+ * carries data-bs-theme="dark"), so each scope resolves its own palette.
+ */
+
+:root,
+[data-bs-theme] {
+    /* Warm grey scale; Tabler's components pick steps from it directly */
+    --tblr-gray-50: #f7f2e4;
+    --tblr-gray-100: #f0e9d6;
+    --tblr-gray-200: #e6dec6;
+    --tblr-gray-300: #d3c8ac;
+    --tblr-gray-400: #a89984;
+    --tblr-gray-500: #928374;
+    --tblr-gray-600: #665c54;
+    --tblr-gray-700: #504945;
+    --tblr-gray-800: #3c3836;
+    --tblr-gray-900: #282828;
+    --tblr-gray-950: #1d2021;
+
+    /* Surfaces */
+    --tblr-body-bg: var(--shr-void);
+    --tblr-bg-surface: var(--shr-panel);
+    --tblr-bg-surface-primary: var(--shr-panel);
+    --tblr-bg-surface-secondary: var(--shr-void);
+    --tblr-bg-surface-tertiary: var(--shr-hard);
+    --tblr-bg-surface-dark: #1d2021;
+    --tblr-bg-forms: var(--shr-bg1);
+    --tblr-active-bg: rgba(var(--tblr-primary-rgb), .1);
+    --tblr-disabled-bg: var(--shr-hard);
+
+    /* Text */
+    --tblr-body-color: var(--shr-fg1);
+    --tblr-body-color-rgb: var(--shr-fg1-rgb);
+    --tblr-emphasis-color: var(--shr-fg0);
+    --tblr-emphasis-color-rgb: var(--shr-fg0-rgb);
+    --tblr-heading-color: var(--shr-fg0);
+    --tblr-secondary: var(--shr-fg3);
+    --tblr-secondary-rgb: var(--shr-fg2-rgb);
+    --tblr-secondary-color: var(--shr-fg2);
+    --tblr-muted: var(--shr-fg3);
+    --tblr-tertiary: var(--shr-fg3);
+    --tblr-icon-color: var(--shr-fg3);
+    --tblr-code-color: var(--shr-fg1);
+    --tblr-code-bg: var(--shr-hard);
+
+    /* Lines */
+    --tblr-border-color: var(--shr-bg2);
+    --tblr-border-color-translucent: rgba(var(--shr-fg1-rgb), .12);
+    --tblr-border-dark-color: var(--shr-fg3);
+    --tblr-border-active-color: var(--shr-fg3);
+
+    /* Colour scale: Tabler name → shrippen role */
+    --tblr-blue: var(--shr-blue);         --tblr-blue-rgb: var(--shr-blue-rgb);
+    --tblr-azure: var(--shr-blue-n);      --tblr-azure-rgb: var(--shr-blue-n-rgb);
+    --tblr-indigo: var(--shr-blue-n);     --tblr-indigo-rgb: var(--shr-blue-n-rgb);
+    --tblr-cyan: var(--shr-blue-n);       --tblr-cyan-rgb: var(--shr-blue-n-rgb);
+    --tblr-teal: var(--shr-aqua-n);       --tblr-teal-rgb: var(--shr-aqua-n-rgb);
+    --tblr-green: var(--shr-aqua);        --tblr-green-rgb: var(--shr-aqua-rgb);
+    --tblr-lime: var(--shr-green);        --tblr-lime-rgb: var(--shr-green-rgb);
+    --tblr-yellow: var(--shr-yellow);     --tblr-yellow-rgb: var(--shr-yellow-rgb);
+    --tblr-orange: var(--shr-orange);     --tblr-orange-rgb: var(--shr-orange-rgb);
+    --tblr-red: var(--shr-red);           --tblr-red-rgb: var(--shr-red-rgb);
+    --tblr-pink: var(--shr-purple);       --tblr-pink-rgb: var(--shr-purple-rgb);
+    --tblr-purple: var(--shr-purple-n);   --tblr-purple-rgb: var(--shr-purple-n-rgb);
+
+    /* Semantic: aqua = success, yellow = warning, red = error, blue = info */
+    --tblr-success: var(--shr-aqua);      --tblr-success-rgb: var(--shr-aqua-rgb);
+    --tblr-info: var(--shr-blue);         --tblr-info-rgb: var(--shr-blue-rgb);
+    --tblr-warning: var(--shr-yellow);    --tblr-warning-rgb: var(--shr-yellow-rgb);
+    --tblr-danger: var(--shr-red);        --tblr-danger-rgb: var(--shr-red-rgb);
+
+    /* Text on a coloured fill */
+    --tblr-primary-fg: var(--shr-on-accent);
+    --tblr-success-fg: var(--shr-on-accent);
+    --tblr-info-fg: var(--shr-on-accent);
+    --tblr-warning-fg: var(--shr-on-accent);
+    --tblr-danger-fg: var(--shr-on-accent);
+
+    /* Type */
+    --tblr-font-sans-serif: var(--shr-font-sans);
+    --tblr-body-font-family: var(--shr-font-sans);
+    --tblr-font-monospace: var(--shr-font-mono);
+
+    /* Flat: the design system uses lines and fills, no drop shadows */
+    --tblr-shadow-card: none;
+    --tblr-shadow-input: none;
+    --tblr-box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .35);
+    --tblr-box-shadow-sm: none;
+}
+
+/* ── 4. Accent ──
+ * ThemeOptionsSubscriber writes the admin's choice into data-bs-theme-primary.
+ * The selector also matches nested theme scopes so the sidebar gets the
+ * dark variant of the same accent.
+ */
+
+[data-bs-theme-primary],
+[data-bs-theme-primary] [data-bs-theme] {
+    --shr-accent: var(--shr-blue);
+    --shr-accent-rgb: var(--shr-blue-rgb);
+}
+
+[data-bs-theme-primary=yellow],
+[data-bs-theme-primary=yellow] [data-bs-theme] {
+    --shr-accent: var(--shr-yellow);
+    --shr-accent-rgb: var(--shr-yellow-rgb);
+}
+
+[data-bs-theme-primary=orange],
+[data-bs-theme-primary=orange] [data-bs-theme] {
+    --shr-accent: var(--shr-orange);
+    --shr-accent-rgb: var(--shr-orange-rgb);
+}
+
+[data-bs-theme-primary=teal],
+[data-bs-theme-primary=teal] [data-bs-theme] {
+    --shr-accent: var(--shr-aqua);
+    --shr-accent-rgb: var(--shr-aqua-rgb);
+}
+
+[data-bs-theme-primary],
+[data-bs-theme-primary] [data-bs-theme] {
+    --tblr-primary: var(--shr-accent);
+    --tblr-primary-rgb: var(--shr-accent-rgb);
+    --tblr-link-color: var(--shr-accent);
+    --tblr-link-color-rgb: var(--shr-accent-rgb);
+    --tblr-link-hover-color: color-mix(in srgb, var(--shr-accent), var(--shr-fg0) 25%);
+}
+
+/* ── 5. Derived tints ──
+ * Tabler computes these once on :root; recomputing per scope keeps the
+ * sidebar's tints on the dark palette.
+ */
+
+:root,
+[data-bs-theme] {
+    --tblr-primary-lt: color-mix(in srgb, var(--tblr-primary) 14%, transparent);
+    --tblr-primary-200: color-mix(in srgb, var(--tblr-primary) 24%, transparent);
+    --tblr-primary-darken: color-mix(in srgb, var(--tblr-primary), var(--shr-void) 18%);
+    --tblr-primary-bg-subtle: color-mix(in srgb, var(--tblr-primary) 14%, var(--shr-panel));
+    --tblr-primary-border-subtle: color-mix(in srgb, var(--tblr-primary) 40%, var(--shr-panel));
+    --tblr-primary-text-emphasis: var(--tblr-primary);
+
+    --tblr-success-lt: color-mix(in srgb, var(--tblr-success) 14%, transparent);
+    --tblr-success-darken: color-mix(in srgb, var(--tblr-success), var(--shr-void) 18%);
+    --tblr-success-bg-subtle: color-mix(in srgb, var(--tblr-success) 14%, var(--shr-panel));
+    --tblr-success-border-subtle: color-mix(in srgb, var(--tblr-success) 40%, var(--shr-panel));
+    --tblr-success-text-emphasis: var(--tblr-success);
+
+    --tblr-info-lt: color-mix(in srgb, var(--tblr-info) 14%, transparent);
+    --tblr-info-darken: color-mix(in srgb, var(--tblr-info), var(--shr-void) 18%);
+    --tblr-info-bg-subtle: color-mix(in srgb, var(--tblr-info) 14%, var(--shr-panel));
+    --tblr-info-border-subtle: color-mix(in srgb, var(--tblr-info) 40%, var(--shr-panel));
+    --tblr-info-text-emphasis: var(--tblr-info);
+
+    --tblr-warning-lt: color-mix(in srgb, var(--tblr-warning) 14%, transparent);
+    --tblr-warning-darken: color-mix(in srgb, var(--tblr-warning), var(--shr-void) 18%);
+    --tblr-warning-bg-subtle: color-mix(in srgb, var(--tblr-warning) 14%, var(--shr-panel));
+    --tblr-warning-border-subtle: color-mix(in srgb, var(--tblr-warning) 40%, var(--shr-panel));
+    --tblr-warning-text-emphasis: var(--tblr-warning);
+
+    --tblr-danger-lt: color-mix(in srgb, var(--tblr-danger) 14%, transparent);
+    --tblr-danger-darken: color-mix(in srgb, var(--tblr-danger), var(--shr-void) 18%);
+    --tblr-danger-bg-subtle: color-mix(in srgb, var(--tblr-danger) 14%, var(--shr-panel));
+    --tblr-danger-border-subtle: color-mix(in srgb, var(--tblr-danger) 40%, var(--shr-panel));
+    --tblr-danger-text-emphasis: var(--tblr-danger);
+
+    --tblr-blue-lt: color-mix(in srgb, var(--tblr-blue) 14%, transparent);
+    --tblr-azure-lt: color-mix(in srgb, var(--tblr-azure) 14%, transparent);
+    --tblr-indigo-lt: color-mix(in srgb, var(--tblr-indigo) 14%, transparent);
+    --tblr-cyan-lt: color-mix(in srgb, var(--tblr-cyan) 14%, transparent);
+    --tblr-teal-lt: color-mix(in srgb, var(--tblr-teal) 14%, transparent);
+    --tblr-green-lt: color-mix(in srgb, var(--tblr-green) 14%, transparent);
+    --tblr-lime-lt: color-mix(in srgb, var(--tblr-lime) 14%, transparent);
+    --tblr-yellow-lt: color-mix(in srgb, var(--tblr-yellow) 14%, transparent);
+    --tblr-orange-lt: color-mix(in srgb, var(--tblr-orange) 14%, transparent);
+    --tblr-red-lt: color-mix(in srgb, var(--tblr-red) 14%, transparent);
+    --tblr-pink-lt: color-mix(in srgb, var(--tblr-pink) 14%, transparent);
+    --tblr-purple-lt: color-mix(in srgb, var(--tblr-purple) 14%, transparent);
+}
+
+/* ── 6. Type ── */
+
+body {
+    font-feature-settings: normal;
+}
+
+h1, h2, h3, .h1, .h2, .h3,
+.page-title,
+.card-title,
+.modal-title,
+.navbar-brand {
+    font-family: var(--shr-font-heading);
+    font-weight: 700;
+    letter-spacing: .03em;
+    color: var(--shr-fg0);
+}
+
+.page-title {
+    text-transform: uppercase;
+    font-size: 1.75rem;
+    line-height: 1.1;
+}
+
+.card-title,
+.modal-title {
+    text-transform: uppercase;
+    font-size: 1.15rem;
+}
+
+/* Labels and meta: mono, spaced capitals (design system .field > label) */
+.form-label,
+.col-form-label,
+.subheader,
+.page-pretitle,
+.dropdown-header,
+.table thead th,
+.datagrid-title {
+    font-family: var(--shr-font-mono);
+    font-weight: 500;
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--shr-fg3);
+}
+
+/* Numbers line up in columns */
+.table td,
+.card .h1,
+.card .h2 {
+    font-variant-numeric: tabular-nums;
+}
+
+code, kbd, pre, .font-monospace {
+    font-family: var(--shr-font-mono);
+}
+
+/* ── 7. Shape ──
+ * Boxes: only the top-right corner is cut. clip-path would also clip the
+ * "…" dropdowns inside cards, so a triangle in the ground colour covers the
+ * corner instead, with the border drawn as its diagonal. Modals keep square
+ * corners: their ground is the backdrop, which a triangle cannot match.
+ */
+
+.card {
+    --shr-ground: var(--tblr-body-bg);
+    position: relative;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: var(--shr-chamfer);
+    height: var(--shr-chamfer);
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(to bottom left,
+        var(--shr-ground) calc(50% - .5px),
+        var(--tblr-border-color) calc(50% - .5px),
+        var(--tblr-border-color) calc(50% + .5px),
+        transparent calc(50% + .5px));
+}
+
+/* Cards inside cards or modals sit on the panel, not on the page ground */
+.card .card,
+.modal .card {
+    --shr-ground: var(--tblr-bg-surface);
+}
+
+/* Tier bar on top of a card, like .feat / .tile: Tabler's own status strip */
+.card-status-top {
+    height: 4px;
+    border-radius: 0;
+}
+
+.card {
+    --tblr-card-border-color: var(--shr-bg2);
+}
+
+[data-bs-theme=dark] .card {
+    --tblr-card-border-color: var(--shr-bg1);
+}
+
+.card-header {
+    border-bottom-color: var(--tblr-card-border-color);
+}
+
+.avatar,
+.badge {
+    border-radius: 0;
+}
+
+.avatar-rounded {
+    border-radius: var(--tblr-border-radius-pill);
+}
+
+/* ── 8. Components ── */
+
+/* Sidebar: darkest ground, active item with a highlight bar on the left */
+.navbar-vertical.navbar[data-bs-theme=dark] {
+    --tblr-navbar-bg: var(--shr-hard);
+    --tblr-navbar-border-color: var(--shr-bg1);
+    --tblr-navbar-color: var(--shr-fg3);
+    --tblr-navbar-hover-color: var(--shr-fg1);
+    --tblr-navbar-active-color: var(--shr-fg0);
+    background: var(--shr-hard);
+    border-right: 1px solid var(--shr-bg1);
+}
+
+.navbar-vertical .navbar-nav .nav-link {
+    border-left: 3px solid transparent;
+}
+
+.navbar-vertical .navbar-nav .nav-item.active > .nav-link,
+.navbar-vertical .navbar-nav .nav-link.active {
+    border-left-color: var(--shr-hl);
+    background: rgba(var(--shr-fg1-rgb), .05);
+    color: var(--shr-fg0);
+}
+
+/* Tabler's own full-height line next to the open group: replaced by the bar above */
+.navbar-vertical .nav-item.active::after {
+    display: none;
+}
+
+/* Sub item: the parent carries the bar, the child only lights up */
+.navbar-vertical .dropdown-item.active {
+    background: transparent;
+    color: var(--shr-fg0);
+}
+
+.navbar-vertical .navbar-nav .nav-item.active > .nav-link .nav-link-icon,
+.navbar-vertical .navbar-nav .nav-link.active .nav-link-icon {
+    color: var(--shr-hl);
+}
+
+.navbar-vertical .navbar-brand {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+/* Top bar */
+.page-wrapper > .navbar,
+header.navbar {
+    --tblr-navbar-bg: var(--shr-panel);
+    --tblr-navbar-border-color: var(--shr-bg2);
+}
+
+/* Buttons: square, heading type */
+.btn {
+    font-family: var(--shr-font-heading);
+    font-weight: 700;
+    font-size: .95rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.btn-sm,
+.btn-icon,
+.btn-action,
+.table .btn {
+    font-family: var(--tblr-body-font-family);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.btn:focus-visible,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid var(--shr-yellow);
+    outline-offset: 1px;
+    box-shadow: none;
+}
+
+.btn-default,
+.btn-outline-secondary {
+    --tblr-btn-bg: transparent;
+    --tblr-btn-border-color: var(--shr-fg3);
+    --tblr-btn-color: var(--shr-fg1);
+    --tblr-btn-hover-bg: var(--shr-bg1);
+}
+
+/* Forms: sunk field on the panel */
+.form-control,
+.form-select,
+.ts-control {
+    background-color: var(--tblr-bg-forms);
+    border-color: var(--shr-bg2);
+}
+
+[data-bs-theme=dark] .form-control,
+[data-bs-theme=dark] .form-select,
+[data-bs-theme=dark] .ts-control {
+    --tblr-bg-forms: var(--shr-hard);
+}
+
+.form-control::placeholder {
+    color: var(--shr-fg3);
+}
+
+/* Tables: header strip like the design system's .table th */
+.table {
+    --tblr-table-border-color: var(--shr-bg1);
+    --tblr-table-striped-bg: rgba(var(--shr-fg1-rgb), .03);
+    --tblr-table-hover-bg: rgba(var(--shr-fg1-rgb), .05);
+}
+
+.table thead th {
+    background: var(--shr-hard);
+    border-bottom-color: var(--shr-bg2);
+}
+
+/* Running timesheet / active record: highlight bar instead of a coloured row */
+.table tr.recording td:first-child,
+.table tr.active td:first-child {
+    box-shadow: inset 3px 0 0 var(--shr-hl);
+}
+
+/* Dropdown and toast */
+.dropdown-menu {
+    --tblr-dropdown-bg: var(--shr-panel);
+    --tblr-dropdown-border-color: var(--shr-bg2);
+    --tblr-dropdown-link-hover-bg: rgba(var(--shr-fg1-rgb), .06);
+    --tblr-dropdown-link-active-bg: var(--tblr-primary-lt);
+    --tblr-dropdown-link-active-color: var(--shr-fg0);
+}
+
+/* Alerts: callout with a coloured top edge */
+.alert {
+    border: 0;
+    border-top: 4px solid var(--tblr-alert-color, var(--tblr-primary));
+    background: var(--shr-panel);
+}
+
+/* Progress bars (working-time widgets): sunk track */
+.progress {
+    background: var(--shr-hard);
+    border-radius: 0;
+}
+
+/* Login page */
+.page-center .card,
+.page.page-center .card {
+    border-top: 4px solid var(--shr-yellow);
+}
+
+/* ── 9. Literal colours ──
+ * Rules where Kimai's compiled app.css has hex values instead of variables
+ * (found by grepping public/build/app.*.css). Recheck after Kimai updates.
+ */
+
+.btn-link {
+    color: var(--tblr-link-color);
+}
+
+.btn-link:hover {
+    color: var(--tblr-link-hover-color);
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus,
+.focus .ts-control,
+.input-group-flat:focus-within .form-control,
+.input-group-flat:focus-within .input-group-text {
+    border-color: var(--shr-yellow) !important;
+}
+
+.col-form-label.required::after,
+.form-label.required::after,
+.form-check-label.required::after {
+    color: var(--shr-red);
+}
+
+.list-group-item.active {
+    border-left-color: var(--tblr-primary);
+}
+
+.list-group-item.danger {
+    border-left-color: var(--shr-red) !important;
+}
+
+.list-group-item.success {
+    border-left-color: var(--shr-aqua) !important;
+}
+
+.page-link:hover .page-item-title {
+    color: var(--tblr-primary);
+}
+
+/* Tom Select (project, activity, tags) */
+.ts-control,
+.ts-control input,
+.ts-dropdown,
+.ts-wrapper .dropdown-header-close {
+    color: var(--shr-fg1);
+}
+
+.ts-dropdown,
+.ts-wrapper .dropdown-header,
+.plugin-dropdown_input .dropdown-input {
+    border-color: var(--shr-bg2);
+    background: var(--shr-panel);
+}
+
+.ts-dropdown [data-selectable] .highlight {
+    background: rgba(var(--shr-yellow-rgb), .3);
+}
+
+.ts-dropdown .optgroup-header,
+.ts-dropdown .create {
+    color: var(--shr-fg3);
+}
+
+.ts-wrapper.multi .ts-control > div {
+    background: var(--shr-bg1);
+    border-color: var(--shr-bg2);
+    color: var(--shr-fg1);
+}
+
+.ts-wrapper.multi .ts-control > div.active {
+    background: var(--tblr-primary);
+    color: var(--tblr-primary-fg);
+}
+
+.ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
+    border-left-color: var(--shr-bg2);
+}
+
+/* Litepicker (date range) */
+.calendar-date .date-item {
+    color: var(--shr-fg2);
+}
+
+.calendar-date .date-item:hover {
+    background: var(--shr-bg1);
+}
+
+.calendar-range.range-end .date-item,
+.calendar-range.range-start .date-item {
+    color: var(--tblr-primary-fg);
+}
+
+/* ── 10. Screens ──
+ * The details from the canvas drafts. Selectors follow Kimai 2.67 markup:
+ *   header.navbar          page title + timer + user (desktop)
+ *   .page-header           toolbar: columns, search/filter, create, export
+ *   tr.recording           running timesheet (templates/timesheet/index.html.twig)
+ *   .card-sm .avatar.bg-*  dashboard counters (templates/widget/widget-counter.html.twig)
+ */
+
+/* Header: panel strip with the page title */
+header.navbar {
+    min-height: 4rem;
+    background: var(--shr-panel);
+    border-bottom: 1px solid var(--tblr-border-color);
+}
+
+header.navbar .page-title {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+/* Phone/tablet: the title shares the top bar with timer and user menu */
+.navbar-vertical .page-title {
+    font-size: 1.3rem;
+}
+
+.navbar-vertical .navbar-brand-image {
+    width: auto;
+    height: 1.75rem;
+}
+
+/* Toolbar and header buttons: outlined; "Erstellen" carries the accent */
+.page-header .btn:not([class*="btn-primary"], [class*="btn-danger"], [class*="btn-success"], [class*="btn-warning"], [class*="btn-info"], .dropdown-item),
+.card-actions .btn:not([class*="btn-primary"], [class*="btn-danger"], [class*="btn-success"]),
+header.navbar .btn:not([class*="btn-primary"], [class*="btn-danger"]) {
+    --tblr-btn-bg: transparent;
+    --tblr-btn-border-color: var(--shr-fg3);
+    --tblr-btn-color: var(--shr-fg1);
+    --tblr-btn-hover-bg: rgba(var(--shr-fg1-rgb), .06);
+    --tblr-btn-hover-border-color: var(--shr-fg2);
+    --tblr-btn-hover-color: var(--shr-fg0);
+    --tblr-btn-active-bg: rgba(var(--shr-fg1-rgb), .1);
+}
+
+.page-header .btn.action-create {
+    --tblr-btn-bg: var(--tblr-primary);
+    --tblr-btn-border-color: transparent;
+    --tblr-btn-color: var(--tblr-primary-fg);
+    --tblr-btn-hover-bg: var(--tblr-primary-darken);
+    --tblr-btn-hover-border-color: transparent;
+    --tblr-btn-hover-color: var(--tblr-primary-fg);
+}
+
+.input-group-text {
+    background: var(--shr-bg1);
+    border-color: var(--shr-bg2);
+    color: var(--shr-fg3);
+}
+
+/* Timer: running = red fill with the duration in mono, idle = outline */
+.ticktac .btn {
+    font-family: var(--shr-font-mono);
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+header.navbar .ticktac-stop.btn,
+.ticktac .ticktac-stop.btn {
+    --tblr-btn-bg: var(--tblr-danger);
+    --tblr-btn-border-color: transparent;
+    --tblr-btn-color: var(--tblr-danger-fg);
+    --tblr-btn-hover-bg: var(--tblr-danger-darken);
+    --tblr-btn-hover-border-color: transparent;
+    --tblr-btn-hover-color: var(--tblr-danger-fg);
+}
+
+.ticktac-stop .text-red {
+    color: inherit !important;
+}
+
+/* Tables: times in mono, duration bright */
+.table td.col_date,
+.table td.col_starttime,
+.table td.col_endtime,
+.table td.col_duration,
+.table td.col_rate,
+.table td.col_hourlyRate,
+.table td.col_internalRate {
+    font-family: var(--shr-font-mono);
+    font-size: .8125rem;
+}
+
+.table td.col_duration {
+    color: var(--shr-fg0);
+}
+
+/* Running entry: highlight bar and tint on the whole row */
+.table tr.recording > td {
+    --tblr-table-bg-state: rgba(var(--shr-orange-rgb), .07);
+}
+
+.table tr.recording > td:first-child {
+    box-shadow: inset 3px 0 0 var(--shr-hl), inset 0 0 0 9999px rgba(var(--shr-orange-rgb), .07);
+}
+
+.table tr.recording > td.col_duration,
+.table tr.recording > td.col_endtime {
+    color: var(--shr-hl);
+}
+
+/* Card footer (pagination, bulk actions, chart totals): sunk strip */
+.card-footer {
+    background: var(--shr-hard);
+    border-top-color: var(--tblr-card-border-color);
+}
+
+.card-footer > .text-body-secondary,
+.card-footer .text-center > span {
+    font-family: var(--shr-font-mono);
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--shr-fg3) !important;
+}
+
+.card-footer .text-center > h5 {
+    font-family: var(--shr-font-mono);
+    font-weight: 500;
+    font-size: .9rem;
+    color: var(--shr-fg0);
+}
+
+.pagination .page-link {
+    font-family: var(--shr-font-mono);
+    font-size: .8125rem;
+    border-radius: 0;
+}
+
+/* Dashboard counters: tier bar in the widget's colour, big Rajdhani value */
+.card-sm:has(.avatar.bg-green) { --shr-tier: var(--tblr-green); }
+.card-sm:has(.avatar.bg-blue) { --shr-tier: var(--tblr-blue); }
+.card-sm:has(.avatar.bg-azure) { --shr-tier: var(--tblr-azure); }
+.card-sm:has(.avatar.bg-indigo) { --shr-tier: var(--tblr-indigo); }
+.card-sm:has(.avatar.bg-cyan) { --shr-tier: var(--tblr-cyan); }
+.card-sm:has(.avatar.bg-teal) { --shr-tier: var(--tblr-teal); }
+.card-sm:has(.avatar.bg-lime) { --shr-tier: var(--tblr-lime); }
+.card-sm:has(.avatar.bg-yellow) { --shr-tier: var(--tblr-yellow); }
+.card-sm:has(.avatar.bg-orange) { --shr-tier: var(--tblr-orange); }
+.card-sm:has(.avatar.bg-red) { --shr-tier: var(--tblr-red); }
+.card-sm:has(.avatar.bg-pink) { --shr-tier: var(--tblr-pink); }
+.card-sm:has(.avatar.bg-purple) { --shr-tier: var(--tblr-purple); }
+
+.card-sm:has(.col-auto .avatar) {
+    border-top: 4px solid var(--shr-tier, var(--tblr-primary));
+}
+
+.card-sm:has(.col-auto .avatar)::after,
+.kpu-kpi::after,
+.page-center .card::after {
+    top: -4px;
+}
+
+.card-sm .col-auto .avatar {
+    background: color-mix(in srgb, var(--shr-tier, var(--tblr-primary)) 16%, transparent) !important;
+    color: var(--shr-tier, var(--tblr-primary)) !important;
+}
+
+.card-sm:has(.col-auto .avatar) .font-weight-medium {
+    font-family: var(--shr-font-mono);
+    font-weight: 500;
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--shr-tier, var(--shr-fg3));
+}
+
+.card-sm:has(.col-auto .avatar) .col > .text-body-secondary {
+    font-family: var(--shr-font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.05;
+    color: var(--shr-fg0) !important;
+}
+
+/* Modal: square, accent strip on top, sunk footer */
+.modal-content {
+    border: 1px solid var(--shr-bg2);
+    border-top: 4px solid var(--tblr-primary);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .45);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--tblr-border-color);
+}
+
+.modal-footer {
+    background: var(--shr-hard);
+    border-top: 1px solid var(--tblr-border-color);
+}
+
+.modal-backdrop {
+    --tblr-backdrop-bg: #141312;
+    --tblr-backdrop-opacity: .72;
+}
+
+/* Login: logo, watermark from the design system hero, yellow bar on the card */
+body.login-page.border-top-wide {
+    border-top: 0 !important;
+}
+
+body.login-page .page {
+    position: relative;
+    overflow: hidden;
+}
+
+body.login-page .page::before {
+    content: "";
+    position: absolute;
+    top: 12vh;
+    right: -14vw;
+    width: 62vw;
+    height: 62vw;
+    background: var(--shr-fg1);
+    opacity: .07;
+    pointer-events: none;
+    -webkit-mask: url('../img/shrippen-mark-mono.svg') center / contain no-repeat;
+    mask: url('../img/shrippen-mark-mono.svg') center / contain no-repeat;
+}
+
+body.login-page .container-tight {
+    position: relative;
+}
+
+body.login-page .container-tight > .text-center img {
+    max-width: none !important;
+    width: auto;
+    height: 3rem;
+}
+
+[data-bs-theme=light] body.login-page .container-tight > .text-center img[src*="shrippen-logo"] {
+    content: url('../img/shrippen-logo-light.svg');
+}
+
+/* kpu kit (your plugins): tiles, bulk bar, status badges.
+ * The kit inlines its CSS after this file, so rules here need one class more. */
+.card.kpu-kpi {
+    border-top: 4px solid var(--shr-bg2);
+}
+
+.card.kpu-kpi-highlight {
+    border-top-color: var(--tblr-primary);
+    box-shadow: none;
+}
+
+.kpu-kpi .kpu-kpi-value {
+    font-family: var(--shr-font-heading);
+    font-size: 2rem;
+    line-height: 1.05;
+    color: var(--shr-fg0);
+}
+
+.kpu-bulk .kpu-bulk-bar,
+div.kpu-bulk-bar {
+    background: var(--shr-hard);
+    border-left: 3px solid var(--tblr-primary);
+}
+
+.badge.kpu-status {
+    font-family: var(--shr-font-mono);
+    font-weight: 500;
+    font-size: .65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+/* Toasts (Kimai and kpu undo toast): callout with a coloured top edge */
+.toast {
+    --tblr-toast-border-radius: 0;
+    background: var(--shr-panel);
+    border: 1px solid var(--shr-bg2);
+    border-top: 4px solid var(--shr-toast, var(--tblr-primary));
+    box-shadow: 0 .75rem 2rem rgba(0, 0, 0, .35);
+}
+
+/* Bootstrap's .border-* colour the whole frame with !important; keep only the top edge */
+.toast[class*="border-"] {
+    border-color: var(--shr-bg2) !important;
+    border-top-color: var(--shr-toast, var(--tblr-primary)) !important;
+}
+
+.toast.border-success { --shr-toast: var(--tblr-success); }
+.toast.border-danger { --shr-toast: var(--tblr-danger); }
+.toast.border-warning { --shr-toast: var(--tblr-warning); }
+.toast.border-info { --shr-toast: var(--tblr-info); }
