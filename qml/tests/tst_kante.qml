@@ -210,17 +210,34 @@ TestCase {
         }
     }
 
-    // The scope must never detach the target (inherit = false): under the Plasma theme the
-    // children keep the detached colour table, and after leaving Kante it is empty, so their
-    // text turns invisible. Custom colours apply while inheriting, so detaching is not needed.
-    function test_scopeKeepsInheriting() {
-        var o = createTemporaryObject(scopeComponent, tc)
-        verify(o.inner.Kirigami.Theme.inherit)
+    // Kante colours must reach items below the target (a grandchild here). Under the Plasma
+    // theme custom colours on an inheriting theme do not propagate, so the scope detaches the
+    // target while Kante is on and keeps it detached afterwards with colours bound to the
+    // parent: re-attaching would leave the children on the old, reset colour table (invisible
+    // text).
+    Component {
+        id: deepScopeComponent
+        Item {
+            property alias grandchild: grandchild
+            Kirigami.Theme.inherit: false
+            Kirigami.Theme.textColor: "red"
+            Item {
+                id: target
+                KanteScope { target: target }
+                Item { Item { id: grandchild } }
+            }
+        }
+    }
+
+    function test_scopeReachesDescendants() {
+        var o = createTemporaryObject(deepScopeComponent, tc)
+        compare(String(o.grandchild.Kirigami.Theme.textColor), "#ff0000")
         KanteStyle.kind = KanteStyle.Kind.Kante
-        verify(o.inner.Kirigami.Theme.inherit)
-        compare(o.inner.Kirigami.Theme.textColor, KanteStyle.textColor)
+        compare(o.grandchild.Kirigami.Theme.textColor, KanteStyle.textColor)
         KanteStyle.kind = KanteStyle.Kind.System
-        verify(o.inner.Kirigami.Theme.inherit)
+        compare(String(o.grandchild.Kirigami.Theme.textColor), "#ff0000")
+        o.Kirigami.Theme.textColor = "blue"
+        compare(String(o.grandchild.Kirigami.Theme.textColor), "#0000ff")
     }
 
     // After Kante the scope inherits again: later theme changes reach it
