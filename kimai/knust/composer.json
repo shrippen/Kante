@@ -3,7 +3,7 @@
     "description": "Knust: Kimai theme in the shrippen design (Gruvbox dark, Leinen light) on top of Tabler",
     "homepage": "https://git.arianw.de/shrippen/kimai-knust-bundle",
     "type": "kimai-plugin",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "keywords": [
         "kimai",
         "kimai-plugin",

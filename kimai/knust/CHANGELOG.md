@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+- Kennzahl-Kacheln (`kit.kpi_bar`, kimai-plugin-ui ab 0.5) können jetzt eine eskalierende Bedeutung tragen: das
+  optionale `tier`-Feld je Kachel oder je Aufschlüsselungs-Eintrag färbt Balken/Beschriftung bzw. den Wert, statt dass
+  wie bisher nur eine einzige Kachel pro Reihe (`highlight`) Farbe bekam. Siehe `PLUGINS.md`, Abschnitt 2.
+
 ## 1.1.2
 
 - Logo: shrippen-Bildmarke mit der Wortmarke „KIMAI“ statt „SHRIPPEN“ (Rajdhani 700 als Pfade, wie bisher). Dateien

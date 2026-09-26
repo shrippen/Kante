@@ -978,6 +978,32 @@ div.kpu-bulk-bar {
     border-radius: var(--knust-mark-radius);
 }
 
+/* Kit 0.5: kit.kpi_bar's optional tier, scaled down from the badge/ladder treatment above.
+ * A KPI card keeps its normal surface; only the top bar and label carry the tier colour,
+ * like Kimai's own coloured dashboard tiles. A detail chip only tints its value text. */
+.card.kpu-kpi.kpu-tier[data-kpu-tier] {
+    background: var(--tblr-bg-surface) !important;
+    box-shadow: none !important;
+    border-top-color: var(--knust-tier) !important;
+}
+
+.kpu-kpi.kpu-tier[data-kpu-tier] .kpu-kpi-label {
+    color: var(--knust-tier) !important;
+}
+
+.kpu-kpi-detail.kpu-tier[data-kpu-tier] {
+    background: none !important;
+    box-shadow: none !important;
+    color: inherit !important;
+    font-family: inherit;
+    letter-spacing: normal;
+}
+
+.kpu-kpi-detail.kpu-tier[data-kpu-tier] .kpu-kpi-detail-value {
+    color: var(--knust-tier);
+    font-weight: var(--tblr-font-weight-medium);
+}
+
 /* Toasts (Kimai and kpu undo toast): callout with a coloured top edge */
 .toast {
     --tblr-toast-border-radius: 0;

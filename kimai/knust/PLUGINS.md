@@ -34,6 +34,11 @@ Farben, Flächen, Rahmen, Ecken und Schriften kommen aus Tabler-Klassen (`bg-yel
 - Kimai-Spalten `col_date` usw. brauchen kein `kpu-num`, eigene Spalten schon (`col_distance`, Wochenraster, Summenzeilen).
 - Die Makros des Kits setzen `kpu-num` selbst (Zeitraum, Kennzahl-Details, Gruppensummen). Die Bausteine des Kits
   (`kpu-kpi`, `kpu-bulk-bar`, `kpu-status`, `kpu-toast`) gestaltet Knust ebenfalls.
+- `kit.kpi_bar()` setzt `tier` (ab kimai-plugin-ui 0.5) selbst als `kpu-tier`/`data-kpu-tier`, auf der Kachel wie im
+  `details`-Eintrag: `{label: '…', value: '…', tier: 2}`. Auf der Kachel bleibt die Fläche neutral, nur Balken und
+  Beschriftung tragen die Stufenfarbe, wie bei Kimais eigenen farbigen Dashboard-Kacheln; im `details`-Eintrag färbt
+  sich nur der Wert. `tier` ist für Bedeutung, die eskaliert (eine Fehlerklasse, eine Zuschlagsstufe); für „die eine
+  wichtige Zahl“ bleibt `highlight` zuständig, beide zusammen an einer Kachel ergeben keinen Sinn.
 
 ### 3. Knust-Variablen mit Rückfallwert
 
