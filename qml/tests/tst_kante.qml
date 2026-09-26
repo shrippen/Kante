@@ -299,6 +299,32 @@ TestCase {
         verify(Math.abs(labelMid - textMid) <= 1, labelMid + " vs " + textMid)
     }
 
+    Component {
+        id: menuComponent
+        Item {
+            property alias menu: skinnedMenu
+            QQC2.Menu {
+                id: skinnedMenu
+                QQC2.MenuItem { text: "Edit entry" }
+                QQC2.MenuItem { text: "Als Favorit pinnen und noch etwas länger" }
+            }
+            KantePopupSkin { popup: skinnedMenu }
+        }
+    }
+
+    // Styles size a menu from its background (Material, Basic): the Kante
+    // card must keep a usable width, or the menu opens as a tiny corner.
+    function test_popupSkinKeepsMenuWidth() {
+        var o = createTemporaryObject(menuComponent, tc)
+        var systemWidth = o.menu.implicitWidth
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(o.menu.implicitWidth >= Math.min(systemWidth, Kirigami.Units.gridUnit * 8), o.menu.implicitWidth + " < " + systemWidth)
+        // and, once open, it fits its widest item (German labels are long)
+        o.menu.open()
+        tryVerify(function() { return o.menu.visible })
+        verify(o.menu.implicitWidth >= o.menu.itemAt(1).implicitWidth, o.menu.implicitWidth + " < " + o.menu.itemAt(1).implicitWidth)
+    }
+
     function test_fontsLoad() {
         tryVerify(function() { return KanteStyle.headingFace.status === FontLoader.Ready }, 3000)
         tryVerify(function() { return KanteStyle.monoFace.status === FontLoader.Ready }, 3000)
