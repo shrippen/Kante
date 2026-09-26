@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+
+- Login: Der SSO-Button (SAML, z. B. „Anmelden via Authentik“) ist jetzt so breit wie die Karte und umrandet wie die
+  übrigen Umriss-Buttons. Vorher ragte der Text in Großbuchstaben aus dem halb so breiten Button heraus.
+
 ## 1.1.0
 
 Schnittstelle für Plugins.

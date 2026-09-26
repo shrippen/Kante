@@ -901,6 +901,19 @@ body.login-page .container-tight > .text-center img {
     height: 3rem;
 }
 
+/* SSO button (SAML, e.g. Authentik): Kimai makes it half the card wide (w-50),
+ * too narrow for the uppercase label; full width, outlined like the toolbar */
+body.login-page #social-login-button {
+    width: 100% !important;
+    white-space: normal;
+    --tblr-btn-bg: transparent;
+    --tblr-btn-border-color: var(--shr-fg3);
+    --tblr-btn-color: var(--shr-fg1);
+    --tblr-btn-hover-bg: var(--shr-bg1);
+    --tblr-btn-hover-border-color: var(--shr-fg2);
+    --tblr-btn-hover-color: var(--shr-fg0);
+}
+
 [data-bs-theme=light] body.login-page .container-tight > .text-center img[src*="shrippen-logo"] {
     content: url('../img/shrippen-logo-light.svg');
 }
