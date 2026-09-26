@@ -231,6 +231,9 @@ TestCase {
         KanteStyle.kind = KanteStyle.Kind.Kante
         compare(o.inner.Kirigami.Theme.textColor, KanteStyle.textColor)
         KanteStyle.kind = KanteStyle.Kind.System
+        // Back to the parent's colour, and a valid one (not an empty custom colour).
+        compare(String(o.inner.Kirigami.Theme.textColor), "#ff0000")
+        verify(o.inner.Kirigami.Theme.textColor.a > 0)
         o.Kirigami.Theme.textColor = "blue"
         compare(String(o.inner.Kirigami.Theme.textColor), "#0000ff")
     }
