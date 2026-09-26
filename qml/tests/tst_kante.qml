@@ -18,6 +18,7 @@ TestCase {
 
     function cleanup() {
         KanteStyle.kind = KanteStyle.Kind.System
+        KanteStyle.materialStyle = false
         KanteStyle.preferDark = false
     }
 
@@ -95,6 +96,139 @@ TestCase {
     Component {
         id: titleComponent
         KanteHeading { level: 3; pageTitle: true; text: "Plasmai" }
+    }
+
+    Component {
+        id: spinSkinComponent
+        QQC2.SpinBox {
+            property alias skin: spinSkin
+            KanteFieldSkin { id: spinSkin; control: parent }
+        }
+    }
+
+    // A spin box keeps its own text and has no drop-down arrow.
+    function test_fieldSkinSpinBoxIsNoCombo() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var spin = createTemporaryObject(spinSkinComponent, tc)
+        verify(!spin.skin.comboBox)
+        compare(spin.skin.control.contentItem.opacity, 1)
+    }
+
+    function test_cardIsSquare() {
+        var card = createTemporaryObject(cardComponent, tc)
+        compare(card.radius, 0)
+    }
+
+    Component {
+        id: cardComponent
+        KanteCard { width: 40; height: 20 }
+    }
+
+    Component {
+        id: textInputsComponent
+        Column {
+            property alias field: field
+            property alias area: area
+            KanteTextField { id: field; text: "09:00" }
+            QQC2.TextArea { id: area; text: "Notiz"; KanteFieldSkin { control: parent } }
+        }
+    }
+
+    // org.kde.desktop does not draw the text of a text field or area that has a
+    // hidden child below it (z < 0); in System the Kante parts must hide inside it.
+    function test_textInputsHaveNoHiddenChildBelow() {
+        var c = createTemporaryObject(textInputsComponent, tc)
+        tc.visible = true
+        verify(c.field.visible)
+        var inputs = [c.field, c.area]
+        for (var i = 0; i < inputs.length; i++) {
+            var kids = inputs[i].children
+            for (var k = 0; k < kids.length; k++) {
+                if (kids[k] === inputs[i].background) {
+                    continue
+                }
+                verify(!(kids[k].z < 0 && !kids[k].visible), "hidden item below the text of input " + i)
+            }
+        }
+    }
+
+    Component {
+        id: placeholderComponent
+        Column {
+            property alias field: phField
+            property alias area: phArea
+            KanteTextField { id: phField; placeholderText: "09:00"; text: "17:00" }
+            QQC2.TextArea { id: phArea; placeholderText: "Note"; text: "Hi"; KanteFieldSkin { control: parent } }
+        }
+    }
+
+    // Material floats the placeholder above a filled field; Kante draws its own
+    // frame, so a filled field shows no placeholder. System keeps the style's.
+    function test_placeholderOnlyWhenEmpty() {
+        var c = createTemporaryObject(placeholderComponent, tc)
+        compare(c.field.placeholderText, "09:00")
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        compare(c.field.placeholderText, "")
+        compare(c.area.placeholderText, "")
+        c.field.text = ""
+        compare(c.field.placeholderText, "09:00")
+        KanteStyle.kind = KanteStyle.Kind.System
+        compare(c.area.placeholderText, "Note")
+    }
+
+    Component {
+        id: scopeComponent
+        Item {
+            id: outer
+            property alias inner: inner
+            Kirigami.Theme.inherit: false
+            Kirigami.Theme.textColor: "red"
+            Item {
+                id: inner
+                KanteScope { target: inner }
+            }
+        }
+    }
+
+    // After Kante the scope inherits again: later theme changes reach it
+    // (a restored value would freeze the old colors).
+    function test_scopeInheritsAfterKante() {
+        var o = createTemporaryObject(scopeComponent, tc)
+        compare(String(o.inner.Kirigami.Theme.textColor), "#ff0000")
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        compare(o.inner.Kirigami.Theme.textColor, KanteStyle.textColor)
+        KanteStyle.kind = KanteStyle.Kind.System
+        o.Kirigami.Theme.textColor = "blue"
+        compare(String(o.inner.Kirigami.Theme.textColor), "#0000ff")
+    }
+
+    // With the Material style the scope leaves Kirigami.Theme alone.
+    function test_scopeOffWithMaterialStyle() {
+        KanteStyle.materialStyle = true
+        var o = createTemporaryObject(scopeComponent, tc)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(o.inner.Kirigami.Theme.inherit)
+        compare(String(o.inner.Kirigami.Theme.textColor), "#ff0000")
+        KanteStyle.materialStyle = false
+    }
+
+    Component {
+        id: wideButtonComponent
+        // style content narrower than Kante's label (as with Material)
+        KanteButton { text: "Verwenden und speichern"; contentItem: Item { implicitWidth: 10; implicitHeight: 10 } }
+    }
+
+    // The uppercase Rajdhani label fits: the button grows for it in Kante.
+    function test_buttonFitsKanteLabel() {
+        var b = createTemporaryObject(wideButtonComponent, tc)
+        var systemWidth = b.implicitWidth
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        tryVerify(function() { return KanteStyle.headingFace.status === FontLoader.Ready }, 3000)
+        tryVerify(function() { return b.implicitWidth > systemWidth }, 2000)
+        var label = b.children.filter(function(c) { return c.toString().indexOf("RowLayout") >= 0 })[0]
+        verify(b.implicitWidth >= label.implicitWidth + b.leftPadding + b.rightPadding)
+        KanteStyle.kind = KanteStyle.Kind.System
+        compare(b.implicitWidth, systemWidth)
     }
 
     function test_fontsLoad() {
