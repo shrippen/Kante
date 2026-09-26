@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds ds-bundle/ (Claude Design upload layout) from docs/v1/shrippen.css. Run ./build.sh first."""
+"""Builds ds-bundle/ (Claude Design upload layout) from docs/v1/shrippen.css. build.sh runs it as its last step."""
 import os, shutil, re
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = os.path.join(R, 'ds-bundle')
