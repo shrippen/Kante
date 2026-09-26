@@ -114,6 +114,26 @@ TestCase {
         compare(spin.skin.control.contentItem.opacity, 1)
     }
 
+    Component {
+        id: textAreaSkinComponent
+        QQC2.TextArea {
+            property alias skin: areaSkin
+            KanteFieldSkin { id: areaSkin; control: parent }
+        }
+    }
+
+    // A text area has no contentItem: the skin must not bind to it (was
+    // "Unable to assign [undefined] to QObject*" in every kind).
+    function test_fieldSkinTextAreaNoWarning() {
+        failOnWarning(/Unable to assign/)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var area = createTemporaryObject(textAreaSkinComponent, tc)
+        verify(area !== null)
+        verify(!area.skin.comboBox)
+        KanteStyle.kind = KanteStyle.Kind.System
+        KanteStyle.kind = KanteStyle.Kind.Kante
+    }
+
     function test_cardIsSquare() {
         var card = createTemporaryObject(cardComponent, tc)
         compare(card.radius, 0)
@@ -190,6 +210,19 @@ TestCase {
         }
     }
 
+    // The scope must never detach the target (inherit = false): under the Plasma theme the
+    // children keep the detached colour table, and after leaving Kante it is empty, so their
+    // text turns invisible. Custom colours apply while inheriting, so detaching is not needed.
+    function test_scopeKeepsInheriting() {
+        var o = createTemporaryObject(scopeComponent, tc)
+        verify(o.inner.Kirigami.Theme.inherit)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(o.inner.Kirigami.Theme.inherit)
+        compare(o.inner.Kirigami.Theme.textColor, KanteStyle.textColor)
+        KanteStyle.kind = KanteStyle.Kind.System
+        verify(o.inner.Kirigami.Theme.inherit)
+    }
+
     // After Kante the scope inherits again: later theme changes reach it
     // (a restored value would freeze the old colors).
     function test_scopeInheritsAfterKante() {
@@ -229,6 +262,21 @@ TestCase {
         verify(b.implicitWidth >= label.implicitWidth + b.leftPadding + b.rightPadding)
         KanteStyle.kind = KanteStyle.Kind.System
         compare(b.implicitWidth, systemWidth)
+    }
+
+    Component {
+        id: paddedHeadingComponent
+        KanteHeading { level: 4; text: "Section"; topPadding: 20 }
+    }
+
+    // Space above a section (topPadding) keeps the Kante label on the text line.
+    function test_headingPaddingKeepsLabelOnText() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var h = createTemporaryObject(paddedHeadingComponent, tc)
+        var label = h.children.filter(function(c) { return c.text === "Section" })[0]
+        var labelMid = label.y + label.height / 2
+        var textMid = h.topPadding + (h.height - h.topPadding - h.bottomPadding) / 2
+        verify(Math.abs(labelMid - textMid) <= 1, labelMid + " vs " + textMid)
     }
 
     function test_fontsLoad() {
