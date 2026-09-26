@@ -14,7 +14,7 @@ bin/console kimai:bundle:knust:install   # kopiert CSS + Schriften nach public/b
 
 Einstellung: System → Einstellungen → „Knust“ → Akzentfarbe (Blau, Gelb, Orange, Aqua).
 Hell/Dunkel wählt jeder Benutzer selbst (Profil → Einstellungen → Theme).
-Logo: shrippen-Wortmarke als Standard; `theme.branding.company` oder `theme.branding.logo` haben Vorrang.
+Logo: shrippen-Bildmarke mit Wortmarke „KIMAI“ als Standard; `theme.branding.company` oder `theme.branding.logo` haben Vorrang.
 
 ## Für Plugins
 
@@ -26,7 +26,7 @@ Regeln und Variablen: [PLUGINS.md](PLUGINS.md).
 
 ```
 Request ──► ThemeOptionsSubscriber (KernelEvents::CONTROLLER, nach Kimai)
-              setThemeRadius(0), setThemePrimary(<Akzent>), setLogoUrl(<shrippen-logo.svg>)
+              setThemeRadius(0), setThemePrimary(<Akzent>), setLogoUrl(<knust-logo.svg>)
               → <html data-bs-theme-radius="0" data-bs-theme-primary="yellow">
 
 Seite  ──► StylesheetSubscriber (ThemeEvent::STYLESHEET, auch Login)
@@ -62,4 +62,4 @@ Entwicklung: <https://git.arianw.de/shrippen/kimai-knust-bundle>
 
 GPL-3.0-or-later, siehe [LICENSE](LICENSE).
 Schriften: Rajdhani, JetBrains Mono (SIL Open Font License 1.1), auf Latin reduziert, woff2.
-Logo und Palette: shrippen Design Default.
+Logo (shrippen-Bildmarke, Wortmarke „KIMAI“ in Rajdhani 700) und Palette: shrippen Design Default.

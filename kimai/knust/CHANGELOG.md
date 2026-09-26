@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2
+
+- Logo: shrippen-Bildmarke mit der Wortmarke „KIMAI“ statt „SHRIPPEN“ (Rajdhani 700 als Pfade, wie bisher). Dateien
+  heißen jetzt `knust-logo.svg` und `knust-logo-light.svg`.
+
 ## 1.1.1
 
 - Login: Der SSO-Button (SAML, z. B. „Anmelden via Authentik“) ist jetzt so breit wie die Karte und umrandet wie die

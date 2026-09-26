@@ -914,8 +914,8 @@ body.login-page #social-login-button {
     --tblr-btn-hover-color: var(--shr-fg0);
 }
 
-[data-bs-theme=light] body.login-page .container-tight > .text-center img[src*="shrippen-logo"] {
-    content: url('../img/shrippen-logo-light.svg');
+[data-bs-theme=light] body.login-page .container-tight > .text-center img[src*="knust-logo"] {
+    content: url('../img/knust-logo-light.svg');
 }
 
 /* kpu kit (your plugins): tiles, bulk bar, status badges.

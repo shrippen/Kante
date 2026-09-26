@@ -23,14 +23,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * Sets the Tabler options that end up as attributes on <html>:
  *   data-bs-theme-radius="0"         square corners, like the design system
  *   data-bs-theme-primary="<accent>" picked up by knust.css
- * and the shrippen logo for sidebar and login.
+ * and the logo (shrippen mark, "KIMAI" wordmark) for sidebar and login.
  * Runs after Kimai's own ThemeOptionsSubscriber (priority 100), which sets dark mode.
  */
 final class ThemeOptionsSubscriber implements EventSubscriberInterface
 {
     private const PRIORITY = 90;
     private const RADIUS = 0.0;
-    private const LOGO = 'bundles/knust/img/shrippen-logo.svg';
+    private const LOGO = 'bundles/knust/img/knust-logo.svg';
 
     public function __construct(
         private readonly ContextHelper $helper,
