@@ -350,6 +350,10 @@ TestCase {
             QQC2.Switch {
                 KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Switch }
             }
+            QQC2.RadioButton {
+                checked: true
+                KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Radio }
+            }
             QQC2.ComboBox {
                 model: ["System", "Kante"]
                 KanteFieldSkin { control: parent }
