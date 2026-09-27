@@ -7,7 +7,7 @@ import Kante
 /**
  * Loads the Kante QML module, creates every component in both kinds and
  * checks that System forwards Kirigami.Theme while Kante uses the palette.
- * Run: tools/check-qml.sh (qmltestrunner, offscreen).
+ * Run: kante/tools/check-qml.sh (qmltestrunner, offscreen).
  */
 TestCase {
     id: tc

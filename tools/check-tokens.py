@@ -8,17 +8,18 @@
   - Web and apps share one palette: every colour in tokens/palette.json (dark and the
     light theme "Leinen") has the same value as its custom property in tokens/variables.css.
 
-Scans css/*.css, templates/*.html and docs/index.html (in HTML only <style>, style="…"
+Scans kante/css/*.css, kante/templates/*.html and docs/index.html (in HTML only <style>, style="…"
 and fill/stroke/color attributes). Exits 1 on any finding.
-Usage: python3 tools/check-tokens.py   (build.sh runs it)
+Usage: python3 kante/tools/check-tokens.py   (build.sh runs it)
 """
 import re
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
+KANTE = Path(__file__).resolve().parent.parent
+REPO = KANTE.parent
 HEX = re.compile(r"#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b")
-TOKEN_HEX = {h.lower() for h in HEX.findall((REPO / "tokens/variables.css").read_text())}
+TOKEN_HEX = {h.lower() for h in HEX.findall((KANTE / "tokens/variables.css").read_text())}
 FONT = re.compile(r"font-family\s*:\s*([^;}\"]+)", re.I)
 FONT_OK = re.compile(r"^(var\(--font-(heading|sans|mono)\)|inherit)$")
 CUSTOM_PROP = re.compile(r"\s*--[\w-]+\s*:")
@@ -72,8 +73,8 @@ def css_block(text, selector):
 def check_shared_palette():
     """palette.json (apps, QML) and variables.css (web) must not drift apart."""
     import json
-    palette = json.loads((REPO / "tokens/palette.json").read_text())
-    css = (REPO / "tokens/variables.css").read_text()
+    palette = json.loads((KANTE / "tokens/palette.json").read_text())
+    css = (KANTE / "tokens/variables.css").read_text()
     dark, light = css_block(css, ":root {"), css_block(css, ':root[data-theme="light"]')
     expected = [(":root", dark, "accent", palette["accent"])]
     for group in ("backgrounds", "foregrounds"):
@@ -88,7 +89,7 @@ def check_shared_palette():
             yield f"tokens/palette.json {name} = {value} but tokens/variables.css ({block}) has {props.get(name)}"
 
 
-files = sorted(REPO.glob("css/*.css")) + sorted(REPO.glob("templates/*.html")) + [REPO / "docs/index.html"]
+files = sorted(KANTE.glob("css/*.css")) + sorted(KANTE.glob("templates/*.html")) + [REPO / "docs/index.html"]
 problems = [p for f in files if f.exists() for p in check(f)] + list(check_shared_palette())
 print("\n".join(problems) or f"token check ok ({len(files)} files)")
 sys.exit(1 if problems else 0)

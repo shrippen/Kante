@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Builds ds-bundle/ (Claude Design upload layout) from docs/v1/shrippen.css. build.sh runs it as its last step."""
+"""Builds kante/ds-bundle/ (Claude Design upload layout) from docs/v1/shrippen.css. build.sh runs it as its last step."""
 import os, shutil, re
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-B = os.path.join(R, 'ds-bundle')
+B = os.path.join(R, 'kante', 'ds-bundle')
 shutil.rmtree(B, ignore_errors=True)
 
 def w(path, s):
@@ -14,7 +14,7 @@ os.makedirs(B + '/fonts')
 FACES = [('Rajdhani', 500), ('Rajdhani', 600), ('Rajdhani', 700), ('JetBrainsMono', 400), ('JetBrainsMono', 500)]
 ff = ''
 for fam, wt in FACES:
-    shutil.copy(f'{R}/fonts/{fam}-{wt}.ttf', f'{B}/fonts/{fam}-{wt}.ttf')
+    shutil.copy(f'{R}/kante/fonts/{fam}-{wt}.ttf', f'{B}/fonts/{fam}-{wt}.ttf')
     name = 'JetBrains Mono' if fam == 'JetBrainsMono' else fam
     ff += f"@font-face{{font-family:'{name}';font-weight:{wt};font-display:swap;src:url(fonts/{fam}-{wt}.ttf) format('truetype')}}\n"
 css = open(f'{R}/docs/v1/shrippen.css').read()
@@ -22,7 +22,7 @@ w('styles.css', ff + css)
 shutil.copy(f'{R}/docs/v1/shrippen.js', f'{B}/shrippen.js')
 MARK_UNUSED=None
 # tokens
-shutil.copytree(f'{R}/tokens', f'{B}/tokens', ignore=shutil.ignore_patterns('*.qml'))
+shutil.copytree(f'{R}/kante/tokens', f'{B}/tokens', ignore=shutil.ignore_patterns('*.qml'))
 
 # components: (group, name, html, prompt)
 MARK = '<svg viewBox="4 4 40 40" width="96" height="96" fill="none"><g transform="scale(2) translate(1 1)"><path d="M 5.879 9.379 L 8.5 12 L 16.121 4.379 L 17.535 5.793 L 8.5 14.828 L 4.465 10.793 Z" fill="#E8DCC4"/><path fill="#FABD2F" d="M 2 15 C 4.5 13 6.5 17 9 15 C 11.5 13 13.5 17 16 15 C 18.5 13 20 17 22 15 V 17 C 20 19 18.5 15 16 17 C 13.5 19 11.5 15 9 17 C 6.5 19 4.5 15 2 17 Z"/></g></svg>'
