@@ -148,6 +148,7 @@
       "neutral": "orange",
       "negative": "red",
       "info": "blue",
+      "tag": "purple",
       "card": [
         "bg1",
         0.6
@@ -182,6 +183,7 @@
       "neutral": "orange",
       "negative": "red",
       "info": "blue",
+      "tag": "purple",
       "card": [
         "bg1",
         0.7

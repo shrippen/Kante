@@ -81,6 +81,8 @@ QtObject {
     readonly property color accentTextColor: themed ? palette.accentText : Kirigami.Theme.highlightColor
     readonly property color accentForegroundColor: themed ? palette.accentForeground : Kirigami.Theme.highlightedTextColor
     readonly property color infoColor: themed ? palette.info : Kirigami.Theme.linkColor
+    /** Tags, topics, categories (purple in Kante; the visited-link colour of the platform otherwise). */
+    readonly property color tagColor: themed ? palette.tag : Kirigami.Theme.visitedLinkColor
     readonly property color cardColor: themed ? palette.card : tint(Kirigami.Theme.textColor, 0.04)
     readonly property color sunkenColor: themed ? palette.sunken : tint(Kirigami.Theme.textColor, 0.06)
     readonly property color frameColor: themed ? palette.frame : tint(Kirigami.Theme.textColor, 0.12)
@@ -131,12 +133,14 @@ QtObject {
 
     /** Figures (timers, times, durations, amounts): JetBrains Mono in Kante and Kante Light. */
     function monoFont(pointSize, bold) {
+        // Platforms that size the small font in pixels report pointSize -1: fall back to a small size.
+        var size = pointSize > 0 ? pointSize : Math.max(7, defaultFont.pointSize * 0.85)
         if (!active) {
-            return Qt.font({ family: "monospace", pointSize: pointSize, bold: !!bold })
+            return Qt.font({ family: "monospace", pointSize: size, bold: !!bold })
         }
         return Qt.font({
             family: (bold ? monoMediumFace : monoFace).font.family,
-            pointSize: pointSize,
+            pointSize: size,
             weight: bold ? Font.Medium : Font.Normal
         })
     }
