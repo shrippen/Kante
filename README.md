@@ -70,7 +70,7 @@ The ground sits between Gruvbox `light0` (`#fbf1c7`, too yellow) and `#f5f1e8` (
 
 ### App components (`.tile`, `.stage`, `.band`, `.field`, `.pill`, `.dialog`, …)
 
-Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading). Group colours: green `--aqua`, yellow `--yellow`, red `--red`; status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
+Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags and `KanteStyle.warningColor` for mild warnings), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading). Group colours: green `--aqua`, yellow `--yellow`, red `--red`; status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
 
 ### Local theme override rule
 
