@@ -253,7 +253,7 @@ a.feat:focus-visible::after{inset:6px;background:var(--brk)}
 .section li strong{color:var(--fg1)}
 
 /* ── Steps (numbered) ── */
-.steps{list-style:none;counter-reset:step;padding:0}
+.steps{list-style:none;counter-reset:step;margin:0;padding:0}
 .steps>li{counter-increment:step;position:relative;padding-left:2.6rem;margin-bottom:1.1rem}
 .steps>li::before{content:counter(step);position:absolute;left:0;top:.05rem;width:1.8rem;height:1.8rem;
   background:var(--bg-panel);border:1px solid var(--bg2);color:var(--yellow);
@@ -507,7 +507,7 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .pager :is(a,button):hover{border-color:var(--fg3);color:var(--fg0)}
 .pager [aria-current="page"]{background:var(--yellow);border-color:var(--yellow);color:var(--bg-void)}
 /* Menu */
-.menu{background:var(--bg-panel);border-top:3px solid var(--cyan);padding:.35rem 0;min-width:15rem;
+.menu{margin:0;list-style:none;background:var(--bg-panel);border-top:3px solid var(--cyan);padding:.35rem 0;min-width:15rem;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
 .menu :is(button,a){display:flex;width:100%;align-items:center;gap:.7rem;min-height:36px;padding-inline:.9rem;background:none;border:0;color:var(--fg1);cursor:pointer;font-size:.9rem;text-align:left;text-decoration:none}
 .menu :is(button,a):hover,.menu :is(button,a):focus-visible{outline:none;background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}
@@ -718,7 +718,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .spark{display:block;width:100%;height:auto}
 .spark path{fill:none;stroke:var(--d4);stroke-width:1.6}
 .spark rect{fill:var(--d4)}
-.legend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2)}
+.legend{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2)}
 .legend i{display:inline-block;width:10px;height:10px;margin-right:.4rem;vertical-align:-1px;background:var(--c,var(--d1))}
 .heat{display:grid;gap:3px}
 .heat i{aspect-ratio:1;background:var(--bg-hard)}
@@ -754,7 +754,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .week>.ev{--c:var(--yellow);position:relative;margin:1px 3px;padding:.15rem .3rem .15rem .6rem;background:color-mix(in srgb,var(--c) 18%,var(--bg-panel));color:var(--fg0);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:var(--font-sans);font-size:.72rem;cursor:pointer}
 .week>.ev::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
 .week>.ev.warn{--c:var(--orange)}.week>.ev.info{--c:var(--cyan)}.week>.ev.ok{--c:var(--aqua)}
-.agenda{display:grid;gap:.9rem}
+.agenda{display:grid;gap:.9rem;margin:0;padding:0;list-style:none}
 .agenda>h4{display:flex;align-items:center;gap:.6rem;margin:0;font-family:var(--font-mono);font-size:.7rem;font-weight:400;letter-spacing:.1em;color:var(--fg3)}
 .agenda>h4::after{content:"";flex:1;height:1px;background:var(--bg1)}
 .agenda>h4.today{color:var(--yellow);font-weight:700}
@@ -897,7 +897,7 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 .fold>summary>.count{align-self:center;min-width:0;height:auto;padding:0;background:none;color:var(--fg3);font-weight:400}
 .fold>.body{padding:.2rem 0 1rem}
 /* Feed: title, source and relative age; .is-compact is one line with the age at the right */
-.feed{list-style:none;display:flex;flex-direction:column}
+.feed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .feed>li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.1rem .8rem;padding:.55rem .1rem;border-bottom:1px solid var(--bg1)}
 .feed>li:last-child{border-bottom:0}
 .feed>li>a{grid-column:1/-1;color:var(--fg1);font-size:.88rem;line-height:1.35}
@@ -950,7 +950,7 @@ a.hint-card>.title:hover,.hint-card>a.title:hover{color:var(--link)}
 .date-tile{display:grid;justify-items:center;align-content:center;width:3.6rem;flex:none;line-height:1.1;text-align:center;white-space:nowrap;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
 .date-tile>b{font-family:var(--font-heading);font-weight:700;font-size:1.5rem;letter-spacing:0;color:var(--fg0);font-variant-numeric:tabular-nums}
 /* Timeline: deadlines, a date column and a 4 px state bar; the state is also written out (.state) */
-.timeline{list-style:none;display:flex;flex-direction:column;gap:2px}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .timeline>li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:.8rem;padding:.5rem .8rem .5rem 0;background:var(--bg-panel);border-left:4px solid var(--tier)}
 .timeline>li>.date-tile{width:4rem}
 .timeline>li>.what{display:flex;flex-direction:column;min-width:0;color:var(--fg1);font-size:.9rem;line-height:1.3}
@@ -1084,7 +1084,9 @@ a.hint-card>.title:hover,.hint-card>a.title:hover{color:var(--link)}
 .tile-tools>[aria-pressed="true"]{color:var(--cyan)}
 .tile-tools>.is-danger:is(:hover,:focus-visible){color:var(--danger)}
 .tile-tools>.grip{margin:0 .35rem}
-@media (hover:none),(pointer:coarse){.has-tools{--tools-h:var(--h-m)}.tile-tools{visibility:visible;opacity:1}}
+/* A floating strip outside a .has-tools slot sets its own band height */
+:not(.has-tools)>.tile-tools{--tools-h:var(--h-s)}
+@media (hover:none),(pointer:coarse){.has-tools,:not(.has-tools)>.tile-tools{--tools-h:var(--h-m)}.tile-tools{visibility:visible;opacity:1}}
 
 /* 11 · Kante 1.9: chips as links, chart details, heat goals, colour input, phone fixes ───── */
 /* A chip may be a link (a filter that navigates): never underlined. Filter chips carry the
