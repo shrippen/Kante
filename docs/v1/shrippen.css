@@ -598,7 +598,8 @@ a.feat:focus-visible::after{inset:6px;background:var(--brk)}
 .tile-name{color:var(--fg2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tile-conf{display:inline-flex;align-items:center;gap:.3rem;color:var(--tier);font-weight:500;font-variant-numeric:tabular-nums}
 .tile-conf svg{width:.85rem;height:.85rem;fill:none;stroke:currentColor;stroke-width:2.5}
-.tile-sub{grid-column:1/-1;color:var(--fg3);text-transform:uppercase;letter-spacing:.12em;font-size:.64rem}
+.tile .pill{max-width:100%}
+.tile-sub{overflow-wrap:anywhere;grid-column:1/-1;color:var(--fg3);text-transform:uppercase;letter-spacing:.12em;font-size:.64rem}
 .tile-sm .tile-meta{grid-template-columns:1fr;padding:.35rem .5rem .45rem}
 .tile-sm .tile-sub,.tile-sm .tile-name{display:none}
 .tile .runner,.feat .runner{z-index:1}
@@ -621,7 +622,7 @@ a.feat:focus-visible::after{inset:6px;background:var(--brk)}
 .cand[hidden]{display:none}
 .cand-tag.is-right{left:auto;right:14px}
 .cand-tag{position:absolute;left:14px;bottom:100%;background:var(--c,var(--blue));color:var(--bg-void);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;padding:.05rem .35rem;white-space:nowrap}
-.readout{pointer-events:none;position:absolute;right:.5rem;bottom:.5rem;background:var(--bg-void);border:1px solid var(--bg2);padding:.15rem .5rem;font-family:var(--font-mono);font-size:.68rem;color:var(--fg2);font-variant-numeric:tabular-nums}
+.readout{white-space:nowrap;pointer-events:none;position:absolute;right:.5rem;bottom:.5rem;background:var(--bg-void);border:1px solid var(--bg2);padding:.15rem .5rem;font-family:var(--font-mono);font-size:.68rem;color:var(--fg2);font-variant-numeric:tabular-nums}
 .strip{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.3rem}
 .strip button{--tier:var(--aqua);flex:0 0 5.2rem;aspect-ratio:3/2;background:var(--bg0);border:2px solid transparent;border-top:3px solid var(--tier);padding:0;cursor:pointer;overflow:hidden}
 .strip button[data-tier="yellow"]{--tier:var(--yellow)}.strip button[data-tier="red"]{--tier:var(--red)}
