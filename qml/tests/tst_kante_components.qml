@@ -348,6 +348,24 @@ TestCase {
         verify(platformBackground.visible)
     }
 
+    // A Kirigami.PromptDialog shows its title itself and brings customFooterActions:
+    // Kante keeps its header and draws the actions as Kante buttons (real Kirigami only).
+    function test_dialogSkinPromptDialog() {
+        var c = Qt.createComponent("PromptDialogHost.qml")
+        if (c.status !== Component.Ready) {
+            skip("Kirigami.PromptDialog not available")
+        }
+        KanteStyle.kind = KanteStyle.Kind.System
+        var o = createTemporaryObject(c, tc)
+        var header = o.dialog.header
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(o.dialog.header === header)
+        o.dialog.open()
+        tryCompare(o.dialog, "opened", true)
+        verify(o.dialog.footer.visible)
+        KanteStyle.kind = KanteStyle.Kind.System
+    }
+
     Component {
         id: scrimDialogComponent
         KanteDialog { title: "x" }
