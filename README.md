@@ -8,6 +8,8 @@ This document defines the **palette, typographic rules, icon style, landing-page
 
 Gruvbox-inspired, warm, dark-first.
 
+> **Rule for every project.** The GUIs of all shrippen projects are generated from Kante, not inspired by it; a missing element is added to Kante first. Only the Kimai plugins are different: they use Knust, Kante's spinoff for Kimai. The rule text for the projects' `agent.md` is in [`AGENT-RULE.md`](AGENT-RULE.md).
+
 ---
 
 ## Quick reference
