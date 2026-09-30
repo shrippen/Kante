@@ -459,6 +459,9 @@ TestCase {
         var text = s.contentItem
         tryVerify(function () { return contrast(text.color, KanteStyle.sunkenColor) >= 4.5 }, 1000,
                   "spin box text " + text.color + " on " + KanteStyle.sunkenColor)
+        s.enabled = false
+        tryVerify(function () { return Qt.colorEqual(text.color, KanteStyle.disabledTextColor) }, 1000, "disabled spin box is dimmed")
+        s.enabled = true
         KanteStyle.kind = KanteStyle.Kind.System
         tryVerify(function () { return !Qt.colorEqual(text.color, KanteStyle.palette.text) || KanteStyle.light }, 1000, "System: style colour again")
     }
