@@ -11,7 +11,7 @@ import "."
  * change emits `edited(points)`; `points` is not written back (bind it and update it in the slot).
  * The axes are labelled at 0, 25, 50, 75 and 100 % of the range. `markers` is a list of
  * {x, label, color}: live readings (e.g. sensor temperatures) drawn as a rule with a mark on
- * the curve at that x; `valueAt(x)` is the curve's y there (flat outside the points).
+ * the curve at that x, captioned at the top of the plot; `valueAt(x)` is the curve's y there (flat outside the points).
  */
 FocusScope {
     id: ed
@@ -236,6 +236,7 @@ FocusScope {
         model: ed.markers
         delegate: Item {
             id: mk
+            required property int index
             required property var modelData
             readonly property real mx: ed.px(Math.max(ed.xMin, Math.min(ed.xMax, modelData.x)))
             readonly property real my: ed.py(ed.valueAt(modelData.x))
@@ -254,9 +255,10 @@ FocusScope {
                 height: width
                 color: mk.modelData.color
             }
+            // The caption sits at the top of the plot, one line lower per marker, so it never covers the curve.
             Text {
-                x: Math.min(mk.mx + KanteStyle.unit(6), ed.width - width)
-                y: mk.my < ed.handle / 2 + height + KanteStyle.unit(6) ? mk.my + KanteStyle.unit(6) : mk.my - height - KanteStyle.unit(6)
+                x: mk.mx + width + KanteStyle.unit(10) > ed.padLeft + ed.plotW ? mk.mx - width - KanteStyle.unit(6) : mk.mx + KanteStyle.unit(6)
+                y: ed.handle / 2 + KanteStyle.unit(4) + mk.index * (height + KanteStyle.unit(2))
                 text: mk.modelData.label ? mk.modelData.label : ""
                 color: mk.modelData.color
                 font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize, true)

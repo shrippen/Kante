@@ -9,7 +9,7 @@ import "."
  * a single line (default: the first data colour).
  * Hover (or `hoverIndex` set by the caller) shows a read-out: a rule at the nearest point,
  * a square mark per line and a box with `labels[i]` and the values; `readout: false` turns it off.
- * `axis` labels the scale on the left (bottom, thirds, top; in `unit`) and keeps room for it.
+ * `axis` labels the scale on the left (every quarter, in `unit`) and keeps room for it.
  */
 Item {
     id: chart
@@ -62,25 +62,25 @@ Item {
     }
 
     Repeater {
-        model: chart.compact ? 0 : 3
+        model: chart.compact ? 0 : (chart.axis ? 5 : 3)
         delegate: Rectangle {
             required property int index
             x: chart.padLeft
             width: chart.width - chart.padLeft
             height: 1
-            y: chart.height - 1 - index * (chart.height - 1) / 3
+            y: chart.height - 1 - index * (chart.height - 1) / (chart.axis ? 4 : 3)
             color: index === 0 ? KanteStyle.frameColor : KanteStyle.ruleColor
         }
     }
     Repeater {
-        model: chart.axis && !chart.compact ? 4 : 0
+        model: chart.axis && !chart.compact ? 5 : 0
         delegate: Text {
             required property int index
             x: chart.padLeft - width - KanteStyle.unit(6)
-            y: Math.max(0, Math.min(chart.height - height, chart.height - 1 - index * (chart.height - 1) / 3 - height / 2))
-            text: Math.round((chart.minValue + index * (chart.scaleTop - chart.minValue) / 3) * 10) / 10 + chart.unit
+            y: Math.max(0, Math.min(chart.height - height, chart.height - 1 - index * (chart.height - 1) / 4 - height / 2))
+            text: Math.round((chart.minValue + index * (chart.scaleTop - chart.minValue) / 4) * 10) / 10 + chart.unit
             color: KanteStyle.mutedTextColor
-            font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize * 0.85, false)
+            font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize, false)
         }
     }
 
