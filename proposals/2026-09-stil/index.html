@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Kante Stilaudit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@600;700&display=swap">
+<style>
+/* Layout: eine Spalte, Blöcke mit Kante oben rechts; Bestand zuerst, dann Befund, dann Vorschläge mit Live-Vorher/Nachher. Dogfooding: die Seite nutzt Kante-Tokens. */
+:root{
+  --bg-void:#141312;--bg-hard:#1d2021;--bg-panel:#2a2826;--bg1:#3c3836;--bg2:#504945;
+  --fg0:#fbf1c7;--fg1:#ebdbb2;--fg2:#d5c4a1;--fg3:#a89984;--accent:#e8dcc4;
+  --yellow:#fabd2f;--orange:#fe8019;--red:#fb4934;--blue:#83a598;--aqua:#8ec07c;--green:#b8bb26;--purple:#d3869b;
+  --signal:#5ccfc4;--signal-n:#3f9a94;--signal-tint:#1e2b2a;--signal-ink:#0f6b66;
+  --chamfer:16px;
+  --font-heading:'Rajdhani',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',Consolas,monospace;
+  color-scheme:dark;
+}
+@property --cut{syntax:"<length>";inherits:true;initial-value:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-void);color:var(--fg1);font-family:var(--font-sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:clamp(1rem,5vw,3rem)}
+a{color:var(--blue)}
+code{font-family:var(--font-mono);font-size:.85em;color:var(--fg2)}
+.ch{clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,0 100%)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow)}
+h1,h2,h3{font-family:var(--font-heading);font-weight:700;text-transform:uppercase;color:var(--fg0);text-wrap:balance}
+h2{font-size:clamp(1.9rem,4.5vw,2.8rem);line-height:1;letter-spacing:.01em}
+h3{font-size:1.35rem;line-height:1.1;letter-spacing:.02em}
+p{max-width:66ch}
+.lead{font-size:1.1rem;color:var(--fg2)}
+section{padding-top:clamp(3rem,7vw,5rem);display:flex;flex-direction:column;gap:1.5rem}
+.head{display:flex;flex-direction:column;gap:.6rem}
+
+/* Hero */
+.stripe{height:12px;background:repeating-linear-gradient(-45deg,var(--bg-void) 0 12px,var(--yellow) 12px 24px)}
+header.hero{background:var(--yellow);color:var(--bg-void);padding-block:clamp(1.5rem,4vw,2.5rem)}
+header.hero .eyebrow{color:var(--bg-void)}
+header.hero h1{color:var(--bg-void);font-size:clamp(3.4rem,15vw,9rem);line-height:.82;letter-spacing:-.01em;margin-block:.9rem}
+header.hero p{font-size:1.1rem;max-width:44em}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.6rem}
+.verdict{background:var(--bg-void);color:var(--fg1);padding:1rem 1.1rem 1.1rem;display:flex;flex-direction:column;gap:.2rem}
+.verdict b{font-family:var(--font-heading);font-size:2.6rem;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+.verdict span{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.verdict.ok b{color:var(--aqua)}.verdict.warn b{color:var(--orange)}.verdict.bad b{color:var(--red)}.verdict.info b{color:var(--yellow)}
+
+/* Timeline */
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.step{background:var(--bg-panel);border-top:4px solid var(--bg2);padding:1.1rem 1.25rem 1.4rem;display:flex;flex-direction:column;gap:.5rem}
+.step time{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;color:var(--yellow)}
+.step p{font-size:.92rem;color:var(--fg2)}
+
+/* Tables */
+.tw{overflow-x:auto;background:var(--bg-panel);border:1px solid var(--bg1)}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:640px}
+th{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--bg2);font-weight:400}
+td{padding:.75rem .9rem;border-bottom:1px solid var(--bg1);vertical-align:top;color:var(--fg2)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--fg0);font-weight:500}
+.pill{--c:var(--fg3);display:inline-flex;align-items:center;gap:.4rem;padding:.12rem .55rem;border:1px solid var(--c);color:var(--c);font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.pill::before{content:"";width:.45rem;height:.45rem;background:var(--c)}
+.pill.ok{--c:var(--aqua)}.pill.warn{--c:var(--orange)}.pill.bad{--c:var(--red)}.pill.sig{--c:var(--signal)}
+
+/* Bestand: Farben */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem}
+.sw{display:flex;flex-direction:column;background:var(--bg-panel);border:1px solid var(--bg1)}
+.sw i{display:block;height:54px;border-bottom:1px solid rgba(0,0,0,.35)}
+.sw div{padding:.5rem .65rem .65rem;display:flex;flex-direction:column;gap:.1rem}
+.sw b{font-family:var(--font-mono);font-size:.74rem;font-weight:500;color:var(--fg0)}
+.sw small{font-family:var(--font-mono);font-size:.66rem;color:var(--fg3);letter-spacing:.04em}
+.sw span{font-size:.78rem;color:var(--fg2);line-height:1.35;margin-top:.15rem}
+.sw.hot{outline:2px solid var(--orange);outline-offset:-2px}
+.subhead{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);border-bottom:1px solid var(--bg2);padding-bottom:.4rem}
+
+/* Typografie */
+.type{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.type>div{background:var(--bg-panel);border-top:4px solid var(--bg2);padding:1.1rem 1.25rem 1.3rem;display:flex;flex-direction:column;gap:.5rem;min-width:0}
+.specimen-h{font-family:var(--font-heading);font-weight:700;text-transform:uppercase;font-size:2.6rem;line-height:.95;color:var(--fg0)}
+.specimen-m{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.specimen-n{font-family:var(--font-mono);font-size:1.5rem;color:var(--fg1);font-variant-numeric:tabular-nums}
+.meta{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;color:var(--fg3)}
+
+/* Komponenten-Auszug */
+.comp{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
+.cell{display:flex;flex-direction:column;gap:.6rem;min-width:0}
+.cell>.meta{text-transform:uppercase;letter-spacing:.12em}
+.install{background:var(--yellow);color:var(--bg-void);padding:1.4rem 1.4rem 1.5rem;display:flex;flex-direction:column;gap:.8rem}
+.install label{font-family:var(--font-heading);font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.cmd{background:var(--bg-void);color:var(--yellow);padding:.7rem .9rem;font-family:var(--font-mono);font-size:.8rem;word-break:break-all}
+.btn{display:inline-flex;align-items:center;padding:.55rem 1.4rem;font-family:var(--font-heading);font-weight:700;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;border:0;cursor:pointer;text-decoration:none;color:inherit;background:none}
+.btn-dark{background:var(--bg-void);color:var(--fg0)}
+.btn-y{background:var(--yellow);color:var(--bg-void)}
+.btn-o{border:2px solid var(--fg3);color:var(--fg1);padding-block:calc(.55rem - 2px)}
+.btn-row{display:flex;flex-wrap:wrap;gap:.6rem}
+.feat{--tier:var(--red);background:var(--bg-panel);border-top:4px solid var(--tier);padding:1.2rem 1.4rem 1.5rem;display:flex;flex-direction:column;gap:.5rem}
+.feat .tag{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--tier)}
+.feat h3{font-size:1.6rem}
+.feat p{font-size:.9rem;color:var(--fg2)}
+.callout{background:var(--bg-panel);border-top:4px solid var(--yellow);padding:.9rem 1.1rem;font-size:.88rem;color:var(--fg2)}
+.toast{background:var(--bg-panel);border-top:3px solid var(--blue);padding:.7rem 1rem;font-family:var(--font-mono);font-size:.74rem;color:var(--fg1)}
+.progress{display:flex;flex-direction:column;gap:.4rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg2)}
+.progress div{display:flex;justify-content:space-between}
+.bar{display:flex;height:8px;background:var(--bg-hard)}
+.bar i{display:block;height:100%}
+.tile{background:var(--bg-panel);border-top:4px solid var(--aqua)}
+.tile .img{aspect-ratio:3/2;background:var(--bg0,#282828);position:relative;overflow:hidden}
+.tile .img::after{content:"";position:absolute;inset:9%;border:2px dashed var(--aqua)}
+.tile .m{display:flex;justify-content:space-between;padding:.5rem .7rem .6rem;font-family:var(--font-mono);font-size:.68rem;color:var(--fg2)}
+.tile .m b{color:var(--aqua);font-weight:500}
+.kbanner{position:relative;background:var(--yellow);color:var(--bg-void);padding:1.4rem 1rem}
+.kbanner::before,.kbanner::after{content:"";position:absolute;left:0;right:0;height:8px;background:repeating-linear-gradient(-45deg,var(--bg-void) 0 8px,var(--yellow) 8px 16px)}
+.kbanner::before{top:0}.kbanner::after{bottom:0}
+.kbanner b{font-family:var(--font-heading);font-size:1.8rem;text-transform:uppercase;line-height:1}
+
+/* Icons */
+.icons{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+.icon-cell{background:var(--bg-panel);border-top:4px solid var(--bg2);padding:1.1rem 1.25rem 1.3rem;display:flex;flex-direction:column;gap:.6rem}
+.icon-cell svg{width:96px;height:96px}
+.ico-row{display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap}
+
+/* Befunde */
+.findings{display:flex;flex-direction:column;gap:.8rem}
+.finding{background:var(--bg-panel);border-top:4px solid var(--c,var(--orange));padding:1rem 1.25rem 1.2rem;display:grid;grid-template-columns:auto minmax(0,1fr);gap:.3rem 1.1rem}
+.finding.bad{--c:var(--red)}.finding.warn{--c:var(--orange)}
+.finding .id{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.12em;color:var(--c);padding-top:.35rem;grid-row:1/3}
+.finding h3{font-size:1.25rem}
+.finding p{font-size:.92rem;color:var(--fg2)}
+.finding p b{color:var(--fg1);font-weight:500}
+@media(max-width:560px){.finding{grid-template-columns:minmax(0,1fr)}.finding .id{grid-row:auto;padding:0}}
+
+/* CP2077-Abgleich */
+.gap-bar{display:inline-flex;gap:3px;vertical-align:middle}
+.gap-bar i{width:14px;height:8px;background:var(--bg2)}
+.gap-bar i.on{background:var(--yellow)}
+
+/* Vorschläge */
+.prop{background:var(--bg-panel);border-top:4px solid var(--yellow);padding:1.4rem clamp(1rem,3vw,1.75rem) 1.8rem;display:flex;flex-direction:column;gap:1rem}
+.prop-head{display:flex;flex-wrap:wrap;gap:.4rem 1rem;align-items:baseline}
+.prop-head .id{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.14em;color:var(--yellow)}
+.prop p{font-size:.95rem;color:var(--fg2)}
+.prop ul{padding-left:1.1rem;font-size:.9rem;color:var(--fg2);display:flex;flex-direction:column;gap:.3rem;max-width:66ch}
+.prop li::marker{color:var(--yellow)}
+.ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.ba>div{background:var(--bg-hard);padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.7rem;min-width:0;border:1px solid var(--bg1)}
+.ba .lbl{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.ba .lbl.new{color:var(--signal)}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem}
+.role{background:var(--bg-hard);border-left:4px solid var(--c);padding:.55rem .75rem .65rem;display:flex;flex-direction:column;gap:.1rem}
+.role b{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--c);font-weight:500}
+.role span{font-size:.8rem;color:var(--fg2);line-height:1.35}
+
+/* V1 Cyan */
+.cands{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.7rem}
+.cand{display:flex;flex-direction:column;background:var(--bg-hard);border:1px solid var(--bg1)}
+.cand .fill{height:64px;display:flex;align-items:center;gap:.8rem;padding-inline:.9rem;background:var(--bg-panel)}
+.cand .fill i{display:block;width:34px;height:34px}
+.cand .fill span{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+.cand .txt{padding:.55rem .8rem .75rem;font-size:.8rem;color:var(--fg2);display:flex;flex-direction:column;gap:.1rem}
+.cand b{font-family:var(--font-mono);font-size:.72rem;font-weight:500;color:var(--fg0)}
+.cand.pick{outline:2px solid var(--signal);outline-offset:-2px}
+.ladder{display:flex;flex-wrap:wrap;gap:0;background:var(--bg-hard);padding:.8rem;border:1px solid var(--bg1)}
+.ladder div{flex:1 1 90px;min-width:0;display:flex;flex-direction:column;gap:.3rem;align-items:stretch}
+.ladder i{display:block;height:46px}
+.ladder small{font-family:var(--font-mono);font-size:.62rem;color:var(--fg3);letter-spacing:.04em;padding:0 .2rem}
+.ladder .hl small{color:var(--signal)}
+.duo{background:var(--bg-panel);padding:1.1rem 1.3rem 1.3rem;display:flex;flex-direction:column;gap:.9rem}
+.duo .rule{height:2px;background:var(--signal)}
+.duo .row{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;align-items:center}
+.sig-txt{color:var(--signal)}
+.derive{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem}
+.derive div{display:flex;flex-direction:column;background:var(--bg-hard);border:1px solid var(--bg1)}
+.derive i{display:block;height:40px}
+.derive span{padding:.45rem .65rem .6rem;font-size:.76rem;color:var(--fg2);line-height:1.35}
+.derive b{display:block;font-family:var(--font-mono);font-size:.7rem;font-weight:500;color:var(--fg0)}
+/* V3 Klammern */
+.brk{position:relative;padding:1.2rem 1.3rem;background:var(--bg-panel)}
+.brk::before,.brk::after,.brk>i::before,.brk>i::after{content:"";position:absolute;width:14px;height:14px;border:0 solid var(--yellow)}
+.brk::before{left:0;top:0;border-width:2px 0 0 2px}
+.brk::after{right:0;bottom:0;border-width:0 2px 2px 0}
+.brk>i::before{left:0;bottom:0;border-width:0 0 2px 2px}
+.brk>i::after{right:0;top:0;border-width:2px 2px 0 0}
+.brk>i{position:static}
+.notch{background:var(--yellow);color:var(--bg-void);padding:.9rem 1.2rem;font-family:var(--font-heading);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))}
+
+/* V4 HUD */
+.hud{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);display:flex;flex-wrap:wrap;gap:.3rem 1rem}
+.hud b{color:var(--yellow);font-weight:500}.hud em{color:var(--signal);font-style:normal}
+.hud-title{display:flex;flex-direction:column;gap:.2rem}
+
+/* V5/V6 Interaktion */
+.cta{--cut:12px;position:relative;display:inline-flex;align-items:center;padding:.75rem 1.8rem;background:var(--yellow);color:var(--bg-void);border:0;cursor:pointer;
+  font-family:var(--font-heading);font-weight:700;font-size:1.1rem;letter-spacing:.16em;text-transform:uppercase;
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)));
+  transition:--cut .18s ease,background .12s}
+.cta:hover,.cta:focus-visible{--cut:22px;background:#fdc94a}
+.cta:active{background:var(--fg0)}
+.cta:focus-visible{outline:2px solid var(--yellow);outline-offset:4px}
+.cta:active{transform:translate(2px,2px)}
+.stanz{display:inline-block;filter:drop-shadow(4px 4px 0 var(--bg2))}
+.glow{display:inline-block;filter:drop-shadow(0 0 10px rgba(250,189,47,.45))}
+.scan{position:relative;background:var(--bg-panel);padding:1.1rem 1.3rem;overflow:hidden}
+.scan::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(20,19,18,.14) 0 1px,transparent 1px 3px);pointer-events:none}
+.tab-demo{display:flex;gap:2px;flex-wrap:wrap}
+.tab-demo span{padding:.45rem 1.1rem;background:var(--bg1);color:var(--fg3);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.tab-demo span.on{background:var(--yellow);color:var(--bg-void)}
+@media(prefers-reduced-motion:reduce){.cta{transition:none}}
+
+/* V7 Creme als Papier */
+.sticker{display:inline-flex;align-items:center;gap:.7rem;background:var(--accent);color:var(--bg-void);padding:.55rem 1.1rem .55rem .8rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.sticker::before{content:"";width:.55rem;height:.55rem;background:var(--bg-void)}
+.sticker.y::before{background:var(--yellow);outline:2px solid var(--bg-void);outline-offset:-2px}
+.chip-row{display:flex;flex-wrap:wrap;gap:.6rem}
+.icotile{display:inline-flex;align-items:center;justify-content:center;width:88px;height:88px;background:var(--yellow);clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%)}
+.icotile svg{width:56px;height:56px}
+/* V7 alt */
+.yopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem}
+.yopt{display:flex;flex-direction:column;background:var(--bg-hard);border:1px solid var(--bg1)}
+.yopt .fill{height:64px;display:flex;align-items:center;padding-inline:.9rem;font-family:var(--font-heading);font-weight:700;font-size:1.5rem;text-transform:uppercase;letter-spacing:.06em;color:var(--bg-void)}
+.yopt div:last-child{padding:.5rem .8rem .7rem;font-size:.8rem;color:var(--fg2);display:flex;flex-direction:column;gap:.1rem}
+.yopt b{font-family:var(--font-mono);font-size:.72rem;font-weight:500;color:var(--fg0)}
+.yopt.pick{outline:2px solid var(--signal);outline-offset:-2px}
+
+/* V8 Licht */
+.lightdemo{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.lightdemo>div{padding:1rem;display:flex;flex-direction:column;gap:.6rem;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+.ld-old{background:#f0e9d6;color:#665c54}.ld-new{background:#f0e9d6;color:#665c54}
+.ld-old .b{background:#d79921;color:#8a5a00;padding:.55rem 1rem;font-family:var(--font-heading);font-weight:700;font-size:.95rem;letter-spacing:.14em}
+.ld-new .b{background:#fabd2f;color:#141312;padding:.55rem 1rem;font-family:var(--font-heading);font-weight:700;font-size:.95rem;letter-spacing:.14em}
+@media(max-width:420px){.lightdemo{grid-template-columns:1fr}}
+
+/* Priorität */
+.rating{display:inline-flex;gap:3px}
+.rating i{width:12px;height:12px;background:var(--bg2)}
+.rating i.on{background:var(--yellow)}
+
+footer{margin-top:clamp(3rem,7vw,5rem);border-top:1px solid var(--bg1);padding-block:2rem 3rem}
+footer p{font-size:.85rem;color:var(--fg3)}
+footer .line{width:64px;height:3px;background:var(--yellow);margin-bottom:1rem}
+</style>
+
+<div class="stripe" aria-hidden="true"></div>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">// Stilaudit · Stand 30.09.2026 · Repo shrippen.github.io</div>
+    <h1>Kante</h1>
+    <p>Kante hat sich in sechs Wochen von einer warmen Gruvbox-Palette zu einer eckigen, gelb dominierten Oberfläche entwickelt. Das Herz des Stils ist kohärent: warme Farben, Cyberpunk-Formen, freundlicher Retro-Ton. Widersprüche gibt es vor allem in Farbrollen und Doku. Die Formsprache der Referenz ist schon da. Ein gedämpftes Cyan als Gegenstück zum Amber führt sie weiter, ohne Neon, Kälte oder Glitch.</p>
+    <p style="margin-top:1rem"><a href="bauteile.html" style="color:var(--bg-void);font-family:var(--font-mono);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:underline">→ Bauteilkatalog und Bewegungslabor</a> &nbsp; <a href="luecken.html" style="color:var(--bg-void);font-family:var(--font-mono);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:underline">→ Lückenbericht der anderen Repos</a> &nbsp; <a href="ergaenzungen.html" style="color:var(--bg-void);font-family:var(--font-mono);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:underline">→ Auswertung Kante 1.5</a></p>
+    <div class="verdicts">
+      <div class="verdict ok ch"><b>4</b><span>Säulen kohärent</span></div>
+      <div class="verdict warn ch"><b>2</b><span>Säulen mit Drift</span></div>
+      <div class="verdict bad ch"><b>2</b><span>Brüche mit der Prämisse</span></div>
+      <div class="verdict info ch"><b>8</b><span>Verbesserungsvorschläge</span></div>
+    </div>
+  </div>
+</header>
+<div class="stripe" aria-hidden="true"></div>
+
+<main class="wrap">
+
+<!-- ENTWICKLUNG -->
+<section id="entwicklung">
+  <div class="head"><div class="eyebrow">// Entwicklung</div><h2>Von Gruvbox zur Kante</h2>
+  <p class="lead">Die Prämisse steht im ersten Commit. Alles Spätere lässt sich daran messen.</p></div>
+  <div class="timeline">
+    <div class="step"><time>19.08. · Ursprung</time><h3>Warm, dunkel, weich</h3><p>Gruvbox-Subset, „nie reines Schwarz oder Weiß“, Creme <code>#e8dcc4</code> als Familiensignatur, Blau als Primäraktion, Icons mit „Rounded corners, soft geometry“, Radius 12 px. Rajdhani kommt am selben Tag dazu: „eckig, kondensiert, leicht futuristisch“.</p></div>
+    <div class="step"><time>20.09. · Redesign</time><h3>Amber, Kante, Hazard</h3><p>Gelbe Install-Box, Hero-Name in Versalien, oben rechts abgeschnittene Boxen, Tier-Balken, Warnstreifen, Mono-Labels. Hier entsteht der Look, der heute Kante ist.</p></div>
+    <div class="step"><time>26.09. · Kante</time><h3>Ein Stil für Web und Apps</h3><p>Umbenennung, QML-Modul, Kante Light, Leinen-Theme. <code>--primary</code> ist jetzt Gelb. Die Doku beschreibt teils noch den Stand vom 19.08.</p></div>
+  </div>
+</section>
+
+<!-- BESTAND -->
+<section id="bestand">
+  <div class="head"><div class="eyebrow">// Bestand</div><h2>Der Stil heute</h2>
+  <p class="lead">Alle Elemente, wie sie in <code>tokens/variables.css</code> und <code>css/components.css</code> tatsächlich definiert sind.</p></div>
+
+  <div class="subhead">Farbe</div>
+  <div class="swatches">
+    <div class="sw"><i style="background:#141312"></i><div><b>bg-void</b><small>#141312</small><span>Seitengrund</span></div></div>
+    <div class="sw"><i style="background:#2a2826"></i><div><b>bg-panel</b><small>#2a2826</small><span>Karten</span></div></div>
+    <div class="sw"><i style="background:#3c3836"></i><div><b>bg1</b><small>#3c3836</small><span>Erhöhte Flächen</span></div></div>
+    <div class="sw"><i style="background:#504945"></i><div><b>bg2</b><small>#504945</small><span>Linien, Ränder</span></div></div>
+    <div class="sw"><i style="background:#fbf1c7"></i><div><b>fg0</b><small>#fbf1c7</small><span>Überschriften</span></div></div>
+    <div class="sw"><i style="background:#ebdbb2"></i><div><b>fg1</b><small>#ebdbb2</small><span>Fließtext</span></div></div>
+    <div class="sw"><i style="background:#a89984"></i><div><b>fg3</b><small>#a89984</small><span>Labels, Footer</span></div></div>
+    <div class="sw"><i style="background:#e8dcc4"></i><div><b>accent</b><small>#e8dcc4</small><span>Creme: nur noch Logo-Füllung</span></div></div>
+    <div class="sw hot"><i style="background:#fabd2f"></i><div><b>yellow</b><small>#fabd2f</small><span>Marke, Primär, Score, Tier, Warnung, „aktiv“ in Apps</span></div></div>
+    <div class="sw hot"><i style="background:#fe8019"></i><div><b>orange</b><small>#fe8019</small><span>Highlight, Hover, Warnrolle</span></div></div>
+    <div class="sw"><i style="background:#fb4934"></i><div><b>red</b><small>#fb4934</small><span>Fehler, Tier, Gefahr</span></div></div>
+    <div class="sw"><i style="background:#83a598"></i><div><b>blue</b><small>#83a598</small><span>Links, Info (nicht mehr Primär)</span></div></div>
+    <div class="sw"><i style="background:#8ec07c"></i><div><b>aqua</b><small>#8ec07c</small><span>Erfolg</span></div></div>
+    <div class="sw"><i style="background:#b8bb26"></i><div><b>green</b><small>#b8bb26</small><span>Diff, Badges</span></div></div>
+    <div class="sw"><i style="background:#d3869b"></i><div><b>purple</b><small>#d3869b</small><span>Tags (eine Stelle)</span></div></div>
+  </div>
+  <p class="meta">Orange umrandet: Farben, die mehrere Aufgaben tragen.</p>
+
+  <div class="subhead">Typografie</div>
+  <div class="type">
+    <div><span class="meta">Rajdhani 700 · Versalien</span><div class="specimen-h">Kader Andon</div><span class="meta">Hero, Titel, Buttons, Kartenüberschriften</span></div>
+    <div><span class="meta">JetBrains Mono · Labels</span><div class="specimen-m">Analysiert · 42 Bilder</div><div class="specimen-n">00:14:32</div><span class="meta">Labels, Figuren, Nav, Readouts</span></div>
+    <div><span class="meta">System-Sans · Fließtext</span><p style="font-size:1rem;color:var(--fg1)">Der Fließtext bleibt auf der Plattformschrift: lesbar und ohne Nachladen. Titel und Zahlen tragen den Charakter.</p></div>
+  </div>
+
+  <div class="subhead">Form und Komponenten</div>
+  <p>Signatur ist die abgeschnittene Ecke oben rechts (<code>--chamfer: 16px</code>). Boxen haben sonst keinen Radius, Buttons sind quadratisch, Flächen sind flach ohne Schatten. Ein farbiger Balken (4 px) am oberen Rand kodiert Priorität und Zustand.</p>
+  <div class="comp">
+    <div class="cell"><span class="meta">Install-Box</span>
+      <div class="install ch"><label>Installation</label><div class="cmd">kpackagetool6 -i kader.plasmoid</div><div class="btn-row"><span class="btn btn-dark">Download</span><span class="btn" style="border:2px solid var(--bg-void);padding-block:calc(.55rem - 2px)">GitHub</span></div></div></div>
+    <div class="cell"><span class="meta">Feature-Box mit Tier-Balken</span>
+      <div class="feat ch" style="--tier:var(--red)"><span class="tag">Tier rot</span><h3>Priorität</h3><p>Der Balken trägt die Bedeutung, der Text bleibt ruhig.</p></div>
+      <div class="feat ch" style="--tier:var(--yellow)"><span class="tag">Tier gelb</span><h3>Prüfen</h3><p>Gleiche Form, andere Bedeutung.</p></div></div>
+    <div class="cell"><span class="meta">Kachel · Fortschritt · Toast</span>
+      <div class="tile ch"><div class="img"></div><div class="m"><span>IMG_0142.dng</span><b>98 %</b></div></div>
+      <div class="progress"><div><span>Analyse</span><span>31 / 42</span></div><div class="bar"><i style="width:74%;background:var(--aqua)"></i><i style="width:12%;background:var(--yellow)"></i></div></div>
+      <div class="toast ch">Fertig: 42 Bilder zugeschnitten.</div></div>
+    <div class="cell"><span class="meta">Buttons · Pills · Callout</span>
+      <div class="btn-row"><span class="btn btn-y">Übernehmen</span><span class="btn btn-o">Abbrechen</span></div>
+      <div class="btn-row"><span class="pill ok">Fertig</span><span class="pill sig" style="--c:var(--blue)">Analysiert</span><span class="pill warn">Prüfen</span><span class="pill bad">Fehler</span></div>
+      <div class="callout ch">Experimentell: Dieses Projekt ist mit KI-Unterstützung entstanden.</div></div>
+    <div class="cell"><span class="meta">Banner mit Warnstreifen</span>
+      <div class="kbanner"><b>Noch nicht fertig</b></div></div>
+  </div>
+
+  <div class="subhead">Icons (Stand heute)</div>
+  <div class="icons">
+    <div class="icon-cell ch"><div class="ico-row">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#E8DCC4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="10" width="42" height="28" rx="3"/><rect x="7" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="15" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="23" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="7" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="15" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="23" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/></svg>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="#E8DCC4"><rect x="13.5" y="6.5" width="6" height="6" rx="1.4"/><rect x="20.5" y="6.5" width="6" height="6" rx="1.4"/><rect x="6.5" y="13.5" width="6" height="6" rx="1.4"/><rect x="13.5" y="20.5" width="6" height="6" rx="1.4"/><rect x="20.5" y="20.5" width="6" height="6" rx="1.4"/><rect x="13.5" y="34.5" width="6" height="6" rx="1.4"/></g><rect x="34.5" y="6.5" width="6" height="34" rx="1.4" fill="#FABD2F"/></svg></div>
+      <span class="meta">Kader und Kurrent: 48-px-Raster, Creme, gerundete Kappen, gelber Akzent</span></div>
+    <div class="icon-cell ch"><p style="font-size:.92rem;color:var(--fg2)">Die Icons behalten die Regel vom 19.08.: „Rounded corners, soft geometry“. Rahmen und Boxen sind scharf mit Schräge, die Zeichen darin sind weich. Diesen Kontrast gibt es bewusst: er macht den Stil freundlicher als reiner Cyberpunk.</p></div>
+  </div>
+</section>
+
+<!-- BEFUND -->
+<section id="befund">
+  <div class="head"><div class="eyebrow">// Befund</div><h2>Kohärenz mit der Ursprungsprämisse</h2></div>
+  <div class="tw"><table>
+    <thead><tr><th>Säule der Prämisse</th><th>Ursprung</th><th>Heute</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Warm und dunkel</td><td>Gruvbox-Neutrale, nie reines Schwarz oder Weiß</td><td><code>#141312</code> Grund, <code>#fbf1c7</code> Überschrift. Warme Neutrale sind überall durchgezogen.</td><td><span class="pill ok">Kohärent</span></td></tr>
+      <tr><td>Rajdhani als Futuristik-Träger</td><td>Nur Überschriften, System-Sans sonst</td><td>Versalien in fast allen Titeln, Buttons und Labels. JetBrains Mono ergänzt. Gestärkt, nicht verwässert.</td><td><span class="pill ok">Kohärent</span></td></tr>
+      <tr><td>Eine Palette für Web und Apps</td><td>Plasma-Widgets folgen der Plattform</td><td>System bleibt Standard, Kante und Kante Light sind Opt-in. <code>check-tokens.py</code> sichert die Werte.</td><td><span class="pill ok">Kohärent</span></td></tr>
+      <tr><td>Creme als Familiensignatur</td><td>Logo, Badges, „Hero-Akzent“</td><td>Creme ist nur noch Logo-Füllung. Die Marke tragen Gelb-Fläche, Primär-Button, Nav-Highlight und Footer-Linie.</td><td><span class="pill warn">Drift</span></td></tr>
+      <tr><td>Semantische Rollen</td><td>Gelb = Warnung, Orange = aktiv, Blau = Primär</td><td>Gelb trägt Marke, Primär, Score, Tier und „aktiv“ in Apps. Orange ist Hover, Highlight und Warnrolle.</td><td><span class="pill warn">Drift</span></td></tr>
+      <tr><td>Blau als Primäraktion</td><td>Links und Buttons blau, Hover 10 % dunkler</td><td>Primär ist Gelb, Hover ist Orange. Doku, Badges (<code>83a598</code> für Tech) und Landing-Regeln sagen weiter Blau.</td><td><span class="pill bad">Bruch</span></td></tr>
+      <tr><td>Weiche Geometrie</td><td>Icons und Boxen mit Radius (<code>--radius: 12px</code>)</td><td>Boxen scharf mit Schräge, Icons bewusst weiter gerundet. Der Token <code>--radius</code> ist ungenutzt, Kante Light kennt 4 px, 1 rem (Pill) und 50 % (Schalter).</td><td><span class="pill ok">Kohärent, bewusst</span></td></tr>
+      <tr><td>Tiefe durch Schatten</td><td>Screenshot mit „deep box-shadow“</td><td><code>clip-path</code> schneidet jeden <code>box-shadow</code> an Kante-Boxen ab. Die Regel existiert, wirkt aber nicht.</td><td><span class="pill bad">Bruch</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="findings">
+    <div class="finding bad ch"><span class="id">B1</span><h3>Zwei Wahrheiten für „Primär“</h3><p><b>Die Doku sagt Blau, der Code sagt Gelb.</b> Neue Projekte, die der README folgen, bauen blaue Buttons. Auch <code>.btn-accent</code> wechselt beim Hover von Gelb nach Orange, die Doku fordert „10 % dunkler“.</p></div>
+    <div class="finding bad ch"><span class="id">B2</span><h3>Tote Regeln in der Doku</h3><p><b><code>--radius</code> (Rundung gilt nur noch für Icons und Kante Light), Screenshot-Schatten, „hero gradient“ auf <code>bg-hard</code>, „--accent als Hero-Akzent“.</b> Alles beschreibt den Stand vom 19.08. Zusätzlich liegt in <code>components.css</code> (Zeile 251) noch eine hart einkopierte Dark-Palette neben den Tokens, die <code>check-tokens.py</code> nicht abdeckt.</p></div>
+    <div class="finding warn ch"><span class="id">D1</span><h3>Gelb ist überladen</h3><p><b>Marke, Primär, Score, Tier-Mitte und Warnung teilen sich einen Farbton.</b> Ein gelber Balken kann „wichtig“, „Achtung“ oder „nur Marke“ heißen. Das Warn-Callout und der Primär-Button sehen gleich aus. Purple und Green tragen je nur eine Nebenrolle.</p></div>
+    <div class="finding warn ch"><span class="id">D2</span><h3>Creme ist arbeitslos</h3><p><b>Die ursprüngliche Marke wurde von Gelb überholt.</b> Ohne neue Aufgabe bleibt Creme ein Logo-Relikt, das weder Tinte noch Marke ist.</p></div>
+    <div class="finding warn ch"><span class="id">D3</span><h3>Kleine Inkonsistenzen</h3><p>Balkenstärke 4 px an Karten, aber 3 px am Toast und 2 px an Fakten. Fokus ist überall Gelb, in Kante Light Breeze-Blau (gewollt, aber ohne Regel). Rundungen in Kante Light sind drei Formen statt einer.</p></div>
+  </div>
+</section>
+
+<!-- CYBERPUNK -->
+<section id="cyberpunk">
+  <div class="head"><div class="eyebrow">// Referenz</div><h2>Kante gegen Cyberpunk 2077</h2>
+  <p class="lead">Ziel ist ein warmes, freundliches Retro-Cyberpunk: die Formsprache der Referenz, aber Gruvbox-Wärme, ein gedämpftes Cyan und weiche Icons. Kante hat die Grundlage schon: Gelb auf Schwarz, Schnittkanten, Warnstreifen, eckige Kondensierte, Mono-Daten. Der Abgleich beruht auf der allgemeinen Spiel-UI-Sprache, nicht auf einem offiziellen Styleguide.</p></div>
+  <div class="tw"><table>
+    <thead><tr><th>Merkmal der Referenz</th><th>Kante heute</th><th>Lücke</th></tr></thead>
+    <tbody>
+      <tr><td>Schwarz-auf-Gelb als Markenfläche</td><td>Install-Box, Banner, Primär-Button</td><td><span class="gap-bar"><i class="on"></i><i></i><i></i><i></i></span> klein</td></tr>
+      <tr><td>Schnittkanten, Kerben an mehreren Ecken</td><td>Nur oben rechts, nur an Boxen</td><td><span class="gap-bar"><i class="on"></i><i class="on"></i><i></i><i></i></span> mittel</td></tr>
+      <tr><td>Warnstreifen, Eckklammern, Fadenkreuz-Details</td><td>Streifen nur im Banner, Griffe im Crop-Editor</td><td><span class="gap-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span> mittel bis groß</td></tr>
+      <tr><td>HUD-Daten: Codes, Präfixe, Zähler mit Nullen</td><td>Mono-Labels und Readouts, aber ohne Rahmensprache</td><td><span class="gap-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span> mittel bis groß</td></tr>
+      <tr><td>Duotone Gelb + Cyan</td><td>Gelb, dazu graues Blau <code>#83a598</code></td><td><span class="gap-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span> mittel bis groß, V1</td></tr>
+      <tr><td>Eckige, kondensierte Titelschrift</td><td>Rajdhani, Versalien, große Namen</td><td><span class="gap-bar"><i></i><i></i><i></i><i></i></span> keine</td></tr>
+      <tr><td>Bildschirm-Textur (Scanlines, Röhrenleuchten)</td><td>Flach, nur Pulse und Farbwechsel</td><td><span class="gap-bar"><i class="on"></i><i class="on"></i><i></i><i></i></span> klein, optional</td></tr>
+    </tbody>
+  </table></div>
+  <div class="ba">
+    <div><span class="lbl new">Bewusst übernommen</span><p style="font-size:.9rem;color:var(--fg2)">Schnittkanten, Kerben, Warnstreifen, Klammern, HUD-Beschriftung, kondensierte Versalien, Schwarz auf Gelb und das Duo aus Gelb und Cyan.</p></div>
+    <div><span class="lbl">Bewusst nicht übernommen</span><p style="font-size:.9rem;color:var(--fg2)">Reines Neon-Cyan und kalte Kontraste, Glitch- und Störeffekte, harte Icons. Die Farben bleiben Gruvbox, ergänzt um ein gedämpftes Cyan.</p></div>
+  </div>
+  <p><b style="color:var(--fg1);font-weight:500">Was ich nicht anfasse:</b> die warmen Neutralen, das Amber, die Kante oben rechts als Signatur, die weichen Icons, System als Standard in Apps und das Prinzip „Tint, do not paint“ auf Plasma-Glas.</p>
+</section>
+
+<!-- VORSCHLÄGE -->
+<section id="vorschlaege">
+  <div class="head"><div class="eyebrow">// Vorschläge</div><h2>Acht Änderungen</h2>
+  <p class="lead">V1 bis V3 bereinigen die Widersprüche. V4 bis V8 führen die Cyberpunk-Formsprache weiter, in warmen Farben, mit einem gedämpften Cyan und ohne Glitch. Die Vorschau zeigt jeweils, wie es aussehen würde.</p></div>
+
+  <!-- V1 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V1</span><h3>Jede Farbe bekommt eine Aufgabe, dazu ein harmonisiertes Cyan</h3><span class="pill bad">löst B1, D1</span></div>
+    <p>Das Cyan kommt als Gegenstück zum Amber und ersetzt das graue Blau <code>#83a598</code>. Damit hat Kante eine Marken-Ebene (Gelb: Flächen, Aktionen) und eine Technik-Ebene (Cyan: Linien, Klammern, Zähler, Links). Zwei fast komplementäre Farben, wie bei Amber-und-Teal-Röhrenmonitoren. Damit es warm und freundlich bleibt, gelten diese Regeln.</p>
+
+    <div class="subhead">Der Wert: gleiche Stufe wie die Gruvbox-Brights</div>
+    <div class="cands">
+      <div class="cand"><div class="fill"><i style="background:#7fbfb8"></i><span style="color:#7fbfb8">Zu grau</span></div><div class="txt"><b>#7fbfb8 · Variante A</b><span>Sättigung 33 %, fast das alte Blau. Der Duotone-Effekt bleibt aus.</span></div></div>
+      <div class="cand pick"><div class="fill"><i style="background:#5ccfc4"></i><span style="color:#5ccfc4">Kante-Cyan</span></div><div class="txt"><b>#5ccfc4 · Empfehlung</b><span>Farbton 174°, Helligkeit 59 % wie Gelb (58 %) und Rot (59 %). Kontrast 9,9 : 1 auf <code>#141312</code>, 7,8 : 1 auf Karten.</span></div></div>
+      <div class="cand"><div class="fill"><i style="background:#2fe6dc"></i><span style="color:#2fe6dc">Zu neon</span></div><div class="txt"><b>#2fe6dc · Variante C</b><span>Sättigung 79 %, kalt und grell. Bricht die Gruvbox-Wärme.</span></div></div>
+    </div>
+
+    <div class="ladder" aria-label="Helligkeitsleiter der Signalfarben">
+      <div><i style="background:#fabd2f"></i><small>Gelb 58 %</small></div>
+      <div><i style="background:#fe8019"></i><small>Orange 55 %</small></div>
+      <div><i style="background:#fb4934"></i><small>Rot 59 %</small></div>
+      <div><i style="background:#d3869b"></i><small>Purple 68 %</small></div>
+      <div><i style="background:#8ec07c"></i><small>Aqua 62 %</small></div>
+      <div class="hl"><i style="background:#5ccfc4"></i><small>Cyan 59 %</small></div>
+    </div>
+
+    <div class="subhead">Regeln für die Harmonie</div>
+    <ul>
+      <li><b style="color:var(--fg1);font-weight:500">Zwei Ebenen.</b> Gelb ist Fläche und Aktion. Cyan ist Linie, Klammer, Zähler, Link und Fokus in Daten. Cyan füllt nie eine große Fläche.</li>
+      <li><b style="color:var(--fg1);font-weight:500">Mengenverhältnis.</b> Warme Neutrale etwa 80 %, Gelb bis 15 %, Cyan bis 5 %. Wo Cyan auftaucht, steht Gelb in der Nähe, nie Orange oder Rot als Gegenspieler.</li>
+      <li><b style="color:var(--fg1);font-weight:500">Zustandsfarben bleiben Zustand.</b> Orange nur Warnung, Rot nur Gefahr, Aqua nur Erfolg. Sie stehen nie als Dekor neben Cyan.</li>
+      <li><b style="color:var(--fg1);font-weight:500">Tinte ist immer Gruvbox-Schwarz.</b> Text auf Cyan ist <code>#141312</code> (9,9 : 1), nie reines Schwarz.</li>
+      <li><b style="color:var(--fg1);font-weight:500">Kein Verlauf und kein Leuchten in Cyan.</b> Das Röhrenleuchten (V8) bleibt Amber.</li>
+    </ul>
+
+    <div class="subhead">Abgeleitete Stufen</div>
+    <div class="derive">
+      <div><i style="background:#5ccfc4"></i><span><b>cyan</b>Text, Linien, Klammern, Links. #5ccfc4</span></div>
+      <div><i style="background:#3f9a94"></i><span><b>cyan-n</b>Ruhige Linien, deaktiviert. #3f9a94 (nur Linien, 4,4 : 1 auf Karten)</span></div>
+      <div><i style="background:#1e2b2a;border-bottom:1px solid #3f9a94"></i><span><b>cyan-tint</b>Hintergrund für Auswahl und aktive Zeile. #1e2b2a</span></div>
+      <div><i style="background:#f0e9d6;display:flex;align-items:center;padding-left:.65rem;color:#0f6b66;font-family:var(--font-mono);font-size:.8rem">Link</i><span><b>cyan-ink</b>Für Leinen: #0f6b66, 5,2 : 1 auf <code>#f0e9d6</code></span></div>
+    </div>
+
+    <div class="ba">
+      <div><span class="lbl">Vorher: Blaugrau, Warnung und Primär beide Gelb</span>
+        <div class="callout ch">Diese Datei wird überschrieben.</div>
+        <div class="btn-row"><span class="btn btn-y">Übernehmen</span></div>
+        <span class="hud"><b>v0.4.0</b><span style="color:#83a598">42 bilder</span></span></div>
+      <div><span class="lbl new">Nachher: Gelb und Cyan tragen, Orange nur Warnung</span>
+        <div class="callout ch" style="border-top-color:var(--orange)">Diese Datei wird überschrieben.</div>
+        <div class="btn-row"><span class="btn btn-y">Übernehmen</span></div>
+        <span class="hud"><b>v0.4.0</b><em>42 bilder</em></span></div>
+    </div>
+
+    <div class="duo ch">
+      <span class="hud"><b>// Kader</b><em>analyse läuft</em><span>031 / 042</span></span>
+      <div class="rule"></div>
+      <div class="row"><span class="cta-lite btn btn-y ch" style="--chamfer:10px">Übernehmen</span><span style="font-family:var(--font-mono);font-size:.8rem;letter-spacing:.06em">Weitere Infos in der <a href="#vorschlaege" class="sig-txt">Dokumentation</a></span><span class="pill" style="--c:var(--signal)">Aktiv</span></div>
+    </div>
+
+    <div class="roles">
+      <div class="role" style="--c:var(--yellow)"><b>Gelb</b><span>Marke, Primär, Score</span></div>
+      <div class="role" style="--c:var(--signal)"><b>Cyan</b><span>Links, Info, Fokus in Daten, aktive Auswahl</span></div>
+      <div class="role" style="--c:var(--orange)"><b>Orange</b><span>Warnung (Callout, Tier Mitte)</span></div>
+      <div class="role" style="--c:var(--red)"><b>Rot</b><span>Gefahr, Fehler, Tier hoch</span></div>
+      <div class="role" style="--c:var(--aqua)"><b>Aqua</b><span>Erfolg, Online (nimmt Green auf)</span></div>
+      <div class="role" style="--c:var(--purple)"><b>Purple</b><span>Nur Tags und Kategorien</span></div>
+    </div>
+    <ul><li>Neue Tokens <code>--cyan</code>, <code>--cyan-n</code>, <code>--cyan-tint</code>, <code>--cyan-ink</code> in <code>palette.json</code>. <code>--blue</code> wird als Alias auf <code>--cyan</code> geführt, bis alle Projekte umgestellt sind. Dazu <code>--warn</code> und <code>--danger</code> als Rollennamen.</li><li>Die Zahl der Farbtöne sinkt von sieben auf sechs. In Kante Light bleibt die Plattformfarbe.</li></ul>
+  </article>
+
+  <!-- V2 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V2</span><h3>Weiche Icons in harten Rahmen als Regel festschreiben</h3><span class="pill ok">bestätigt die Rundung</span></div>
+    <p>Die Rundung der Icons bleibt. Sie wird als Regel dokumentiert, damit sie nicht zufällig wirkt: Zeichen sind weich, Behälter sind scharf. Wo ein Icon allein steht, bekommt es einen Rahmen mit Schnittkante, etwa als gelbe Kachel im Nav oder auf der Übersicht.</p>
+    <div class="ba">
+      <div><span class="lbl">Vorher: Icon frei auf dem Grund</span>
+        <svg width="96" height="96" viewBox="0 0 48 48" fill="none" stroke="#E8DCC4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-label="Kader"><rect x="3" y="10" width="42" height="28" rx="3"/><rect x="7" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="15" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="23" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="7" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="15" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="23" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/></svg></div>
+      <div><span class="lbl new">Nachher: gleiches Icon in Kante-Kachel</span>
+        <div class="chip-row"><span class="icotile"><svg viewBox="0 0 48 48" fill="none" stroke="#141312" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-label="Kader"><rect x="3" y="10" width="42" height="28" rx="3"/><rect x="7" y="13" width="3" height="3" fill="#141312" stroke="none"/><rect x="15" y="13" width="3" height="3" fill="#141312" stroke="none"/><rect x="23" y="13" width="3" height="3" fill="#141312" stroke="none"/><rect x="7" y="32" width="3" height="3" fill="#141312" stroke="none"/><rect x="15" y="32" width="3" height="3" fill="#141312" stroke="none"/><rect x="23" y="32" width="3" height="3" fill="#141312" stroke="none"/></svg></span>
+        <span class="icotile" style="background:var(--bg1)"><svg viewBox="0 0 48 48" fill="none" stroke="#E8DCC4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-label="Kader"><rect x="3" y="10" width="42" height="28" rx="3"/><rect x="7" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="15" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="23" y="13" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="7" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="15" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/><rect x="23" y="32" width="3" height="3" fill="#E8DCC4" stroke="none"/></svg></span></div></div>
+    </div>
+    <ul><li>Regel für <code>README.md</code>: „Zeichen weich, Rahmen scharf“. Icons selbst bleiben unverändert, kein Redraw nötig.</li><li>Der Aufwand ist klein: nur Nav, Footer und Übersicht bekommen die Kachel.</li></ul>
+  </article>
+
+  <!-- V3 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V3</span><h3>Doku auf den Code ziehen</h3><span class="pill bad">löst B1, B2</span></div>
+    <p>README, <code>conventions.md</code> und Badge-Format beschreiben Kante so, wie es heute gebaut ist. Die harte Palette in <code>components.css</code> wird durch Token-Verweise ersetzt und in <code>check-tokens.py</code> aufgenommen.</p>
+    <ul><li>Primär ist Gelb, Hover ist „ein Schritt heller“, nicht Orange.</li><li><code>--radius</code> entfällt. Rundung gibt es nur in Icons (Regel V2) und in Kante Light (4 px für Felder).</li><li>Screenshots bekommen statt des Schattens eine 1-px-Linie und Klammern (V4).</li><li>Badges: Version in Gelb statt Creme, Tech in Cyan statt Blaugrau, Lizenz Grau.</li><li>Kante-Balken einheitlich 4 px, Toast eingeschlossen.</li></ul>
+  </article>
+
+  <!-- V4 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V4</span><h3>Zweite Schnittkante, Eckklammern, Kerben</h3><span class="pill sig">CP 2077</span></div>
+    <p>Die Kante oben rechts bleibt Signatur jeder Box. Große, aktive Flächen bekommen zusätzlich eine Schräge unten links. Bilder, Bühnen und Screenshots tragen Eckklammern statt eines Schattens. Tabs sind gekerbte Laschen.</p>
+    <div class="ba">
+      <div><span class="lbl">Vorher: Box mit einer Kante</span><div class="install ch"><label>Installation</label><div class="cmd">kpackagetool6 -i kader.plasmoid</div></div></div>
+      <div><span class="lbl new">Nachher: Primärfläche mit Doppelschnitt</span>
+        <div class="install" style="clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))"><label>Installation</label><div class="cmd">kpackagetool6 -i kader.plasmoid</div></div></div>
+      <div><span class="lbl new">Eckklammern für Bühne und Screenshot</span>
+        <div class="brk"><i></i><span class="hud"><b>Bild 042</b><span>3:2</span><em>Fokus</em></span></div></div>
+      <div><span class="lbl new">Gekerbte Tabs</span>
+        <div class="tab-demo"><span class="on">Übersicht</span><span>Zuschnitt</span><span>Export</span></div></div>
+    </div>
+    <ul><li>Doppelschnitt nur für <code>.install-card</code>, <code>.dialog</code> und die Hero-Kachel, damit die Signatur nicht verwässert.</li><li>Nach QML: <code>KanteCard</code> bekommt <code>chamferBottom</code>.</li></ul>
+  </article>
+
+  <!-- V5 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V5</span><h3>HUD-Ebene: Labels, die Daten sind</h3><span class="pill sig">CP 2077</span></div>
+    <p>Mono-Labels bekommen ein Präfix, feste Ziffernbreite und farbige Werte. Eine Statuszeile unter dem Hero-Namen nennt Version, Plattform und Lizenz wie eine Systemmeldung. Die Struktur ist Information: dieselben Felder stehen bei jedem Projekt an derselben Stelle.</p>
+    <div class="ba">
+      <div><span class="lbl">Vorher</span>
+        <div class="hud-title"><div class="specimen-h" style="font-size:2.2rem">Kader</div><span class="meta" style="letter-spacing:.14em;text-transform:uppercase">Version 0.4.0 · Plasma 6 · GPL-3.0</span></div></div>
+      <div><span class="lbl new">Nachher</span>
+        <div class="hud-title"><div class="specimen-h" style="font-size:2.2rem">Kader</div><span class="hud">// <b>v0.4.0</b> · <span>plasma 6</span> · <em>gpl-3.0</em> · <span>status ok</span></span></div></div>
+    </div>
+    <ul><li>Zähler in Kacheln und Readouts mit führenden Nullen (<code>042 / 128</code>), <code>tabular-nums</code> ist schon gesetzt.</li><li>Abschnittsmarken heißen <code>// Befund</code>. Diese Seite nutzt sie bereits.</li></ul>
+  </article>
+
+  <!-- V6 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V6</span><h3>Hover als Schnitt, Klick als Stanze</h3><span class="pill sig">CP 2077</span></div>
+    <p>Kante hat fast keine Interaktionssprache. Vorschlag: Beim Hover wächst die Schnittkante. Beim Klick rastet der Button zwei Pixel ein, wie eine Taste. Der Fokus ist ein gelber Rahmen mit Abstand. Alles ruhig, unter 0,2 s und aus bei <code>prefers-reduced-motion</code>. Titel und Text bleiben still.</p>
+    <div class="ba">
+      <div><span class="lbl new">Button: Schnitt wächst, Klick rastet ein</span><span class="stanz"><button class="cta" type="button" id="cta-demo">Übernehmen</button></span></div>
+      <div><span class="lbl new">Pill und Tab: nur Farbwechsel</span><div class="tab-demo"><span class="on">Übersicht</span><span>Zuschnitt</span></div></div>
+    </div>
+    <ul><li>Animiert wird <code>--cut</code> über <code>@property</code>. Wo das fehlt, bleibt die Kante statisch.</li><li>Der harte, unscharfe Versatzschatten (<code>filter: drop-shadow</code> auf einem Wrapper) ersetzt den Schatten, den <code>clip-path</code> abschneidet.</li></ul>
+  </article>
+
+  <!-- V7 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V7</span><h3>Creme als Papier: Aufkleber, Etiketten, Marken</h3><span class="pill bad">löst D2</span></div>
+    <p>Das Amber <code>#fabd2f</code> bleibt unverändert, es ist der Kern der Gruvbox-Wärme. Creme bekommt eine neue Aufgabe: sie ist das Papier des Stils. Etiketten, Versions-Aufkleber und Badges sind cremefarbene Flächen mit dunkler Tinte und Schnittkante. Das gibt dem Stil den freundlichen Retro-Charakter von Gerätelabels und Kassetten.</p>
+    <div class="ba">
+      <div><span class="lbl new">Aufkleber</span><div class="chip-row"><span class="sticker">v0.4.0</span><span class="sticker y">Plasma 6</span><span class="sticker">GPL-3.0</span></div></div>
+      <div><span class="lbl new">Etikett im Footer</span><div class="chip-row"><span class="sticker" style="padding-block:.7rem">Kader · Made in Graufeld</span></div></div>
+    </div>
+    <ul><li>Nur Text auf Creme in <code>--bg-void</code>, nie Creme auf Gelb.</li><li>Ersetzt die shields.io-Badges durch eigene Aufkleber, gleiche Farben wie heute.</li></ul>
+  </article>
+
+  <!-- V8 -->
+  <article class="prop">
+    <div class="prop-head"><span class="id">V8</span><h3>Warmes Röhrenleuchten und ein Leinen-Theme mit Gelb</h3><span class="pill sig">CP 2077</span></div>
+    <p>Kante ist bewusst flach. Ein einziger Leuchtakzent gibt Tiefe, ohne den Stil zu ändern: ein weiches Amber-Leuchten unter dem Primär-Button, wie eine Röhre im Gerät. <code>clip-path</code> schneidet <code>box-shadow</code> ab, deshalb läuft es über <code>filter: drop-shadow</code> auf einem Wrapper. Scanlines nur als feines Raster über Bildbühnen, in Gruvbox-Schwarz. Leinen bekommt sein Gelb zurück: Schwarz auf Gelb wie im Dunkeln, statt Braun auf Ocker.</p>
+    <div class="ba">
+      <div><span class="lbl new">Leuchtender Primär-Button</span><span class="glow"><span class="btn btn-y ch" style="--chamfer:12px;padding:.7rem 1.8rem;font-size:1.1rem">Übernehmen</span></span></div>
+      <div><span class="lbl new">Scanlines auf der Bühne</span><div class="scan ch"><span class="hud"><b>Bühne</b><span>IMG_0142</span><em>Live</em></span></div></div>
+      <div><span class="lbl">Leinen heute: Ocker mit braunem Text</span><div class="lightdemo" style="grid-template-columns:1fr"><div class="ld-old"><span class="b ch">Übernehmen</span></div></div></div>
+      <div><span class="lbl new">Leinen künftig: Gelb mit Tinte</span><div class="lightdemo" style="grid-template-columns:1fr"><div class="ld-new"><span class="b ch">Übernehmen</span></div></div></div>
+    </div>
+  </article>
+
+  <div class="head" style="margin-top:1.4rem"><h3>Reihenfolge nach Wirkung und Aufwand</h3></div>
+  <div class="tw"><table>
+    <thead><tr><th>Vorschlag</th><th>Wirkung</th><th>Aufwand</th><th>Berührt</th></tr></thead>
+    <tbody>
+      <tr><td>V3 Doku auf den Code ziehen</td><td><span class="rating"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="rating"><i class="on"></i><i></i><i></i><i></i></span></td><td>README, conventions.md, Badges, check-tokens.py</td></tr>
+      <tr><td>V1 Farbrollen und Cyan</td><td><span class="rating"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td><td><span class="rating"><i class="on"></i><i class="on"></i><i></i><i></i></span></td><td>palette.json, variables.css, KantePalette, Links, Badges, Tier-Regeln</td></tr>
+      <tr><td>V6 Hover und Klick</td><td><span class="rating"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="rating"><i class="on"></i><i></i><i></i><i></i></span></td><td>components.css</td></tr>
+      <tr><td>V5 HUD-Ebene</td><td><span class="rating"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="rating"><i class="on"></i><i></i><i></i><i></i></span></td><td>Template, Labels, Kachel-Zähler</td></tr>
+      <tr><td>V4 Zweite Schnittkante, Klammern</td><td><span class="rating"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="rating"><i class="on"></i><i class="on"></i><i></i><i></i></span></td><td>components.css, KanteCard</td></tr>
+      <tr><td>V7 Creme als Papier</td><td><span class="rating"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td><td><span class="rating"><i class="on"></i><i></i><i></i><i></i></span></td><td>Badges, Footer, Social-Previews</td></tr>
+      <tr><td>V8 Leuchten, Leinen-Gelb</td><td><span class="rating"><i class="on"></i><i class="on"></i><i></i><i></i></span></td><td><span class="rating"><i class="on"></i><i></i><i></i><i></i></span></td><td>components.css, Leinen-Tokens</td></tr>
+      <tr><td>V2 Icon-Regel und Kacheln</td><td><span class="rating"><i class="on"></i><i class="on"></i><i></i><i></i></span></td><td><span class="rating"><i class="on"></i><i></i><i></i><i></i></span></td><td>README, Nav, Footer, Übersicht</td></tr>
+    </tbody>
+  </table></div>
+  <p>Empfehlung: erst V3, V1 und V2 (klein, klären die Regeln), dann V4, V5 und V7 als eine Runde, zuletzt V6 und V8 als feine Politur. Kein Vorschlag erfordert neue Icons. Cyan ist die einzige neue Farbe und ersetzt das Blau.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap"><div class="line"></div>
+  <p>Grundlage: <code>kante/README.md</code>, <code>tokens/variables.css</code>, <code>css/components.css</code>, <code>docs/assets/icons</code> und der Git-Verlauf ab 19.08.2026. Die Komponentenvorschauen sind vereinfachte Nachbauten der echten Klassen.</p></div>
+</footer>
+
+</body>
+</html>

@@ -8,6 +8,8 @@ This document defines the **palette, typographic rules, icon style, landing-page
 
 Gruvbox-inspired, warm, dark-first.
 
+> **Rule for every project.** The GUIs of all shrippen projects are generated from Kante, not inspired by it; a missing element is added to Kante first. Only the Kimai plugins are different: they use Knust, Kante's spinoff for Kimai. The rule text for the projects' `agent.md` is in [`AGENT-RULE.md`](AGENT-RULE.md).
+
 ---
 
 ## Quick reference
@@ -23,11 +25,12 @@ Gruvbox-inspired, warm, dark-first.
 | `fg2` | `#d5c4a1` | Secondary / muted text |
 | `fg3` | `#a89984` | Placeholder, disabled, footer |
 | `accent` | `#e8dcc4` | Brand warm-cream (icon fills, hero emphasis) |
-| `blue` | `#83a598` | Primary action, links, interactive |
+| `yellow` | `#fabd2f` | Brand, primary action, selection fill, score |
+| `cyan` | `#5ccfc4` | Technical layer: focus, links, data, brackets, info (lines and text, never large fills) |
+| `blue` | `#83a598` | Kept for existing assets; roles moved to `cyan` |
 | `aqua` | `#8ec07c` | Success, confirm, online |
 | `green` | `#b8bb26` | Positive diff, badges |
-| `yellow` | `#fabd2f` | Warnings, attention |
-| `orange` | `#fe8019` | Active / highlight |
+| `orange` | `#fe8019` | Warning (callout, banner, middle state) |
 | `red` | `#fb4934` | Error, destructive, high priority |
 | `purple` | `#d3869b` | Tags, categories, decorative |
 
@@ -44,8 +47,9 @@ The palette is a **warm-shifted Gruvbox Dark** subset.
 - **Background** is Gruvbox `dark0` (`#282828`), not pure black. `bg-hard` (`#1d2021`) is reserved for maximum-depth areas (hero gradients, code blocks).
 - **Foreground** is Gruvbox `light1` (`#ebdbb2`) for body and `light0` (`#fbf1c7`) for headings. Never pure white.
 - **Brand accent** is `#e8dcc4` — the cream tone already used in the Kurrent icon mark and badges. This is the family's signature: monochrome icon fills and version badges use it.
-- **Primary action** color is Gruvbox `bright_blue` (`#83a598`), not KDE's Breeze blue — but in Plasma widgets the native `Kirigami.Theme.highlightColor` takes over; the shared blue only applies to web pages and standalone assets.
-- The remaining Gruvbox brights slot into semantic roles (aqua = success, orange = highlight, red = error, etc.) so every project draws from the same well without inventing one-off hues.
+- **Primary action** is yellow (`--primary`), a fill with dark ink. In Plasma widgets the native `Kirigami.Theme.highlightColor` takes over.
+- **Cyan** (`#5ccfc4`) is amber's counterpart and the only colour Kante adds to Gruvbox. Its lightness (59 %) matches yellow (58 %) and red (59 %). Yellow is surface and action, cyan is line, bracket, counter, link and focus. Rough proportion on a page: 80 % warm neutrals, up to 15 % yellow, up to 5 % cyan. Cyan never fills a large area and never glows.
+- **One task per colour**, as roles in `tokens/variables.css`: `--primary` (yellow), `--focus`, `--link`, `--info`, `--hl` (cyan), `--warn` (orange), `--danger` (red), aqua for success, purple for tags. Components use the roles, not the colour names.
 
 ### Light theme ("Leinen")
 
@@ -60,7 +64,8 @@ Opt-in for apps (not landing pages) via `<html data-theme="light">`, defined in 
 | `bg2` | `#504945` | `#d3c8ac` | Borders |
 | `fg1` | `#ebdbb2` | `#3c3836` | Body text |
 | `fg2` | `#d5c4a1` | `#665c54` | Secondary text |
-| `blue` | `#83a598` | `#076678` | Action, links |
+| `cyan` | `#5ccfc4` | `#0f6b66` | Focus, links, data |
+| `primary` | `#fabd2f` | `#fabd2f` | Primary fill (ink `#141312` on both) |
 | `aqua` | `#8ec07c` | `#427b58` | Success, bars |
 | `yellow` | `#fabd2f` | `#8a5a00` | Score, warnings |
 | `orange` | `#fe8019` | `#af3a03` | Active / highlight |
@@ -106,7 +111,7 @@ All shrippen icons share these constraints:
 | Viewbox | `0 0 24 24` (matches Breeze and most Plasma icon themes) |
 | Fill color | `#E8DCC4` (accent cream) for the monochrome "mark" variant |
 | Stroke | None for mark variants; if a bicolor icon is needed, stroke `currentColor` with `stroke-width="2"` and `stroke-linecap="round"` / `stroke-linejoin="round"` |
-| Shape language | Rounded corners, soft geometry. No sharp 90° intersections unless depicting a clear UI metaphor (checkbox, grid). |
+| Shape language | Rounded corners, soft geometry. No sharp 90° intersections unless depicting a clear UI metaphor (checkbox, grid). This is on purpose: **soft signs in hard frames**. Frames, boxes and buttons are sharp with the cut; the icons inside stay soft and make the style friendly. |
 | Themed variant | A second SVG that uses `class="ColorScheme-Text"` + `fill="currentColor"` so Plasma icon themes recolor it |
 
 The "mark" (cream on transparent) is for landing pages, social previews, and About sections. The themed variant is the panel/tray icon.
@@ -195,7 +200,6 @@ Every landing page imports these variables (or copies them):
   --purple:   #d3869b;
 
   /* Layout */
-  --radius:   12px;
   --max-w:    860px;
 
   /* Type */
@@ -209,17 +213,63 @@ Every landing page imports these variables (or copies them):
 
 - **Background**: `--bg0` for the page, `--bg1` for cards/elevated, `--bg-hard` for hero gradient or code blocks.
 - **Text**: `--fg1` body, `--fg0` hero heading only, `--fg2` secondary, `--fg3` footer/placeholders.
-- **Links & primary buttons**: `--blue`. Hover darkens 10%.
+- **Links**: `--link` (cyan). **Primary buttons**: `--primary` (yellow) with ink; hover one step lighter (`--yellow-hi`), pressed `--yellow-lo`.
 - **Install card**: `--bg1` surface, `--bg2` border, `--bg-hard` inner code box, command text in `--blue`.
 - **Copy button**: `--bg2` bg, on success flash `--aqua` border + text for 1.5 s.
 - **Icons in feature cards**: inline SVG (`.feat-icon`, 24×24, stroke `currentColor`) — no emojis.
 - **Feature grid**: `--bg1` cards, `--bg2` border, `1.2rem` gap, `auto-fit minmax(240px, 1fr)`.
-- **Screenshot**: `--radius` corners, `1px --bg2` border, deep `box-shadow`.
-- **Badges**: shields.io with `labelColor=1c1c20` and value color `e8dcc4` (version), `83a598` (tech tag), `a89984` (license).
+- **Screenshot**: cut corner, `1px --bg1` border, no shadow (`clip-path` would cut it off).
+- **Badges**: shields.io with `labelColor=1c1c20` and value color `fabd2f` (version), `5ccfc4` (tech tag), `a89984` (license); on pages prefer `.sticker`.
 - **OG image**: dark card on `--bg-hard`, project icon centered, name below in `--fg0`, tagline in `--fg2`.
 - **Max content width**: `--max-w` (`860px`). Centered with `margin: 0 auto`.
 - **No light mode** for landing pages (matches the dark-first palette). Apps may opt in to the Light theme below; Plasma widgets use whatever the user's Plasma theme provides.
 - **Mobile**: Install command box font shrinks to `0.75rem`, hero padding reduces. Feature grid collapses to 1 col.
+
+---
+
+## Shape, sizes and motion (Kante 1.4)
+
+| Rule | Detail |
+|---|---|
+| Heights | `--h-s` 32, `--h-m` 40, `--h-l` 48 px for every control (buttons, fields, tabs, segments) |
+| Cut | `--chamfer` 16 px on surfaces, `--cut-m` 10 px on buttons, tiles, tabs, menus, `--cut-s` 6 px on small parts. A second cut bottom-left only on primary and danger buttons, the dialog and the install box |
+| Holes | Fields are sunk into the surface and stay rectangular, with a 2 px bottom edge; on focus the edge turns cyan and the field gets `--cyan-tint` |
+| Bars | 4 px for state and tier on every surface, 2 px for lines and underlines, 1 px for borders |
+| Focus | Cyan, 2 px. Outside with a small gap, or inside on cut shapes (`clip-path` cuts an outer ring). Tiles and linked cards show four cyan brackets |
+| Markers | Square: pill dots are squares, the radio is a diamond. Round are only icons |
+| Buttons | `.btn-accent` (primary), `.btn-outline`, `.btn-danger`, `.btn-data` (cyan, mono), `.btn-quiet`; `.btn-primary` / `.btn-ghost` inside the yellow box; sizes `.btn-sm` / `.btn-lg`, `.btn-icon`, `.btn-group`, `.is-busy` |
+
+**Motion** is warm and mechanical, modelled on devices (keys, tubes, counters, tabs, lamps), never glitch. It lives in one block at the end of `css/components.css` under `prefers-reduced-motion: no-preference`; entrances also need `html.motion`, which `shrippen.js` sets, so without the script nothing is hidden. Durations `--dur-fast` 120, `--dur` 200, `--dur-slow` 450 ms; easings `--ease-out`, `--ease-snap`.
+
+| Idea | Where | How |
+|---|---|---|
+| Cut grows (A01) | every `.btn` | automatic on hover |
+| Stanze (A02) | a big action | wrap in `<span class="press">` |
+| Brackets lock on (A03) | `.tile`, `a.feat` | automatic on keyboard focus |
+| Scan (A04) | `.hero-shot`, `.showcase figure`, `.shots figure` | automatic when scrolled into view |
+| Value changes (L1) | `[data-live]` text, or `Kante.tick(el, text)` | a cyan strip fades behind it, whole numbers count up |
+| Fresh data (L2) | `[data-live-tile]` after an htmx swap, or `Kante.fresh(el)` | a 2 px cyan line runs along the **bottom** edge of the tile once |
+| Stale data (L3) | `Kante.stale(el, true, "12 min")` (class `.is-stale`) | the tile dims, warning stripes sit on the **bottom** edge with the age above; a state, no motion |
+| Edit mode (L4) | `Kante.edit(box, on)` (class `.is-editing`) on a grid of `.tile`, `.feat` or `[data-editable]` | tier bars turn cyan, brackets appear one after the other |
+| Drop settles (L5) | `.is-picked`, `.drop-gap`, `.drop-cell`, then `Kante.settle(el, fromRect)` | the dropped element glides into its cell with a small overshoot |
+| Segment display (A10) | `.progress-segs > i` (`.on` lights a segment, `--i` staggers them, `data-tier`) | automatic |
+| Bar loads (A05) | `.feat` | automatic |
+| Counter (A06) | `.fact b` with a number | automatic |
+| Teleprinter (A07) | mono labels | add `data-type` |
+| Hazard stripes run (A08) | `.banner`, `.btn.is-busy`, `.progress-bar.is-indeterminate` | automatic |
+| Tube warms up (A09) | one button per page | wrap in `<span class="tube">` |
+| Tab slides (A11) | `.tabs` with `role="tab"` | automatic |
+| Toast slides in (A14) | `.toast`, remaining time `.toast-life` (`--life`) | automatic |
+| Tick draws (A15) | `.check` with `.check-box` / `.check-dia` | automatic |
+| Status lamp (A16) | `.pill[data-state="analyzing"]` breathes; `.led[data-rhythm="puls\|atem\|takt"]` | automatic |
+| Cascade (A17) | `.features`, `.tiles` | automatic |
+| Switch snaps (A18) | `.switch` | automatic |
+| Card lifts the cut (A19) | a whole card as link: `a.feat` | automatic |
+| Scroll meter (A20) | cyan line under `.nav` | automatic |
+| Running light (A21) | a surface that is working | add `<span class="runner" aria-hidden="true"></span>` |
+| Header snaps in (A22) | `.nav-brand` gets a yellow bar | automatic |
+
+The component catalogue and the motion lab with every idea live in [`proposals/2026-09-stil/bauteile.html`](proposals/2026-09-stil/bauteile.html).
 
 ---
 
@@ -271,6 +321,107 @@ QQC2.RadioButton { KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape
 | `../KantePlasma` | `KantePlasmaButton`, `KantePlasmaToolButton`, `KantePlasmaHeading`: the same wrappers on PlasmaComponents3 / PlasmaExtras for Plasma widgets |
 | `fonts/` | Rajdhani 600/700, JetBrains Mono 400/500 (SIL OFL), loaded by `KanteStyle`, never installed |
 
+### Components added in Kante 1.4
+
+Everything from the web catalogue that makes sense in an app, with the same shapes, sizes (32 / 40 / 48 px), 4 px bars, cyan focus and the chosen motion. Pure-drawn components (pill, counter, tab bar, …) draw in every kind with the `KanteStyle` roles, so in System they follow the platform colours and have no cuts and no motion; wrappers and skins still show the platform control in System. `demo/Gallery.qml` shows all of them (`qml -I kante/qml kante/qml/demo/Gallery.qml`); `KantePlasmaButton` is generated from `KanteButton` by `tools/build-qml.py`.
+
+| Component | Purpose | Motion (web idea) |
+|---|---|---|
+| `KanteButton` | `emphasis` Normal / Primary / Destructive / Data / Quiet, `size` Small / Medium / Large, `busy`, `raised` | cut opens on hover (A01), press 1 px in, `raised` presses into a hard shadow (A02) |
+| `KantePolygon`, `KanteCard` | cut shapes; card with `chamferBottom` (double cut) and `interactive` (link card) | card lifts and opens its cut on hover (A19) |
+| `KanteBrackets` | four cyan corners that lock onto a target | focus of `KanteTile` (A03) |
+| `KanteTextField`, `KanteFieldSkin` | 2 px bottom edge, cyan on focus, `invalid` | colour change |
+| `KanteCheckSkin` | box with a drawn tick, diamond with snapping core, snapping switch | A15, A18 |
+| `KanteTabBar`, `KanteSegmented`, `KanteSteps` | notched tabs with counters, segmented control, process steps | yellow tab slides (A11) |
+| `KantePill`, `KanteCounter`, `KanteSticker`, `KanteLamp`, `KanteHud` | status, counts, paper labels, status lamp, HUD line | breathing / ticking lamp (A16), teleprinter (A07) |
+| `KanteOdometer` | mechanical counter | reels roll (A06) |
+| `KanteProgressBar`, `KanteLoader`, `KanteSkeleton`, `KanteHazard` | bar, segment display, indeterminate stripes, three squares, placeholder | marching stripes (A08), segments switch on like lamps (A10) |
+| `KanteCallout`, `KanteToast`, `KanteBanner`, `KanteEmptyState` | notes, toasts, status banner, empty / offline / plugin-missing state | toast slides in with a life line (A14) |
+| `KanteTile`, `KanteRunner` | image tile with tier bar, selection, focus brackets; running light around a working surface | A21 |
+| `KanteReveal`, `KanteAppear`, `KanteTube`, `KanteScrollMeter` | scan reveal, lamp-style entrance (cascade), tube glow, scroll meter | A04, A17, A09, A20 |
+| `KanteLiveText`, `KanteLiveLine`, `KanteDropZone`, `KanteSettle` | live value with change strip and count-up, the bottom-edge line for fresh and stale data, drag placeholders (gap, cell), drop settle; `KanteTile` gets `fresh()`, `stale`, `editing`, `picked` | L1 to L5 |
+
+Not in QML: the sliding nav brand bar (A22) and the web-only catalogue parts (nav, footer, showcase, faq, code, flow). All motion follows `KanteStyle.motion` (bind it to the app's animation setting) and the platform's animation speed; `KanteStyle.animate` is false in System.
+
+Colours: cyan is `focusColor` and `infoColor`; `selectionColor` is the ground of a selected row or focused field; `accentHoverColor` / `accentPressedColor` step the primary fill; `onStateColor` is the text on a state fill. Leinen now has the same yellow primary fill (ink `#141312`) as the dark theme.
+
+### Added in Kante 1.5 (from the project integrations)
+
+Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally because Kante lacked it, plus the bugs the integrations found. The evaluation with every decision (built, stays local, deferred) is [`proposals/2026-09-stil/ergaenzungen.html`](proposals/2026-09-stil/ergaenzungen.html).
+
+**Fixes.** Entrances hide only elements that `shrippen.js` marked at load (`data-entrance`), never later inserts; `data-own-lang` on `<html>` switches Kante's language handling off; native `<dialog class="dialog">` is hidden while closed; `.ground-yellow` gives buttons the focus ring of the install box; the nav ground follows the theme; `fonts.css` + `fonts/` for offline apps; QML: `KanteDialogSkin` is a QtObject (no dialog content), non-editable combo boxes are read-only, spin box arrows are drawn, `KanteStyle.scrimColor`.
+
+**Tokens.** `--tint-1/-2/-hl/-hl-2/-warn` (translucent steps for hover, drop targets, selection), `--d1…--d6` (data palette in chart order), `--paper` / `--on-paper`; QML `tint1Color … tintWarnColor`, `dataColor(i)`.
+
+| Element | Web | QML |
+|---|---|---|
+| Chip (entity, filter) | `.chip`, `.chip-x`, `.chips-row` | `KanteChip` |
+| Swatch with origin ring | `.swatch[data-src]`, `.swatch-grid` | `KanteSwatch` |
+| Table: numbers, group row, total | `.table .num`, `.group-row`, `tfoot` | – |
+| Charts | `.chart`, `.spark`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
+| Month grid | `.cal` | `KanteCalendarGrid` |
+| KPI with change | `.kpi`, `.delta` | `KanteKpi` |
+| Bulk bar | `.bulk-bar` | `KanteBulkBar` |
+| Sheet | `.sheet` | `KanteSheetSkin` |
+| Setting row | `.setting` | `KanteSettingRow` |
+| Day strip | `.day-strip` | `KanteDayStrip` |
+| Status light | `.status[data-state]` | `KanteStatusLight` |
+| Board editor parts | `.tile-add`, `.grip`, `.tile-strip` | – |
+| Clock | `.clock` (SVG classes) | `KanteClock` |
+| Command palette, link tile | `.palette`, `a.link-tile` | – |
+| List row | `.list-row` | `KanteListRow` |
+| Map frame and pin | `.map-frame`, `.map-pin` | – |
+| Command line with copy | `.cmd-row.is-plain` | `KanteCommandBox` |
+| Toggle button, inline button | `.btn[aria-pressed]`, `.btn-inline` | – |
+| Option card, dropdown, toast stack | `.option`, `details.dropdown`, `.toast-stack` | – |
+| File input, wrapping label, section label | `.input[type=file]`, `label.field`, `.h-label` | – |
+| Dismissible callout with actions | `.callout.has-x` + `.callout-x` | `KanteCallout.dismissible`, `actions` |
+| Flow node done, fact tier | `.flow-node.done`, `.fact[data-tier]` | – |
+| Pill over an image | `.pill.is-solid` | – |
+| Tabs: icons, scrolling, counter kinds | – | `KanteTabBar` (`icons`, `countKinds`, `badges`) |
+| Segments: icons, tooltips | – | `KanteSegmented` (`icons`, `tooltips`) |
+| Empty state as a card | – | `KanteEmptyState.barColor` |
+
+Not built: pie charts (use stacked or segment bars), an editing bar on yellow (editing is selection, so cyan), sun and moon in the day strip.
+
+### Added in Kante 1.6
+
+| Element | Web | QML |
+|---|---|---|
+| Curve editor (draggable square points, e.g. a fan curve) | `svg.curve[data-editable]` with `.frame .line .pt` (drag or arrow keys, fires `change`) | `KanteCurveEditor` (`points`, `xMin…yMax`, `step`, `monotonic`; double tap adds, Delete removes, `[` `]` pick) |
+| Band editor (thresholds with a colour each) | `.band-editor` (`.row`, `.strip`) | `KanteBandEditor` (`bands`, `colors`, `min`, `max`) |
+| Hover read-out in the line chart | `.chart-wrap[data-readout]` + `.readout` | `KanteLineChart` (`readout`, `labels`, `unit`, `hoverIndex`) |
+| Week view | `.week` (`.col .ev .hr`) | `KanteWeekView` |
+| Agenda | `.agenda` (`h4`, `.item`) | `KanteAgenda` |
+
+Not built: a compact segmented menu variant.
+
+### Added in Kante 1.7
+
+Web only, the Andon elements that were missing. Tokens only; the cut corner on boxes; motion in the `prefers-reduced-motion: no-preference` block. Tier names are the ones of `.feat` and `.tile`: `green`, `yellow`, `red`, `blue`/`cyan`.
+
+| Element | Web | QML |
+|---|---|---|
+| Checkbox chip (multi-select filter) | `label.chip-pick` > `input[type=checkbox]` + `span` (+ `small` count); hollow square off, cyan on | – |
+| Collapsible section with title and count | `details.fold` > `summary` (+ `.count`) + `.body`; no script | – |
+| Feed (title, source, relative age) | `ul.feed` > `li` > `a`, `.src`, `time`; `.is-compact` for one line | – |
+| Tag / mode bar with counts | `.modebar` > `button` or `a` (+ `small`), `aria-pressed` or `aria-current`; scrolls sideways | – |
+| Hint with tier, source, "why", actions | `.hint-card[data-tier]` > `header` (`.tier`, source), `.title`, `.due`, `details`, `.actions`; tier = icon shape + text + colour | – |
+| Card with tier bar, no click behaviour | `.tier-card[data-tier]` (`h3`, `small`) | – |
+| Date block, multi-line dates | `time.date-tile` > `b` (day) + month, weekday | – |
+| Deadlines | `ol.timeline` > `li[data-tier]` > `.date-tile`, `.what`, `.state` (state also as text) | – |
+| Edit mode bar (save, discard, history) | `.editbar` (`.mode`, `.grow`, buttons); `.is-sticky` top, `.is-fixed` bottom; cyan | – |
+| Share dialog rows | `.share` > `.row` (`.subject[data-kind]`, `select`, remove), `.callout-warn`, `.add` | – |
+| Login, setup, second factor | `.login-wrap` > `.login` (`.brand`, `h1`, `form`, `.links`, `.is-wide`), `.login-secret`, `input.login-code` (one input drawn as six digit boxes) | – |
+| Contrast read-out | `.contrast[data-level=aaa\|aa\|fail]` > `.sample`, `.ratio`, `.badge` | – |
+| KPI grid | `.kpi-row` (auto-fit); `.kpi` value size follows the tile width | – |
+
+The KPI value now scales with the tile (`container-type: inline-size`, 1.6 to 2.8 rem), so long amounts fit small tiles. `.table th` stays on one line and the table scrolls inside `.table-wrap`. Fixed edit bars lift the toast stack like `.bulk-bar.is-fixed` (`--bar-h`).
+
+**QML additions (1.7).** `KanteDialogSkin` also replaces the dialog's title strip (uppercase title) and its standard buttons, as `KanteDialog` does; before, the platform's light title strip stayed on the dark card. `KanteCurveEditor`: axis labels at 0, 25, 50, 75 and 100 %, `markers` (`{x, label, color}`, live readings drawn as a rule and a mark on the curve, `valueAt(x)`), and handles in text colour (no data colour, so they never read as a chart series beside the editor). `KanteLineChart`: `axis` labels the scale on the left. `KanteBandEditor`: `pick` opens the `colors` as a row of swatches under the band instead of cycling. `KanteTabBar`: tabs scrolled out of view draw no shape (the software renderer ignores the clip for a `Shape` outside a clipped `Flickable`).
+
+Small additions (1.7): `.chip.is-filter` (cyan instead of purple, for filters), `--login-min-h` (height of `.login-wrap` under an app header), `.editbar.has-menu` (no clip so popovers show).
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:
@@ -301,7 +452,7 @@ Both sides use the same palette values (`tools/check-tokens.py` fails if `palett
 | Secondary text | `--fg2` / `--fg3` | `mutedTextColor` | `#bdae93` (on glass) | `--fg2` |
 | Accent (primary, active) | `--yellow` | `accentColor` / `accentTextColor` | `#fabd2f` | fill `#d79921`, text `#8a5a00` |
 | Success / warning / error | `--aqua` / `--orange` / `--red` | `positive…` / `neutral…` / `negativeTextColor` | bright | darkened |
-| Links, info | `--blue` | `infoColor` | `#83a598` | `#076678` |
+| Links, info | `--cyan` (`--link`, `--info`) | `infoColor` | `#5ccfc4` | `#0f6b66` |
 | Cut corner | `--chamfer` (16px) | `chamfer`, `chamferSmall` | 16 / 10 px at a grid unit of 18 | same |
 | Headings font | `--font-heading`, uppercase | `headingFont(size)` | Rajdhani 700, +0.08em | same |
 | Labels | small uppercase mono | `labelFont()` | JetBrains Mono, +0.14em | same |
@@ -332,8 +483,8 @@ https://img.shields.io/badge/<label>-<value>-<valueColor>?labelColor=1c1c20
 
 | Badge | Value color | Example |
 |---|---|---|
-| Version | `e8dcc4` | `version-0.2.0-e8dcc4?labelColor=1c1c20` |
-| Tech/platform | `83a598` | `Plasma-6-83a598?labelColor=1c1c20` |
+| Version | `fabd2f` | `version-0.2.0-fabd2f?labelColor=1c1c20` |
+| Tech/platform | `5ccfc4` | `Plasma-6-5ccfc4?labelColor=1c1c20` |
 | License | `a89984` | `license-GPL--3.0-a89984?labelColor=1c1c20` |
 
 ---

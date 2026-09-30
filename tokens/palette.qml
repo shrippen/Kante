@@ -33,6 +33,7 @@ QtObject {
     readonly property color orange: "#fe8019"
     readonly property color red: "#fb4934"
     readonly property color purple: "#d3869b"
+    readonly property color cyan: "#5ccfc4"
 
     readonly property color blueN: "#458588"
     readonly property color aquaN: "#689d6a"
@@ -41,4 +42,5 @@ QtObject {
     readonly property color orangeN: "#d65d0e"
     readonly property color redN: "#cc241d"
     readonly property color purpleN: "#b16286"
+    readonly property color cyanN: "#3f9a94"
 }

@@ -80,16 +80,20 @@ def check_shared_palette():
     for group in ("backgrounds", "foregrounds"):
         expected += [(":root", dark, k, v) for k, v in palette[group].items()]
     expected += [(":root", dark, k, v["bright"]) for k, v in palette["semantic"].items()]
+    expected += [(":root", dark, "cyan-n", palette["semantic"]["cyan"]["neutral"])]
+    expected += [(":root", dark, k, v) for k, v in palette.get("extra", {}).items()]
     lt = palette["light"]
     expected += [("light", light, "accent", lt["accent"])]
     for group in ("backgrounds", "foregrounds", "semantic"):
         expected += [("light", light, k, v) for k, v in lt[group].items()]
+    expected += [("light", light, k, v) for k, v in lt.get("extra", {}).items()]
     for block, props, name, value in expected:
         if props.get(name) != value.lower():
             yield f"tokens/palette.json {name} = {value} but tokens/variables.css ({block}) has {props.get(name)}"
 
 
-files = sorted(KANTE.glob("css/*.css")) + sorted(KANTE.glob("templates/*.html")) + [REPO / "docs/index.html"]
+# fonts.css declares the font families themselves: it is the one place that names them
+files = sorted(f for f in KANTE.glob("css/*.css") if f.name != "fonts.css") + sorted(KANTE.glob("templates/*.html")) + [REPO / "docs/index.html"]
 problems = [p for f in files if f.exists() for p in check(f)] + list(check_shared_palette())
 print("\n".join(problems) or f"token check ok ({len(files)} files)")
 sys.exit(1 if problems else 0)

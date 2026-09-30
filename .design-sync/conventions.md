@@ -1,5 +1,7 @@
 # shrippen landing-page design system
 
+**Rule: a GUI is generated from Kante, not inspired by it.** Use the classes and tokens below as they are; if an element is missing, it is added to Kante first (see `kante/AGENT-RULE.md`). Only Kimai plugins use Knust instead.
+
 Dark, Gruvbox-derived CSS system for single-page project landing pages. There is **no JavaScript component library and no CSS framework**: write plain HTML with the class names below, styled by one stylesheet plus one tiny script.
 
 ## Setup
@@ -29,9 +31,11 @@ Use tokens via `var(--*)` for glue styling, never raw colors:
 
 - Surfaces: `--bg-void` (page), `--bg-panel` (cards), `--bg-hard` (code), `--bg1`, `--bg2` (borders)
 - Text: `--fg0` (headings), `--fg1` (body), `--fg2` (secondary), `--fg3` (labels, footer)
-- Accent: `--yellow` (install box, highlights, active states), `--accent` (cream, icons)
-- Priority tiers: `--red`, `--yellow`, `--blue`. Also `--aqua` (success), `--green`, `--orange`, `--purple`
-- Shape: `--chamfer` (16px). **Boxes have only the top-right corner cut** and no border radius; buttons are square.
+- Accent: `--yellow` / `--primary` (install box, primary buttons, selection fill), `--accent` (cream, icons, stickers)
+- Technical layer: `--cyan` via the roles `--focus`, `--link`, `--info`, `--hl` (lines, text, brackets; never large fills)
+- States: `--warn` (orange), `--danger` (red), `--aqua` (success), `--purple` (tags). Priority tiers: `red`, `yellow`, `blue` (now drawn in cyan)
+- Shape: `--chamfer` (16px) on surfaces, `--cut-m` (10px) on buttons and tiles, `--cut-s` (6px) small. **Top-right corner cut**, a second bottom-left cut only on primary and danger buttons, dialog and install box. Fields stay rectangular. No border radius.
+- Sizes: `--h-s` / `--h-m` / `--h-l` (32 / 40 / 48px) for all controls
 - Layout: `--max-w-wide` (1280px), `--max-w` (860px prose), `--gutter`
 - Type: `--font-heading`, `--font-sans`, `--font-mono`
 
@@ -67,7 +71,8 @@ Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter
 | Controls (app) | `.field > label + .input\|.select\|.seg\|.range\|.switch`; `.field-hint`; `.panel-grid`. Range track tint via `--zones`. Fields use the `--field` role |
 | Status (app) | `.pill[data-state="analyzing\|reviewing\|locked\|applied\|failed"]`, `.progress > .progress-head + .progress-bar > i[--p][data-tier]`, `.toast[data-kind="ok\|error"]` |
 | Dialog (app) | `.scrim (+ .is-fixed) > .dialog > h3 + .dialog-facts + .callout + .dialog-actions`; lock a screen with `.is-locked` on its container and `[data-lockable]` on controls to disable |
-| Buttons on the dark page | `.btn-accent` (primary) and `.btn-outline` (secondary); `.btn-ghost` only inside the yellow box. `button.btn` needs no reset |
+| Buttons on the dark page | `.btn-accent` (primary), `.btn-outline`, `.btn-danger`, `.btn-data` (cyan mono), `.btn-quiet`; sizes `.btn-sm`, `.btn-lg`, `.btn-icon`; `.btn-group`; `.is-busy`. `.btn-ghost` only inside the yellow box. Wrap one big action in `.press` (pressable) or `.tube` (glow) |
+| More controls | `.tabs > button[role="tab"][aria-selected]`, `label.check > input + .check-box svg` / `.check-dia`, `.affix > .input + span`, `.crumbs`, `.pager`, `.menu`, `.count`, `.sticker`, `.led[data-rhythm]`, `.hud`, `.loader`, `.skel`, `.empty`, `.drop`, `.runner` |
 
 Page order: nav, hero, facts (optional), feature boxes, showcases, sections (steps, tables, install, config, FAQ, roadmap), footer. Rich pages alternate `.showcase` and `.showcase.rev` rows, each pairing one pixelated screenshot with a short text. The hero puts the name first with no sentence above it; the tagline sits directly under the name.
 
