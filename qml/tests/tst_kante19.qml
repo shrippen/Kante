@@ -319,6 +319,10 @@ TestCase {
         var shown = visibleTexts(c).join("|")
         verify(shown.indexOf("Kader") >= 0, shown)
         verify(shown.indexOf("Andon") < 0, shown)
+        verify(shown.indexOf("Σ") < 0, "one part: no total line: " + shown)
+        mouseMove(c, 50, c.plotHeight - 5)
+        tryCompare(c, "hoverIndex", 0)
+        verify(visibleTexts(c).join("|").indexOf("Σ 5:00") >= 0, "two parts: total")
         c.readout = false
         c.hoverIndex = -1
         mouseMove(c, 50, 50)
