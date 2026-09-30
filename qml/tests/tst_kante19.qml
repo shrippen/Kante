@@ -470,6 +470,42 @@ TestCase {
         tryVerify(function () { return !Qt.colorEqual(text.color, KanteStyle.palette.text) || KanteStyle.light }, 1000, "System: style colour again")
     }
 
+    // ── Today heading readable in Leinen; tag chip × uses removeText ────
+    Component {
+        id: agendaComponent
+        KanteAgenda { width: 300; days: [{ label: "MI 30.09.", today: true, entries: [] }] }
+    }
+    function test_agendaTodayReadable() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = false
+        var a = createTemporaryObject(agendaComponent, stage())
+        var head = null
+        var texts = []
+        function walk(it) {
+            if (it.text === "MI 30.09.") { head = it }
+            for (var i = 0; i < it.children.length; i++) { walk(it.children[i]) }
+        }
+        walk(a)
+        verify(head !== null)
+        verify(contrast(head.color, KanteStyle.backgroundColor) >= 4.5, "today " + head.color + " on " + KanteStyle.backgroundColor)
+        KanteStyle.preferDark = true
+    }
+    Component {
+        id: tagRemoveComponent
+        KanteTagPicker { width: 300; tags: ["rot"]; removeText: "Label %1 entfernen" }
+    }
+    function test_tagPickerRemoveText() {
+        var p = createTemporaryObject(tagRemoveComponent, stage())
+        var chip = null
+        function walk(it) {
+            if (it.removable === true && it.removeText !== undefined) { chip = it }
+            for (var i = 0; i < it.children.length; i++) { walk(it.children[i]) }
+        }
+        walk(p)
+        verify(chip !== null)
+        compare(chip.removeText, "Label %1 entfernen")
+    }
+
     // ── Page title is not elided ────────────────────────────────────────
     Component {
         id: titleComponent
