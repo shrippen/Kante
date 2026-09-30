@@ -1,10 +1,11 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
+import org.kde.kirigami as Kirigami
 import Kante
 
 /**
- * Every Kante component in one view (Kante 1.4): buttons, fields, controls,
+ * Every Kante component in one view (Kante 1.9): buttons, fields, controls,
  * tabs, display, feedback, surfaces and the motion pieces. Not part of the module;
  * load it in an app or with qml to look at the style:
  *   qml -I kante/qml kante/qml/demo/Gallery.qml
@@ -21,6 +22,8 @@ Rectangle {
 
     Binding { target: KanteStyle; property: "kind"; value: root.kind }
     Binding { target: KanteStyle; property: "preferDark"; value: root.dark }
+    // As in an app: the platform controls below (labels, check boxes) take the Kante colours.
+    KanteScope { target: root }
 
     component Section: ColumnLayout {
         property string title: ""
@@ -356,6 +359,60 @@ Rectangle {
                         KanteSettingRow { id: s2; Layout.fillWidth: true; title: "Intervall"; titleWidth: s1.titleWidth; modified: true; KanteTextField { text: "5 s" } }
                         KanteSettingRow { Layout.preferredWidth: KanteStyle.unit(300); narrow: true; title: "Schmal"; hint: "Titel über dem Feld."; KanteTextField { text: "schmal" } }
                         KanteCallout { Layout.fillWidth: true; title: "Ohne Aktionen"; text: "Die unsichtbare Aktion nimmt keinen Platz."; KanteButton { text: "Weg"; visible: false } }
+                    }
+                }
+            }
+
+            Section {
+                title: "1.9 · popups im fenster, 12 h, abschnitte, ablesen"
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    KanteDateField { date: new Date(2026, 8, 30); Layout.preferredWidth: KanteStyle.unit(170); popupAbove: true }
+                    KanteTimeField { objectName: "time12"; twelveHour: true; amText: "AM"; pmText: "PM"; hour: 21; minute: 30 }
+                    KanteSearchCombo {
+                        objectName: "sectionCombo"
+                        Layout.preferredWidth: KanteStyle.unit(220)
+                        placeholderText: "Projekt suchen"
+                        textRole: "name"; colorRole: "color"; sectionRole: "customer"
+                        model: [{ name: "Website", customer: "Andon GmbH", color: KanteStyle.dataColor(0) }, { name: "Shop", customer: "Andon GmbH", color: KanteStyle.dataColor(0) },
+                                { name: "Archiv", customer: "Kader & Söhne", color: KanteStyle.dataColor(2) }, { name: "Intern", customer: "Kader & Söhne", color: KanteStyle.dataColor(2) }]
+                    }
+                    KanteTagPicker {
+                        objectName: "colorTags"
+                        Layout.preferredWidth: KanteStyle.unit(300)
+                        placeholderText: "Tag"
+                        tags: ["urlaub"]
+                        suggestions: ["urlaub", { name: "archiv", color: KanteStyle.positiveTextColor }, { name: "rolle-12", color: KanteStyle.focusColor }, "1998"]
+                        onEdited: function (t) { tags = t }
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    KanteBarChart {
+                        Layout.preferredWidth: KanteStyle.unit(320); Layout.preferredHeight: KanteStyle.unit(150)
+                        axis: true; valueFormat: KanteBarChart.ValueFormat.Hours
+                        values: [[4.5, 2.25], [3, 3.5], [6, 1.75], [2, 5]]
+                        stackColors: [KanteStyle.dataColor(0), KanteStyle.dataColor(2)]
+                        partNames: ["Andon", "Kader"]
+                        labels: ["MO", "DI", "MI", "DO"]
+                        hoverIndex: 1; hoverPart: 1
+                    }
+                    ColumnLayout {
+                        Layout.preferredWidth: KanteStyle.unit(380)
+                        spacing: 0
+                        KanteListRow {
+                            Layout.fillWidth: true; text: "Import"; subtitle: "3 Fehler"; count: "3"
+                            countKind: KanteListRow.CountKind.Error
+                            trailing: Kirigami.Icon { source: "go-next-symbolic"; implicitWidth: KanteStyle.unit(16); implicitHeight: implicitWidth; color: KanteStyle.mutedTextColor }
+                        }
+                        QQC2.ItemDelegate {
+                            Layout.fillWidth: true
+                            padding: 0
+                            contentItem: KanteListRow {
+                                text: "In einem ItemDelegate"; meta: "tippen"; count: "12"; rule: false
+                                trailing: Kirigami.Icon { source: "go-next-symbolic"; implicitWidth: KanteStyle.unit(16); implicitHeight: implicitWidth; color: KanteStyle.mutedTextColor }
+                            }
+                        }
                     }
                 }
             }
