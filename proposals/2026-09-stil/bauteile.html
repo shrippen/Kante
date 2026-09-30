@@ -763,6 +763,63 @@ input[type="color"]::-webkit-color-swatch-wrapper{padding:0}input[type="color"]:
 .page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:.6rem 1rem;margin-bottom:1.25rem}
 .page-head h3{font-family:var(--font-heading);font-size:1.6rem;text-transform:uppercase;letter-spacing:.04em;color:var(--fg0);line-height:1}
 .share .add{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.8rem}.share .add .input{flex:1 1 12rem;min-width:0}
+.launch-grid{--tile:15rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(var(--tile),100%),1fr));gap:4px;margin:0;padding:0;list-style:none}
+.launch-grid[data-size="small"]{--tile:10rem}.launch-grid[data-size="large"]{--tile:7rem}
+.launch{--icon:2.2rem;position:relative;display:flex;align-items:center;gap:.75rem;min-width:0;height:100%;padding:.6rem .8rem .6rem .7rem;background:var(--panel);border-top:4px solid var(--c,var(--line));color:var(--fg1);text-decoration:none;clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
+.launch:hover{background-color:color-mix(in srgb,var(--fg1) 8%,var(--panel))}
+.launch.is-first{box-shadow:inset 0 0 0 1px var(--cyan)}
+.launch-icon{flex:none;display:grid;place-items:center;width:var(--icon);height:var(--icon)}
+.launch-icon .emoji{font-size:calc(var(--icon) * .75);line-height:1}
+.launch-icon .monogram{width:100%;height:100%;display:grid;place-items:center;background:var(--hard);color:var(--c,var(--paper));border-bottom:2px solid currentColor;font-family:var(--font-heading);font-weight:700;font-size:calc(var(--icon) * .45)}
+.launch-body{display:flex;flex-direction:column;flex:1;min-width:0}
+.launch-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-heading);font-weight:700;font-size:1.05rem;line-height:1.25;letter-spacing:.05em;text-transform:uppercase;color:var(--fg0)}
+.launch-title small{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.02em;text-transform:none;color:var(--fg3)}
+.launch-desc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.8rem;color:var(--fg2)}
+.launch-live{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .7rem;min-height:1.1rem;margin-top:.2rem;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.04em;color:var(--fg2)}
+.launch-state{--k:var(--aqua);display:inline-flex;align-items:center;gap:.35rem;text-transform:uppercase;letter-spacing:.1em}
+.launch-state::before{content:"";flex:none;width:7px;height:7px;background:var(--k)}
+.launch-state[data-state="warn"]{--k:var(--orange)}.launch-state[data-state="bad"]{--k:var(--red);color:var(--red)}
+.launch-hints{--k:var(--cyan);display:inline-grid;place-items:center;min-width:1.25rem;height:1.1rem;padding:0 .3rem;border:1px solid var(--k);color:var(--k);font-weight:500;font-size:.62rem}
+.launch-hints[data-tier="yellow"]{--k:var(--orange)}.launch-hints[data-tier="red"]{--k:var(--red);background:var(--red);color:var(--on-state)}
+.launch-key{align-self:flex-start;font-size:.62rem}
+.launch-grid[data-size="small"] .launch{--icon:1.5rem;gap:.55rem;min-height:var(--h-m);padding:.3rem .6rem .3rem .45rem;border-top-width:2px}
+.launch-grid[data-size="small"] .launch-body{flex-direction:row;align-items:center;gap:.5rem}
+.launch-grid[data-size="small"] .launch-title{flex:1;font-size:.95rem}
+.launch-grid[data-size="small"] .launch-live{flex:none;margin:0}
+.launch-grid[data-size="large"] .launch{--icon:2.8rem;flex-direction:column;justify-content:center;gap:.45rem;padding:1.4rem .4rem .6rem;text-align:center}
+.launch-grid[data-size="large"] .launch-body{width:100%;align-items:center}
+.launch-grid[data-size="large"] .launch-title{width:100%;font-size:.85rem}
+.launch-grid[data-size="large"] .launch-live{position:absolute;inset:.35rem .4rem auto;margin:0;justify-content:space-between}
+.launch-grid:is([data-size="small"],[data-size="large"]) :is(.launch-desc,.launch-key){display:none}
+.launch-grid:is([data-size="small"],[data-size="large"]) .launch-state{font-size:0;gap:0}
+.search{position:relative;display:flex;align-items:center;min-width:0}
+.search::before{content:"›";position:absolute;left:.75rem;font-family:var(--font-mono);font-size:1rem;line-height:1;color:var(--cyan);pointer-events:none}
+.search .input{padding-left:1.8rem;padding-right:3.2rem}
+.search kbd,.search .engine{position:absolute;right:.55rem;pointer-events:none}
+.search .engine{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);opacity:0}
+.search:focus-within kbd,.search:has(input:not(:placeholder-shown)) kbd{opacity:0}
+.search:has(input:not(:placeholder-shown)) .engine{opacity:1}
+.clock-zones{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem}
+.clock-zone,.weather{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .5rem;min-width:0}
+.clock-zone>*{white-space:nowrap}
+.clock-zone strong,.weather b{font-family:var(--font-heading);font-weight:700;font-size:1.4rem;line-height:1.1;color:var(--fg0);font-variant-numeric:tabular-nums}
+.clock-zone :is(small,span),.weather small{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.weather span{font-size:.85rem;color:var(--fg1)}
+.rain-cols{display:flex;align-items:flex-end;gap:1px;height:1rem}.rain-cols i{flex:1;height:var(--h,0%);min-height:1px;background:var(--cyan-n)}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;margin:0;padding:0;list-style:none;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2)}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:.4rem;vertical-align:-1px;background:var(--c,var(--cyan))}
+.legend i.prev{background:none;border:1px dashed var(--fg3)}
+.legend i.goal{width:14px;height:0;vertical-align:3px;background:none;border-top:2px dashed var(--yellow)}
+.legend i.window{background:color-mix(in srgb,var(--aqua) 40%,transparent)}
+.legend i.now{width:0;margin-inline:4px calc(.4rem + 4px);background:none;border-left:2px dashed var(--fg0)}
+.hchart .window{fill:color-mix(in srgb,var(--aqua) 22%,transparent)}
+.hchart .now{stroke:var(--fg0);stroke-width:1;stroke-dasharray:3 3}
+.hchart .bar-value{fill:var(--fg1);text-anchor:middle;font-variant-numeric:tabular-nums}.hchart .bar-value.is-in{fill:var(--on-state)}
+.dropzone{display:flex;flex-wrap:wrap;align-content:flex-start;gap:.6rem;min-height:4.5rem;padding:.8rem;background:var(--hard);border:2px dashed var(--line)}
+.dropzone:has(.hint:only-child){align-content:center}
+.dropzone .hint{flex:1 1 100%;text-align:center;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.dropzone .hint:not(:only-child){display:none}
+.dropzone.is-armed{border-color:var(--cyan-n)}.dropzone.is-over{border-color:var(--cyan);background:var(--cyan-tint)}
 </style>
 </head>
 <body>
@@ -1126,7 +1183,7 @@ input[type="color"]::-webkit-color-swatch-wrapper{padding:0}input[type="color"]:
 
 <section class="blk" id="neun">
   <div class="head"><div class="eyebrow">// 11 Kante 1.9</div><h2>Filter, Diagramme, Ziele</h2>
-  <p class="lead">Aus den Apps: Filter-Chips als Links mit Stufe, gestreckte Diagramme ohne verzerrte Linien, der Vorzeitraum als Umriss, Tagesziele in der Heatmap, ein Farbfeld im Kante-Rahmen und Kleinigkeiten fürs Telefon.</p></div>
+  <p class="lead">Aus den Apps: Filter-Chips als Links mit Stufe, gestreckte Diagramme ohne verzerrte Linien, der Vorzeitraum als Umriss, Tagesziele in der Heatmap, ein Farbfeld im Kante-Rahmen, Andons Startseite (Startkacheln, Suche, Uhr, Wetter, Ablage, Legendenmarken) und Kleinigkeiten fürs Telefon.</p></div>
   <div class="grid">
     <div class="cell panel"><span class="lbl">Filter-Chips <code>a.chip.is-filter[data-tier=critical|warn]</code></span>
       <div class="chips-row" style="display:flex;flex-wrap:wrap;gap:.4rem"><a class="chip is-filter" href="#neun" aria-pressed="true">alle 12</a><a class="chip is-filter" data-tier="critical" href="#neun">kritisch 3</a><a class="chip is-filter" data-tier="warn" href="#neun">warnung 5</a><a class="chip is-filter" data-tier="critical" href="#neun" aria-pressed="true">kritisch</a></div>
@@ -1157,6 +1214,39 @@ input[type="color"]::-webkit-color-swatch-wrapper{padding:0}input[type="color"]:
     <div class="cell panel"><span class="lbl">Teilen hinzufügen <code>.share .add</code>, Toasts über der Home-Leiste</span>
       <div class="share"><div class="add"><input class="input" placeholder="Name oder Team"><select class="select" style="width:auto"><option>Lesen</option></select><button class="btn b-pri s">Teilen</button></div></div>
       <span class="muted">Ist die Zeile schmal (Telefon, kleiner Dialog), bekommt das Feld eine eigene. <code>.toast-stack</code> rechnet <code>env(safe-area-inset-bottom)</code> dazu.</span></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel" style="grid-column:1/-1"><span class="lbl">Startkacheln <code>.launch-grid</code> &gt; <code>.launch</code>, mittel</span>
+      <ul class="launch-grid">
+        <li><a class="launch" href="#neun" style="--c:var(--purple)"><span class="launch-icon"><span class="monogram">KI</span></span><span class="launch-body"><b class="launch-title">Kimai <small>kimai.lan</small></b><small class="launch-desc">Zeiterfassung fürs Team</small><span class="launch-live"><span class="launch-state">läuft</span><span>3,5 h heute</span><span class="launch-hints" data-tier="yellow">2</span></span></span><kbd class="launch-key">k</kbd></a></li>
+        <li><a class="launch is-first" href="#neun"><span class="launch-icon"><span class="monogram">SN</span></span><span class="launch-body"><b class="launch-title">Snipe-IT</b><small class="launch-desc">Geräte</small><span class="launch-live"><span class="launch-state" data-state="bad">aus</span><span class="launch-hints" data-tier="red">5</span></span></span></a></li>
+        <li><a class="launch" href="#neun"><span class="launch-icon"><span class="emoji">🗺</span></span><span class="launch-body"><b class="launch-title">Dawarich</b><small class="launch-desc">Standortverlauf</small><span class="launch-live"><span class="launch-state" data-state="warn">langsam</span><span class="launch-hints">1</span></span></span></a></li>
+      </ul>
+      <span class="lbl">Klein <code>data-size="small"</code> und groß <code>"large"</code></span>
+      <ul class="launch-grid" data-size="small"><li><a class="launch" href="#neun" style="--c:var(--aqua)"><span class="launch-icon"><span class="monogram">GI</span></span><span class="launch-body"><b class="launch-title">Gitea</b><span class="launch-live"><span class="launch-state">läuft</span><span class="launch-hints" data-tier="yellow">2</span></span></span></a></li><li><a class="launch" href="#neun"><span class="launch-icon"><span class="monogram">PX</span></span><span class="launch-body"><b class="launch-title">Proxmox</b><span class="launch-live"><span class="launch-state" data-state="bad">aus</span></span></span></a></li><li><a class="launch" href="#neun"><span class="launch-icon"><span class="monogram">HA</span></span><span class="launch-body"><b class="launch-title">Home Assistant</b></span></a></li></ul>
+      <ul class="launch-grid" data-size="large"><li><a class="launch" href="#neun" style="--c:var(--yellow)"><span class="launch-icon"><span class="monogram">KI</span></span><span class="launch-body"><b class="launch-title">Kimai</b><span class="launch-live"><span class="launch-state">läuft</span><span class="launch-hints" data-tier="red">3</span></span></span></a></li><li><a class="launch" href="#neun"><span class="launch-icon"><span class="monogram">IN</span></span><span class="launch-body"><b class="launch-title">Invoice Ninja</b><span class="launch-live"><span class="launch-state" data-state="warn">langsam</span></span></span></a></li><li><a class="launch" href="#neun"><span class="launch-icon"><span class="emoji">📦</span></span><span class="launch-body"><b class="launch-title">Paperless</b></span></a></li></ul>
+      <span class="muted">Ein Oberflächen-Stil mit <code>a.link-tile</code>, der kurzen Form. Zustand ist Quadrat + Wort; klein und groß bleibt nur das Quadrat, das Wort liest der Screenreader. Der Hinweiszähler ist umrandet, rot gefüllt. <code>--c</code> färbt Balken und Monogramm.</span></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Suche <code>label.search</code>, <code>.engine</code>, <code>kbd</code></span>
+      <label class="search"><input class="input" type="search" placeholder="Suchen oder Websuche" aria-label="Suchen"><span class="engine">↵ Web</span><kbd>/</kbd></label>
+      <label class="search"><input class="input" type="search" value="kim" aria-label="Suchen"><span class="engine">↵ Web</span><kbd>/</kbd></label>
+      <span class="muted">Filtert die Seite, Enter sucht im Netz. Beim Tippen weicht das Kürzel dem Ziel.</span></div>
+    <div class="cell panel"><span class="lbl">Kopf-Widgets <code>.clock-zone</code>, <code>.weather</code>, <code>.rain-cols</code></span>
+      <div class="clock-zones"><div class="clock-zone"><small>Berlin</small><strong>09:14</strong><span>Mi 30.09.</span></div><div class="clock-zone"><small>Tokio</small><strong>16:14</strong></div></div>
+      <div class="weather"><b>17°</b><span>Bewölkt</span><small>Berlin</small></div>
+      <div class="rain-cols" role="img" aria-label="Regenwahrscheinlichkeit"><i style="--h:10%"></i><i style="--h:40%"></i><i style="--h:80%"></i><i style="--h:60%"></i><i style="--h:20%"></i><i></i><i style="--h:5%"></i></div>
+      <span class="muted">Rajdhani mit Tabellenziffern: die Zeit springt nicht, wenn die Minute wechselt.</span></div>
+    <div class="cell panel"><span class="lbl">Ablage <code>.dropzone</code>, <code>.is-armed</code>, <code>.is-over</code></span>
+      <div class="dropzone"><span class="hint">Kacheln hier parken</span></div>
+      <div class="dropzone is-over"><span class="hint">Loslassen</span><span class="pill">Kimai</span><span class="pill">Gitea</span></div>
+      <span class="muted">Der Hinweis steht nur, solange die Ablage leer ist. <code>.drop</code> bleibt die Datei-Ablage.</span></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Legendenmarken <code>i.prev</code>, <code>i.goal</code>, <code>i.window</code>, <code>i.now</code>, Werte <code>text.bar-value</code></span>
+      <svg class="hchart" viewBox="0 0 400 140" style="max-width:520px" role="img" aria-label="Strompreis je Stunde mit günstigem Fenster"><rect class="window" x="200" y="0" width="80" height="120"/><line class="grid" x1="0" x2="400" y1="120" y2="120"/><rect class="bar is-prev" x="20" y="40" width="30" height="80"/><rect class="bar" x="55" y="30" width="30" height="90"/><text class="bar-value" x="70" y="25">1 240</text><rect class="bar" x="120" y="60" width="30" height="60"/><text class="bar-value is-in" x="135" y="75">820</text><line class="goal" x1="0" x2="400" y1="50" y2="50"/><line class="now" x1="310" x2="310" y1="0" y2="120"/></svg>
+      <p class="legend"><span><i></i>Dieses Jahr</span><span><i class="prev"></i>Vorjahr</span><span><i class="goal"></i>Ziel</span><span><i class="window"></i>Günstig</span><span><i class="now"></i>Jetzt</span></p>
+      <span class="muted">Jede Marke wiederholt die Form im Diagramm: Umriss, gestrichelte Linie, Fläche, senkrechte Linie.</span></div>
   </div>
 </section>
 

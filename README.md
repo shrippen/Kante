@@ -450,7 +450,7 @@ In System the new inputs stay platform text fields and tool buttons; popups keep
 
 ### Added in Kante 1.9
 
-What the apps reported after 1.8: popups that left the window, a 12-hour clock, grouped project lists, read-outs on bar charts, list rows inside delegates, filter chips as links, stretched charts, daily goals in the heat map and a few phone fixes.
+What the apps reported after 1.8: popups that left the window, a 12-hour clock, grouped project lists, read-outs on bar charts, list rows inside delegates, filter chips as links, stretched charts, daily goals in the heat map, Andon's start page parts (launch tiles, search, clock, weather, drop tray, legend marks) and a few phone fixes.
 
 | Element | Web | QML |
 |---|---|---|
@@ -467,8 +467,13 @@ What the apps reported after 1.8: popups that left the window, a 12-hour clock, 
 | Heat map goals, legend, columns | `.heat i.met` (aqua bar: goal reached), `i.under` (orange: missed); `.heat[style="--rows:7"]` fills column by column; `.heat-legend` > `span`, `i[data-l]`, `i.met`, `i.under` | – |
 | Colour input | `input[type=color]`: a square swatch in the field frame | – |
 | Page head | `.page-head` (title with its actions, space before the first card); `main > h1 + .card`/`.panel`/… also get the space | – |
+| Launch tile | `.launch` > `.launch-icon` (`img`, `img.is-glyph`, `.emoji`, `.monogram`), `.launch-body` > `.launch-title` (`small` host), `.launch-desc`, `.launch-tags`, `.launch-live` > `.launch-state[data-state=ok\|warn\|bad\|off]`, `.launch-info` (`.is-error`), `.launch-hints[data-tier=yellow\|red]`; `.launch-key` (kbd); `.is-first` (Enter opens it); `--c` tints bar and monogram. `data-size="small"` (one line) or `"large"` (icon tile) on the tile or its `.launch-grid` (`--cols`, else fills by `--tile`). Shares its surface with `a.link-tile`, the short form | – |
+| Search field | `label.search` > `input`, `span.engine` (shown while typing: where Enter goes), `kbd` hotkey (hidden while focused and on phones); `.search-empty` | – |
+| Clock and weather | `.clock-zones` > `.clock-zone` (`small` place, `strong` time, `span` date; a `.clock` face goes left), `.weather` (`b` temperature, `span` condition, `small` place, optional icon), `ol.weather-days`, `.rain-cols > i[style="--h:40%"]`; Rajdhani with tabular digits | – |
+| Legend marks, chart labels | `.legend i.prev` (dashed outline), `i.goal` (`.is-danger`), `i.window` (a highlighted span, `--c`), `i.now`; in the chart `.window`, `.now`, `text.bar-value` above a bar (`.is-in` inside it) | – |
+| Drop tray | `.dropzone` (items wrap inside; `.hint` only while empty), `.is-armed` while a drag runs, `.is-over` under the pointer; `.drop` stays the file drop, `.drop-gap`/`.drop-cell` the placeholders (QML `KanteDropZone`) | – |
 
-Fixes (1.9): check box, radio and switch labels take the Kante text colour through `KanteCheckSkin` (Kante dark on a Breeze Light desktop drew near-black labels on the dark ground). `KanteHeading { pageTitle: true }` sizes itself for the Rajdhani title (it was elided to "KA…" under the Plasma style). `KanteSticker` keeps dark ink on the cream paper off Kante on a dark scheme. Web: `.toast-stack` adds `env(safe-area-inset-bottom)`; `.share > .add` wraps its field onto its own line when narrow; pills in `.tile` and `.tile-badges` end with an ellipsis; `.date-tile` never breaks (the year stays on the line).
+Fixes (1.9): check box, radio and switch labels take the Kante text colour through `KanteCheckSkin` (Kante dark on a Breeze Light desktop drew near-black labels on the dark ground). `KanteHeading { pageTitle: true }` sizes itself for the Rajdhani title (it was elided to "KA…" under the Plasma style). `KanteSticker` keeps dark ink on the cream paper off Kante on a dark scheme. Web: `.toast-stack` adds `env(safe-area-inset-bottom)`; `.share > .add` wraps its field onto its own line when narrow; pills in `.tile` and `.tile-badges` end with an ellipsis; `.date-tile` never breaks (the year stays on the line). The `hidden` attribute wins over every Kante display rule (`[hidden]{display:none!important}` in `base.css`); `.feed`, `.timeline`, `.agenda`, `.legend`, `.menu` and `.steps` reset their own list margin and padding; a floating `.tile-tools` outside `.has-tools` gets a band height (32 px, 40 px on touch).
 
 Tested with the real Plasma style (`org.kde.desktop`, Breeze Light and Breeze Dark) as well as plain Kirigami. The Gallery sits in a `KanteScope`, as an app does.
 
