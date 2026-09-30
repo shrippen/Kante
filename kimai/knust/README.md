@@ -56,7 +56,7 @@ Knust ist Kantes Ableger für Kimai (Regel in `shrippen.github.io/kante/AGENT-RU
 | Kante oben rechts, 4-px-Zustandsbalken, eckige Marker | Karten, Kacheln, Modal, Alerts, Toasts, `kpu-tier`, `kpu-mark`, Badges |
 | Fokus: cyan, 2 px, außen mit Abstand | Buttons, Links, Checkboxen, Seitenzahlen; Menüeinträge innen (Grund + Balken) |
 | Feld: 2-px-Unterkante, bei Fokus cyan mit `--cyan-tint` | `.form-control`, `.form-select`, Tom Select |
-| Ausgewählte Zeile | Zeilen mit angehakter `multiCheckbox`, laufender Eintrag |
+| Ausgewählte Zeile | Zeilen mit angehakter `multiCheckbox` (cyan); der laufende Eintrag hat ein eigenes gelbes Signal |
 | `.pill` | `kpu-status` (Umriss, Marker je Zustand) |
 | `.kpi`, `.kpi-row` | `kpu-kpi` (Wert skaliert mit der Kachel), `kpu-kpis` |
 | `.bulk-bar` | `kpu-bulk-bar` |

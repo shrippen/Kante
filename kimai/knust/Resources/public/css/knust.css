@@ -887,21 +887,29 @@ header.navbar .ticktac-stop.btn,
     color: var(--shr-score);
 }
 
-/* Running entry and selected rows (Kimai's multiCheckbox, kit's kpu-select):
- * highlight bar and tint on the whole row, like Kante's selected row */
-.table tr.recording > td,
+/* Selected rows (Kimai's multiCheckbox, kit's kpu-select): cyan bar and tint
+ * on the whole row, like Kante's selected row */
 .table tbody tr:has(> td.multiCheckbox input:checked) > td {
     --tblr-table-bg-state: var(--shr-tint-hl);
 }
 
-.table tr.recording > td:first-child,
 .table tbody tr:has(> td.multiCheckbox input:checked) > td:first-child {
     box-shadow: inset 3px 0 0 var(--shr-hl), inset 0 0 0 9999px var(--shr-tint-hl);
 }
 
+/* Running entry: its own warm signal (yellow, Kante's colour for work in
+ * progress), so it never reads as a selected row */
+.table tr.recording > td {
+    --tblr-table-bg-state: color-mix(in srgb, var(--shr-yellow) 10%, transparent);
+}
+
+.table tr.recording > td:first-child {
+    box-shadow: inset 3px 0 0 var(--shr-yellow), inset 0 0 0 9999px color-mix(in srgb, var(--shr-yellow) 10%, transparent);
+}
+
 .table tr.recording > td.col_duration,
 .table tr.recording > td.col_endtime {
-    color: var(--shr-hl);
+    color: var(--shr-yellow);
 }
 
 /* Card footer (pagination, bulk actions, chart totals): sunk strip */

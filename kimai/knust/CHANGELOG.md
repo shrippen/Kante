@@ -8,7 +8,7 @@ Abgleich mit Kante 1.7.
   ist ein 2-px-Ring statt Tablers Schein und des gelben Rahmens; Felder haben eine 2-px-Unterkante und werden bei
   Fokus cyan.
 - Warn-Alerts und -Toasts orange (Kantes `--warn`); Tablers `warning` bleibt gelb.
-- Aktiver Menüpunkt, laufender Eintrag und angehakte Tabellenzeilen: cyan Balken und Tönung statt Orange.
+- Aktiver Menüpunkt und angehakte Tabellenzeilen: cyan Balken und Tönung. Laufender Eintrag: gelber Balken, gelbe Tönung und Dauer statt Orange, damit er sich von ausgewählten Zeilen abhebt.
 - Neue öffentliche Variablen: `--knust-focus`, `--knust-hl`, `--knust-warn`, `--knust-cyan-tint`, `--knust-tint-*`,
   `--knust-d1` bis `-d6`, `--knust-scrim` (siehe `PLUGINS.md`).
 - Kit: Status als Umriss-Pille mit Marker je Zustand, Kennzahl skaliert mit der Kachel, Sammelleiste mit cyan Kante,
