@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "Kante",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "source": "https://github.com/shrippen/shrippen.github.io",
     "base": "Gruvbox Dark (morhetz)",
     "formerly": "shrippen Design Default"
@@ -56,6 +56,11 @@
       "bright": "#d3869b",
       "neutral": "#b16286",
       "faded": "#8f3f71"
+    },
+    "cyan": {
+      "bright": "#5ccfc4",
+      "neutral": "#3f9a94",
+      "faded": "#0f6b66"
     }
   },
   "typography": {
@@ -82,14 +87,19 @@
   },
   "badges": {
     "labelColor": "1c1c20",
-    "version": "e8dcc4",
-    "tech": "83a598",
+    "version": "fabd2f",
+    "tech": "5ccfc4",
     "license": "a89984"
   },
   "roles": {
     "field": "bg-hard (dark) / bg1 (light)",
     "score": "yellow",
-    "hl": "orange"
+    "hl": "cyan (current selection)",
+    "focus": "cyan",
+    "link": "cyan",
+    "info": "cyan",
+    "warn": "orange",
+    "danger": "red"
   },
   "light": {
     "name": "Leinen",
@@ -117,7 +127,8 @@
       "yellow": "#8a5a00",
       "orange": "#af3a03",
       "red": "#9d0006",
-      "purple": "#8f3f71"
+      "purple": "#8f3f71",
+      "cyan": "#0f6b66"
     },
     "alternative": {
       "name": "Sand",
@@ -126,12 +137,27 @@
       "bg1": "#f9f5e8",
       "bg-hard": "#e0d6bb",
       "bg2": "#cdc1a3"
+    },
+    "extra": {
+      "cyan-tint": "#d9ebe4",
+      "primary": "#fabd2f",
+      "on-primary": "#141312",
+      "yellow-hi": "#fcc845",
+      "yellow-lo": "#e5a823",
+      "on-state": "#fbf8ee"
     }
   },
   "shape": {
     "chamfer": 16,
     "chamferSmall": 10,
-    "note": "only the top-right corner is cut; no border radius; buttons are square. Web: --chamfer. Apps: KanteStyle.chamfer / chamferSmall (scaled with the platform grid unit)."
+    "note": "top-right corner cut on surfaces (16), buttons and tiles (10), small parts (6); a second cut bottom-left only on primary and danger buttons, dialogs and the install box. Fields stay rectangular. No border radius except icons (soft signs in hard frames) and Kante Light. Web: --chamfer, --cut-m, --cut-s. Apps: KanteStyle.chamfer / chamferSmall.",
+    "cutM": 10,
+    "cutS": 6,
+    "controlHeights": [
+      32,
+      40,
+      48
+    ]
   },
   "app": {
     "usage": "Qt Quick / Kirigami apps and Plasma widgets (qml/Kante). Surfaces are tints with alpha so a blurred or translucent platform ground shows through; colour only in small opaque areas.",
@@ -147,7 +173,7 @@
       "positive": "aqua",
       "neutral": "orange",
       "negative": "red",
-      "info": "blue",
+      "info": "cyan",
       "tag": "purple",
       "warning": "yellow",
       "card": [
@@ -183,7 +209,7 @@
       "positive": "aqua",
       "neutral": "orange",
       "negative": "red",
-      "info": "blue",
+      "info": "cyan",
       "tag": "purple",
       "warning": "yellow",
       "card": [
@@ -211,5 +237,18 @@
       "mutedText": "#bdae93 is fg3 one step lighter, for secondary text on glass (4.5:1 on the darkest tint)",
       "accent (light)": "#d79921 is yellow neutral: a button fill that works on linen; text in the accent uses accentText (#8a5a00)"
     }
+  },
+  "extra": {
+    "cyan-tint": "#1e2b2a",
+    "yellow-hi": "#fdc94a",
+    "yellow-lo": "#e5a823"
+  },
+  "motion": {
+    "fast": 120,
+    "base": 200,
+    "slow": 450,
+    "easeOut": "cubic-bezier(.2,.8,.2,1)",
+    "easeSnap": "cubic-bezier(.3,1.5,.5,1)",
+    "note": "warm and mechanical, never glitch; all motion only under prefers-reduced-motion: no-preference"
   }
 }

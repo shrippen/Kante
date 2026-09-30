@@ -8,7 +8,7 @@ import QtQuick
  * translucent or blurred platform ground shows through.
  */
 QtObject {
-    readonly property string version: "1.3.0"
+    readonly property string version: "1.4.0"
 
     readonly property QtObject dark: QtObject {
         readonly property color text: "#ebdbb2"
@@ -22,7 +22,7 @@ QtObject {
         readonly property color positive: "#8ec07c"
         readonly property color neutral: "#fe8019"
         readonly property color negative: "#fb4934"
-        readonly property color info: "#83a598"
+        readonly property color info: "#5ccfc4"
         readonly property color tag: "#d3869b"
         readonly property color warning: "#fabd2f"
         readonly property color card: "#993c3836"
@@ -44,7 +44,7 @@ QtObject {
         readonly property color positive: "#427b58"
         readonly property color neutral: "#af3a03"
         readonly property color negative: "#9d0006"
-        readonly property color info: "#076678"
+        readonly property color info: "#0f6b66"
         readonly property color tag: "#8f3f71"
         readonly property color warning: "#8a5a00"
         readonly property color card: "#b2fbf8ee"

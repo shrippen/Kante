@@ -80,10 +80,13 @@ def check_shared_palette():
     for group in ("backgrounds", "foregrounds"):
         expected += [(":root", dark, k, v) for k, v in palette[group].items()]
     expected += [(":root", dark, k, v["bright"]) for k, v in palette["semantic"].items()]
+    expected += [(":root", dark, "cyan-n", palette["semantic"]["cyan"]["neutral"])]
+    expected += [(":root", dark, k, v) for k, v in palette.get("extra", {}).items()]
     lt = palette["light"]
     expected += [("light", light, "accent", lt["accent"])]
     for group in ("backgrounds", "foregrounds", "semantic"):
         expected += [("light", light, k, v) for k, v in lt[group].items()]
+    expected += [("light", light, k, v) for k, v in lt.get("extra", {}).items()]
     for block, props, name, value in expected:
         if props.get(name) != value.lower():
             yield f"tokens/palette.json {name} = {value} but tokens/variables.css ({block}) has {props.get(name)}"

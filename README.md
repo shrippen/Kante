@@ -23,11 +23,12 @@ Gruvbox-inspired, warm, dark-first.
 | `fg2` | `#d5c4a1` | Secondary / muted text |
 | `fg3` | `#a89984` | Placeholder, disabled, footer |
 | `accent` | `#e8dcc4` | Brand warm-cream (icon fills, hero emphasis) |
-| `blue` | `#83a598` | Primary action, links, interactive |
+| `yellow` | `#fabd2f` | Brand, primary action, selection fill, score |
+| `cyan` | `#5ccfc4` | Technical layer: focus, links, data, brackets, info (lines and text, never large fills) |
+| `blue` | `#83a598` | Kept for existing assets; roles moved to `cyan` |
 | `aqua` | `#8ec07c` | Success, confirm, online |
 | `green` | `#b8bb26` | Positive diff, badges |
-| `yellow` | `#fabd2f` | Warnings, attention |
-| `orange` | `#fe8019` | Active / highlight |
+| `orange` | `#fe8019` | Warning (callout, banner, middle state) |
 | `red` | `#fb4934` | Error, destructive, high priority |
 | `purple` | `#d3869b` | Tags, categories, decorative |
 
@@ -44,8 +45,9 @@ The palette is a **warm-shifted Gruvbox Dark** subset.
 - **Background** is Gruvbox `dark0` (`#282828`), not pure black. `bg-hard` (`#1d2021`) is reserved for maximum-depth areas (hero gradients, code blocks).
 - **Foreground** is Gruvbox `light1` (`#ebdbb2`) for body and `light0` (`#fbf1c7`) for headings. Never pure white.
 - **Brand accent** is `#e8dcc4` — the cream tone already used in the Kurrent icon mark and badges. This is the family's signature: monochrome icon fills and version badges use it.
-- **Primary action** color is Gruvbox `bright_blue` (`#83a598`), not KDE's Breeze blue — but in Plasma widgets the native `Kirigami.Theme.highlightColor` takes over; the shared blue only applies to web pages and standalone assets.
-- The remaining Gruvbox brights slot into semantic roles (aqua = success, orange = highlight, red = error, etc.) so every project draws from the same well without inventing one-off hues.
+- **Primary action** is yellow (`--primary`), a fill with dark ink. In Plasma widgets the native `Kirigami.Theme.highlightColor` takes over.
+- **Cyan** (`#5ccfc4`) is amber's counterpart and the only colour Kante adds to Gruvbox. Its lightness (59 %) matches yellow (58 %) and red (59 %). Yellow is surface and action, cyan is line, bracket, counter, link and focus. Rough proportion on a page: 80 % warm neutrals, up to 15 % yellow, up to 5 % cyan. Cyan never fills a large area and never glows.
+- **One task per colour**, as roles in `tokens/variables.css`: `--primary` (yellow), `--focus`, `--link`, `--info`, `--hl` (cyan), `--warn` (orange), `--danger` (red), aqua for success, purple for tags. Components use the roles, not the colour names.
 
 ### Light theme ("Leinen")
 
@@ -60,7 +62,8 @@ Opt-in for apps (not landing pages) via `<html data-theme="light">`, defined in 
 | `bg2` | `#504945` | `#d3c8ac` | Borders |
 | `fg1` | `#ebdbb2` | `#3c3836` | Body text |
 | `fg2` | `#d5c4a1` | `#665c54` | Secondary text |
-| `blue` | `#83a598` | `#076678` | Action, links |
+| `cyan` | `#5ccfc4` | `#0f6b66` | Focus, links, data |
+| `primary` | `#fabd2f` | `#fabd2f` | Primary fill (ink `#141312` on both) |
 | `aqua` | `#8ec07c` | `#427b58` | Success, bars |
 | `yellow` | `#fabd2f` | `#8a5a00` | Score, warnings |
 | `orange` | `#fe8019` | `#af3a03` | Active / highlight |
@@ -106,7 +109,7 @@ All shrippen icons share these constraints:
 | Viewbox | `0 0 24 24` (matches Breeze and most Plasma icon themes) |
 | Fill color | `#E8DCC4` (accent cream) for the monochrome "mark" variant |
 | Stroke | None for mark variants; if a bicolor icon is needed, stroke `currentColor` with `stroke-width="2"` and `stroke-linecap="round"` / `stroke-linejoin="round"` |
-| Shape language | Rounded corners, soft geometry. No sharp 90° intersections unless depicting a clear UI metaphor (checkbox, grid). |
+| Shape language | Rounded corners, soft geometry. No sharp 90° intersections unless depicting a clear UI metaphor (checkbox, grid). This is on purpose: **soft signs in hard frames**. Frames, boxes and buttons are sharp with the cut; the icons inside stay soft and make the style friendly. |
 | Themed variant | A second SVG that uses `class="ColorScheme-Text"` + `fill="currentColor"` so Plasma icon themes recolor it |
 
 The "mark" (cream on transparent) is for landing pages, social previews, and About sections. The themed variant is the panel/tray icon.
@@ -195,7 +198,6 @@ Every landing page imports these variables (or copies them):
   --purple:   #d3869b;
 
   /* Layout */
-  --radius:   12px;
   --max-w:    860px;
 
   /* Type */
@@ -209,17 +211,57 @@ Every landing page imports these variables (or copies them):
 
 - **Background**: `--bg0` for the page, `--bg1` for cards/elevated, `--bg-hard` for hero gradient or code blocks.
 - **Text**: `--fg1` body, `--fg0` hero heading only, `--fg2` secondary, `--fg3` footer/placeholders.
-- **Links & primary buttons**: `--blue`. Hover darkens 10%.
+- **Links**: `--link` (cyan). **Primary buttons**: `--primary` (yellow) with ink; hover one step lighter (`--yellow-hi`), pressed `--yellow-lo`.
 - **Install card**: `--bg1` surface, `--bg2` border, `--bg-hard` inner code box, command text in `--blue`.
 - **Copy button**: `--bg2` bg, on success flash `--aqua` border + text for 1.5 s.
 - **Icons in feature cards**: inline SVG (`.feat-icon`, 24×24, stroke `currentColor`) — no emojis.
 - **Feature grid**: `--bg1` cards, `--bg2` border, `1.2rem` gap, `auto-fit minmax(240px, 1fr)`.
-- **Screenshot**: `--radius` corners, `1px --bg2` border, deep `box-shadow`.
-- **Badges**: shields.io with `labelColor=1c1c20` and value color `e8dcc4` (version), `83a598` (tech tag), `a89984` (license).
+- **Screenshot**: cut corner, `1px --bg1` border, no shadow (`clip-path` would cut it off).
+- **Badges**: shields.io with `labelColor=1c1c20` and value color `fabd2f` (version), `5ccfc4` (tech tag), `a89984` (license); on pages prefer `.sticker`.
 - **OG image**: dark card on `--bg-hard`, project icon centered, name below in `--fg0`, tagline in `--fg2`.
 - **Max content width**: `--max-w` (`860px`). Centered with `margin: 0 auto`.
 - **No light mode** for landing pages (matches the dark-first palette). Apps may opt in to the Light theme below; Plasma widgets use whatever the user's Plasma theme provides.
 - **Mobile**: Install command box font shrinks to `0.75rem`, hero padding reduces. Feature grid collapses to 1 col.
+
+---
+
+## Shape, sizes and motion (Kante 1.4)
+
+| Rule | Detail |
+|---|---|
+| Heights | `--h-s` 32, `--h-m` 40, `--h-l` 48 px for every control (buttons, fields, tabs, segments) |
+| Cut | `--chamfer` 16 px on surfaces, `--cut-m` 10 px on buttons, tiles, tabs, menus, `--cut-s` 6 px on small parts. A second cut bottom-left only on primary and danger buttons, the dialog and the install box |
+| Holes | Fields are sunk into the surface and stay rectangular, with a 2 px bottom edge; on focus the edge turns cyan and the field gets `--cyan-tint` |
+| Bars | 4 px for state and tier on every surface, 2 px for lines and underlines, 1 px for borders |
+| Focus | Cyan, 2 px. Outside with a small gap, or inside on cut shapes (`clip-path` cuts an outer ring). Tiles and linked cards show four cyan brackets |
+| Markers | Square: pill dots are squares, the radio is a diamond. Round are only icons |
+| Buttons | `.btn-accent` (primary), `.btn-outline`, `.btn-danger`, `.btn-data` (cyan, mono), `.btn-quiet`; `.btn-primary` / `.btn-ghost` inside the yellow box; sizes `.btn-sm` / `.btn-lg`, `.btn-icon`, `.btn-group`, `.is-busy` |
+
+**Motion** is warm and mechanical, modelled on devices (keys, tubes, counters, tabs, lamps), never glitch. It lives in one block at the end of `css/components.css` under `prefers-reduced-motion: no-preference`; entrances also need `html.motion`, which `shrippen.js` sets, so without the script nothing is hidden. Durations `--dur-fast` 120, `--dur` 200, `--dur-slow` 450 ms; easings `--ease-out`, `--ease-snap`.
+
+| Idea | Where | How |
+|---|---|---|
+| Cut grows (A01) | every `.btn` | automatic on hover |
+| Stanze (A02) | a big action | wrap in `<span class="press">` |
+| Brackets lock on (A03) | `.tile`, `a.feat` | automatic on keyboard focus |
+| Scan (A04) | `.hero-shot`, `.showcase figure`, `.shots figure` | automatic when scrolled into view |
+| Bar loads (A05) | `.feat` | automatic |
+| Counter (A06) | `.fact b` with a number | automatic |
+| Teleprinter (A07) | mono labels | add `data-type` |
+| Hazard stripes run (A08) | `.banner`, `.btn.is-busy`, `.progress-bar.is-indeterminate` | automatic |
+| Tube warms up (A09) | one button per page | wrap in `<span class="tube">` |
+| Tab slides (A11) | `.tabs` with `role="tab"` | automatic |
+| Toast slides in (A14) | `.toast`, remaining time `.toast-life` (`--life`) | automatic |
+| Tick draws (A15) | `.check` with `.check-box` / `.check-dia` | automatic |
+| Status lamp (A16) | `.pill[data-state="analyzing"]` breathes; `.led[data-rhythm="puls\|atem\|takt"]` | automatic |
+| Cascade (A17) | `.features`, `.tiles` | automatic |
+| Switch snaps (A18) | `.switch` | automatic |
+| Card lifts the cut (A19) | a whole card as link: `a.feat` | automatic |
+| Scroll meter (A20) | cyan line under `.nav` | automatic |
+| Running light (A21) | a surface that is working | add `<span class="runner" aria-hidden="true"></span>` |
+| Header snaps in (A22) | `.nav-brand` gets a yellow bar | automatic |
+
+The component catalogue and the motion lab with every idea live in [`proposals/2026-09-stil/bauteile.html`](proposals/2026-09-stil/bauteile.html).
 
 ---
 
@@ -301,7 +343,7 @@ Both sides use the same palette values (`tools/check-tokens.py` fails if `palett
 | Secondary text | `--fg2` / `--fg3` | `mutedTextColor` | `#bdae93` (on glass) | `--fg2` |
 | Accent (primary, active) | `--yellow` | `accentColor` / `accentTextColor` | `#fabd2f` | fill `#d79921`, text `#8a5a00` |
 | Success / warning / error | `--aqua` / `--orange` / `--red` | `positive…` / `neutral…` / `negativeTextColor` | bright | darkened |
-| Links, info | `--blue` | `infoColor` | `#83a598` | `#076678` |
+| Links, info | `--cyan` (`--link`, `--info`) | `infoColor` | `#5ccfc4` | `#0f6b66` |
 | Cut corner | `--chamfer` (16px) | `chamfer`, `chamferSmall` | 16 / 10 px at a grid unit of 18 | same |
 | Headings font | `--font-heading`, uppercase | `headingFont(size)` | Rajdhani 700, +0.08em | same |
 | Labels | small uppercase mono | `labelFont()` | JetBrains Mono, +0.14em | same |
@@ -332,8 +374,8 @@ https://img.shields.io/badge/<label>-<value>-<valueColor>?labelColor=1c1c20
 
 | Badge | Value color | Example |
 |---|---|---|
-| Version | `e8dcc4` | `version-0.2.0-e8dcc4?labelColor=1c1c20` |
-| Tech/platform | `83a598` | `Plasma-6-83a598?labelColor=1c1c20` |
+| Version | `fabd2f` | `version-0.2.0-fabd2f?labelColor=1c1c20` |
+| Tech/platform | `5ccfc4` | `Plasma-6-5ccfc4?labelColor=1c1c20` |
 | License | `a89984` | `license-GPL--3.0-a89984?labelColor=1c1c20` |
 
 ---
