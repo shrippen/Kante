@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Wrap the artifact sources (body-only HTML) into standalone pages.
+"""Turn the artifact sources into standalone pages.
 
 The pages were published as a claude.ai artifact, which adds the document
-skeleton itself. For the repo copy this script adds it back.
+skeleton itself. For the repo copy this script adds it back; pages that already
+have their own skeleton (bauteile.html) are copied as they are.
 Usage: python3 wrap.py SRC_DIR  (writes index.html, bauteile.html next to it)
 """
 import pathlib, sys
@@ -16,5 +17,8 @@ for name in ("index.html", "bauteile.html"):
     if not f.exists():
         continue
     body = f.read_text(encoding="utf-8")
+    if body.lstrip().lower().startswith("<!doctype"):
+        (here / name).write_text(body, encoding="utf-8")  # already a full page
+        continue
     # <title>, <link>, <style> may sit in the body; browsers move them to the head.
     (here / name).write_text(HEAD + "</head>\n<body>\n" + body + "\n</body>\n</html>\n", encoding="utf-8")
