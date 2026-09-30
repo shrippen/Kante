@@ -382,7 +382,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Segments: icons, tooltips | – | `KanteSegmented` (`icons`, `tooltips`) |
 | Empty state as a card | – | `KanteEmptyState.barColor` |
 
-Not built: pie charts (use stacked or segment bars), an editing bar on yellow (editing is selection, so cyan), sun and moon in the day strip.
+Not built: pie charts (use stacked or segment bars), an editing bar on yellow (editing is selection, so cyan). Sun and moon in the day strip came in 1.8.
 
 ### Added in Kante 1.6
 
@@ -421,6 +421,32 @@ The KPI value now scales with the tile (`container-type: inline-size`, 1.6 to 2.
 **QML additions (1.7).** `KanteDialogSkin` also replaces the dialog's title strip (uppercase title) and its standard buttons, as `KanteDialog` does; before, the platform's light title strip stayed on the dark card. `KanteCurveEditor`: axis labels at 0, 25, 50, 75 and 100 %, `markers` (`{x, label, color}`, live readings drawn as a rule and a mark on the curve, `valueAt(x)`), and handles in text colour (no data colour, so they never read as a chart series beside the editor). `KanteLineChart`: `axis` labels the scale on the left. `KanteBandEditor`: `pick` opens the `colors` as a row of swatches under the band instead of cycling. `KanteTabBar`: tabs scrolled out of view draw no shape (the software renderer ignores the clip for a `Shape` outside a clipped `Flickable`).
 
 Small additions (1.7): `.chip.is-filter` (cyan instead of purple, for filters), `--login-min-h` (height of `.login-wrap` under an app header), `.editbar.has-menu` (no clip so popovers show).
+
+### Added in Kante 1.8
+
+What Andon, Kurrent, Plasmai and the Kimai plugins still solved locally: a day against daylight and work hours, hours as charts, date / time / search / tag inputs, the tile tool band, stored fold state, and denser rows. Pie charts stay out (use stacked bars).
+
+| Element | Web | QML |
+|---|---|---|
+| Day strip: segment colour | `.day-strip > i` with `--c` | `KanteDayStrip` `segments[].color` |
+| Day strip: daylight, sun and moon, work hours | `.day-strip.has-sky` > `.day` (first child), `.sun`, `.moon`; `.has-work` > `.work` | `sunrise`, `sunset`, `workFrom`, `workTo`; roles `daylightColor`, `sunColor`, `moonColor`, `workBandColor` |
+| Stacked bars with own colours, hours axis | `.chart .c` (`--c`), `.chart .axis` (labels as h:mm) | `KanteBarChart` `stackColors`, `axis`, `valueFormat: KanteBarChart.ValueFormat.Hours`, `formatter`, `unit` |
+| Week of hours (days as rows over 0–24 h) | `.week-line` > `.scale`, `b` (`.today`), `.track` > `i` (`--from`, `--to`, `--c`) + `.now` (`--at`), `small` (sum, `.is-zero`) | `KanteWeekTimeline` (`entries` {day, start, end, color, title}, `totals`, `today`, `now`, `entryClicked`) |
+| Date and time input | `input.input.date-field` (`type=date` / `time`, native picker) | `KanteDateField` (`date`, `format`, `dateEdited`), `KanteTimeField` (`hour`, `minute`, `minuteStep`, `timeEdited`): typed input and a popup picker (`KanteCalendarGrid`, hour and minute cells) |
+| Filterable combo | `.combo-search` (`.has-colors`) > `input.input[role=combobox][aria-expanded]` + `ul[role=listbox]` > `li[role=option]` (`aria-selected`, `--c`, `.is-new`) | `KanteSearchCombo` (`model`, `textRole`, `colorRole`, `allowNew`, `exclude`, `activated`, `newEntered`) |
+| Tags as chips with search | – (chips + `.combo-search`) | `KanteTagPicker` (`tags`, `suggestions` as strings or {name, color}, `allowNew`, `edited(tags)`; Backspace removes the last) |
+| Tile tool strip in edit mode | `.has-tools` (the slot, reserves the band) > `.tile-tools` (`.grip`, `small`, `.gap`, buttons, `[aria-pressed]`, `.is-danger`); shows on hover / focus / `.is-active` / `.is-floating`, always on touch (40 px) | – |
+| Stored fold state | `details.fold[data-key]` + `data-open`: `shrippen.js` sets the fold from `data-open` (load, htmx swaps) and fires `kante:fold` {key, open} on every change; `Kante.folds(root)` re-applies | – |
+| Toasts under a covered bar | `[data-covers-bar]` on an overlay or sheet: while present and not `[hidden]` (a `<dialog>` only while open) the fixed bars no longer lift the toast stack | – |
+| Map and entity roles | `--map-marker`, `--map-route`, `--entity-fallback` | `mapMarkerColor`, `mapRouteColor`, `entityFallbackColor` |
+| Chip: dark colours, icon, compact, narrow, touch | – | `KanteChip` `nearGround` (a #202020 chip keeps a visible frame and ink), `iconName`, `compact` (colour square + tooltip), a narrow chip elides and then drops the name, the × has a 32-unit target and an accessible name (`removeText`) |
+| Swatch sizes | – | `KanteSwatch` `size`: `Dense` 10, `Small` 14, `Normal` 18 |
+| List row: two lines, time, badge, states | – | `KanteListRow` `subtitle`, `leadingText` / `leadingWidth`, `count` (cyan when selected), `density` (Compact / Normal / Comfortable = 32 / 40 / 48), `rule`, `focusOnClick`, `dropTarget`, `pressed`, `disabledReason` (a second line: a disabled item gets no hover, so no tooltip), `activate()` |
+| Setting row: narrow, shared column, section | – | `KanteSettingRow` `narrow` (default below 360 units), `titleWidth` + `implicitTitleWidth` (one column line, like `Kirigami.FormLayout`), `section` |
+
+Fixes (1.8): `KanteCallout` gives no room to an action row whose actions are all hidden (`hasActions`). `KanteSearchCombo` selects the text on focus, so typing replaces the entry.
+
+In System the new inputs stay platform text fields and tool buttons; popups keep the platform ground, the cells and rows draw in the `KanteStyle` roles. Not built: a separate `KanteListRowSkin` for existing delegates (the row covers the cases), a web tag picker (chips plus `.combo-search`), hover tooltips on disabled rows.
 
 ### Kante Light
 
