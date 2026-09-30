@@ -396,6 +396,28 @@ Not built: pie charts (use stacked or segment bars), an editing bar on yellow (e
 
 Not built: a compact segmented menu variant.
 
+### Added in Kante 1.7
+
+Web only, the Andon elements that were missing. Tokens only; the cut corner on boxes; motion in the `prefers-reduced-motion: no-preference` block. Tier names are the ones of `.feat` and `.tile`: `green`, `yellow`, `red`, `blue`/`cyan`.
+
+| Element | Web | QML |
+|---|---|---|
+| Checkbox chip (multi-select filter) | `label.chip-pick` > `input[type=checkbox]` + `span` (+ `small` count); hollow square off, cyan on | – |
+| Collapsible section with title and count | `details.fold` > `summary` (+ `.count`) + `.body`; no script | – |
+| Feed (title, source, relative age) | `ul.feed` > `li` > `a`, `.src`, `time`; `.is-compact` for one line | – |
+| Tag / mode bar with counts | `.modebar` > `button` or `a` (+ `small`), `aria-pressed` or `aria-current`; scrolls sideways | – |
+| Hint with tier, source, "why", actions | `.hint-card[data-tier]` > `header` (`.tier`, source), `.title`, `.due`, `details`, `.actions`; tier = icon shape + text + colour | – |
+| Card with tier bar, no click behaviour | `.tier-card[data-tier]` (`h3`, `small`) | – |
+| Date block, multi-line dates | `time.date-tile` > `b` (day) + month, weekday | – |
+| Deadlines | `ol.timeline` > `li[data-tier]` > `.date-tile`, `.what`, `.state` (state also as text) | – |
+| Edit mode bar (save, discard, history) | `.editbar` (`.mode`, `.grow`, buttons); `.is-sticky` top, `.is-fixed` bottom; cyan | – |
+| Share dialog rows | `.share` > `.row` (`.subject[data-kind]`, `select`, remove), `.callout-warn`, `.add` | – |
+| Login, setup, second factor | `.login-wrap` > `.login` (`.brand`, `h1`, `form`, `.links`, `.is-wide`), `.login-secret`, `input.login-code` (one input drawn as six digit boxes) | – |
+| Contrast read-out | `.contrast[data-level=aaa\|aa\|fail]` > `.sample`, `.ratio`, `.badge` | – |
+| KPI grid | `.kpi-row` (auto-fit); `.kpi` value size follows the tile width | – |
+
+The KPI value now scales with the tile (`container-type: inline-size`, 1.6 to 2.8 rem), so long amounts fit small tiles. `.table th` stays on one line and the table scrolls inside `.table-wrap`. Fixed edit bars lift the toast stack like `.bulk-bar.is-fixed` (`--bar-h`).
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:
