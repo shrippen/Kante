@@ -16,7 +16,7 @@ Rectangle {
     property int kind: 1
     property bool dark: true
     width: 1100
-    height: 3900
+    height: 4400
     color: KanteStyle.backgroundColor
 
     Binding { target: KanteStyle; property: "kind"; value: root.kind }
@@ -325,6 +325,37 @@ Rectangle {
                         tags: ["urlaub", { name: "rolle-12", color: KanteStyle.focusColor }]
                         suggestions: ["urlaub", "archiv", "rolle-12", "1998"]
                         onEdited: function (t) { tags = t }
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(8)
+                    KanteChip { text: "dunkel"; chipColor: "#202020" }
+                    KanteChip { text: "mit-icon"; iconName: "tag"; chipColor: KanteStyle.focusColor; removable: true }
+                    KanteChip { text: "sehr-langer-tag-name"; removable: true; Layout.preferredWidth: KanteStyle.unit(110) }
+                    KanteChip { text: "gequetscht"; removable: true; Layout.preferredWidth: KanteStyle.unit(44) }
+                    KanteChip { text: "kompakt"; compact: true; chipColor: KanteStyle.warningColor }
+                    KanteChip { text: "kompakt"; compact: true; chipColor: "#202020" }
+                    KanteSwatch { size: KanteSwatch.Size.Normal; source: KanteSwatch.Source.Own }
+                    KanteSwatch { size: KanteSwatch.Size.Small; source: KanteSwatch.Source.Inherited; swatchColor: KanteStyle.tagColor }
+                    KanteSwatch { size: KanteSwatch.Size.Dense; swatchColor: KanteStyle.warningColor }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    ColumnLayout {
+                        Layout.preferredWidth: KanteStyle.unit(380)
+                        spacing: 0
+                        KanteListRow { Layout.fillWidth: true; leadingText: "09:15"; leadingWidth: KanteStyle.unit(44); text: "Rohschnitt"; subtitle: "Kader · Schnitt"; meta: "02:14"; count: "3"; selected: true; KanteSwatch { size: KanteSwatch.Size.Small } }
+                        KanteListRow { Layout.fillWidth: true; leadingText: "11:30"; leadingWidth: KanteStyle.unit(44); text: "Farbkorrektur"; subtitle: "Andon · Pflege"; meta: "01:05"; count: "12"; KanteSwatch { size: KanteSwatch.Size.Small; swatchColor: KanteStyle.tagColor } }
+                        KanteListRow { Layout.fillWidth: true; text: "Ablage"; density: KanteListRow.Density.Compact; dropTarget: true; meta: "hier ablegen" }
+                        KanteListRow { Layout.fillWidth: true; text: "Export"; enabled: false; disabledReason: "Nur mit Lizenz"; rule: false }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 0
+                        KanteSettingRow { id: s1; Layout.fillWidth: true; section: "Anzeige"; title: "Schwelle"; hint: "Ab hier dreht der Lüfter hoch."; titleWidth: Math.max(s1.implicitTitleWidth, s2.implicitTitleWidth); KanteTextField { text: "62" } }
+                        KanteSettingRow { id: s2; Layout.fillWidth: true; title: "Intervall"; titleWidth: s1.titleWidth; modified: true; KanteTextField { text: "5 s" } }
+                        KanteSettingRow { Layout.preferredWidth: KanteStyle.unit(300); narrow: true; title: "Schmal"; hint: "Titel über dem Feld."; KanteTextField { text: "schmal" } }
+                        KanteCallout { Layout.fillWidth: true; title: "Ohne Aktionen"; text: "Die unsichtbare Aktion nimmt keinen Platz."; KanteButton { text: "Weg"; visible: false } }
                     }
                 }
             }

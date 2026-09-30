@@ -16,6 +16,11 @@ TestCase {
     height: 500
     when: windowShown
 
+    /** TestCase itself is invisible: parts that must lay out or take input go on the window. */
+    function stage() {
+        return tc.Window.contentItem
+    }
+
     function cleanup() {
         KanteStyle.kind = KanteStyle.Kind.System
         KanteStyle.preferDark = false
@@ -329,6 +334,158 @@ TestCase {
         compare(p.tagNames, ["archiv", "1998"])
     }
 
+    // ── Chip: near ground, compact, squeezed, touch cross ──────────────
+    Component {
+        id: chipComponent
+        KanteChip { text: "analog-archiv"; chipColor: "#202020"; removable: true }
+    }
+    function test_chipNearGround() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        var c = createTemporaryObject(chipComponent, tc)
+        verify(c.nearGround)
+        compare(c.ink, KanteStyle.textColor)
+        c.chipColor = KanteStyle.tagColor
+        verify(!c.nearGround)
+        compare(c.ink, KanteStyle.tagColor)
+    }
+
+    function test_chipSqueezeAndCompact() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(chipComponent, tc)
+        verify(c.textShown)
+        var full = c.implicitWidth
+        c.width = full - KanteStyle.unit(20)
+        verify(c.textShown, "a little narrower: the name elides")
+        c.width = KanteStyle.unit(40)
+        verify(!c.textShown, "too narrow: square and cross only")
+        c.width = full
+        c.compact = true
+        verify(!c.textShown)
+        compare(c.implicitWidth, c.implicitHeight)
+        verify(c.implicitHeight < KanteStyle.unit(24))
+    }
+
+    SignalSpy { id: removeSpy; signalName: "removeRequested" }
+
+    function test_chipCrossTarget() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(chipComponent, stage(), { x: 100, y: 100 })
+        compare(c.height, KanteStyle.unit(24), "the chip keeps its size")
+        var t = findChild(c, "crossTarget")
+        verify(t.width >= KanteStyle.unit(32) && t.height >= KanteStyle.unit(32))
+        // A tap below the chip, under the cross, still removes.
+        removeSpy.target = c
+        removeSpy.clear()
+        var p = t.mapToItem(c, t.width / 2, t.height - 2)
+        verify(p.y > c.height)
+        mouseClick(c, p.x, p.y)
+        compare(removeSpy.count, 1)
+    }
+
+    // ── Callout: hidden actions take no room ────────────────────────────
+    Component {
+        id: calloutPlain
+        KanteCallout { width: 300; title: "Note"; text: "Text" }
+    }
+    Component {
+        id: calloutHidden
+        KanteCallout { width: 300; title: "Note"; text: "Text"; KanteButton { objectName: "act"; text: "x"; visible: false } }
+    }
+
+    function test_calloutHiddenActions() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var a = createTemporaryObject(calloutPlain, stage())
+        var b = createTemporaryObject(calloutHidden, stage())
+        verify(!b.hasActions)
+        wait(10)
+        compare(b.implicitHeight, a.implicitHeight)
+        findChild(b, "act").visible = true
+        tryVerify(function () { return b.hasActions })
+        verify(b.implicitHeight > a.implicitHeight)
+    }
+
+    // ── Swatch sizes ────────────────────────────────────────────────────
+    function test_swatchSizes() {
+        var s = createTemporaryObject(swatchComponent, tc)
+        compare(s.implicitWidth, KanteStyle.unit(18))
+        s.size = KanteSwatch.Size.Small
+        compare(s.implicitWidth, KanteStyle.unit(14))
+        s.size = KanteSwatch.Size.Dense
+        compare(s.implicitWidth, KanteStyle.unit(10))
+        compare(s.ring, 3)
+    }
+    Component {
+        id: swatchComponent
+        KanteSwatch { source: KanteSwatch.Source.Own }
+    }
+
+    // ── List row ────────────────────────────────────────────────────────
+    Component {
+        id: listRowComponent
+        KanteListRow { width: 320; text: "Rohschnitt"; meta: "02:14" }
+    }
+
+    function test_listRowDensityAndLines() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(listRowComponent, stage())
+        compare(r.implicitHeight, KanteStyle.heightMedium)
+        r.density = KanteListRow.Density.Compact
+        compare(r.implicitHeight, KanteStyle.heightSmall)
+        r.density = KanteListRow.Density.Comfortable
+        compare(r.implicitHeight, KanteStyle.heightLarge)
+        r.density = KanteListRow.Density.Compact
+        r.subtitle = "Kader · Schnitt"
+        tryVerify(function () { return r.implicitHeight > KanteStyle.heightSmall }, 1000, "two lines grow a compact row")
+        compare(r.secondLine, "Kader · Schnitt")
+        r.disabledReason = "Gesperrt"
+        compare(r.secondLine, "Kader · Schnitt")
+        r.enabled = false
+        compare(r.secondLine, "Gesperrt")
+    }
+
+    SignalSpy { id: rowSpy; signalName: "clicked" }
+
+    function test_listRowActivate() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(listRowComponent, stage())
+        rowSpy.target = r
+        rowSpy.clear()
+        r.focusOnClick = false
+        mouseClick(r, 20, 10)
+        verify(!r.activeFocus)
+        compare(rowSpy.count, 1)
+        r.focusOnClick = true
+        mouseClick(r, 20, 10)
+        verify(r.activeFocus)
+        compare(rowSpy.count, 2)
+        verify(!r.pressed)
+    }
+
+    // ── Setting row ─────────────────────────────────────────────────────
+    Component {
+        id: settingComponent
+        KanteSettingRow { width: 500; title: "Schwelle"; hint: "Ab hier."; KanteTextField { objectName: "field"; text: "62" } }
+    }
+
+    function test_settingRowModes() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(settingComponent, stage())
+        verify(!r.narrow)
+        var wide = r.implicitHeight
+        r.width = KanteStyle.unit(300)
+        verify(r.narrow)
+        tryVerify(function () { return r.implicitHeight > wide }, 1000, "narrow: the control goes under the title")
+        r.width = 500
+        verify(r.implicitTitleWidth > 0)
+        r.titleWidth = 180
+        var field = findChild(r, "field")
+        tryVerify(function () { return field.mapToItem(r, 0, 0).x === 180 + KanteStyle.unit(16) })
+        r.section = "Anzeige"
+        verify(r.sectionHeight > 0)
+        tryVerify(function () { return r.implicitHeight > wide })
+    }
+
     Component {
         id: all
         Column {
@@ -339,6 +496,9 @@ TestCase {
             KanteTimeField { }
             KanteSearchCombo { model: ["a", "b"] }
             KanteTagPicker { tags: ["a"]; suggestions: ["b"] }
+            KanteChip { text: "a"; compact: true }
+            KanteListRow { text: "a"; subtitle: "b"; leadingText: "9:00"; count: "3"; dropTarget: true }
+            KanteSettingRow { title: "a"; section: "s"; titleWidth: 100 }
         }
     }
 
@@ -349,7 +509,7 @@ TestCase {
         for (var i = 0; i < kinds.length; i++) {
             KanteStyle.kind = kinds[i]
             wait(30)
-            compare(g.children.length, 7)
+            compare(g.children.length, 10)
         }
     }
 }
