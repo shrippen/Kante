@@ -908,6 +908,48 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 .modebar>:is(button,a):is([aria-pressed="true"],[aria-current="true"],[aria-current="page"]){background:var(--cyan-tint);color:var(--fg0);box-shadow:inset 0 -2px 0 var(--cyan)}
 .modebar>:is(button,a):focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
 
+/* Tier: --tier colours the bar of a tier card, hint card and timeline row (same names as .feat and .tile) */
+.tier-card,.hint-card,.timeline>li{--tier:var(--bg2)}
+.hint-card{--tier:var(--info)}
+:is(.tier-card,.hint-card,.timeline>li)[data-tier="green"]{--tier:var(--aqua)}
+:is(.tier-card,.hint-card,.timeline>li)[data-tier="yellow"]{--tier:var(--yellow)}
+:is(.tier-card,.hint-card,.timeline>li)[data-tier="red"]{--tier:var(--red)}
+:is(.tier-card,.hint-card,.timeline>li)[data-tier="blue"],:is(.tier-card,.hint-card,.timeline>li)[data-tier="cyan"]{--tier:var(--info)}
+/* Tier card: a card with a tier bar and no click behaviour (a status, not a link) */
+.tier-card{display:flex;flex-direction:column;gap:.3rem;padding:.8rem 1rem .9rem;background:var(--bg-panel);border-top:4px solid var(--tier);color:var(--fg2);font-size:.88rem;
+  clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
+.tier-card>h3,.tier-card>b{font-family:var(--font-heading);font-weight:700;font-size:1.05rem;letter-spacing:.05em;text-transform:uppercase;color:var(--fg0)}
+.tier-card>small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;color:var(--fg3)}
+/* Hint card: tier as icon shape + text + colour (never colour alone), source, expandable "why", actions.
+   Icon: red = triangle, yellow = diamond, blue = square, green = check */
+.hint-card{display:flex;flex-direction:column;gap:.35rem;padding:.6rem .8rem .7rem;background:var(--bg-panel);border-top:4px solid var(--tier);
+  clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
+.hint-card>header{display:flex;justify-content:space-between;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.hint-card .tier{display:inline-flex;align-items:center;gap:.4rem;color:var(--tier)}
+.hint-card .tier::before{content:"";width:10px;height:10px;background:currentColor}
+.hint-card[data-tier="red"] .tier::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.hint-card[data-tier="yellow"] .tier::before{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.hint-card[data-tier="green"] .tier::before{clip-path:polygon(0 55%,20% 35%,40% 55%,85% 5%,100% 25%,40% 95%)}
+.hint-card>.title{color:var(--fg0);font-weight:600;font-size:.92rem;line-height:1.35}
+a.hint-card>.title:hover,.hint-card>a.title:hover{color:var(--link)}
+.hint-card>.due{font-family:var(--font-mono);font-size:.72rem;color:var(--fg2)}
+.hint-card>details>summary{cursor:pointer;width:max-content;max-width:100%;font-family:var(--font-mono);font-size:.72rem;color:var(--link)}
+.hint-card>details>summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.hint-card>details>p{margin-top:.35rem;padding-left:.7rem;border-left:2px solid var(--bg2);font-size:.84rem;color:var(--fg2)}
+.hint-card>.actions{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:.15rem}
+/* Date tile: a date in a fixed column; day large, month and weekday small; a range may take a second line */
+.date-tile{display:grid;justify-items:center;align-content:center;width:3.6rem;flex:none;line-height:1.1;text-align:center;overflow-wrap:anywhere;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.date-tile>b{font-family:var(--font-heading);font-weight:700;font-size:1.5rem;letter-spacing:0;color:var(--fg0);font-variant-numeric:tabular-nums}
+/* Timeline: deadlines, a date column and a 4 px state bar; the state is also written out (.state) */
+.timeline{list-style:none;display:flex;flex-direction:column;gap:2px}
+.timeline>li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:.8rem;padding:.5rem .8rem .5rem 0;background:var(--bg-panel);border-left:4px solid var(--tier)}
+.timeline>li>.date-tile{width:4rem}
+.timeline>li>.what{display:flex;flex-direction:column;min-width:0;color:var(--fg1);font-size:.9rem;line-height:1.3}
+.timeline>li>.what>small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;color:var(--fg3)}
+.timeline>li>.state{font-family:var(--font-mono);font-style:normal;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2);white-space:nowrap}
+.timeline>li[data-tier="red"]>.state{color:var(--danger)}
+.timeline>li[data-tier="yellow"]>.state{color:var(--yellow)}
+
 /* ── Kante Light (apps, <html data-kante="light">) ─────────────────────
    Kante shapes on the platform look: controls get the system font, normal
    case and a small radius; cards keep the cut corner and the accent bar;
