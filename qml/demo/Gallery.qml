@@ -16,7 +16,7 @@ Rectangle {
     property int kind: 1
     property bool dark: true
     width: 1100
-    height: 3300
+    height: 3900
     color: KanteStyle.backgroundColor
 
     Binding { target: KanteStyle; property: "kind"; value: root.kind }
@@ -274,6 +274,59 @@ Rectangle {
                 KanteListRow { Layout.fillWidth: true; text: "Farbkorrektur"; meta: "01:05"; KanteSwatch { swatchColor: KanteStyle.tagColor } }
                 KanteTabBar { model: ["Alle", "Prüfen", "Fertig", "Archiv"]; counts: [42, 7, 35, 12]; countKinds: [0, 2, 0, 0]; badges: true }
                 KanteCallout { Layout.fillWidth: true; title: "Hinweis"; text: "Schließbar, mit Aktion."; dismissible: true; KanteButton { text: "Mehr"; emphasis: KanteButton.Emphasis.Data; size: KanteButton.Size.Small } }
+            }
+
+            Section {
+                title: "1.8 · zeit und eingaben"
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    KanteDayStrip {
+                        Layout.preferredWidth: KanteStyle.unit(420)
+                        sunrise: 7.2; sunset: 19.1; workFrom: 8; workTo: 17; now: 15.2
+                        segments: [{ from: 8.25, to: 12, kind: "work", color: KanteStyle.dataColor(0) }, { from: 12.75, to: 14.5, kind: "work", color: KanteStyle.dataColor(2) },
+                                   { from: 14.5, to: 16.5, kind: "dim" }, { from: 10, to: 10.5, kind: "event" }]
+                    }
+                    KanteBarChart {
+                        Layout.preferredWidth: KanteStyle.unit(300); Layout.preferredHeight: KanteStyle.unit(140)
+                        axis: true; valueFormat: KanteBarChart.ValueFormat.Hours; goal: 8; highlight: 2
+                        values: [[4.5, 2.25, 1], [3, 3.5], [6, 1.75, 0.5], [2, 5], [5.5, 0.75]]
+                        stackColors: [KanteStyle.dataColor(0), KanteStyle.dataColor(2), KanteStyle.dataColor(3)]
+                        labels: ["MO", "DI", "MI", "DO", "FR"]
+                    }
+                }
+                KanteWeekTimeline {
+                    Layout.fillWidth: true
+                    Layout.maximumWidth: KanteStyle.unit(720)
+                    today: 2; now: 15.2
+                    entries: [
+                        { day: 0, start: 8.25, end: 12, color: KanteStyle.dataColor(0), title: "Andon" },
+                        { day: 0, start: 12.75, end: 17, color: KanteStyle.dataColor(2), title: "Kimai" },
+                        { day: 1, start: 9, end: 11.5, color: KanteStyle.dataColor(0), title: "Andon" },
+                        { day: 1, start: 13, end: 18.5, color: KanteStyle.dataColor(3), title: "Kader" },
+                        { day: 2, start: 7.5, end: 10, color: KanteStyle.dataColor(2), title: "Kimai" },
+                        { day: 2, start: 10.25, end: 15, title: "ohne Projekt" },
+                        { day: 3, start: 20, end: 23.5, color: KanteStyle.dataColor(4), title: "Nacht" },
+                        { day: 5, start: 10, end: 12, color: KanteStyle.dataColor(3), title: "Kader" }
+                    ]
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    KanteDateField { id: galleryDate; date: new Date(2026, 8, 30); Layout.preferredWidth: KanteStyle.unit(170) }
+                    KanteTimeField { hour: 9; minute: 30; Layout.preferredWidth: KanteStyle.unit(120) }
+                    KanteSearchCombo {
+                        Layout.preferredWidth: KanteStyle.unit(220)
+                        placeholderText: "Kunde suchen"
+                        textRole: "name"; colorRole: "color"; currentIndex: 1
+                        model: [{ name: "Andon GmbH", color: KanteStyle.dataColor(0) }, { name: "Kader & Söhne", color: KanteStyle.dataColor(2) }, { name: "Ohne Farbe" }]
+                    }
+                    KanteTagPicker {
+                        Layout.preferredWidth: KanteStyle.unit(330)
+                        placeholderText: "Tag"
+                        tags: ["urlaub", { name: "rolle-12", color: KanteStyle.focusColor }]
+                        suggestions: ["urlaub", "archiv", "rolle-12", "1998"]
+                        onEdited: function (t) { tags = t }
+                    }
+                }
             }
         }
     }
