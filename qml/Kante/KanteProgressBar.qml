@@ -2,8 +2,9 @@ import QtQuick
 import "."
 
 /**
- * Progress: a flat bar (`value` 0..1), a row of segments (`segments` > 0, each
- * one lights up like a lamp) or indeterminate warning stripes. 8 px high.
+ * Progress: a flat bar (`value` 0..1), a segment display (`segments` > 0: a row
+ * of lamps, each one switches on in three hard steps when the value reaches it)
+ * or indeterminate warning stripes. 8 px high.
  */
 Item {
     id: bar
@@ -51,7 +52,16 @@ Item {
                 height: bar.height
                 readonly property bool lit: !bar.indeterminate && (index + 1) <= Math.round(bar.value * bar.segments)
                 color: lit ? bar.color : KanteStyle.sunkenColor
-                Behavior on color { ColorAnimation { duration: KanteStyle.durationFast } }
+                // A segment switches on like a lamp: dim, dimmer, full, in three hard steps.
+                onLitChanged: if (lit && KanteStyle.animate) lamp.restart()
+                SequentialAnimation {
+                    id: lamp
+                    PropertyAction { property: "opacity"; value: 0.5 }
+                    PauseAnimation { duration: 87 }
+                    PropertyAction { property: "opacity"; value: 0.2 }
+                    PauseAnimation { duration: 87 }
+                    PropertyAction { property: "opacity"; value: 1 }
+                }
             }
         }
     }

@@ -245,6 +245,7 @@ Every landing page imports these variables (or copies them):
 | Stanze (A02) | a big action | wrap in `<span class="press">` |
 | Brackets lock on (A03) | `.tile`, `a.feat` | automatic on keyboard focus |
 | Scan (A04) | `.hero-shot`, `.showcase figure`, `.shots figure` | automatic when scrolled into view |
+| Segment display (A10) | `.progress-segs > i` (`.on` lights a segment, `--i` staggers them, `data-tier`) | automatic |
 | Bar loads (A05) | `.feat` | automatic |
 | Counter (A06) | `.fact b` with a number | automatic |
 | Teleprinter (A07) | mono labels | add `data-type` |
@@ -327,7 +328,7 @@ Everything from the web catalogue that makes sense in an app, with the same shap
 | `KanteTabBar`, `KanteSegmented`, `KanteSteps` | notched tabs with counters, segmented control, process steps | yellow tab slides (A11) |
 | `KantePill`, `KanteCounter`, `KanteSticker`, `KanteLamp`, `KanteHud` | status, counts, paper labels, status lamp, HUD line | breathing / ticking lamp (A16), teleprinter (A07) |
 | `KanteOdometer` | mechanical counter | reels roll (A06) |
-| `KanteProgressBar`, `KanteLoader`, `KanteSkeleton`, `KanteHazard` | bar, segments, indeterminate stripes, three squares, placeholder | marching stripes (A08), bar grows (A05) |
+| `KanteProgressBar`, `KanteLoader`, `KanteSkeleton`, `KanteHazard` | bar, segment display, indeterminate stripes, three squares, placeholder | marching stripes (A08), segments switch on like lamps (A10) |
 | `KanteCallout`, `KanteToast`, `KanteBanner`, `KanteEmptyState` | notes, toasts, status banner, empty / offline / plugin-missing state | toast slides in with a life line (A14) |
 | `KanteTile`, `KanteRunner` | image tile with tier bar, selection, focus brackets; running light around a working surface | A21 |
 | `KanteReveal`, `KanteAppear`, `KanteTube`, `KanteScrollMeter` | scan reveal, lamp-style entrance (cascade), tube glow, scroll meter | A04, A17, A09, A20 |
