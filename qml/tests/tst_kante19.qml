@@ -284,6 +284,20 @@ TestCase {
         }
     }
 
+    function visibleTexts(item) {
+        var out = []
+        if (!item.visible) {
+            return out
+        }
+        if (item.text !== undefined && typeof item.text === "string" && item.text.length > 0 && item.font !== undefined) {
+            out.push(item.text)
+        }
+        for (var i = 0; i < item.children.length; i++) {
+            out = out.concat(visibleTexts(item.children[i]))
+        }
+        return out
+    }
+
     function test_barChartReadout() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         var c = createTemporaryObject(barComponent, stage(), { x: 0, y: 0 })
@@ -301,6 +315,10 @@ TestCase {
         compare(c.hoverPart, 0)
         mouseMove(c, 250, c.plotHeight - 5)
         tryCompare(c, "hoverIndex", 2)
+        // Bar 2 has no Andon part: the read-out does not list "Andon 0:00".
+        var shown = visibleTexts(c).join("|")
+        verify(shown.indexOf("Kader") >= 0, shown)
+        verify(shown.indexOf("Andon") < 0, shown)
         c.readout = false
         c.hoverIndex = -1
         mouseMove(c, 50, 50)
