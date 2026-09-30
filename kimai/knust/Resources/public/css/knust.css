@@ -577,8 +577,7 @@ a:focus-visible,
 }
 
 .navbar-vertical .nav-link:focus-visible,
-.nav-segmented .nav-link:focus-visible,
-.page-link:focus-visible {
+.nav-segmented .nav-link:focus-visible {
     outline-offset: -2px;
 }
 
@@ -867,6 +866,24 @@ header.navbar .ticktac-stop.btn,
     color: var(--shr-fg0);
 }
 
+/* Total row: yellow rule, Rajdhani caps, sums in mono and yellow (score) */
+.table tfoot td,
+.table tfoot th {
+    border-top: 2px solid var(--shr-score);
+    font-family: var(--shr-font-heading);
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--shr-fg0);
+}
+
+.table tfoot td.kpu-num {
+    font-family: var(--knust-font-num);
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--shr-score);
+}
+
 /* Running entry and selected rows (Kimai's multiCheckbox, kit's kpu-select):
  * highlight bar and tint on the whole row, like Kante's selected row */
 .table tr.recording > td,
@@ -1041,25 +1058,99 @@ body.login-page #social-login-button {
     box-shadow: none;
 }
 
+.card.kpu-kpi {
+    container-type: inline-size;
+}
+
+/* Kante .kpi: the value follows the tile width, so long amounts fit */
 .kpu-kpi .kpu-kpi-value {
     font-family: var(--shr-font-heading);
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 14cqi, 2.8rem);
     line-height: 1.05;
     color: var(--shr-fg0);
 }
 
+/* Kante .bulk-bar: raised strip with a cyan edge (selection), count in Rajdhani */
 .kpu-bulk .kpu-bulk-bar,
 div.kpu-bulk-bar {
-    background: var(--shr-hard);
-    border-left: 3px solid var(--tblr-primary);
+    background: var(--shr-bg1);
+    border-color: var(--shr-bg2);
+    border-top: 3px solid var(--shr-hl);
 }
 
+.kpu-bulk-bar .kpu-bulk-count {
+    font-family: var(--shr-font-heading);
+    font-weight: 700;
+    font-size: 1.15rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--shr-fg0);
+}
+
+/* Status = Kante .pill: outline in the state colour, square marker.
+ * The shape tells the state without colour: requested hollow, approved
+ * tick, rejected cross, warning keeps Kimai's icon. */
 .badge.kpu-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .18rem .6rem;
+    border: 1px solid currentColor;
+    background: none !important;
     font-family: var(--shr-font-mono);
     font-weight: 500;
     font-size: .65rem;
     letter-spacing: .1em;
     text-transform: uppercase;
+}
+
+.badge.kpu-status::before {
+    content: "";
+    flex: none;
+    width: .45rem;
+    height: .45rem;
+    background: currentColor;
+}
+
+.badge.kpu-status-requested::before {
+    background: none;
+    border: 2px solid currentColor;
+}
+
+.badge.kpu-status-approved::before,
+.badge.kpu-status-rejected::before {
+    content: "✓";
+    width: auto;
+    height: auto;
+    background: none;
+    font-size: .75rem;
+    line-height: 1;
+}
+
+.badge.kpu-status-rejected::before {
+    content: "✕";
+}
+
+.badge.kpu-status:has(> i, > svg)::before {
+    content: none;
+}
+
+/* Group row = Kante .group-row: raised, yellow bar, mono caps title */
+.table tr.kpu-group-row > td {
+    background: var(--shr-bg1);
+    box-shadow: inset 3px 0 0 var(--shr-score);
+}
+
+.table tr.kpu-group-row .kpu-group-title {
+    font-family: var(--shr-font-mono);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--shr-fg2);
+}
+
+.table tr.kpu-group-row .kpu-group-sums {
+    color: var(--shr-fg0);
 }
 
 /* Kit markers (kit 0.4, PLUGINS.md): plugins say what an element is */
@@ -1129,6 +1220,12 @@ div.kpu-bulk-bar {
 .toast[class*="border-"] {
     border-color: var(--shr-bg2) !important;
     border-top-color: var(--shr-toast, var(--shr-info)) !important;
+}
+
+.toast .toast-header {
+    background: transparent;
+    border-bottom-color: var(--shr-bg1);
+    color: var(--shr-fg0);
 }
 
 .toast.border-success { --shr-toast: var(--tblr-success); }
