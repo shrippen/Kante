@@ -1203,12 +1203,36 @@ div.kpu-bulk-bar {
     line-height: 1;
 }
 
-/* Phone: narrower pills, so status columns fit their card */
+/* Phone: narrower pills and cells, so tables with a status column fit their card */
 @media (max-width: 575.98px) {
     .badge.kpu-status {
-        gap: .3rem;
-        padding: .15rem .4rem;
-        letter-spacing: .04em;
+        gap: .25rem;
+        padding: .12rem .3rem;
+        font-size: .6rem;
+        letter-spacing: .02em;
+    }
+
+    .badge.kpu-status::before {
+        width: .4rem;
+        height: .4rem;
+    }
+
+    .badge.kpu-status.kpu-status-billed::before {
+        width: .65rem;
+        height: .65rem;
+        font-size: .5rem;
+    }
+
+    .table > :not(caption) > * > * {
+        padding-inline: .5rem;
+    }
+
+    .card-table tr > :is(td, th):first-child {
+        padding-left: .75rem;
+    }
+
+    .card-table tr > :is(td, th):last-child {
+        padding-right: .75rem;
     }
 }
 
