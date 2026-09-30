@@ -1027,9 +1027,10 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .band-editor>.strip{display:flex;height:10px;background:var(--bg-hard)}
 .band-editor>.strip>i{display:block;background:var(--c);flex:var(--w) 1 0}
 /* KPI with change: the arrow is a shape, never colour alone */
-.kpi{display:flex;flex-direction:column;gap:.2rem}
-.kpi>b{font-family:var(--font-heading);font-weight:700;font-size:2.8rem;line-height:1;color:var(--fg0);font-variant-numeric:tabular-nums}
+.kpi{display:flex;flex-direction:column;gap:.2rem;container-type:inline-size;min-width:0}
+.kpi>b{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.6rem,14cqi,2.8rem);line-height:1;overflow-wrap:anywhere;color:var(--fg0);font-variant-numeric:tabular-nums}
 .kpi>span{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:.8rem}
 .delta{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--fg3)}
 .delta::before{content:"";width:8px;height:2px;background:currentColor}
 .delta.up{color:var(--aqua)}.delta.up::before{width:0;height:0;background:none;border:5px solid transparent;border-bottom:8px solid var(--aqua);border-top:0}
