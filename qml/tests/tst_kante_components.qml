@@ -494,6 +494,39 @@ TestCase {
         compare(c.current, 2)
     }
 
+    function test_curveEditorMarkers() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(curveComponent, tc)
+        // Flat before the first point, linear between, flat after the last.
+        compare(c.valueAt(0), 20)
+        compare(c.valueAt(35), 35)
+        compare(c.valueAt(100), 80)
+        c.markers = [{ x: 35, label: "CPU 35°", color: "#ff0000" }]
+        compare(c.markers.length, 1)
+        compare(c.label(12.34, "%"), "12.3%")
+    }
+
+    Component {
+        id: bandPickComponent
+        KanteBandEditor {
+            min: 0; max: 100; pick: true
+            colors: ["#111111", "#222222", "#333333"]
+            bands: [{ value: 0, color: "#111111" }, { value: 50, color: "#222222" }]
+            onEdited: function (b) { bands = b }
+        }
+    }
+
+    function test_bandEditorPick() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var b = createTemporaryObject(bandPickComponent, tc)
+        compare(b.picking, -1)
+        b.picking = 1
+        b.setColor(1, "#333333")
+        compare(b.picking, -1)
+        compare(String(b.bands[1].color), "#333333")
+        compare(String(b.bands[0].color), "#111111")
+    }
+
     Component {
         id: bandComponent
         KanteBandEditor {
@@ -517,6 +550,21 @@ TestCase {
         b.removeBand(0)
         b.removeBand(0)
         compare(b.bands.length, 1)
+    }
+
+    function test_lineChartAxis() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(lineChartComponent, tc)
+        compare(c.padLeft, 0)
+        var x0 = c.pointsOf(c.series[0])[0].x
+        c.axis = true
+        verify(c.padLeft > 0)
+        // The plot starts right of the labels; the read-out still finds the ends.
+        verify(c.pointsOf(c.series[0])[0].x >= x0 + c.padLeft - 1)
+        compare(c.nearest(c.padLeft), 0)
+        compare(c.nearest(c.width), 2)
+        c.compact = true
+        compare(c.padLeft, 0)
     }
 
     function test_lineChartReadout() {

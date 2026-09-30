@@ -194,7 +194,7 @@ Rectangle {
                     spacing: KanteStyle.unit(20)
                     KanteBarChart { Layout.preferredWidth: KanteStyle.unit(240); Layout.preferredHeight: KanteStyle.unit(110); values: [3, 5, 2, 6, 4]; labels: ["MO", "DI", "MI", "DO", "FR"]; goal: 4.5; highlight: 3 }
                     KanteBarChart { Layout.preferredWidth: KanteStyle.unit(200); Layout.preferredHeight: KanteStyle.unit(110); values: [[2, 1], [3, 2], [1, 3]]; labels: ["A", "B", "C"] }
-                    KanteLineChart { Layout.preferredWidth: KanteStyle.unit(240); Layout.preferredHeight: KanteStyle.unit(110); series: [[1, 3, 2, 5, 4], [2, 2, 3, 3, 4]]; labels: ["MO", "DI", "MI", "DO", "FR"]; unit: " h" }
+                    KanteLineChart { Layout.preferredWidth: KanteStyle.unit(240); Layout.preferredHeight: KanteStyle.unit(110); series: [[1, 3, 2, 5, 4], [2, 2, 3, 3, 4]]; labels: ["MO", "DI", "MI", "DO", "FR"]; unit: " h"; axis: true }
                     ColumnLayout {
                         KanteSparkline { values: [1, 3, 2, 5, 4, 6] }
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
@@ -208,12 +208,14 @@ Rectangle {
                         Layout.preferredHeight: KanteStyle.unit(180)
                         xMin: 20; xMax: 100; xUnit: "°"; yUnit: " %"; step: 5
                         points: [{ x: 30, y: 20 }, { x: 50, y: 40 }, { x: 70, y: 75 }, { x: 90, y: 100 }]
+                        markers: [{ x: 62, label: "CPU 62°", color: KanteStyle.dataColor(0) }, { x: 44, label: "GPU 44°", color: KanteStyle.dataColor(2) }]
                         onEdited: function (p) { points = p }
                     }
                     KanteBandEditor {
                         id: bands
                         Layout.preferredWidth: KanteStyle.unit(260)
                         unit: " °C"
+                        pick: true
                         bands: [{ value: 0, color: KanteStyle.dataColor(0) }, { value: 40, color: KanteStyle.dataColor(1) }, { value: 70, color: KanteStyle.dataColor(4) }]
                         onEdited: function (b) { bands = b }
                     }

@@ -418,6 +418,8 @@ Web only, the Andon elements that were missing. Tokens only; the cut corner on b
 
 The KPI value now scales with the tile (`container-type: inline-size`, 1.6 to 2.8 rem), so long amounts fit small tiles. `.table th` stays on one line and the table scrolls inside `.table-wrap`. Fixed edit bars lift the toast stack like `.bulk-bar.is-fixed` (`--bar-h`).
 
+**QML additions (1.7).** `KanteCurveEditor`: axis labels at 0, 25, 50, 75 and 100 %, `markers` (`{x, label, color}`, live readings drawn as a rule and a mark on the curve, `valueAt(x)`), and handles in text colour (no data colour, so they never read as a chart series beside the editor). `KanteLineChart`: `axis` labels the scale on the left. `KanteBandEditor`: `pick` opens the `colors` as a row of swatches under the band instead of cycling.
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:
