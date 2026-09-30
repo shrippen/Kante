@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Builds kante/ds-bundle/ (Claude Design upload layout) from docs/v1/shrippen.css. build.sh runs it as its last step."""
 import os, shutil, re
+CUR = ' aria-current="true"'
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = os.path.join(R, 'kante', 'ds-bundle')
 shutil.rmtree(B, ignore_errors=True)
@@ -48,7 +49,7 @@ EDITOR = ('<div class="toolbar"><span class="toolbar-label">Aspect</span>' + SEG
   '<div class="cand" style="--l:7%;--t:9%;--r:8%;--b:7%;--c:var(--blue)"><span class="cand-tag">A · 0.82</span></div>'
   '<div class="cand" style="--l:10%;--t:8%;--r:5%;--b:10%;--c:var(--purple)"><span class="cand-tag is-right">B · 0.74</span></div>'
   f'<div class="cropbox" style="--l:8%;--t:8%;--r:8%;--b:8%">{HANDLES}</div><span class="readout">3612 × 3612 px · 6:6</span></div>'
-  '<div class="strip" style="margin-top:12px">' + ''.join(f'<button data-tier="{t}"{" aria-current=\"true\"" if i==2 else ""}>{NEG}</button>' for i, t in enumerate(['green','green','yellow','green','red'])) + '</div>')
+  '<div class="strip" style="margin-top:12px">' + ''.join(f'<button data-tier="{t}"{CUR if i==2 else ""}>{NEG}</button>' for i, t in enumerate(['green','green','yellow','green','red'])) + '</div>')
 def BAND(tier, label, items):
     return f'<div class="band" data-tier="{tier}"><div class="band-head"><span>{label}</span><span>{len(items)}</span></div>' + ''.join(TILE(tier, 'x', c, '', ic, sm=True, sel=(i==0 and tier=="yellow")) for i, (c, ic) in enumerate(items)) + '</div>'
 BANDS = '<div class="bands">' + BAND('green','Green',[('0.91',CHK),('0.88',CHK)]) + BAND('yellow','Yellow',[('0.62',MID),('0.58',MID)]).replace('class="band" data-tier="yellow"','class="band is-over" data-tier="yellow"') + BAND('red','Red',[('0.31',BAD)]) + '</div>'
