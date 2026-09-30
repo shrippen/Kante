@@ -283,5 +283,22 @@
     "orange",
     "fg3"
   ],
-  "data_note": "Series colours of charts, in this order (red stays danger). Web: --d1..--d6; QML: KanteStyle.dataColor(i)."
+  "data_note": "Series colours of charts, in this order (red stays danger). Web: --d1..--d6; QML: KanteStyle.dataColor(i).",
+  "knust": {
+    "usage": "Knust (Kimai theme, shrippen/kimai-knust-bundle): kante/tools/build-knust.py writes docs/v1/knust-palette.css from this file, with Knust's --shr-* names",
+    "gray_note": "Tabler's grey scale, 50 to 950, as one warm scale for both themes: Leinen steps at the light end, Gruvbox at the dark end. \"theme.token\" or a hex value (500 is Gruvbox gray)",
+    "gray": {
+      "50": "light.bg-panel",
+      "100": "light.bg-void",
+      "200": "light.bg-hard",
+      "300": "light.bg2",
+      "400": "dark.fg3",
+      "500": "#928374",
+      "600": "light.fg2",
+      "700": "dark.bg2",
+      "800": "dark.bg1",
+      "900": "dark.bg0",
+      "950": "dark.bg-hard"
+    }
+  }
 }
