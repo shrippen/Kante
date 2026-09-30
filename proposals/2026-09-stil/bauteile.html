@@ -606,6 +606,124 @@ kbd{font-family:var(--font-mono);font-size:.74em;padding:.05rem .4rem;border:1px
 .snapnav .big{font-family:var(--font-heading);font-weight:700;font-size:2.4rem;text-transform:uppercase;color:var(--fg0);padding:.8rem .7rem .3rem;line-height:.9}
 .snapnav p{padding:.4rem .7rem;font-size:.8rem;color:var(--fg2)}
 
+/* ══ 1.7 (Andon) und 1.8: die Web-Elemente aus components.css, hier mit den Farben dieser Seite ══ */
+.chip-pick{display:inline-flex;align-items:center;gap:.45rem;height:28px;padding-inline:.6rem;border:1px solid var(--line);font-family:var(--font-mono);font-size:.72rem;color:var(--fg2);cursor:pointer}
+.chip-pick input{position:absolute;opacity:0;pointer-events:none}
+.chip-pick span::before{content:"";display:inline-block;width:9px;height:9px;margin-right:.45rem;border:1.5px solid var(--fg3);vertical-align:-1px}
+.chip-pick:has(input:checked){border-color:var(--cyan);color:var(--fg0);background:var(--cyan-tint)}
+.chip-pick:has(input:checked) span::before{background:var(--cyan);border-color:var(--cyan)}
+.chip-pick small{color:var(--fg3);font-size:.64rem}
+.fold{border-bottom:1px solid var(--raised)}
+.fold>summary{display:flex;align-items:baseline;gap:.6rem;min-height:var(--h-m);padding-block:.5rem;cursor:pointer;list-style:none;font-family:var(--font-heading);font-weight:700;font-size:1.1rem;text-transform:uppercase;letter-spacing:.04em;color:var(--fg0)}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::before{content:"";align-self:center;width:10px;height:10px;background:var(--fg3);clip-path:polygon(0 0,60% 0,100% 40%,100% 100%,0 100%);transform:rotate(-90deg);transition:transform calc(var(--t)*200ms)}
+.fold[open]>summary::before{background:var(--cyan);transform:none}
+.fold .count{min-width:0;height:auto;padding:0;background:none;font-family:var(--font-mono);font-size:.7rem;font-weight:400;color:var(--fg3)}
+.fold>.body{padding:.2rem 0 1rem;font-size:.88rem;color:var(--fg2)}
+.feed{list-style:none;display:flex;flex-direction:column}
+.feed li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.1rem .8rem;padding:.5rem 0;border-bottom:1px solid var(--raised)}
+.feed a{color:var(--fg0);font-size:.9rem}
+.feed .src,.feed time{font-family:var(--font-mono);font-size:.64rem;color:var(--fg3);letter-spacing:.06em}
+.modebar{display:flex;gap:2px;overflow-x:auto;background:var(--hard);padding:2px}
+.modebar button{flex:none;display:inline-flex;align-items:center;gap:.4rem;height:var(--h-s);padding-inline:.8rem;border:0;background:none;cursor:pointer;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg2)}
+.modebar button small{color:var(--fg3)}
+.modebar button[aria-pressed="true"]{background:var(--cyan-tint);color:var(--fg0);box-shadow:inset 0 -2px 0 var(--cyan)}
+[data-tier]{--tier:var(--aqua)}[data-tier="yellow"]{--tier:var(--yellow)}[data-tier="red"]{--tier:var(--red)}[data-tier="blue"]{--tier:var(--cyan)}
+.hint-card{background:var(--panel);border-top:4px solid var(--tier);padding:.7rem .9rem .8rem;display:flex;flex-direction:column;gap:.35rem}
+.hint-card header{display:flex;justify-content:space-between;gap:.6rem;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.hint-card .tier{color:var(--tier)}
+.hint-card .tier::before{content:"▲ "}
+.hint-card[data-tier="green"] .tier::before{content:"■ "}
+.hint-card .title{color:var(--fg0);font-weight:500}
+.hint-card .due{font-family:var(--font-mono);font-size:.7rem;color:var(--fg2)}
+.hint-card details{font-size:.82rem;color:var(--fg2)}
+.hint-card summary{cursor:pointer;color:var(--cyan);font-size:.78rem}
+.hint-card .actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.tier-card{background:var(--panel);border-top:4px solid var(--tier);padding:.7rem .9rem}
+.tier-card h3{font-size:1.05rem}
+.tier-card small{font-size:.78rem;color:var(--fg3)}
+.date-tile{display:inline-flex;flex-direction:column;align-items:center;min-width:3.2rem;padding:.3rem .2rem;background:var(--hard);font-family:var(--font-mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);line-height:1.3}
+.date-tile b{font-family:var(--font-heading);font-size:1.5rem;color:var(--fg0);line-height:1}
+.timeline{list-style:none;display:flex;flex-direction:column;gap:2px}
+.timeline li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.8rem;align-items:center;background:var(--panel);box-shadow:inset 4px 0 0 var(--tier);padding:.4rem .7rem .4rem .9rem}
+.timeline .what{color:var(--fg0);font-size:.88rem}
+.timeline .state{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tier)}
+.editbar{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;background:var(--raised);border-top:3px solid var(--cyan);padding:.5rem .8rem;clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
+.editbar .mode{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-weight:700;font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fg0)}
+.editbar .mode::before{content:"";width:10px;height:10px;background:var(--cyan)}
+.editbar .mode small{font-family:var(--font-mono);font-size:.62rem;font-weight:400;color:var(--fg3)}
+.editbar .grow{flex:1}
+.share .row{display:grid;grid-template-columns:minmax(0,1fr) 9rem auto;gap:.6rem;align-items:center;padding:.45rem 0;border-bottom:1px solid var(--raised)}
+.share .subject{display:inline-flex;align-items:center;gap:.5rem;color:var(--fg0);font-size:.88rem}
+.share .subject::before{content:"";width:9px;height:9px;background:var(--cyan)}
+.share .subject[data-kind="team"]::before{background:var(--purple)}
+.login{background:var(--panel);border-top:4px solid var(--yellow);padding:1.2rem 1.3rem 1.3rem;display:flex;flex-direction:column;gap:.7rem;max-width:22rem;clip-path:polygon(0 0,calc(100% - var(--cut-l)) 0,100% var(--cut-l),100% 100%,0 100%)}
+.login .brand{font-family:var(--font-heading);font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--fg0);display:flex;gap:.5rem;align-items:center}
+.login .brand i{width:8px;height:18px;background:var(--yellow)}
+.login-code{--cell:2.3rem;width:calc(6 * var(--cell) + 5 * .4rem);height:3rem;padding:0 0 0 .75rem;letter-spacing:calc(var(--cell) + .4rem - 1ch);font-family:var(--font-mono);font-size:1.4rem;color:var(--fg0);border:0;outline:none;
+  background:repeating-linear-gradient(90deg,var(--hard) 0 var(--cell),transparent var(--cell) calc(var(--cell) + .4rem))}
+.contrast{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:.7rem;align-items:center;background:var(--panel);padding:.5rem .7rem}
+.contrast .sample{padding:.35rem .6rem;font-weight:500}
+.contrast .ratio{display:inline;height:auto;border:0;font-family:var(--font-mono);font-size:.8rem;color:var(--fg0);white-space:nowrap}
+.contrast .badge{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;padding:.15rem .45rem;background:var(--aqua);color:var(--on-state)}
+.contrast[data-level="fail"] .badge{background:var(--red)}
+.contrast[data-level="aa"] .badge{background:var(--yellow);color:var(--on-yellow)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.8rem}
+.kpi{background:var(--panel);padding:.7rem .8rem;display:flex;flex-direction:column;gap:.15rem}
+.kpi b{font-family:var(--font-heading);font-size:2rem;line-height:1;color:var(--fg0)}
+.kpi span{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.kpi em{font-style:normal;font-family:var(--font-mono);font-size:.7rem;color:var(--aqua)}
+.day-strip{position:relative;height:44px;background:var(--hard);margin:1.1rem 0 1.75rem}
+.day-strip>*{position:absolute}
+.day-strip>.day{top:0;bottom:0;background:color-mix(in srgb,var(--yellow) 14%,transparent)}
+.day-strip>i{top:0;bottom:0;background:var(--c,var(--yellow))}
+.day-strip>i.is-dim{opacity:.6}
+.day-strip>i.is-event{top:auto;height:12px;background:var(--c,var(--cyan))}
+.day-strip>.work{bottom:-8px;height:4px;background:var(--fg3)}
+.day-strip>.now{top:-4px;bottom:-4px;width:2px;background:var(--cyan)}
+.day-strip>.sun,.day-strip>.moon{top:-17px;width:12px;height:12px;margin-left:-6px;border-radius:50%}
+.day-strip>.sun{background:radial-gradient(circle,var(--yellow) 0 3px,transparent 3.5px),repeating-conic-gradient(from -6deg,var(--yellow) 0 12deg,transparent 12deg 45deg);-webkit-mask:radial-gradient(circle,black 0 3.2px,transparent 3.4px 4.4px,black 4.6px 6px,transparent 6px);mask:radial-gradient(circle,black 0 3.2px,transparent 3.4px 4.4px,black 4.6px 6px,transparent 6px)}
+.day-strip>.moon{box-shadow:inset 3px -1px 0 0 var(--fg2)}
+.day-strip>.ticks{left:0;right:0;bottom:-1.65rem;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.58rem;color:var(--fg3)}
+.hchart{display:block;width:100%;height:auto}
+.hchart text{font-family:var(--font-mono);font-size:8px;fill:var(--fg3)}
+.hchart .axis{text-anchor:end}
+.hchart .grid{stroke:var(--raised)}
+.hchart .goal{stroke:var(--yellow);stroke-dasharray:4 3;stroke-width:1.5}
+.hchart .c{fill:var(--c)}
+.week-line{--start:0;--span:24;display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;align-items:center;gap:3px .7rem;font-family:var(--font-mono);font-size:.64rem;color:var(--fg3)}
+.week-line>.scale{grid-column:2;display:flex;flex-direction:row;justify-content:space-between;font-size:.58rem}
+.week-line>b{grid-column:1;font-weight:400;letter-spacing:.1em}
+.week-line>b.today{color:var(--yellow-t);font-weight:700}
+.week-line>.track::after{content:none}
+.week-line>.track{grid-column:2;position:relative;width:auto;height:22px;transition:none;background:var(--hard);background-image:repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),var(--raised) calc(25% - 1px) 25%)}
+.week-line>.track.today{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--yellow) 60%,transparent)}
+.week-line>.track>i{position:absolute;top:3px;bottom:3px;left:calc((var(--from) - var(--start)) / var(--span) * 100%);width:max(2px,calc((var(--to) - var(--from)) / var(--span) * 100% - 1px));background:var(--c,var(--fg3))}
+.week-line>.track>.now{position:absolute;top:-2px;bottom:-2px;width:2px;margin-left:-1px;left:calc(var(--at) / 24 * 100%);background:var(--cyan)}
+.week-line>small{grid-column:3;color:var(--fg1);font-size:.72rem;text-align:right}
+.week-line>small.is-zero{color:var(--fg3)}
+.date-field{max-width:12rem;color-scheme:dark}
+:root[data-look="leinen"] .date-field{color-scheme:light}
+.combo-search{position:relative;align-self:start}
+.combo-search [role="listbox"]{margin:2px 0 0;padding:.3rem 0;list-style:none;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--cyan)}
+.combo-search [role="option"]{display:flex;align-items:center;gap:.6rem;min-height:var(--h-s);padding:0 .8rem;color:var(--fg1);font-size:.88rem}
+.combo-search [role="option"]:not(.is-new)::before{content:"";width:10px;height:10px;background:var(--c,var(--fg3))}
+.combo-search [role="option"][aria-selected="true"]{background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan);color:var(--fg0)}
+.combo-search .is-new{color:var(--cyan)}
+.combo-search .is-new::before{content:"+";font-family:var(--font-mono);font-weight:700}
+.has-tools{position:relative;padding-top:34px}
+.tile-tools{position:absolute;top:0;left:0;right:0;height:32px;display:flex;align-items:center;gap:2px;padding:0 .2rem;background:var(--raised);border-top:2px solid var(--cyan);font-family:var(--font-mono);font-size:.64rem;color:var(--fg3)}
+.tile-tools .gap{flex:1}
+.tile-tools button{min-width:30px;height:30px;background:none;border:0;color:var(--fg2);cursor:pointer}
+.tile-tools button:hover{background:var(--line);color:var(--fg0)}
+.tile-tools button[aria-pressed="true"]{color:var(--cyan)}
+.tile-tools .grip{width:12px;height:18px;margin:0 .35rem;background:radial-gradient(circle,var(--fg3) 1.2px,transparent 1.6px) 0 0/6px 6px}
+.covers{position:relative;height:9rem;background:var(--hard);overflow:hidden}
+.covers .bar{position:absolute;left:0;right:0;bottom:0;height:34px;background:var(--raised);border-top:3px solid var(--cyan)}
+.covers .ts{position:absolute;right:.6rem;bottom:44px;background:var(--panel);border-top:2px solid var(--aqua);padding:.3rem .6rem;font-size:.72rem;color:var(--fg1)}
+.covers.on .ov{position:absolute;inset:0;background:var(--scrim)}
+.covers.on .ts{bottom:.6rem;z-index:1}
+
 :root[data-still] *,:root[data-still] *::before,:root[data-still] *::after{animation:none!important;transition:none!important}
 @media(prefers-reduced-motion:reduce){:root:not([data-motion="on"]) *,:root:not([data-motion="on"]) *::before,:root:not([data-motion="on"]) *::after{animation:none!important;transition:none!important}}
 @media(max-width:640px){.toc{display:none}.rules li{grid-template-columns:1fr;gap:.1rem}.scale>div{grid-template-columns:1fr;gap:.1rem}}
@@ -620,7 +738,7 @@ footer p{font-size:.84rem;color:var(--fg3)}
   <span class="brand"><i></i>Kante</span>
   <nav class="toc" aria-label="Abschnitte">
     <a class="back" href="index.html">← Stilaudit</a>
-    <a href="luecken.html">Lücken</a><a href="#grundlagen">Grundlagen</a><a href="#knoepfe">Knöpfe</a><a href="#eingaben">Eingaben</a><a href="#navigation">Navigation</a><a href="#anzeige">Anzeige</a><a href="#rueckmeldung">Rückmeldung</a><a href="#flaechen">Flächen</a><a href="#bewegung">Bewegung</a>
+    <a href="luecken.html">Lücken</a><a href="#grundlagen">Grundlagen</a><a href="#knoepfe">Knöpfe</a><a href="#eingaben">Eingaben</a><a href="#navigation">Navigation</a><a href="#anzeige">Anzeige</a><a href="#rueckmeldung">Rückmeldung</a><a href="#flaechen">Flächen</a><a href="#andon">1.7</a><a href="#zeit">1.8</a><a href="#bewegung">Bewegung</a>
   </nav>
   <div class="ctrls">
     <div class="seg" role="group" aria-label="Thema"><button type="button" id="look-dark" aria-pressed="true">Dunkel</button><button type="button" id="look-leinen" aria-pressed="false">Leinen</button></div>
@@ -900,6 +1018,79 @@ footer p{font-size:.84rem;color:var(--fg3)}
   </div>
 </section>
 
+<!-- ═════ 1.7 ANDON ═════ -->
+<section class="blk" id="andon">
+  <div class="head"><div class="eyebrow">// 09 Kante 1.7</div><h2>Andon-Elemente</h2>
+  <p class="lead">Was Andon lokal gebaut hatte, jetzt in <code>components.css</code>. Stufen heißen wie bei Kachel und Merkmal: grün, gelb, rot, blau. Stufe ist immer Form + Wort + Farbe.</p></div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Filter-Chips <code>label.chip-pick</code></span>
+      <div class="row"><label class="chip-pick"><input type="checkbox" checked><span>Kimai</span><small>12</small></label><label class="chip-pick"><input type="checkbox"><span>Snipe-IT</span><small>3</small></label><label class="chip-pick"><input type="checkbox" checked><span>Dawarich</span></label></div></div>
+    <div class="cell panel"><span class="lbl">Moduszeile <code>.modebar</code></span>
+      <div class="modebar"><button aria-pressed="true">Alle <small>42</small></button><button aria-pressed="false">Offen <small>7</small></button><button aria-pressed="false">Erledigt <small>35</small></button></div></div>
+    <div class="cell panel"><span class="lbl">Klappe <code>details.fold</code></span>
+      <details class="fold" open><summary>Hinweise <span class="count">4</span></summary><div class="body">Aufklappen ohne Skript; ab 1.8 mit gespeichertem Zustand.</div></details>
+      <details class="fold"><summary>Erledigt <span class="count">12</span></summary><div class="body">Zu.</div></details></div>
+  </div>
+  <div class="grid">
+    <div class="hint-card" data-tier="red"><header><span class="tier">Dringend</span><span>Invoice Ninja</span></header><span class="title">Rechnung 2026-041 überfällig</span><span class="due">seit 12 Tagen</span><details><summary>Warum?</summary>Fällig am 18.09., keine Zahlung eingegangen.</details><div class="actions"><button class="btn b-pri s">Mahnen</button><button class="btn b-lei s">Später</button></div></div>
+    <div class="hint-card" data-tier="green"><header><span class="tier">Info</span><span>Kimai</span></header><span class="title">31 Stunden diese Woche</span><span class="due">Ziel 32 h</span></div>
+    <div class="cell"><div class="tier-card" data-tier="yellow"><h3>Snipe-IT</h3><small>3 Geräte ohne Prüfung</small></div><div class="tier-card" data-tier="blue"><h3>Dawarich</h3><small>Letzter Punkt vor 2 h</small></div></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Fristen <code>ol.timeline</code> mit <code>time.date-tile</code></span>
+      <ol class="timeline"><li data-tier="red"><time class="date-tile"><b>02</b>Okt · Fr</time><span class="what">Umsatzsteuer</span><span class="state">überfällig</span></li><li data-tier="yellow"><time class="date-tile"><b>15</b>Okt · Do</time><span class="what">Domain verlängern</span><span class="state">bald</span></li><li data-tier="green"><time class="date-tile"><b>30</b>Nov · Mo</time><span class="what">Wartung</span><span class="state">geplant</span></li></ol></div>
+    <div class="cell panel"><span class="lbl">Meldungen <code>ul.feed</code></span>
+      <ul class="feed"><li><a href="#andon">Kirigami 6.30 erschienen</a><time>vor 2 h</time><span class="src">kde.org</span></li><li><a href="#andon">Snipe-IT 8.1 mit neuer API</a><time>gestern</time><span class="src">github</span></li></ul></div>
+  </div>
+  <div class="editbar"><span class="mode">Bearbeiten <small>ungespeichert</small></span><span class="grow"></span><button class="btn b-lei s">Verlauf</button><button class="btn b-lei s">Verwerfen</button><button class="btn b-pri s">Speichern</button></div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Teilen <code>.share</code></span>
+      <div class="share"><div class="row"><span class="subject">anna</span><select class="select"><option>Lesen</option><option>Bearbeiten</option></select><button class="btn b-lei s icon" aria-label="Entfernen">×</button></div><div class="row"><span class="subject" data-kind="team">Buchhaltung</span><select class="select"><option>Bearbeiten</option></select><button class="btn b-lei s icon" aria-label="Entfernen">×</button></div></div></div>
+    <div class="cell panel"><span class="lbl">Anmeldung, zweiter Faktor <code>.login</code>, <code>input.login-code</code></span>
+      <div class="login"><span class="brand"><i></i>Andon</span><h3>Zweiter Faktor</h3><input class="login-code" inputmode="numeric" maxlength="6" value="4821" aria-label="Code"><button class="btn b-pri">Weiter</button></div></div>
+    <div class="cell panel"><span class="lbl">Kontrast <code>.contrast[data-level]</code>, KPI <code>.kpi-row</code></span>
+      <div class="contrast" data-level="aaa"><span class="sample" style="background:var(--hard);color:var(--fg1)">Text auf Grund</span><span class="ratio">12,4 : 1</span><span class="badge">✓ AAA</span></div>
+      <div class="contrast" data-level="fail"><span class="sample" style="background:var(--hard);color:var(--line)">Rahmen als Text</span><span class="ratio">2,1 : 1</span><span class="badge">✕ ZU WENIG</span></div>
+      <div class="kpi-row"><div class="kpi"><b>1 687</b><span>Umsatz · Woche</span><em>▲ +12,4 %</em></div><div class="kpi"><b>31:15</b><span>Stunden</span><em>▲ +3 %</em></div></div></div>
+  </div>
+</section>
+
+<!-- ═════ 1.8 ZEIT UND EINGABEN ═════ -->
+<section class="blk" id="zeit">
+  <div class="head"><div class="eyebrow">// 10 Kante 1.8</div><h2>Zeit und Eingaben</h2>
+  <p class="lead">Ein Tag vor Tageslicht und Arbeitszeit, Stunden als Diagramm, Datums- und Suchfelder, der Werkzeugstreifen über Kacheln. Kein Tortendiagramm: gestapelte Balken lesen sich genauer.</p></div>
+  <div class="cell panel"><span class="lbl">Tagesleiste mit Himmel und Arbeitsband <code>.day-strip.has-sky.has-work</code></span>
+    <div class="day-strip"><span class="day" style="left:30%;width:49.6%"></span><i style="left:34.4%;width:15.6%;--c:var(--cyan)"></i><i style="left:53.1%;width:7.3%;--c:var(--purple)"></i><i class="is-dim" style="left:60.4%;width:8.3%"></i><i class="is-event" style="left:41.7%;width:2.1%"></i><span class="work" style="left:33.3%;width:37.5%"></span><span class="sun" style="left:30%"></span><span class="moon" style="left:79.6%"></span><span class="now" style="left:63.3%"></span><div class="ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div></div>
+    <span class="muted">Sonne über dem Aufgang, Mond über dem Untergang (die einzigen runden Formen, weil Symbole). Segmente in Projektfarbe (<code>--c</code>), Arbeitszeit als Band darunter.</span></div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Gestapelt nach Projekt, Stundenachse <code>.chart .c</code>, <code>.axis</code></span>
+      <svg class="hchart" viewBox="0 0 300 150" role="img" aria-label="Stunden je Tag nach Projekt"><line class="grid" x1="34" x2="300" y1="130" y2="130"/><line class="grid" x1="34" x2="300" y1="95" y2="95"/><line class="grid" x1="34" x2="300" y1="60" y2="60"/><line class="grid" x1="34" x2="300" y1="25" y2="25"/><text class="axis" x="28" y="133">0:00</text><text class="axis" x="28" y="98">2:00</text><text class="axis" x="28" y="63">4:00</text><text class="axis" x="28" y="28">6:00</text><rect class="c" style="--c:var(--cyan)" x="50" y="90" width="30" height="40"/><rect class="c" style="--c:var(--purple)" x="50" y="60" width="30" height="30"/><rect class="c" style="--c:var(--cyan)" x="110" y="75" width="30" height="55"/><rect class="c" style="--c:var(--aqua)" x="110" y="40" width="30" height="35"/><rect class="c" style="--c:var(--purple)" x="170" y="100" width="30" height="30"/><line class="goal" x1="34" x2="300" y1="46" y2="46"/><text x="65" y="145" text-anchor="middle">MO</text><text x="125" y="145" text-anchor="middle">DI</text><text x="185" y="145" text-anchor="middle">MI</text></svg></div>
+    <div class="cell panel"><span class="lbl">Woche nach Stunden <code>.week-line</code></span>
+      <div class="week-line"><div class="scale"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+        <b>MO</b><div class="track"><i style="--from:8.25;--to:12;--c:var(--cyan)"></i><i style="--from:12.75;--to:17;--c:var(--purple)"></i></div><small>8:00</small>
+        <b>DI</b><div class="track"><i style="--from:9;--to:11.5;--c:var(--cyan)"></i><i style="--from:13;--to:18.5;--c:var(--aqua)"></i></div><small>8:00</small>
+        <b class="today">MI</b><div class="track today"><i style="--from:7.5;--to:10;--c:var(--purple)"></i><i style="--from:10.25;--to:15"></i><span class="now" style="--at:15.2"></span></div><small>7:15</small>
+        <b>DO</b><div class="track"><i style="--from:20;--to:23.5;--c:var(--orange)"></i></div><small>3:30</small>
+        <b>FR</b><div class="track"></div><small class="is-zero">0:00</small></div></div>
+  </div>
+  <div class="grid panel">
+    <div class="field"><label for="d18">Datum <code>.date-field</code></label><input class="input date-field" id="d18" type="date" value="2026-09-30"></div>
+    <div class="field"><label for="t18">Zeit</label><input class="input date-field" id="t18" type="time" value="09:30"></div>
+    <div class="field combo-search"><label for="c18">Kunde <code>.combo-search</code></label><input class="input" id="c18" role="combobox" aria-expanded="true" aria-controls="c18l" value="ka"><ul role="listbox" id="c18l"><li role="option" aria-selected="true" style="--c:var(--purple)">Kader &amp; Söhne</li><li role="option" style="--c:var(--aqua)">Kurrent</li><li role="option">Kasse (ohne Farbe)</li><li role="option" class="is-new">Neu: „ka“</li></ul></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Werkzeugstreifen <code>.has-tools</code> &gt; <code>.tile-tools</code></span>
+      <div class="grid-s"><div class="has-tools"><div class="tile-tools"><span class="grip" aria-hidden="true"></span><span>Kimai</span><span class="gap"></span><button type="button" aria-label="Höhe">↕</button><button type="button" aria-pressed="true" aria-label="Sichtbar">◉</button><button type="button" aria-label="Entfernen">×</button></div><div class="tile k"><div class="img" style="aspect-ratio:3/1"><svg viewBox="0 0 60 20"><rect width="60" height="20" fill="#3c3836"/></svg></div><div class="m"><span>KIMAI · WOCHE</span><b>31 h</b></div></div></div></div>
+      <span class="muted">Eigenes Band über der Kachel, verdeckt nie den Namen. Zeigt sich bei Zeiger und Fokus, auf Touch immer (40 px).</span></div>
+    <div class="cell panel"><span class="lbl">Toasts unter verdeckter Leiste <code>[data-covers-bar]</code></span>
+      <div class="covers" id="covers"><div class="bar"></div><div class="ov"></div><div class="ts">Gespeichert</div></div>
+      <button class="btn b-lei s" type="button" id="coverbtn">Überlagerung an / aus</button>
+      <span class="muted">Eine feste Leiste hebt die Toasts an. Liegt ein Element mit <code>data-covers-bar</code> darüber (nicht <code>[hidden]</code>, ein <code>&lt;dialog&gt;</code> nur offen), bleiben sie unten.</span></div>
+    <div class="cell panel"><span class="lbl">Klappe merkt sich den Zustand</span>
+      <details class="fold" open><summary>Hinweise <span class="count">4</span></summary><div class="body"><code>details.fold[data-key][data-open]</code>: <code>shrippen.js</code> stellt den Zustand her und meldet jede Änderung als <code>kante:fold</code> mit <code>{key, open}</code>.</div></details></div>
+  </div>
+</section>
+
 <!-- ═════ BEWEGUNG ═════ -->
 <section class="blk" id="bewegung">
   <div class="head"><div class="eyebrow">// 08 Bewegungslabor</div><h2>Bewegung</h2>
@@ -1042,6 +1233,7 @@ footer p{font-size:.84rem;color:var(--fg3)}
   var drop=document.getElementById('drop');
   ['dragenter','dragover'].forEach(function(e){drop.addEventListener(e,function(ev){ev.preventDefault();drop.classList.add('is-over')})});
   ['dragleave','drop'].forEach(function(e){drop.addEventListener(e,function(ev){ev.preventDefault();drop.classList.remove('is-over')})});
+  var cv=document.getElementById('coverbtn');if(cv)cv.onclick=function(){document.getElementById('covers').classList.toggle('on')};
   document.getElementById('copy1').onclick=function(){var b=this;var t=b.parentNode.querySelector('.cmd').textContent;var done=function(){b.classList.add('done');setTimeout(function(){b.classList.remove('done')},1500)};try{navigator.clipboard.writeText(t).then(done,done)}catch(e){done()}};
   document.querySelectorAll('.toast .tx').forEach(function(b){b.onclick=function(){var t=b.closest('.toast');t.style.visibility='hidden';setTimeout(function(){t.style.visibility=''},1200)}});
 
