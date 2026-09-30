@@ -730,6 +730,39 @@ kbd{font-family:var(--font-mono);font-size:.74em;padding:.05rem .4rem;border:1px
 footer{margin-top:4rem;border-top:1px solid var(--raised);padding-block:1.8rem 3rem}
 footer .line{width:64px;height:3px;background:var(--yellow);margin-bottom:.9rem}
 footer p{font-size:.84rem;color:var(--fg3)}
+/* Kante 1.9 (components.css §11): chips as links, filter tiers, chart details, heat goals, colour input, badge rows, page head */
+a.chip,a.chip:hover{text-decoration:none}
+.chip.is-filter{--c:var(--cyan);padding-inline:.5rem}
+.chip.is-filter::before{content:"";width:8px;height:8px;background:var(--c)}
+.chip.is-filter[data-tier="critical"]{--c:var(--red)}.chip.is-filter[data-tier="warn"]{--c:var(--orange)}
+.chip.is-filter[aria-pressed="true"]{background:var(--c);color:var(--on-state)}.chip.is-filter[aria-pressed="true"]::before{background:var(--on-state)}
+.hchart .line,.hchart .grid,.hchart .goal,.spk path{vector-effect:non-scaling-stroke}
+.hchart .line{fill:none;stroke:var(--purple);stroke-width:2}
+.hchart .bar{fill:var(--cyan)}
+.hchart .bar.is-prev{fill:none;stroke:var(--fg3);stroke-width:1.5;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
+.hchart .goal.is-danger{stroke:var(--red)}
+.hchart.wide text{font-size:var(--chart-text,8px)}
+.spk{display:block;width:100%;height:40px}.spk path{fill:none;stroke:var(--aqua);stroke-width:1.6}
+.spk .end{stroke-width:5px;stroke-linecap:square}
+.heat9{display:grid;gap:3px;grid-auto-flow:column;grid-template-rows:repeat(var(--rows),auto);grid-auto-columns:minmax(0,1fr)}
+.heat9 i,.heat-legend i{aspect-ratio:1;background:var(--hard)}
+.heat9 i[data-l="1"],.heat-legend i[data-l="1"]{background:color-mix(in srgb,var(--cyan) 22%,var(--hard))}
+.heat9 i[data-l="2"],.heat-legend i[data-l="2"]{background:color-mix(in srgb,var(--cyan) 44%,var(--hard))}
+.heat9 i[data-l="3"],.heat-legend i[data-l="3"]{background:color-mix(in srgb,var(--cyan) 66%,var(--hard))}
+.heat9 i[data-l="4"],.heat-legend i[data-l="4"]{background:var(--cyan)}
+.heat9 i.met,.heat-legend i.met{box-shadow:inset 0 -3px 0 var(--aqua),inset 0 -4px 0 var(--void)}
+.heat9 i.under,.heat-legend i.under{box-shadow:inset 0 -3px 0 var(--orange),inset 0 -4px 0 var(--void)}
+.heat-legend{display:flex;align-items:center;flex-wrap:wrap;gap:3px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3)}
+.heat-legend i{width:10px}.heat-legend span{margin-inline:.35rem}
+input[type="color"]{appearance:none;-webkit-appearance:none;width:var(--h-m);height:var(--h-m);padding:4px;background:var(--hard);border:1px solid var(--line);border-bottom-width:2px;border-radius:0;cursor:pointer}
+input[type="color"]::-webkit-color-swatch-wrapper{padding:0}input[type="color"]::-webkit-color-swatch{border:0;border-radius:0}input[type="color"]::-moz-color-swatch{border:0;border-radius:0}
+.tile-badges{display:flex;flex-wrap:wrap;gap:.3rem;min-width:0;padding:.45rem .6rem .55rem}
+.tile-badges .pill{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;line-height:22px}
+.tile-badges .pill::before{display:inline-block;margin-right:.45rem;vertical-align:1px}
+.date-tile{white-space:nowrap}
+.page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:.6rem 1rem;margin-bottom:1.25rem}
+.page-head h3{font-family:var(--font-heading);font-size:1.6rem;text-transform:uppercase;letter-spacing:.04em;color:var(--fg0);line-height:1}
+.share .add{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.8rem}.share .add .input{flex:1 1 12rem;min-width:0}
 </style>
 </head>
 <body>
@@ -738,7 +771,7 @@ footer p{font-size:.84rem;color:var(--fg3)}
   <span class="brand"><i></i>Kante</span>
   <nav class="toc" aria-label="Abschnitte">
     <a class="back" href="index.html">← Stilaudit</a>
-    <a href="luecken.html">Lücken</a><a href="#grundlagen">Grundlagen</a><a href="#knoepfe">Knöpfe</a><a href="#eingaben">Eingaben</a><a href="#navigation">Navigation</a><a href="#anzeige">Anzeige</a><a href="#rueckmeldung">Rückmeldung</a><a href="#flaechen">Flächen</a><a href="#andon">1.7</a><a href="#zeit">1.8</a><a href="#bewegung">Bewegung</a>
+    <a href="luecken.html">Lücken</a><a href="#grundlagen">Grundlagen</a><a href="#knoepfe">Knöpfe</a><a href="#eingaben">Eingaben</a><a href="#navigation">Navigation</a><a href="#anzeige">Anzeige</a><a href="#rueckmeldung">Rückmeldung</a><a href="#flaechen">Flächen</a><a href="#andon">1.7</a><a href="#zeit">1.8</a><a href="#neun">1.9</a><a href="#bewegung">Bewegung</a>
   </nav>
   <div class="ctrls">
     <div class="seg" role="group" aria-label="Thema"><button type="button" id="look-dark" aria-pressed="true">Dunkel</button><button type="button" id="look-leinen" aria-pressed="false">Leinen</button></div>
@@ -1088,6 +1121,42 @@ footer p{font-size:.84rem;color:var(--fg3)}
       <span class="muted">Eine feste Leiste hebt die Toasts an. Liegt ein Element mit <code>data-covers-bar</code> darüber (nicht <code>[hidden]</code>, ein <code>&lt;dialog&gt;</code> nur offen), bleiben sie unten.</span></div>
     <div class="cell panel"><span class="lbl">Klappe merkt sich den Zustand</span>
       <details class="fold" open><summary>Hinweise <span class="count">4</span></summary><div class="body"><code>details.fold[data-key][data-open]</code>: <code>shrippen.js</code> stellt den Zustand her und meldet jede Änderung als <code>kante:fold</code> mit <code>{key, open}</code>.</div></details></div>
+  </div>
+</section>
+
+<section class="blk" id="neun">
+  <div class="head"><div class="eyebrow">// 11 Kante 1.9</div><h2>Filter, Diagramme, Ziele</h2>
+  <p class="lead">Aus den Apps: Filter-Chips als Links mit Stufe, gestreckte Diagramme ohne verzerrte Linien, der Vorzeitraum als Umriss, Tagesziele in der Heatmap, ein Farbfeld im Kante-Rahmen und Kleinigkeiten fürs Telefon.</p></div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Filter-Chips <code>a.chip.is-filter[data-tier=critical|warn]</code></span>
+      <div class="chips-row" style="display:flex;flex-wrap:wrap;gap:.4rem"><a class="chip is-filter" href="#neun" aria-pressed="true">alle 12</a><a class="chip is-filter" data-tier="critical" href="#neun">kritisch 3</a><a class="chip is-filter" data-tier="warn" href="#neun">warnung 5</a><a class="chip is-filter" data-tier="critical" href="#neun" aria-pressed="true">kritisch</a></div>
+      <span class="muted">Ein Link wird nie unterstrichen. Die Stufe färbt den Chip wie die Hinweise, die er filtert.</span></div>
+    <div class="cell panel"><div class="page-head"><h3>Auswertung</h3><button class="btn b-lei s">Export</button></div>
+      <span class="lbl">Seitenkopf <code>.page-head</code></span>
+      <span class="muted">Titel mit Aktionen, Abstand zur ersten Karte darunter. <code>main &gt; h1 + .card</code> bekommt denselben Abstand.</span></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Gestreckt <code>preserveAspectRatio="none"</code>, <code>.bar.is-prev</code>, <code>.goal.is-danger</code>, <code>--chart-text</code></span>
+      <svg class="hchart wide" viewBox="0 0 1000 200" preserveAspectRatio="none" style="height:150px;--chart-text:26px" role="img" aria-label="Umsatz je Monat mit Vorjahr"><line class="grid" x1="0" x2="1000" y1="170" y2="170"/><line class="grid" x1="0" x2="1000" y1="95" y2="95"/><rect class="bar is-prev" x="60" y="60" width="110" height="110"/><rect class="bar" x="180" y="80" width="110" height="90"/><rect class="bar is-prev" x="400" y="70" width="110" height="100"/><rect class="bar" x="520" y="40" width="110" height="130"/><rect class="bar is-prev" x="740" y="90" width="110" height="80"/><rect class="bar" x="860" y="100" width="110" height="70"/><polyline class="line" points="0,150 250,120 500,70 750,90 1000,40"/><line class="goal" x1="0" x2="1000" y1="75" y2="75"/><line class="goal is-danger" x1="0" x2="1000" y1="25" y2="25"/><text x="175" y="196" text-anchor="middle">AUG</text><text x="515" y="196" text-anchor="middle">SEP</text><text x="855" y="196" text-anchor="middle">OKT</text></svg>
+      <span class="muted">Linien und Raster behalten 2 / 1 px (<code>vector-effect</code>), der Umriss ist das Vorjahr, Rot eine Grenze. Die Schrift folgt <code>--chart-text</code> in viewBox-Einheiten.</span></div>
+    <div class="cell panel"><span class="lbl">Spark mit Endmarke <code>path.end</code></span>
+      <svg class="spk" viewBox="0 0 100 20" preserveAspectRatio="none" role="img" aria-label="Verlauf"><path d="M0 15 L25 10 L50 12 L75 5 L97 8"/><path class="end" d="M97 8 h0"/></svg>
+      <span class="muted">Ein Pfad der Länge 0 mit eckiger Kappe: bleibt quadratisch, wie breit die Karte auch ist.</span></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Tagesziele <code>.heat[style="--rows:7"]</code>, <code>.met</code>, <code>.under</code>, <code>.heat-legend</code></span>
+      <div class="heat9" style="--rows:7;max-width:15rem"><i data-l="2" class="met"></i><i data-l="3" class="met"></i><i data-l="1" class="under"></i><i data-l="4" class="met"></i><i data-l="2"></i><i></i><i></i><i data-l="3" class="met"></i><i data-l="1" class="under"></i><i data-l="2" class="met"></i><i data-l="4" class="met"></i><i data-l="1" class="under"></i><i></i><i></i><i data-l="2" class="met"></i><i data-l="3" class="met"></i><i data-l="2" class="met"></i><i data-l="1" class="under"></i><i data-l="3"></i><i></i><i></i><i data-l="4" class="met"></i><i data-l="3" class="met"></i><i data-l="1" class="under"></i><i data-l="2" class="met"></i><i data-l="3" class="met"></i><i></i><i></i></div>
+      <div class="heat-legend"><span>weniger</span><i></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i><span>mehr</span><i class="met" data-l="3"></i><span>Ziel</span><i class="under" data-l="1"></i><span>darunter</span></div>
+      <span class="muted">Spaltenweise, eine Spalte je Woche. Der Balken unten sagt, ob das Tagesziel erreicht ist; die Stufe bleibt die Menge.</span></div>
+    <div class="cell panel"><span class="lbl">Farbe <code>input[type=color]</code>, Datum <code>.date-tile</code> ohne Umbruch</span>
+      <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap"><input type="color" value="#5ccfc4" aria-label="Projektfarbe"><input type="color" value="#d3869b" aria-label="Kundenfarbe"><time class="date-tile"><b>02</b>Okt 2026</time><time class="date-tile"><b>30</b>Sep · Mi</time></div>
+      <span class="muted">Ein quadratisches Muster im Feldrahmen. Das Jahr bricht nicht um.</span></div>
+    <div class="cell panel"><span class="lbl">Abzeichen in der Kachel <code>.tile-badges .pill</code></span>
+      <div class="tile" style="max-width:14rem"><div class="tile-badges"><span class="pill run">Analysiert mit sehr langem Namen</span><span class="pill ok">fertig</span></div></div>
+      <span class="muted">Lange Abzeichen enden mit „…“, statt die Kachel zu verbreitern.</span></div>
+    <div class="cell panel"><span class="lbl">Teilen hinzufügen <code>.share .add</code>, Toasts über der Home-Leiste</span>
+      <div class="share"><div class="add"><input class="input" placeholder="Name oder Team"><select class="select" style="width:auto"><option>Lesen</option></select><button class="btn b-pri s">Teilen</button></div></div>
+      <span class="muted">Ist die Zeile schmal (Telefon, kleiner Dialog), bekommt das Feld eine eigene. <code>.toast-stack</code> rechnet <code>env(safe-area-inset-bottom)</code> dazu.</span></div>
   </div>
 </section>
 
