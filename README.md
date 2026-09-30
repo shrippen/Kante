@@ -245,6 +245,11 @@ Every landing page imports these variables (or copies them):
 | Stanze (A02) | a big action | wrap in `<span class="press">` |
 | Brackets lock on (A03) | `.tile`, `a.feat` | automatic on keyboard focus |
 | Scan (A04) | `.hero-shot`, `.showcase figure`, `.shots figure` | automatic when scrolled into view |
+| Value changes (L1) | `[data-live]` text, or `Kante.tick(el, text)` | a cyan strip fades behind it, whole numbers count up |
+| Fresh data (L2) | `[data-live-tile]` after an htmx swap, or `Kante.fresh(el)` | a 2 px cyan line runs along the **bottom** edge of the tile once |
+| Stale data (L3) | `Kante.stale(el, true, "12 min")` (class `.is-stale`) | the tile dims, warning stripes sit on the **bottom** edge with the age above; a state, no motion |
+| Edit mode (L4) | `Kante.edit(box, on)` (class `.is-editing`) on a grid of `.tile`, `.feat` or `[data-editable]` | tier bars turn cyan, brackets appear one after the other |
+| Drop settles (L5) | `.is-picked`, `.drop-gap`, `.drop-cell`, then `Kante.settle(el, fromRect)` | the dropped element glides into its cell with a small overshoot |
 | Segment display (A10) | `.progress-segs > i` (`.on` lights a segment, `--i` staggers them, `data-tier`) | automatic |
 | Bar loads (A05) | `.feat` | automatic |
 | Counter (A06) | `.fact b` with a number | automatic |
@@ -332,6 +337,7 @@ Everything from the web catalogue that makes sense in an app, with the same shap
 | `KanteCallout`, `KanteToast`, `KanteBanner`, `KanteEmptyState` | notes, toasts, status banner, empty / offline / plugin-missing state | toast slides in with a life line (A14) |
 | `KanteTile`, `KanteRunner` | image tile with tier bar, selection, focus brackets; running light around a working surface | A21 |
 | `KanteReveal`, `KanteAppear`, `KanteTube`, `KanteScrollMeter` | scan reveal, lamp-style entrance (cascade), tube glow, scroll meter | A04, A17, A09, A20 |
+| `KanteLiveText`, `KanteLiveLine`, `KanteDropZone`, `KanteSettle` | live value with change strip and count-up, the bottom-edge line for fresh and stale data, drag placeholders (gap, cell), drop settle; `KanteTile` gets `fresh()`, `stale`, `editing`, `picked` | L1 to L5 |
 
 Not in QML: the sliding nav brand bar (A22) and the web-only catalogue parts (nav, footer, showcase, faq, code, flow). All motion follows `KanteStyle.motion` (bind it to the app's animation setting) and the platform's animation speed; `KanteStyle.animate` is false in System.
 

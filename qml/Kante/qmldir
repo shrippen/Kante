@@ -11,12 +11,15 @@ KanteCheckSkin 1.0 KanteCheckSkin.qml
 KanteCounter 1.0 KanteCounter.qml
 KanteDialog 1.0 KanteDialog.qml
 KanteDialogSkin 1.0 KanteDialogSkin.qml
+KanteDropZone 1.0 KanteDropZone.qml
 KanteEmptyState 1.0 KanteEmptyState.qml
 KanteFieldSkin 1.0 KanteFieldSkin.qml
 KanteHazard 1.0 KanteHazard.qml
 KanteHeading 1.0 KanteHeading.qml
 KanteHud 1.0 KanteHud.qml
 KanteLamp 1.0 KanteLamp.qml
+KanteLiveLine 1.0 KanteLiveLine.qml
+KanteLiveText 1.0 KanteLiveText.qml
 KanteLoader 1.0 KanteLoader.qml
 KanteMessageSkin 1.0 KanteMessageSkin.qml
 KanteOdometer 1.0 KanteOdometer.qml
@@ -31,6 +34,7 @@ KanteRunner 1.0 KanteRunner.qml
 KanteScope 1.0 KanteScope.qml
 KanteScrollMeter 1.0 KanteScrollMeter.qml
 KanteSegmented 1.0 KanteSegmented.qml
+KanteSettle 1.0 KanteSettle.qml
 KanteSkeleton 1.0 KanteSkeleton.qml
 KanteSliderSkin 1.0 KanteSliderSkin.qml
 KanteSteps 1.0 KanteSteps.qml

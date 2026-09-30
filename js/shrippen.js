@@ -86,6 +86,101 @@
       if (d.fonts) d.fonts.ready.then(place);
     });
 
+    // ── Live data API (window.Kante) ─────────────────────────────────────
+    // tick(el, text)   a value changed: it counts up to the new number and a cyan strip fades
+    // fresh(el)        new data arrived: a 2px line runs along the bottom edge of the tile
+    // stale(el, on, t) data is old: the tile dims, warning stripes sit on its bottom edge, t is the age
+    // edit(box, on)    edit mode: tier bars turn cyan, brackets appear one after the other
+    // settle(el, from) after a drop: the element glides from `from` (a DOMRect) into place with a small overshoot
+    var K = window.Kante = window.Kante || {};
+    var moving = h.classList.contains('motion');
+    function restart(el, cls, ms) {
+      el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls);
+      setTimeout(function () { el.classList.remove(cls); }, ms);
+    }
+    function lineOf(el) {
+      var l = el.querySelector(':scope > .live-line');
+      if (!l) {
+        l = d.createElement('span');
+        l.className = 'live-line';
+        l.setAttribute('aria-hidden', 'true');
+        el.appendChild(l);
+      }
+      return l;
+    }
+    K.fresh = function (el) {
+      if (!moving || !el) return;
+      el.setAttribute('data-live-tile', '');
+      lineOf(el);
+      restart(el, 'is-fresh', 950);
+    };
+    K.stale = function (el, on, text) {
+      if (!el) return;
+      el.setAttribute('data-live-tile', '');
+      var l = lineOf(el);
+      if (text !== undefined) l.setAttribute('data-text', text);
+      el.classList.toggle('is-stale', !!on);
+    };
+    var counting = false;
+    function ints(a, b) {
+      var re = /^\D*\d[\d\s\u00a0.,]*\D*$/;
+      return re.test(a) && re.test(b) && !/[.,]\d{1,2}(\D|$)/.test(a + b);
+    }
+    K.tick = function (el, text) {
+      if (!el) return;
+      var from = el.textContent, to = text === undefined ? from : text;
+      if (text !== undefined && text === from) return;
+      if (moving) restart(el, 'is-changed', 1150);
+      if (!moving || from === to || !ints(from, to)) { if (text !== undefined) el.textContent = to; return; }
+      var a = parseInt(from.replace(/\D/g, ''), 10), b = parseInt(to.replace(/\D/g, ''), 10);
+      var sep = (/\d([\s\u00a0.,])\d/.exec(to) || [])[1] || '';
+      var pre = /^\D*/.exec(to)[0], post = /\D*$/.exec(to)[0];
+      var n = 0, steps = 14;
+      counting = true;
+      var t = setInterval(function () {
+        n++;
+        var v = Math.round(a + (b - a) * (1 - Math.pow(1 - n / steps, 3)));
+        var s = String(v).replace(/\B(?=(\d{3})+(?!\d))/g, sep === '' ? '' : sep);
+        el.textContent = n >= steps ? to : pre + s + post;
+        if (n >= steps) { clearInterval(t); setTimeout(function () { counting = false; }, 0); }
+      }, 45);
+    };
+    K.edit = function (box, on) {
+      if (!box) return;
+      [].forEach.call(box.children, function (c, i) { c.style.setProperty('--i', i % 12); });
+      box.classList.toggle('is-editing', on === undefined ? !box.classList.contains('is-editing') : !!on);
+    };
+    K.settle = function (el, from) {
+      if (!moving || !el || !from || !el.animate) return;
+      var to = el.getBoundingClientRect();
+      var dx = from.left - to.left, dy = from.top - to.top;
+      if (!dx && !dy) return;
+      el.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }],
+                 { duration: 380, easing: 'cubic-bezier(.3,1.5,.5,1)' });
+    };
+    // Automatic: [data-live] values react to text changes, [data-live-tile] surfaces to a settled htmx swap.
+    if ('MutationObserver' in window) {
+      var seen = new WeakMap();
+      [].forEach.call(d.querySelectorAll('[data-live]'), function (e) { seen.set(e, e.textContent); });
+      new MutationObserver(function (list) {
+        if (counting) return;
+        list.forEach(function (m) {
+          var e = m.target.nodeType === 1 ? m.target : m.target.parentNode;
+          e = e && e.closest && e.closest('[data-live]');
+          if (!e) return;
+          var was = seen.get(e), now = e.textContent;
+          seen.set(e, now);
+          if (was !== undefined && was !== now && moving) { restart(e, 'is-changed', 1150); }
+        });
+      }).observe(d.body, { subtree: true, childList: true, characterData: true });
+    }
+    d.addEventListener('htmx:afterSettle', function (e) {
+      var t = e.target;
+      if (!t || !t.querySelectorAll) return;
+      if (t.hasAttribute && t.hasAttribute('data-live-tile')) K.fresh(t);
+      [].forEach.call(t.querySelectorAll('[data-live-tile]'), K.fresh);
+    });
+
     if (!h.classList.contains('motion')) return;
 
     // Counter (A06): figures in the facts strip roll up digit by digit.

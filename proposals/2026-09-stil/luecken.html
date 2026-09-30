@@ -554,14 +554,14 @@ svg text{font-family:var(--font-mono);font-size:8px;fill:var(--fg3);letter-spaci
 .val.flash{animation:flashv calc(var(--t)*1100ms) ease-out both}
 @keyframes flashv{0%{background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}100%{background:transparent;box-shadow:inset 3px 0 0 transparent}}
 .fresh{position:relative;width:100%;max-width:16rem}
-.fresh .ln{position:absolute;left:0;top:0;height:2px;background:var(--cyan);width:0}
+.fresh .ln{position:absolute;left:0;bottom:0;height:2px;background:var(--cyan);width:0;z-index:1}
 .fresh.play .ln{animation:fresh calc(var(--t)*900ms) cubic-bezier(.2,.8,.2,1) both}
 @keyframes fresh{0%{width:0;opacity:1}70%{width:100%;opacity:1}100%{width:100%;opacity:0}}
 .stale{width:100%;max-width:16rem;position:relative;transition:opacity calc(var(--t)*300ms)}
-.stale::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:repeating-linear-gradient(-45deg,var(--orange) 0 6px,transparent 6px 12px)}
+.stale::before{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;z-index:1;background:repeating-linear-gradient(-45deg,var(--orange) 0 6px,transparent 6px 12px)}
 .stale.on{opacity:.55}
 .stale:not(.on)::before{opacity:0}
-.stale .tag{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);position:absolute;right:0;top:-1.2rem;opacity:0}
+.stale .tag{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);position:absolute;right:.6rem;bottom:8px;opacity:0;z-index:1}
 .stale.on .tag{opacity:1}
 .modeflip{display:grid;grid-template-columns:repeat(3,72px);gap:8px}
 .modeflip i{height:46px;background:var(--panel);border-top:3px solid var(--line);position:relative}
@@ -796,9 +796,9 @@ svg text{font-family:var(--font-mono);font-size:8px;fill:var(--fg3);letter-spaci
   <div class="lab" id="lab">
     <article class="demo2 k" data-id="L1"><div class="h"><span class="id">L1</span><h4>Wert rastet ein</h4></div><p>Ändert sich eine Zahl, läuft die Zahl zur neuen und ein Cyan-Streifen hinterlegt sie kurz. Zeigt Änderungen, ohne zu blinken.</p>
       <div class="st2"><div class="val" id="val">1 687</div></div><div class="f demo-f"></div></article>
-    <article class="demo2 k" data-id="L2"><div class="h"><span class="id">L2</span><h4>Frische-Linie</h4></div><p>Kommen neue Daten an, zieht eine 2-px-Linie einmal über die Oberkante der Kachel und geht wieder. Ersetzt jede Animation der Werte selbst.</p>
+    <article class="demo2 k" data-id="L2"><div class="h"><span class="id">L2</span><h4>Frische-Linie</h4></div><p>Kommen neue Daten an, zieht eine 2-px-Linie einmal über die Unterkante der Kachel und geht wieder. Ersetzt jede Animation der Werte selbst.</p>
       <div class="st2"><div class="fresh" id="fresh"><span class="ln"></span><div class="light k" style="width:100%"><span class="nm">Nextcloud</span><span class="rw"><i class="led"></i>OK · 61 ms</span></div></div></div><div class="f demo-f"></div></article>
-    <article class="demo2 k" data-id="L3"><div class="h"><span class="id">L3</span><h4>Veraltet</h4></div><p>Bleibt die Aktualisierung aus, dimmt die Kachel und Warnstreifen erscheinen am Rand. Ohne Bewegung, nur ein Zustand.</p>
+    <article class="demo2 k" data-id="L3"><div class="h"><span class="id">L3</span><h4>Veraltet</h4></div><p>Bleibt die Aktualisierung aus, dimmt die Kachel und Warnstreifen liegen auf ihrer Unterkante. Ohne Bewegung, nur ein Zustand.</p>
       <div class="st2"><div class="stale" id="stale"><span class="tag">seit 12 min</span><div class="light k" style="width:100%"><span class="nm">Jellyfin</span><span class="rw"><i class="led"></i>OK · 42 ms</span></div></div></div><div class="f demo-f"></div></article>
     <article class="demo2 k" data-id="L4"><div class="h"><span class="id">L4</span><h4>Editiermodus</h4></div><p>Beim Wechsel in den Editiermodus bekommen die Kacheln nacheinander Cyan-Klammern und einen Cyan-Balken, statt dass alles hart umspringt.</p>
       <div class="st2"><div class="modeflip" id="modeflip"><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="f demo-f"><button class="btn b-dat ol s" id="flip">Modus wechseln</button></div></article>

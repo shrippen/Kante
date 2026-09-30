@@ -802,6 +802,11 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
   .toast{animation:k-toast-in 360ms cubic-bezier(.2,.9,.25,1) both}
   .toast-life{animation:k-life var(--life,4s) linear both}
   .tube{animation:k-warm 1.4s cubic-bezier(.4,0,.2,1) .2s both}
+  .is-changed{animation:k-changed 1100ms ease-out}
+  .is-fresh>.live-line{animation:k-fresh 900ms var(--ease-out) both}
+  .is-editing>.tile{transition:border-color var(--dur) calc(var(--i,0) * 70ms)}
+  .is-editing>.feat::before{transition:background var(--dur) calc(var(--i,0) * 70ms)}
+  .is-editing>.feat::after,.is-editing>[data-editable]::after,.is-editing>.tile::after{animation:k-fade var(--dur) both;animation-delay:calc(var(--i,0) * 70ms)}
   /* Entrances */
   html.motion .feat:not(.is-in){opacity:0}
   html.motion .feat.is-in{animation:k-lamp 260ms steps(3) both;animation-delay:calc(var(--i,0) * 55ms)}
@@ -825,10 +830,36 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 @keyframes k-toast-in{from{transform:translateX(110%)}}
 @keyframes k-life{to{transform:scaleX(0)}}
 @keyframes k-warm{0%{filter:drop-shadow(0 0 0 transparent) brightness(.55) saturate(.6)}60%{filter:drop-shadow(0 0 18px rgba(250,189,47,.42)) brightness(1.05)}100%{filter:drop-shadow(0 0 14px rgba(250,189,47,.42))}}
+@keyframes k-changed{0%{background-color:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}100%{background-color:transparent;box-shadow:inset 3px 0 0 transparent}}
+@keyframes k-fresh{0%{transform:scaleX(0);opacity:1}70%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+@keyframes k-fade{from{opacity:0}}
 @keyframes k-lamp{0%{opacity:0}34%{opacity:.5}67%{opacity:.2}100%{opacity:1}}
 @keyframes k-grow{from{transform:scaleX(0)}}
 @keyframes k-scan{from{clip-path:polygon(0 0,100% 0,100% 0,0 0)}to{clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,0 100%)}}
 @keyframes k-scanline{0%{top:0;opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+
+/* 8 · Live data: changed value, fresh data, stale data, edit mode, drag and drop (Kante 1.4).
+   Behaviour comes from shrippen.js (window.Kante: tick, fresh, stale, edit, settle) and works
+   with htmx swaps: [data-live] elements react to text changes, [data-live-tile] surfaces to a
+   settled swap. The line of fresh and stale data always sits on the bottom edge of the tile. */
+[data-live-tile]{position:relative}
+.live-line{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;opacity:0;pointer-events:none}
+.is-stale>:not(.live-line){opacity:.55}
+.is-stale>.live-line{height:4px;transform:none;opacity:1;background:repeating-linear-gradient(-45deg,var(--warn) 0 6px,transparent 6px 12px)}
+.is-stale>.live-line::after{content:attr(data-text);position:absolute;right:.6rem;bottom:8px;padding:.05rem .4rem;background:var(--bg-panel);color:var(--warn);
+  font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}
+.is-changed{background-color:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}
+/* Edit mode: tier bars turn cyan and four brackets appear on every editable surface */
+.is-editing>.tile,.is-editing>.feat,.is-editing>[data-editable]{--tier:var(--cyan)}
+.is-editing>.feat::after,.is-editing>[data-editable]::after{content:"";position:absolute;inset:6px;background:var(--brk);pointer-events:none}
+.is-editing>.tile::after{border-color:transparent;inset:5px;background:var(--brk)}
+[data-editable]{position:relative}
+/* Drag and drop: the picked tile, the gap it leaves, the cell it may land in */
+.is-picked{box-shadow:inset 0 0 0 2px var(--cyan);background-color:var(--cyan-tint);
+  background-image:linear-gradient(var(--cyan),var(--cyan));background-repeat:no-repeat;background-position:right 2px bottom 2px;background-size:10px 10px}
+.drop-gap,.drop-cell{background:transparent!important;border:2px dashed var(--cyan);box-shadow:none}
+.drop-cell{border-color:var(--bg2)}
+.drop-gap>*,.drop-cell>*{visibility:hidden}
 
 /* ── Kante Light (apps, <html data-kante="light">) ─────────────────────
    Kante shapes on the platform look: controls get the system font, normal

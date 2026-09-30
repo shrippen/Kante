@@ -16,7 +16,7 @@ Rectangle {
     property int kind: 1
     property bool dark: true
     width: 1100
-    height: 1500
+    height: 1700
     color: KanteStyle.backgroundColor
 
     Binding { target: KanteStyle; property: "kind"; value: root.kind }
@@ -174,6 +174,16 @@ Rectangle {
                     Layout.preferredHeight: KanteStyle.unit(70)
                     KanteCard { anchors.fill: parent; barColor: KanteStyle.focusColor
                         Text { x: 16; y: 22; text: "Abtasten"; color: KanteStyle.strongTextColor; font: KanteStyle.headingFont(14) } }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(16)
+                    KanteTile { name: "Nextcloud"; figure: "OK · 61 ms"; Rectangle { anchors.fill: parent; color: "#3c3836" } }
+                    KanteTile { name: "Jellyfin"; figure: "OK"; stale: true; staleText: "seit 12 min"; Rectangle { anchors.fill: parent; color: "#3c3836" } }
+                    KanteTile { name: "Editiermodus"; figure: ""; editing: true; Rectangle { anchors.fill: parent; color: "#3c3836" } }
+                    KanteTile { name: "Aufgenommen"; figure: ""; picked: true; Rectangle { anchors.fill: parent; color: "#3c3836" } }
+                    KanteDropZone { Layout.preferredWidth: KanteStyle.unit(100); Layout.preferredHeight: KanteStyle.unit(70) }
+                    KanteDropZone { kind: KanteDropZone.Kind.Cell; Layout.preferredWidth: KanteStyle.unit(100); Layout.preferredHeight: KanteStyle.unit(70) }
+                    KanteLiveText { text: "1 687" }
                 }
                 KanteScrollMeter { Layout.fillWidth: true; flickable: flick }
             }

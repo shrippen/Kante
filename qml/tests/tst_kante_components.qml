@@ -193,8 +193,105 @@ TestCase {
     }
 
     Component {
+        id: liveTextComponent
+        KanteLiveText { text: "1 687" }
+    }
+
+    function test_liveTextCountsUp() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var t = createTemporaryObject(liveTextComponent, tc)
+        compare(t.shown, "1 687")
+        t.text = "1 802"
+        tryCompare(t, "shown", "1 802", 3000)
+        // no whole number: the text just changes
+        t.text = "ok"
+        compare(t.shown, "ok")
+    }
+
+    function test_liveTextWithoutMotion() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = false
+        var t = createTemporaryObject(liveTextComponent, tc)
+        t.text = "1 900"
+        compare(t.shown, "1 900")
+    }
+
+    Component {
+        id: liveTileComponent
+        KanteTile { name: "Nextcloud"; figure: "OK"; width: 180 }
+    }
+
+    function test_tileLiveStates() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = false
+        var t = createTemporaryObject(liveTileComponent, tc)
+        verify(!t.stale)
+        t.stale = true
+        t.staleText = "12 min"
+        verify(t.stale)
+        t.editing = true
+        verify(t._editShown)
+        t.editing = false
+        verify(!t._editShown)
+        t.picked = true
+        t.fresh()
+        verify(t.picked)
+    }
+
+    Component {
+        id: liveLineComponent
+        Item { width: 100; height: 40; property alias line: l; KanteLiveLine { id: l } }
+    }
+
+    function test_liveLineDimsWhenStale() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var o = createTemporaryObject(liveLineComponent, tc)
+        compare(o.line.dim, 1)
+        compare(o.line.height, KanteStyle.unit(2))
+        o.line.stale = true
+        compare(o.line.dim, 0.55)
+        compare(o.line.height, KanteStyle.unit(4))
+    }
+
+    Component {
+        id: dropComponent
+        KanteDropZone { width: 60; height: 40 }
+    }
+
+    function test_dropZoneTones() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var z = createTemporaryObject(dropComponent, tc)
+        compare(z.tone, KanteStyle.focusColor)
+        z.kind = KanteDropZone.Kind.Cell
+        compare(z.tone, KanteStyle.frameColor)
+    }
+
+    Component {
+        id: settleComponent
+        Item {
+            width: 200; height: 100
+            property alias piece: p
+            property alias settler: s
+            Rectangle { id: p; x: 100; y: 20; width: 40; height: 30 }
+            KanteSettle { id: s; target: p }
+        }
+    }
+
+    function test_settleEndsInPlace() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var o = createTemporaryObject(settleComponent, tc)
+        o.settler.settle(0, 0)
+        tryCompare(o.piece, "x", 100, 2000)
+        tryCompare(o.piece, "y", 20, 2000)
+    }
+
+    Component {
         id: gallery
         Column {
+            KanteLiveText { text: "1 687" }
+            Item { width: 100; height: 20; KanteLiveLine { } }
+            KanteDropZone { width: 40; height: 30 }
+            KanteSettle { }
             KanteBanner { title: "Not finished"; width: 200 }
             KanteBrackets { width: 40; height: 40; active: true }
             KanteCallout { title: "Note"; text: "Text"; width: 200 }
@@ -233,7 +330,7 @@ TestCase {
         for (var i = 0; i < kinds.length; i++) {
             KanteStyle.kind = kinds[i]
             wait(30)
-            verify(g.children.length >= 27)
+            verify(g.children.length >= 31)
         }
     }
 }
