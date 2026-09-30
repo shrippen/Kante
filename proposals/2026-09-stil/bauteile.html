@@ -820,6 +820,13 @@ input[type="color"]::-webkit-color-swatch-wrapper{padding:0}input[type="color"]:
 .dropzone .hint{flex:1 1 100%;text-align:center;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
 .dropzone .hint:not(:only-child){display:none}
 .dropzone.is-armed{border-color:var(--cyan-n)}.dropzone.is-over{border-color:var(--cyan);background:var(--cyan-tint)}
+/* Kante 1.9: delta polarity (components.css .delta[data-good]) */
+.delta{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--fg3)}
+.delta::before{content:"";width:8px;height:2px;background:currentColor}
+.delta.up{color:var(--aqua)}.delta.up::before{width:0;height:0;background:none;border:5px solid transparent;border-bottom:8px solid currentColor;border-top:0}
+.delta.dn{color:var(--red)}.delta.dn::before{width:0;height:0;background:none;border:5px solid transparent;border-top:8px solid currentColor;border-bottom:0}
+.delta[data-good="down"].up{color:var(--red)}.delta[data-good="down"].dn{color:var(--aqua)}
+.delta[data-good="none"]:is(.up,.dn){color:var(--fg2)}
 </style>
 </head>
 <body>
@@ -1247,6 +1254,11 @@ input[type="color"]::-webkit-color-swatch-wrapper{padding:0}input[type="color"]:
       <svg class="hchart" viewBox="0 0 400 140" style="max-width:520px" role="img" aria-label="Strompreis je Stunde mit günstigem Fenster"><rect class="window" x="200" y="0" width="80" height="120"/><line class="grid" x1="0" x2="400" y1="120" y2="120"/><rect class="bar is-prev" x="20" y="40" width="30" height="80"/><rect class="bar" x="55" y="30" width="30" height="90"/><text class="bar-value" x="70" y="25">1 240</text><rect class="bar" x="120" y="60" width="30" height="60"/><text class="bar-value is-in" x="135" y="75">820</text><line class="goal" x1="0" x2="400" y1="50" y2="50"/><line class="now" x1="310" x2="310" y1="0" y2="120"/></svg>
       <p class="legend"><span><i></i>Dieses Jahr</span><span><i class="prev"></i>Vorjahr</span><span><i class="goal"></i>Ziel</span><span><i class="window"></i>Günstig</span><span><i class="now"></i>Jetzt</span></p>
       <span class="muted">Jede Marke wiederholt die Form im Diagramm: Umriss, gestrichelte Linie, Fläche, senkrechte Linie.</span></div>
+  </div>
+  <div class="grid">
+    <div class="cell panel"><span class="lbl">Veränderung mit Richtung <code>.delta[data-good=down|none]</code></span>
+      <div class="kpi-row"><div class="kpi"><b>1 687</b><span>Umsatz</span><span class="delta up">+12 %</span></div><div class="kpi"><b>312</b><span>Kosten</span><span class="delta up" data-good="down">+8 %</span></div><div class="kpi"><b>4</b><span>Fehler</span><span class="delta dn" data-good="down">−2</span></div><div class="kpi"><b>38</b><span>Einträge</span><span class="delta up" data-good="none">+5</span></div></div>
+      <span class="muted">Standard: Steigen ist gut (aqua). <code>data-good="down"</code> für Kosten und Fehler dreht die Farbe, <code>"none"</code> zeigt nur den Pfeil. Die Form bleibt immer die Richtung.</span></div>
   </div>
 </section>
 

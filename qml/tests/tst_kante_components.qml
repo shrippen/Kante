@@ -663,6 +663,25 @@ TestCase {
     }
 
     Component {
+        id: kpiComponent
+        KanteKpi { value: "312"; label: "Kosten"; delta: "+8 %"; trend: 1 }
+    }
+
+    function test_kpiPolarity() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var k = createTemporaryObject(kpiComponent, tc)
+        compare(k.deltaColor, KanteStyle.positiveTextColor)
+        k.good = -1
+        compare(k.deltaColor, KanteStyle.negativeTextColor)
+        k.trend = -1
+        compare(k.deltaColor, KanteStyle.positiveTextColor)
+        k.good = 0
+        compare(k.deltaColor, KanteStyle.textColor)
+        k.trend = 0
+        compare(k.deltaColor, KanteStyle.mutedTextColor)
+    }
+
+    Component {
         id: gallery
         Column {
             KanteChip { text: "x" }

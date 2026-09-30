@@ -1050,8 +1050,11 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:.8rem}
 .delta{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--fg3)}
 .delta::before{content:"";width:8px;height:2px;background:currentColor}
-.delta.up{color:var(--aqua)}.delta.up::before{width:0;height:0;background:none;border:5px solid transparent;border-bottom:8px solid var(--aqua);border-top:0}
-.delta.dn{color:var(--red)}.delta.dn::before{width:0;height:0;background:none;border:5px solid transparent;border-top:8px solid var(--red);border-bottom:0}
+.delta.up{color:var(--aqua)}.delta.up::before{width:0;height:0;background:none;border:5px solid transparent;border-bottom:8px solid currentColor;border-top:0}
+.delta.dn{color:var(--red)}.delta.dn::before{width:0;height:0;background:none;border:5px solid transparent;border-top:8px solid currentColor;border-bottom:0}
+/* Polarity: data-good="down" where falling is good (costs, errors: up red, down green); "none" = arrow only, no judgement */
+.delta[data-good="down"].up{color:var(--red)}.delta[data-good="down"].dn{color:var(--aqua)}
+.delta[data-good="none"]:is(.up,.dn){color:var(--fg2)}
 /* Bulk bar: appears when something is selected; cyan bar because selection is cyan */
 .bulk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;background:var(--bg1);border-top:3px solid var(--cyan);padding:.5rem .8rem;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}

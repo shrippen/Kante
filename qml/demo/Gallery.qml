@@ -250,6 +250,7 @@ Rectangle {
                             spacing: KanteStyle.unit(24)
                             KanteKpi { value: "1 687"; label: "Umsatz · Woche"; delta: "+12,4 %"; trend: 1 }
                             KanteKpi { value: "18,75"; label: "Stunden"; delta: "−3,1 %"; trend: -1 }
+                            KanteKpi { value: "312"; label: "Kosten"; delta: "+8 %"; trend: 1; good: -1 }
                             KanteClock { running: false; time: new Date(2026, 9, 1, 10, 9, 42) }
                         }
                         KanteDayStrip { Layout.preferredWidth: KanteStyle.unit(320); segments: [{ from: 9, to: 12.5, kind: "work" }, { from: 14, to: 17, kind: "dim" }, { from: 11, to: 11.7, kind: "event" }]; now: 15.2 }
