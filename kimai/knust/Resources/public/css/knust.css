@@ -61,9 +61,15 @@
     --shr-blue-n: #458588;    --shr-blue-n-rgb: 69, 133, 136;
     --shr-aqua-n: #689d6a;    --shr-aqua-n-rgb: 104, 157, 106;
     --shr-purple-n: #b16286;  --shr-purple-n-rgb: 177, 98, 134;
+    --shr-cyan: #0f6b66;      --shr-cyan-rgb: 15, 107, 102;
+    --shr-cyan-n: #3f9a94;
+    --shr-cyan-tint: #d9ebe4;
+
+    /* Behind dialogs: Tabler takes colour and opacity separately */
+    --shr-scrim-bg: #282828;
+    --shr-scrim-opacity: .5;
 
     --shr-chamfer: 16px;
-    --shr-hl: var(--shr-orange);
     --shr-font-heading: 'Rajdhani', var(--shr-font-sans);
     --shr-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     --shr-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
@@ -94,6 +100,39 @@
     --shr-blue-n: #458588;    --shr-blue-n-rgb: 69, 133, 136;
     --shr-aqua-n: #689d6a;    --shr-aqua-n-rgb: 104, 157, 106;
     --shr-purple-n: #b16286;  --shr-purple-n-rgb: 177, 98, 134;
+    --shr-cyan: #5ccfc4;      --shr-cyan-rgb: 92, 207, 196;
+    --shr-cyan-n: #3f9a94;
+    --shr-cyan-tint: #1e2b2a;
+
+    --shr-scrim-bg: #141312;
+    --shr-scrim-opacity: .62;
+}
+
+/* Roles and tints, as in Kante's variables.css. One task per colour:
+ * cyan = focus, link, info, data, current selection; orange = warning
+ * callout; yellow = score. Tints are translucent steps for hover,
+ * drop targets and selection; the data palette is the chart order. */
+:root,
+[data-bs-theme] {
+    --shr-hl: var(--shr-cyan);
+    --shr-focus: var(--shr-cyan);
+    --shr-link: var(--shr-cyan);
+    --shr-info: var(--shr-cyan);
+    --shr-warn: var(--shr-orange);
+    --shr-score: var(--shr-yellow);
+
+    --shr-tint-1: color-mix(in srgb, var(--shr-fg1) 8%, transparent);
+    --shr-tint-2: color-mix(in srgb, var(--shr-fg1) 16%, transparent);
+    --shr-tint-hl: color-mix(in srgb, var(--shr-cyan) 12%, transparent);
+    --shr-tint-hl-2: color-mix(in srgb, var(--shr-cyan) 25%, transparent);
+    --shr-tint-warn: color-mix(in srgb, var(--shr-orange) 14%, transparent);
+
+    --shr-d1: var(--shr-cyan);
+    --shr-d2: var(--shr-yellow);
+    --shr-d3: var(--shr-purple);
+    --shr-d4: var(--shr-aqua);
+    --shr-d5: var(--shr-orange);
+    --shr-d6: var(--shr-fg3);
 }
 
 /* Public tokens for plugins (see PLUGINS.md). Stable: renaming or removing
@@ -109,6 +148,24 @@
     --knust-tier-2: var(--shr-orange);
     --knust-tier-3: var(--shr-red);
     --knust-map-filter: none;
+
+    /* Kante roles and tints (1.3): same name as in Kante, prefixed */
+    --knust-focus: var(--shr-focus);
+    --knust-hl: var(--shr-hl);
+    --knust-warn: var(--shr-warn);
+    --knust-cyan-tint: var(--shr-cyan-tint);
+    --knust-tint-1: var(--shr-tint-1);
+    --knust-tint-2: var(--shr-tint-2);
+    --knust-tint-hl: var(--shr-tint-hl);
+    --knust-tint-hl-2: var(--shr-tint-hl-2);
+    --knust-tint-warn: var(--shr-tint-warn);
+    --knust-scrim: color-mix(in srgb, var(--shr-scrim-bg) calc(var(--shr-scrim-opacity) * 100%), transparent);
+    --knust-d1: var(--shr-d1);
+    --knust-d2: var(--shr-d2);
+    --knust-d3: var(--shr-d3);
+    --knust-d4: var(--shr-d4);
+    --knust-d5: var(--shr-d5);
+    --knust-d6: var(--shr-d6);
 }
 
 /* Map tiles are light images; in dark mode they are inverted and warmed */
