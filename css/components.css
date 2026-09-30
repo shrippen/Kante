@@ -660,7 +660,7 @@ details.dropdown>summary::-webkit-details-marker{display:none}
 details.dropdown>.menu{position:absolute;top:calc(100% + 4px);left:0;z-index:20}
 details.dropdown.is-right>.menu{left:auto;right:0}
 /* Toast stack: fixed corner, newest at the bottom, a live region */
-.toast-stack{position:fixed;right:1rem;bottom:1rem;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
+.toast-stack{position:fixed;right:1rem;bottom:var(--toast-offset,1rem);z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
 .toast-stack>*{pointer-events:auto}
 /* File input */
 .input[type="file"]{padding:0;display:flex;align-items:center;color:var(--fg2)}
@@ -761,12 +761,12 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .curve .pt{fill:var(--bg-panel);stroke:var(--yellow);stroke-width:2;cursor:grab}
 .curve .pt:focus,.curve .pt[aria-selected="true"]{fill:var(--yellow);stroke:var(--cyan);outline:0}
 .curve .pt:active{cursor:grabbing}
-.bands{display:grid;gap:.5rem}
-.bands>.row{display:flex;align-items:center;gap:.7rem}
-.bands>.row input{width:5.5rem;text-align:right}
-.bands>.row .unit{font-family:var(--font-mono);font-size:.72rem;color:var(--fg3);flex:1}
-.bands>.strip{display:flex;height:10px;background:var(--bg-hard)}
-.bands>.strip>i{display:block;background:var(--c);flex:var(--w) 1 0}
+.band-editor{display:grid;gap:.5rem}
+.band-editor>.row{display:flex;align-items:center;gap:.7rem}
+.band-editor>.row input{width:5.5rem;text-align:right}
+.band-editor>.row .unit{font-family:var(--font-mono);font-size:.72rem;color:var(--fg3);flex:1}
+.band-editor>.strip{display:flex;height:10px;background:var(--bg-hard)}
+.band-editor>.strip>i{display:block;background:var(--c);flex:var(--w) 1 0}
 /* KPI with change: the arrow is a shape, never colour alone */
 .kpi{display:flex;flex-direction:column;gap:.2rem}
 .kpi>b{font-family:var(--font-heading);font-weight:700;font-size:2.8rem;line-height:1;color:var(--fg0);font-variant-numeric:tabular-nums}

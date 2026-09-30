@@ -389,7 +389,7 @@ Not built: pie charts (use stacked or segment bars), an editing bar on yellow (e
 | Element | Web | QML |
 |---|---|---|
 | Curve editor (draggable square points, e.g. a fan curve) | `svg.curve[data-editable]` with `.frame .line .pt` (drag or arrow keys, fires `change`) | `KanteCurveEditor` (`points`, `xMin…yMax`, `step`, `monotonic`; double tap adds, Delete removes, `[` `]` pick) |
-| Band editor (thresholds with a colour each) | `.bands` (`.row`, `.strip`) | `KanteBandEditor` (`bands`, `colors`, `min`, `max`) |
+| Band editor (thresholds with a colour each) | `.band-editor` (`.row`, `.strip`) | `KanteBandEditor` (`bands`, `colors`, `min`, `max`) |
 | Hover read-out in the line chart | `.chart-wrap[data-readout]` + `.readout` | `KanteLineChart` (`readout`, `labels`, `unit`, `hoverIndex`) |
 | Week view | `.week` (`.col .ev .hr`) | `KanteWeekView` |
 | Agenda | `.agenda` (`h4`, `.item`) | `KanteAgenda` |
