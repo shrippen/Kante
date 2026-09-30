@@ -201,7 +201,7 @@
     --tblr-bg-surface-tertiary: var(--shr-hard);
     --tblr-bg-surface-dark: #1d2021;
     --tblr-bg-forms: var(--shr-bg1);
-    --tblr-active-bg: rgba(var(--tblr-primary-rgb), .1);
+    --tblr-active-bg: var(--shr-tint-hl);
     --tblr-disabled-bg: var(--shr-hard);
 
     /* Text */
@@ -229,7 +229,7 @@
     --tblr-blue: var(--shr-blue);         --tblr-blue-rgb: var(--shr-blue-rgb);
     --tblr-azure: var(--shr-blue-n);      --tblr-azure-rgb: var(--shr-blue-n-rgb);
     --tblr-indigo: var(--shr-blue-n);     --tblr-indigo-rgb: var(--shr-blue-n-rgb);
-    --tblr-cyan: var(--shr-blue-n);       --tblr-cyan-rgb: var(--shr-blue-n-rgb);
+    --tblr-cyan: var(--shr-cyan);         --tblr-cyan-rgb: var(--shr-cyan-rgb);
     --tblr-teal: var(--shr-aqua-n);       --tblr-teal-rgb: var(--shr-aqua-n-rgb);
     --tblr-green: var(--shr-aqua);        --tblr-green-rgb: var(--shr-aqua-rgb);
     --tblr-lime: var(--shr-green);        --tblr-lime-rgb: var(--shr-green-rgb);
@@ -239,11 +239,20 @@
     --tblr-pink: var(--shr-purple);       --tblr-pink-rgb: var(--shr-purple-rgb);
     --tblr-purple: var(--shr-purple-n);   --tblr-purple-rgb: var(--shr-purple-n-rgb);
 
-    /* Semantic: aqua = success, yellow = warning, red = error, blue = info */
+    /* Semantic: aqua = success, yellow = warning, red = error, cyan = info.
+     * Warning stays yellow: the kit's status vocabulary tells "requested"
+     * (warning, yellow) from "warning" (orange). Callouts and toasts take
+     * Kante's orange --warn themselves (section 8, 10). */
     --tblr-success: var(--shr-aqua);      --tblr-success-rgb: var(--shr-aqua-rgb);
-    --tblr-info: var(--shr-blue);         --tblr-info-rgb: var(--shr-blue-rgb);
+    --tblr-info: var(--shr-info);         --tblr-info-rgb: var(--shr-cyan-rgb);
     --tblr-warning: var(--shr-yellow);    --tblr-warning-rgb: var(--shr-yellow-rgb);
     --tblr-danger: var(--shr-red);        --tblr-danger-rgb: var(--shr-red-rgb);
+
+    /* Links and focus: cyan, whatever the accent */
+    --tblr-link-color: var(--shr-link);
+    --tblr-link-color-rgb: var(--shr-cyan-rgb);
+    --tblr-link-hover-color: color-mix(in srgb, var(--shr-link), var(--shr-fg0) 25%);
+    --tblr-focus-ring-color: var(--shr-tint-hl-2);
 
     /* Text on a coloured fill */
     --tblr-primary-fg: var(--shr-on-accent);
@@ -266,6 +275,8 @@
 
 /* ── 4. Accent ──
  * ThemeOptionsSubscriber writes the admin's choice into data-bs-theme-primary.
+ * The accent fills primary buttons and marks; links, focus and selection
+ * stay cyan (Kante roles, section 3).
  * The selector also matches nested theme scopes so the sidebar gets the
  * dark variant of the same accent.
  */
@@ -298,9 +309,6 @@
 [data-bs-theme-primary] [data-bs-theme] {
     --tblr-primary: var(--shr-accent);
     --tblr-primary-rgb: var(--shr-accent-rgb);
-    --tblr-link-color: var(--shr-accent);
-    --tblr-link-color-rgb: var(--shr-accent-rgb);
-    --tblr-link-hover-color: color-mix(in srgb, var(--shr-accent), var(--shr-fg0) 25%);
 }
 
 /* ── 5. Derived tints ──
@@ -492,7 +500,7 @@ code, kbd, pre, .font-monospace {
 .navbar-vertical .navbar-nav .nav-item.active > .nav-link,
 .navbar-vertical .navbar-nav .nav-link.active {
     border-left-color: var(--shr-hl);
-    background: rgba(var(--shr-fg1-rgb), .05);
+    background: var(--shr-tint-hl);
     color: var(--shr-fg0);
 }
 
@@ -543,12 +551,42 @@ header.navbar {
     text-transform: none;
 }
 
+/* Focus (Kante): cyan, 2 px, outside with a small gap. Tabler's halo is
+ * switched off; items inside menus and lists light up instead, an outer
+ * ring would be clipped there. */
+.btn {
+    --tblr-btn-focus-box-shadow: none;
+}
+
+a:focus-visible,
 .btn:focus-visible,
-.form-control:focus,
-.form-select:focus {
-    outline: 2px solid var(--shr-yellow);
-    outline-offset: 1px;
+.btn-check:focus-visible + .btn,
+.form-check-input:focus-visible,
+.form-selectgroup-input:focus-visible + .form-selectgroup-label,
+.page-link:focus-visible,
+.nav-link:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--shr-focus);
+    outline-offset: 2px;
     box-shadow: none;
+}
+
+.form-check-input:focus {
+    border-color: var(--shr-cyan-n);
+    box-shadow: none;
+}
+
+.navbar-vertical .nav-link:focus-visible,
+.nav-segmented .nav-link:focus-visible,
+.page-link:focus-visible {
+    outline-offset: -2px;
+}
+
+.dropdown-item:focus-visible,
+.list-group-item-action:focus-visible {
+    outline: 0;
+    background: var(--shr-cyan-tint);
+    box-shadow: inset 3px 0 0 var(--shr-focus);
 }
 
 .btn-default,
@@ -565,6 +603,7 @@ header.navbar {
 .ts-control {
     background-color: var(--tblr-bg-forms);
     border-color: var(--shr-bg2);
+    box-shadow: inset 0 -1px 0 var(--shr-bg2);
 }
 
 [data-bs-theme=dark] .form-control,
@@ -581,7 +620,7 @@ header.navbar {
 .table {
     --tblr-table-border-color: var(--shr-bg1);
     --tblr-table-striped-bg: rgba(var(--shr-fg1-rgb), .03);
-    --tblr-table-hover-bg: rgba(var(--shr-fg1-rgb), .05);
+    --tblr-table-hover-bg: var(--shr-tint-1);
 }
 
 .table thead th {
@@ -599,8 +638,8 @@ header.navbar {
 .dropdown-menu {
     --tblr-dropdown-bg: var(--shr-panel);
     --tblr-dropdown-border-color: var(--shr-bg2);
-    --tblr-dropdown-link-hover-bg: rgba(var(--shr-fg1-rgb), .06);
-    --tblr-dropdown-link-active-bg: var(--tblr-primary-lt);
+    --tblr-dropdown-link-hover-bg: var(--shr-tint-1);
+    --tblr-dropdown-link-active-bg: var(--shr-cyan-tint);
     --tblr-dropdown-link-active-color: var(--shr-fg0);
 }
 
@@ -609,6 +648,10 @@ header.navbar {
     border: 0;
     border-top: 4px solid var(--tblr-alert-color, var(--tblr-primary));
     background: var(--shr-panel);
+}
+
+.alert-warning {
+    --tblr-alert-color: var(--shr-warn);
 }
 
 /* Progress bars (working-time widgets): sunk track */
@@ -638,11 +681,14 @@ header.navbar {
 
 .form-control:focus,
 .form-select:focus,
-.form-check-input:focus,
 .focus .ts-control,
 .input-group-flat:focus-within .form-control,
 .input-group-flat:focus-within .input-group-text {
-    border-color: var(--shr-yellow) !important;
+    border-color: var(--shr-cyan-n) !important;
+    border-bottom-color: var(--shr-focus) !important;
+    box-shadow: inset 0 -1px 0 var(--shr-focus);
+    background-color: var(--shr-cyan-tint);
+    outline: 0;
 }
 
 .col-form-label.required::after,
@@ -697,9 +743,15 @@ header.navbar {
     color: var(--shr-fg1);
 }
 
+.ts-dropdown .active {
+    background: var(--shr-cyan-tint);
+    color: var(--shr-fg0);
+}
+
 .ts-wrapper.multi .ts-control > div.active {
-    background: var(--tblr-primary);
-    color: var(--tblr-primary-fg);
+    background: var(--shr-cyan-tint);
+    border-color: var(--shr-cyan);
+    color: var(--shr-fg0);
 }
 
 .ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
@@ -757,10 +809,10 @@ header.navbar .btn:not([class*="btn-primary"], [class*="btn-danger"]) {
     --tblr-btn-bg: transparent;
     --tblr-btn-border-color: var(--shr-fg3);
     --tblr-btn-color: var(--shr-fg1);
-    --tblr-btn-hover-bg: rgba(var(--shr-fg1-rgb), .06);
+    --tblr-btn-hover-bg: var(--shr-tint-1);
     --tblr-btn-hover-border-color: var(--shr-fg2);
     --tblr-btn-hover-color: var(--shr-fg0);
-    --tblr-btn-active-bg: rgba(var(--shr-fg1-rgb), .1);
+    --tblr-btn-active-bg: var(--shr-tint-2);
 }
 
 .page-header .btn.action-create {
@@ -815,13 +867,16 @@ header.navbar .ticktac-stop.btn,
     color: var(--shr-fg0);
 }
 
-/* Running entry: highlight bar and tint on the whole row */
-.table tr.recording > td {
-    --tblr-table-bg-state: rgba(var(--shr-orange-rgb), .07);
+/* Running entry and selected rows (Kimai's multiCheckbox, kit's kpu-select):
+ * highlight bar and tint on the whole row, like Kante's selected row */
+.table tr.recording > td,
+.table tbody tr:has(> td.multiCheckbox input:checked) > td {
+    --tblr-table-bg-state: var(--shr-tint-hl);
 }
 
-.table tr.recording > td:first-child {
-    box-shadow: inset 3px 0 0 var(--shr-hl), inset 0 0 0 9999px rgba(var(--shr-orange-rgb), .07);
+.table tr.recording > td:first-child,
+.table tbody tr:has(> td.multiCheckbox input:checked) > td:first-child {
+    box-shadow: inset 3px 0 0 var(--shr-hl), inset 0 0 0 9999px var(--shr-tint-hl);
 }
 
 .table tr.recording > td.col_duration,
@@ -920,8 +975,8 @@ header.navbar .ticktac-stop.btn,
 }
 
 .modal-backdrop {
-    --tblr-backdrop-bg: #141312;
-    --tblr-backdrop-opacity: .72;
+    --tblr-backdrop-bg: var(--shr-scrim-bg);
+    --tblr-backdrop-opacity: var(--shr-scrim-opacity);
 }
 
 /* Login: logo, watermark from the design system hero, yellow bar on the card */
@@ -1066,17 +1121,17 @@ div.kpu-bulk-bar {
     --tblr-toast-border-radius: 0;
     background: var(--shr-panel);
     border: 1px solid var(--shr-bg2);
-    border-top: 4px solid var(--shr-toast, var(--tblr-primary));
+    border-top: 4px solid var(--shr-toast, var(--shr-info));
     box-shadow: 0 .75rem 2rem rgba(0, 0, 0, .35);
 }
 
 /* Bootstrap's .border-* colour the whole frame with !important; keep only the top edge */
 .toast[class*="border-"] {
     border-color: var(--shr-bg2) !important;
-    border-top-color: var(--shr-toast, var(--tblr-primary)) !important;
+    border-top-color: var(--shr-toast, var(--shr-info)) !important;
 }
 
 .toast.border-success { --shr-toast: var(--tblr-success); }
 .toast.border-danger { --shr-toast: var(--tblr-danger); }
-.toast.border-warning { --shr-toast: var(--tblr-warning); }
+.toast.border-warning { --shr-toast: var(--shr-warn); }
 .toast.border-info { --shr-toast: var(--tblr-info); }
