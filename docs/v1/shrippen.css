@@ -813,6 +813,9 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
   .check-dia::after{transition:transform 160ms var(--ease-snap)}
   .tabs :is(button,a){transition:color var(--dur),background var(--dur-fast)}
   .tabs-ind{transition:left 260ms cubic-bezier(.3,.9,.3,1),width 260ms cubic-bezier(.3,.9,.3,1)}
+  .chip-pick,.chip-pick>span::before{transition:background-color var(--dur-fast),border-color var(--dur-fast),color var(--dur-fast)}
+  .fold>summary::before{transition:transform var(--dur) var(--ease-snap),background-color var(--dur-fast)}
+  .modebar>:is(button,a){transition:color var(--dur-fast),background-color var(--dur-fast)}
   .pill[data-state="analyzing"]::before,.led[data-rhythm="atem"]{animation:k-breathe 3s ease-in-out infinite}
   .led[data-rhythm="puls"]{animation:k-breathe 1.2s ease-in-out infinite}
   .led[data-rhythm="takt"]{animation:k-tick 1s steps(1) infinite}
@@ -1116,6 +1119,50 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 /* A command line outside the yellow install box */
 .cmd-row.is-plain .cmd-box{background:var(--bg-hard);color:var(--cyan)}
 .cmd-row.is-plain .copy-btn{background:var(--bg1);border-color:var(--bg1);color:var(--fg1)}
+
+/* Chip pick: a checkbox as a chip (multi-select filter). A real input inside keeps keyboard and forms working; hollow square = off, filled cyan = on */
+.chip-pick{position:relative;display:inline-flex;align-items:center;gap:.45rem;min-height:28px;padding-inline:.6rem;border:1px solid var(--bg2);color:var(--fg2);cursor:pointer;
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.06em;white-space:nowrap}
+.chip-pick>input{position:absolute;opacity:0;width:1px;height:1px}
+.chip-pick>span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:.45rem;border:2px solid var(--fg3);vertical-align:-1px}
+.chip-pick>small{font-size:.66rem;color:var(--fg3);font-variant-numeric:tabular-nums}
+.chip-pick:hover{border-color:var(--fg3);color:var(--fg0)}
+.chip-pick:has(input:checked){border-color:var(--cyan);background:var(--cyan-tint);color:var(--fg0)}
+.chip-pick:has(input:checked)>span::before{background:var(--cyan);border-color:var(--cyan)}
+.chip-pick:has(input:focus-visible){outline:2px solid var(--focus);outline-offset:2px}
+.chip-pick:has(input:disabled){opacity:.5;cursor:not-allowed}
+/* Fold: collapsible section with title and count; a <details>, no script. The cut square turns a quarter when open */
+.fold{border-bottom:1px solid var(--bg1)}
+.fold>summary{display:flex;align-items:baseline;gap:.6rem;min-height:var(--h-m);padding-block:.5rem;cursor:pointer;list-style:none;
+  font-family:var(--font-heading);font-weight:700;font-size:1.08rem;letter-spacing:.03em;text-transform:uppercase;color:var(--fg0)}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::before{content:"";flex:none;align-self:center;width:10px;height:10px;background:var(--fg3);clip-path:polygon(0 0,60% 0,100% 40%,100% 100%,0 100%);transform:rotate(-90deg)}
+.fold[open]>summary::before{background:var(--cyan);transform:none}
+.fold>summary:hover::before{background:var(--fg0)}
+.fold[open]>summary:hover::before{background:var(--cyan)}
+.fold>summary:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.fold>summary>.count{align-self:center;min-width:0;height:auto;padding:0;background:none;color:var(--fg3);font-weight:400}
+.fold>.body{padding:.2rem 0 1rem}
+/* Feed: title, source and relative age; .is-compact is one line with the age at the right */
+.feed{list-style:none;display:flex;flex-direction:column}
+.feed>li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.1rem .8rem;padding:.55rem .1rem;border-bottom:1px solid var(--bg1)}
+.feed>li:last-child{border-bottom:0}
+.feed>li>a{grid-column:1/-1;color:var(--fg1);font-size:.88rem;line-height:1.35}
+.feed>li>a:hover{color:var(--link)}
+.feed>li>a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.feed>li>.src,.feed>li>time{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);font-variant-numeric:tabular-nums}
+.feed>li>time{text-align:right}
+.feed.is-compact>li{grid-template-columns:minmax(0,1fr) auto auto;align-items:baseline;padding-block:.35rem}
+.feed.is-compact>li>a{grid-column:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Mode bar: a segmented filter row (tag or mode) with counts; scrolls sideways when it does not fit */
+.modebar{display:flex;overflow-x:auto;border:1px solid var(--bg2);scrollbar-width:thin;scrollbar-color:var(--bg2) transparent}
+.modebar>:is(button,a){flex:none;display:inline-flex;align-items:center;gap:.5rem;min-height:calc(var(--h-m) - 2px);padding:0 .9rem;background:none;border:0;border-right:1px solid var(--bg2);
+  color:var(--fg3);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;white-space:nowrap;cursor:pointer}
+.modebar>:is(button,a):last-child{border-right:0}
+.modebar>:is(button,a):hover{color:var(--fg0);text-decoration:none}
+.modebar>:is(button,a)>small{font-size:.66rem;color:var(--fg3);font-variant-numeric:tabular-nums}
+.modebar>:is(button,a):is([aria-pressed="true"],[aria-current="true"],[aria-current="page"]){background:var(--cyan-tint);color:var(--fg0);box-shadow:inset 0 -2px 0 var(--cyan)}
+.modebar>:is(button,a):focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
 
 /* ── Kante Light (apps, <html data-kante="light">) ─────────────────────
    Kante shapes on the platform look: controls get the system font, normal
