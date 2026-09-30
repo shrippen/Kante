@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.4.0
+
+Farben aus Kante, Kit 0.6/0.7 gestaltet, Abgleich mit Kante 1.9.
+
+- Palette: `knust-palette.css` wird von Kante generiert (`kante/tools/build-knust.py`) und unverändert übernommen
+  (`bin/sync-palette.sh`); `knust.css` enthält keine Hex-Farben mehr. `bin/check-palette.sh` prüft das, auch im
+  Release-Workflow. Text auf Zustandsflächen im Dunkeln ist Kantes `on-state` (`#141312`).
+- Kit-Kennzeichnungen nach Kante: Herkunftsring (`kpu-mark[data-kpu-src]`), Veränderung mit Polarität (`kpu-delta`,
+  `data-kpu-good`), Einstellungszeile, Auswahl-Chip, aufklappbarer Abschnitt, Modusleiste, Hinweiskarten.
+- Kalendertag `kpu-day` (heute, Feiertag, Abwesenheit, Wochenende, ausgewählt, Entität lila), Feldgruppe
+  `kpu-field-group` (lila), Kartenmarker `kpu-map-pin`.
+- „Abgerechnet“ grün mit gefülltem Haken statt Blau (lag in Leinen fast auf dem Cyan der Auswahl).
+- Status-Pillen unter 576 px schmaler, damit Tabellen in ihre Karte passen.
+- Kimais Tagesrollen (`--kimai-public-holiday`, `-holiday`, `-sickness`, `-time-off`, `-other`, `-weekend-bg`):
+  Feiertag oranger, Abwesenheit cyan Balken statt Fläche, Wochenende abgesenkt.
+- Neue Variablen `--knust-map-route` (gelb), `--knust-map-marker` (cyan); Leaflet-Zoom, Quellenangabe, Tooltips und
+  Popups hell und dunkel.
+- Ausgewählte Zeilen auch über die Kit-Checkbox `kpu-select`, nicht nur `td.multiCheckbox`.
+
 ## 1.3.0
 
 Abgleich mit Kante 1.7.

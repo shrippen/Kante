@@ -4,7 +4,8 @@ Regeln für Kimai-Plugins, die mit Knust gut aussehen sollen, ohne von Knust abz
 Abrechnung, Anfahrten, Farbdifferenzierung und jedes künftige Plugin.
 
 **Grundsatz:** Ein Plugin sagt, *was* ein Element ist. Wie es aussieht, entscheidet Knust. Ohne Knust sieht das Plugin
-aus wie ein normales Kimai-Plugin. Das Design-System lebt nur an einer Stelle, in `Resources/public/css/knust.css`.
+aus wie ein normales Kimai-Plugin. Das Design-System lebt nur an einer Stelle, in `Resources/public/css/knust.css`;
+die Farben dazu kommen aus Kante (`knust-palette.css`, generiert, nicht von Hand ändern).
 
 ## Vier Stufen, in dieser Reihenfolge
 
@@ -28,6 +29,18 @@ Farben, Flächen, Rahmen, Ecken und Schriften kommen aus Tabler-Klassen (`bg-yel
 | `kpu-num` | Zahl, Zeit, Datum, Betrag, Dauer (Zelle oder Inline-Element) | JetBrains Mono, in Tabellen 13 px |
 | `kpu-tier` + `data-kpu-tier="0–3"` | Stufe: `0` Grundstufe, `1`–`3` steigend | Band wie im Design-System: getönte Fläche, 4-px-Balken oben, Text in der Stufenfarbe (grau, gelb, orange, rot) |
 | `kpu-mark` | Farbpunkt von Kunde, Projekt, Tätigkeit | eckig statt rund |
+| `kpu-mark[data-kpu-src]` (Kit 0.6, `kit.mark`) | Herkunft der Farbe | Ring aus Farbe + fg0: durchgezogen eigene, gestrichelt geerbte, gepunktet erzeugte (Kante `.swatch[data-src]`) |
+| `kpu-delta` + `data-kpu-delta`, `data-kpu-good` (Kit 0.6/0.7, `kit.delta`) | Veränderung; `good="down"` für Kosten/Fehler, `"none"` ohne Wertung | Mono, ▲/▼/–; gut aqua, schlecht rot, ohne Wertung fg2 (Kante `.delta[data-good]`) |
+| `kpu-setting` (Kit 0.6) | Einstellungszeile | Name fg0, Erklärung fg3, cyan Punkt bei geändertem Wert (Kante `.setting`) |
+| `kpu-chip-pick` (Kit 0.6) | Checkbox als Chip | Mono, eckig; aus = leeres Quadrat, an = cyan Quadrat und Tönung (Kante `.chip-pick`) |
+| `kpu-fold` (Kit 0.6) | aufklappbarer Abschnitt | Rajdhani-Versalien, geschnittenes Quadrat dreht sich, offen cyan (Kante `.fold`) |
+| `kpu-modebar` (Kit 0.6) | Art/Modus mit Anzahl | Mono-Versalien, eckig, aktuell cyan getönt mit Unterkante (Kante `.modebar`) |
+| `kpu-hint-card` + `data-kpu-hint`, Raster `kpu-hint-cards` (Kit 0.6) | Befund mit Art, Quelle, „Warum?“ | Fläche mit 4-px-Balken und geschnittener Ecke; Art als Form + Wort + Farbe (Hinweis cyan, Warnung gelb, Kritisch rot, Erledigt aqua) (Kante `.hint-card`) |
+| `kpu-status` + `data-kpu-status` (Kit 0.7) | Bearbeitungsstand | Umriss-Pille; `billed` grün mit gefülltem Haken-Quadrat (erledigt, nie Auswahl-Blau); unter 576 px schmaler |
+| `kpu-day` + `data-kpu-day="holiday absence weekend entity"`, `aria-current="date"`, `aria-selected` (Kit 0.7, `kit.calendar_day`) | Tag im Kalenderraster `kpu-days` | Mono; heute gelber Rahmen, Feiertag oranger, Abwesenheit cyan Balken, Wochenende abgesenkt, ausgewählt cyan getönt mit Rahmen, `entity` (Tag eines Plugin-Objekts, z. B. Drehtag) lila getönt (Kante `.cal`) |
+| `kpu-field-group` (+ `kpu-field-group-label`) (Kit 0.7, `kit.field_group`) | Formularzeilen eines Plugin-Objekts (z. B. Drehzettel-Felder) | lila Balken links, leichte lila Tönung, Beschriftung in Mono-Versalien lila (Kantes Farbe für Tags und Entitäten) |
+| `kpu-map-pin` (Kit 0.7, `kit.map_pin`, Leaflet-`divIcon`) | Kartenmarker | Quadrat in `--knust-map-marker` (cyan), Rand im Seitengrund (Kante `.map-pin`) |
+| `kpu-select` (Kit-Checkbox in einer Zeile) | Zeile ausgewählt | ganze Zeile cyan getönt mit Balken, wie `multiCheckbox` |
 
 - Die Kennzeichnung kommt **zusätzlich** zu den Tabler-Klassen: `class="bg-orange text-orange-fg kpu-tier" data-kpu-tier="2"`.
   Ohne Knust bleibt die Tabler-Fläche.
@@ -47,6 +60,7 @@ funktioniert:
 
 ```css
 .cd-swatch { border-radius: var(--knust-mark-radius, 50%); }
+.mileage-route { stroke: var(--knust-map-route, var(--tblr-primary)); }
 .mileage-map .leaflet-tile-pane { filter: var(--knust-map-filter, none); }
 .dz-total { font-family: var(--knust-font-num, inherit); }
 ```
@@ -58,6 +72,8 @@ funktioniert:
 | `--knust-mark-radius` | `0` | `0` | Farbpunkte, Swatches |
 | `--knust-tier-0` … `--knust-tier-3` | fg3, gelb, orange, rot (Leinen) | fg3, gelb, orange, rot (Gruvbox) | Stufenfarben ohne `kpu-tier` (z. B. SVG, Diagramme) |
 | `--knust-map-filter` | `none` | invertiert, warm | Kartenkacheln (Leaflet, OSM) |
+| `--knust-map-route` | Gelb `#fabd2f` | Gelb `#fabd2f` | Route/Spur auf einer Karte (Kante `--map-route`, ab 1.4) |
+| `--knust-map-marker` | Cyan `#0f6b66` | Cyan `#5ccfc4` | Marker auf einer Karte, wenn nicht `kpu-map-pin` (Kante `--map-marker`, ab 1.4) |
 | `--knust-focus`, `--knust-hl` | Cyan `#0f6b66` | Cyan `#5ccfc4` | Fokusring, aktuelle Auswahl (ab 1.3) |
 | `--knust-cyan-tint` | `#d9ebe4` | `#1e2b2a` | Grund einer ausgewählten Zeile, eines fokussierten Felds |
 | `--knust-warn` | Orange | Orange | Warnhinweis (Callout, Banner); Tablers `warning` bleibt gelb |
@@ -71,6 +87,12 @@ Info brauchen keine eigene Variable: `var(--tblr-link-color)` und `var(--tblr-in
 
 Die Variablen sind die Schnittstelle von Knust: Umbenennen oder Entfernen erfordert eine neue Hauptversion. Die
 internen `--shr-*` können sich jederzeit ändern; Plugins nutzen sie nicht.
+
+Leaflet-Steuerelemente (Zoom, Quellenangabe, Tooltips, Popups) gestaltet Knust selbst, hell und dunkel. Kimais
+Tagesrollen (`--kimai-public-holiday`, `--kimai-holiday`, `--kimai-sickness`, `--kimai-time-off`, `--kimai-other`,
+`--kimai-weekend-bg` und ihre `-bg`) folgen Kantes Kalender: Feiertag oranger Balken, Abwesenheit cyan Balken unten
+(keine Fläche, damit sie nicht wie eine Auswahl aussieht), Wochenende abgesenkt. Plugins mit Tagesrastern nutzen
+Kimais `bg-*`-Klassen oder `kit.calendar_day`.
 
 JavaScript, das Farben braucht (Diagramme, Canvas), liest die Variablen zur Laufzeit statt Farben fest einzutragen:
 `getComputedStyle(element).getPropertyValue('--knust-tier-2').trim() || fallback`.

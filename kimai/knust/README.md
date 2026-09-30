@@ -30,8 +30,10 @@ Request ──► ThemeOptionsSubscriber (KernelEvents::CONTROLLER, nach Kimai)
               → <html data-bs-theme-radius="0" data-bs-theme-primary="yellow">
 
 Seite  ──► StylesheetSubscriber (ThemeEvent::STYLESHEET, auch Login)
+              <link href="bundles/knust/css/knust-palette.css">   von Kante generiert
+                └─ --shr-*   Palette je data-bs-theme (light = Leinen, dark = Gruvbox),
+                             Rollen, Tönungen, Datenpalette, Kartenrollen, Grauskala
               <link href="bundles/knust/css/knust.css">
-                ├─ --shr-*   Palette je data-bs-theme (light = Leinen, dark = Gruvbox)
                 ├─ --tblr-*  Tabler-Mapping (Flächen, Text, Farbskala, *-rgb, *-lt)
                 ├─ Akzent    data-bs-theme-primary → --tblr-primary
                 ├─ Regeln    Abschrägung, Schriften, Sidebar, Tabellen, Formulare,
@@ -43,13 +45,28 @@ Container ─► KnustExtension::prepend
               kimai.theme.color_choices = shrippen-Palette (Kunden/Projekte/Tätigkeiten)
 ```
 
+## Palette aus Kante
+
+Die Farben schreibt niemand in Knust von Hand. Kantes Build erzeugt sie aus `kante/tokens/palette.json`:
+
+```
+Kante  tokens/palette.json ─► ./build.sh (kante/tools/build-knust.py) ─► docs/v1/knust-palette.css
+                                                   https://shrippen.github.io/v1/knust-palette.css
+Knust  bin/sync-palette.sh [<kante-checkout>] ─► Resources/public/css/knust-palette.css (unverändert)
+       bin/check-palette.sh [<kante-checkout>]  keine Hex-Werte in knust.css, jedes --shr-* definiert,
+                                                Kopie gleich Kante (auch im Release-Workflow)
+```
+
+Von Hand bleibt nur das Tabler-Mapping in `knust.css` (Abschnitt 3 ff.). Eine Farbe ändert sich in Kante, dann
+`bin/sync-palette.sh` hier.
+
 ## Abgleich mit Kante
 
-Knust ist Kantes Ableger für Kimai (Regel in `shrippen.github.io/kante/AGENT-RULE.md`). Stand: Kante 1.7.
+Knust ist Kantes Ableger für Kimai (Regel in `shrippen.github.io/kante/AGENT-RULE.md`). Stand: Kante 1.9.
 
 | Kante | Knust |
 |---|---|
-| Palette, Leinen hell | `--shr-*`, gleiche Werte |
+| Palette, Leinen hell | `--shr-*` aus `knust-palette.css`, von Kante generiert |
 | Cyan `#5ccfc4` / `#0f6b66` für Fokus, Link, Info, Daten, Auswahl | `--tblr-info`, `--tblr-cyan`, `--tblr-link-color`, `--tblr-active-bg`; `--knust-focus`, `--knust-hl` |
 | `--warn` orange | Alerts und Toasts „warning“ orange; `--tblr-warning` bleibt gelb (Kit: „beantragt“ gelb, „Warnung“ orange) |
 | `--tint-*`, `--d1…d6`, `--scrim`, `--cyan-tint` | `--knust-*` gleichen Namens; Scrim als Modal-Hintergrund |
@@ -63,6 +80,10 @@ Knust ist Kantes Ableger für Kimai (Regel in `shrippen.github.io/kante/AGENT-RU
 | `.table .num`, `.group-row`, `tfoot` | `kpu-num`, `kpu-group-row`, `.table tfoot` |
 | `.callout`, `.toast` | `.alert`, `.toast` |
 | `.chip`, `.chip.is-filter` | Tom-Select-Einträge (ausgewählt = cyan) |
+| `.delta` (+ `data-good`), `.swatch[data-src]`, `.setting`, `.chip-pick`, `.fold`, `.modebar`, `.hint-card` | Kit-Kennzeichnungen `kpu-delta`, `kpu-mark[data-kpu-src]`, `kpu-setting`, `kpu-chip-pick`, `kpu-fold`, `kpu-modebar`, `kpu-hint-card` |
+| `.cal` (heute gelb, Feiertag orange, Abwesenheit cyan, Auswahl cyan) | `kpu-day`; Kimais Tagesrollen `--kimai-*` (Balken statt Fläche, Wochenende abgesenkt) |
+| Lila für Tags und Entitäten | `kpu-field-group`, `kpu-day[data-kpu-day~=entity]` |
+| `.map-pin`, `--map-route`, `--map-marker`, `.map-frame` | `kpu-map-pin`, `--knust-map-route`, `--knust-map-marker`, Leaflet-Steuerelemente |
 
 Nicht übernommen:
 
@@ -71,9 +92,8 @@ Nicht übernommen:
 - Steuerhöhen 32/40/48 px: Kimais Formulare und Tabellen sind dichter gebaut.
 - Bewegung (`--dur-*`, A01–A22, L1–L5): Kimai bringt eigene Übergänge; Knust ändert kein Markup und kein JS.
 - `--primary` gelb: Die Akzentfarbe wählt der Admin (Blau, Gelb, Orange, Aqua), sie füllt Hauptschaltflächen.
-- `.delta`, `.swatch[data-src]` (Herkunftsring), `.setting`, `.chip-pick`, `.fold`, `.modebar`, `.hint-card` und die
-  übrigen App-Bausteine: Das Kit hat dafür keine Kennzeichnung und Kimai kein passendes Markup. Braucht ein Plugin eins,
-  kommt erst die Kennzeichnung ins Kit, dann die Gestaltung nach Knust.
+- Die übrigen App-Bausteine (Kacheln, Tagesstreifen, Uhr, …): Das Kit hat dafür keine Kennzeichnung und Kimai kein
+  passendes Markup. Braucht ein Plugin eins, kommt erst die Kennzeichnung ins Kit, dann die Gestaltung nach Knust.
 - Diagramme: Chart.js färbt per JavaScript; Plugins lesen `--knust-d1…d6` zur Laufzeit.
 - Kante Light (Breeze): gilt für Apps neben KDE, nicht für Kimai.
 
