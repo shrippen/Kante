@@ -318,6 +318,22 @@ TestCase {
         KanteStyle.kind = KanteStyle.Kind.System
     }
 
+    // Kante replaces the platform's title strip and footer, System restores them.
+    function test_dialogSkinThemesHeaderAndFooter() {
+        KanteStyle.kind = KanteStyle.Kind.System
+        var o = createTemporaryObject(dialogComponent, tc)
+        var platformHeader = o.dialog.header
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(o.dialog.header !== platformHeader)
+        compare(o.dialog.header.text, "x")
+        verify(o.dialog.footer !== null)
+        KanteStyle.kind = KanteStyle.Kind.System
+        verify(o.dialog.header === platformHeader)
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        verify(o.dialog.header === platformHeader)
+        KanteStyle.kind = KanteStyle.Kind.System
+    }
+
     Component {
         id: scrimDialogComponent
         KanteDialog { title: "x" }
