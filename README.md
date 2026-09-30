@@ -448,6 +448,30 @@ Fixes (1.8): `KanteCallout` gives no room to an action row whose actions are all
 
 In System the new inputs stay platform text fields and tool buttons; popups keep the platform ground, the cells and rows draw in the `KanteStyle` roles. Not built: a separate `KanteListRowSkin` for existing delegates (the row covers the cases), a web tag picker (chips plus `.combo-search`), hover tooltips on disabled rows.
 
+### Added in Kante 1.9
+
+What the apps reported after 1.8: popups that left the window, a 12-hour clock, grouped project lists, read-outs on bar charts, list rows inside delegates, filter chips as links, stretched charts, daily goals in the heat map and a few phone fixes.
+
+| Element | Web | QML |
+|---|---|---|
+| Popups stay inside the window | – | `KanteStyle.popupPlace(anchor, w, h, above)` → {x, y, above, room}: below the field, above when there is no room below, shifted left at the right edge. Used by `KanteDateField`, `KanteTimeField`, `KanteSearchCombo`, `KanteTagPicker`; `popupAbove` (undefined = choose, true / false force) |
+| Open and close from code | – | `KanteDateField` / `KanteTimeField` `open()`, `close()`; `KanteSearchCombo` `openList()`, `close()` (ends the filter) |
+| 12-hour clock | – | `KanteTimeField` `twelveHour` (default: the locale's short time format has AM/PM), `amText`, `pmText`; shows "9:30 PM", 12 hour cells with an AM / PM switch; reads "9:30 pm", "9p", "12 am", and 24 h times in either mode |
+| Grouped combo list | – | `KanteSearchCombo` `sectionRole` (a heading over the first row of each section, kept while filtering), `popupAnchor` (the item the list opens above or below; a tag picker hands its whole box), the list height capped to the free room |
+| Tag suggestions in colour | – | `KanteTagPicker` suggestions show their colour square; the field fills the rest of the chips' line |
+| Bar chart read-out | – | `KanteBarChart` `readout` (default on), `hoverIndex`, `hoverPart`, `partNames`: a band behind the bar, the part framed cyan, a box with the label, every part and the total (Σ) |
+| List row: error count, trailing items, inside a delegate | – | `KanteListRow` `countKind: KanteListRow.CountKind.Error` (red badge), `trailing` (e.g. a chevron `Kirigami.Icon`); the tap is seen passively, so an `ItemDelegate` or `MouseArea` below still gets `clicked` |
+| Chips as links, filter tiers | `a.chip` (never underlined), `.chip.is-filter[data-tier="critical"]` red, `[data-tier="warn"]` orange | – |
+| Stretched charts | `preserveAspectRatio="none"`: `.chart .line`, `.grid`, `.goal`, `.spark path` keep their width (`vector-effect`); spark end mark as `<path class="end" d="M x y h0">` stays square; `--chart-text` sets the label size in viewBox units | – |
+| Last period, limit line | `.chart .bar.is-prev` (dashed outline, no fill; the series colour if it has one), `.chart .goal.is-danger` (red) | – |
+| Heat map goals, legend, columns | `.heat i.met` (aqua bar: goal reached), `i.under` (orange: missed); `.heat[style="--rows:7"]` fills column by column; `.heat-legend` > `span`, `i[data-l]`, `i.met`, `i.under` | – |
+| Colour input | `input[type=color]`: a square swatch in the field frame | – |
+| Page head | `.page-head` (title with its actions, space before the first card); `main > h1 + .card`/`.panel`/… also get the space | – |
+
+Fixes (1.9): check box, radio and switch labels take the Kante text colour through `KanteCheckSkin` (Kante dark on a Breeze Light desktop drew near-black labels on the dark ground). `KanteHeading { pageTitle: true }` sizes itself for the Rajdhani title (it was elided to "KA…" under the Plasma style). `KanteSticker` keeps dark ink on the cream paper off Kante on a dark scheme. Web: `.toast-stack` adds `env(safe-area-inset-bottom)`; `.share > .add` wraps its field onto its own line when narrow; pills in `.tile` and `.tile-badges` end with an ellipsis; `.date-tile` never breaks (the year stays on the line).
+
+Tested with the real Plasma style (`org.kde.desktop`, Breeze Light and Breeze Dark) as well as plain Kirigami. The Gallery sits in a `KanteScope`, as an app does.
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:
