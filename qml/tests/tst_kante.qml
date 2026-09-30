@@ -16,6 +16,12 @@ TestCase {
     height: 400
     when: windowShown
 
+    /** The platform theme as items in the window see it (the invisible TestCase's own
+     *  Kirigami.Theme stays on the defaults under the real Plasma style). */
+    function platform() {
+        return tc.Window.contentItem.Kirigami.Theme
+    }
+
     function cleanup() {
         KanteStyle.kind = KanteStyle.Kind.System
         KanteStyle.materialStyle = false
@@ -25,8 +31,8 @@ TestCase {
     function test_systemForwardsPlatformTheme() {
         KanteStyle.kind = KanteStyle.Kind.System
         verify(!KanteStyle.active)
-        compare(KanteStyle.textColor, Kirigami.Theme.textColor)
-        compare(KanteStyle.highlightColor, Kirigami.Theme.highlightColor)
+        compare(KanteStyle.textColor, platform().textColor)
+        compare(KanteStyle.highlightColor, platform().highlightColor)
         compare(KanteStyle.chamfer, 0)
         compare(KanteStyle.monoFamily, "monospace")
     }
@@ -50,10 +56,10 @@ TestCase {
         KanteStyle.kind = KanteStyle.Kind.KanteLight
         verify(KanteStyle.active)
         verify(!KanteStyle.themed)
-        compare(KanteStyle.textColor, Kirigami.Theme.textColor)
-        compare(KanteStyle.backgroundColor, Kirigami.Theme.backgroundColor)
-        compare(KanteStyle.accentColor, Kirigami.Theme.highlightColor)
-        compare(KanteStyle.negativeTextColor, Kirigami.Theme.negativeTextColor)
+        compare(KanteStyle.textColor, platform().textColor)
+        compare(KanteStyle.backgroundColor, platform().backgroundColor)
+        compare(KanteStyle.accentColor, platform().highlightColor)
+        compare(KanteStyle.negativeTextColor, platform().negativeTextColor)
         verify(KanteStyle.chamfer > 0)
         compare(KanteStyle.titleFont(12).capitalization, Font.AllUppercase)
         verify(KanteStyle.headingFont(12).capitalization !== Font.AllUppercase)
@@ -277,9 +283,12 @@ TestCase {
         var systemWidth = b.implicitWidth
         KanteStyle.kind = KanteStyle.Kind.Kante
         tryVerify(function() { return KanteStyle.headingFace.status === FontLoader.Ready }, 3000)
-        tryVerify(function() { return b.implicitWidth > systemWidth }, 2000)
+        // Material sizes from the (narrow) content, so the button grows; the Plasma style
+        // measures the text itself and may already be wide enough.
         var label = b.children.filter(function(c) { return c.toString().indexOf("RowLayout") >= 0 })[0]
-        verify(b.implicitWidth >= label.implicitWidth + b.leftPadding + b.rightPadding)
+        tryVerify(function() { return label.implicitWidth > 10 }, 2000)
+        tryVerify(function() { return b.implicitWidth >= label.implicitWidth + b.leftPadding + b.rightPadding }, 2000,
+                  b.implicitWidth + " fits " + label.implicitWidth)
         KanteStyle.kind = KanteStyle.Kind.System
         compare(b.implicitWidth, systemWidth)
     }

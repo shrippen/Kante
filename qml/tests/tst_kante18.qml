@@ -16,6 +16,12 @@ TestCase {
     height: 500
     when: windowShown
 
+    /** The platform theme as items in the window see it (the invisible TestCase's own
+     *  Kirigami.Theme stays on the defaults under the real Plasma style). */
+    function platform() {
+        return tc.Window.contentItem.Kirigami.Theme
+    }
+
     /** TestCase itself is invisible: parts that must lay out or take input go on the window. */
     function stage() {
         return tc.Window.contentItem
@@ -33,8 +39,8 @@ TestCase {
         compare(KanteStyle.mapRouteColor, KanteStyle.accentColor)
         compare(KanteStyle.entityFallbackColor, KanteStyle.disabledTextColor)
         KanteStyle.kind = KanteStyle.Kind.System
-        compare(KanteStyle.mapMarkerColor, Kirigami.Theme.focusColor)
-        compare(KanteStyle.entityFallbackColor, Kirigami.Theme.disabledTextColor)
+        compare(KanteStyle.mapMarkerColor, platform().focusColor)
+        compare(KanteStyle.entityFallbackColor, platform().disabledTextColor)
     }
 
     // ── Day strip ───────────────────────────────────────────────────────
@@ -262,7 +268,7 @@ TestCase {
         compare(c.currentIndex, 2)
         compare(c.currentText, "Kader")
         compare(c.editText, "Kader")
-        verify(!c.popupOpen)
+        tryVerify(function () { return !c.popupOpen }, 1000, "closed (after a styled exit transition)")
     }
 
     function test_searchComboKeysAndNew() {
