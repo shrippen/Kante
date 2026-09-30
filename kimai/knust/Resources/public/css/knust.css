@@ -768,7 +768,9 @@ a:focus-visible,
     color: var(--shr-fg3);
 }
 
-:root .leaflet-control-attribution {
+/* .leaflet-container: as specific as Leaflet's own rule, which loads later and
+ * would otherwise keep its white background under the light text */
+:root .leaflet-container .leaflet-control-attribution {
     background: color-mix(in srgb, var(--shr-panel) 85%, transparent);
     color: var(--shr-fg3);
     font-family: var(--shr-font-mono);
