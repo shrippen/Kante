@@ -14,7 +14,7 @@
 namespace KimaiPlugin\KnustBundle\Enum;
 
 /**
- * Accent colour for primary buttons, links, focus and the active menu item.
+ * Accent colour for primary buttons. Links, focus and selection are cyan (Kante).
  *
  * Tabler only accepts its own colour names for data-bs-theme-primary, so each
  * accent borrows one name. The stylesheet maps that name to the shrippen colour:

@@ -58,6 +58,16 @@ funktioniert:
 | `--knust-mark-radius` | `0` | `0` | Farbpunkte, Swatches |
 | `--knust-tier-0` … `--knust-tier-3` | fg3, gelb, orange, rot (Leinen) | fg3, gelb, orange, rot (Gruvbox) | Stufenfarben ohne `kpu-tier` (z. B. SVG, Diagramme) |
 | `--knust-map-filter` | `none` | invertiert, warm | Kartenkacheln (Leaflet, OSM) |
+| `--knust-focus`, `--knust-hl` | Cyan `#0f6b66` | Cyan `#5ccfc4` | Fokusring, aktuelle Auswahl (ab 1.3) |
+| `--knust-cyan-tint` | `#d9ebe4` | `#1e2b2a` | Grund einer ausgewählten Zeile, eines fokussierten Felds |
+| `--knust-warn` | Orange | Orange | Warnhinweis (Callout, Banner); Tablers `warning` bleibt gelb |
+| `--knust-tint-1`, `--knust-tint-2` | Text 8 %, 16 % | Text 8 %, 16 % | Hover, gedrückt, Ablageziel |
+| `--knust-tint-hl`, `--knust-tint-hl-2`, `--knust-tint-warn` | Cyan 12 %, 25 %, Orange 14 % | dito | Auswahl, Hervorhebung, Warnung als Fläche |
+| `--knust-d1` … `--knust-d6` | Cyan, Gelb, Lila, Aqua, Orange, fg3 | dito | Datenreihen in Diagrammen, in dieser Reihenfolge (Rot bleibt Fehler) |
+| `--knust-scrim` | `#282828` 50 % | `#141312` 62 % | Abdunklung hinter eigenen Overlays |
+
+Die Namen ab 1.3 sind Kantes Rollen mit Präfix (`--focus` → `--knust-focus`, `--d1` → `--knust-d1`). Links und
+Info brauchen keine eigene Variable: `var(--tblr-link-color)` und `var(--tblr-info)` sind in Knust schon cyan.
 
 Die Variablen sind die Schnittstelle von Knust: Umbenennen oder Entfernen erfordert eine neue Hauptversion. Die
 internen `--shr-*` können sich jederzeit ändern; Plugins nutzen sie nicht.

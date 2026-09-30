@@ -12,7 +12,7 @@
       </trans-unit>
       <trans-unit id="st002" resname="knust.accent_help">
         <source>knust.accent_help</source>
-        <target>Used for primary buttons, links, focus and the active menu item.</target>
+        <target>Used for primary buttons. Links, focus and selection are always cyan.</target>
       </trans-unit>
       <trans-unit id="st003" resname="knust.accent.blue">
         <source>knust.accent.blue</source>

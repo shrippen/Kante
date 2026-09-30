@@ -18,6 +18,9 @@
  *  10. Screens                header, toolbar, timer, tables, dashboard,
  *                             modal, login, kpu kit (canvas drafts A–F)
  *
+ * Follows Kante 1.7: cyan roles, tints, data palette, scrim, focus and
+ * the kit parts shaped like Kante's components (mapping in README.md).
+ *
  * Public tokens --knust-* (after the palette) and the kit markers
  * .kpu-num / .kpu-tier / .kpu-mark are the plugin API, see PLUGINS.md.
  */
