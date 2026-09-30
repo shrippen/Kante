@@ -285,9 +285,192 @@ TestCase {
         tryCompare(o.piece, "y", 20, 2000)
     }
 
+    // ── Kante 1.5 ────────────────────────────────────────────────────────
+    function test_scrimAndTintsAndData() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        compare(KanteStyle.scrimColor, KantePalette.dark.scrim)
+        verify(KanteStyle.scrimColor.a > 0.5)
+        verify(KanteStyle.tint1Color.a < KanteStyle.tint2Color.a)
+        verify(KanteStyle.tintHighlightColor.a < KanteStyle.tintHighlight2Color.a)
+        compare(KanteStyle.dataColor(0), KanteStyle.focusColor)
+        compare(KanteStyle.dataColor(1), KanteStyle.accentColor)
+        // wraps around, also for negative numbers
+        compare(KanteStyle.dataColor(6), KanteStyle.dataColor(0))
+        compare(KanteStyle.dataColor(-1), KanteStyle.dataColor(5))
+    }
+
+    Component {
+        id: dialogComponent
+        Item {
+            width: 200; height: 200
+            property alias dialog: d
+            QQC2.Dialog { id: d; title: "x" }
+            KanteDialogSkin { dialog: d }
+        }
+    }
+
+    // The skin is a QtObject: it must not count as content of the dialog.
+    function test_dialogSkinIsNoContent() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var o = createTemporaryObject(dialogComponent, tc)
+        verify(o.dialog.background !== null)
+        KanteStyle.kind = KanteStyle.Kind.System
+    }
+
+    Component {
+        id: scrimDialogComponent
+        KanteDialog { title: "x" }
+    }
+
+    function test_dialogUsesScrimRole() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var d = createTemporaryObject(scrimDialogComponent, tc)
+        verify(d.QQC2.Overlay.modal === d.kanteScrim)
+        KanteStyle.kind = KanteStyle.Kind.System
+        verify(d.QQC2.Overlay.modal !== d.kanteScrim)
+    }
+
+    Component {
+        id: chipComponent
+        KanteChip { text: "urlaub"; checkable: true }
+    }
+
+    function test_chipToggles() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(chipComponent, tc)
+        var spy = createTemporaryObject(spyComponent, tc, { target: c, signalName: "clicked" })
+        verify(!c.checked)
+        c.forceActiveFocus()
+        keyClick(Qt.Key_Space)
+        verify(c.checked)
+        compare(spy.count, 1)
+        keyClick(Qt.Key_Space)
+        verify(!c.checked)
+    }
+
+    Component {
+        id: settingComponent
+        KanteSettingRow { title: "Schwelle"; hint: "62 °C" }
+    }
+
+    function test_settingRowReset() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(settingComponent, tc)
+        var spy = createTemporaryObject(spyComponent, tc, { target: r, signalName: "resetRequested" })
+        verify(!r.modified)
+        r.modified = true
+        verify(r.height > 0)
+        compare(spy.count, 0)
+    }
+
+    Component {
+        id: calendarComponent
+        KanteCalendarGrid { year: 2026; month: 10; holidays: [3]; absences: [3, 13]; selectedDay: 5 }
+    }
+
+    function test_calendarGridGeometry() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(calendarComponent, tc)
+        // 1 October 2026 is a Thursday: three empty cells before it (Monday first), 31 days
+        compare(c.offset, 3)
+        compare(c.days, 31)
+        c.month = 2
+        compare(c.days, 28)
+        c.month = 3
+        compare(c.offset, 6)
+    }
+
+    Component {
+        id: barChartComponent
+        KanteBarChart { width: 200; height: 100; values: [3, 5, 2]; labels: ["A", "B", "C"]; goal: 4 }
+    }
+
+    function test_barChartScale() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(barChartComponent, tc)
+        compare(c.scaleMax, 5)
+        c.values = [[1, 2], [3, 4]]
+        compare(c.scaleMax, 7)
+        c.maxValue = 10
+        compare(c.scaleMax, 10)
+    }
+
+    Component {
+        id: lineChartComponent
+        KanteLineChart { width: 200; height: 100; series: [[1, 3, 2], [2, 2, 4]] }
+    }
+
+    function test_lineChartPoints() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(lineChartComponent, tc)
+        compare(c.pointsOf([1, 2, 3]).length, 3)
+        compare(c.scaleTop, 4)
+        var p = c.pointsOf([0, 4])
+        verify(p[0].x < p[1].x)
+        verify(p[0].y > p[1].y)
+    }
+
+    Component {
+        id: statusComponent
+        KanteStatusLight { name: "Jellyfin" }
+    }
+
+    function test_statusLightUptimeTiers() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var s = createTemporaryObject(statusComponent, tc)
+        compare(s.stateForUptime(99.95), KanteStatusLight.State.Ok)
+        compare(s.stateForUptime(99.5), KanteStatusLight.State.Warn)
+        compare(s.stateForUptime(98), KanteStatusLight.State.Bad)
+        s.state = KanteStatusLight.State.Bad
+        compare(s.tone, KanteStyle.negativeTextColor)
+    }
+
+    Component {
+        id: tabsIconComponent
+        KanteTabBar { width: 120; model: ["Alle", "Prüfen", "Fertig", "Archiv", "Mehr"]; counts: [1, 2, 3, 4, 5]; countKinds: [0, 2, 0, 0, 0]; badges: true }
+    }
+
+    function test_tabBarOverflowKeepsSelectionInView() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = false
+        var t = createTemporaryObject(tabsIconComponent, tc)
+        t.select(4)
+        compare(t.currentIndex, 4)
+        verify(t.implicitWidth > t.width)
+    }
+
+    Component {
+        id: dayStripComponent
+        KanteDayStrip { width: 240; segments: [{ from: 9, to: 12, kind: "work" }, { from: 10, to: 11, kind: "event" }]; now: 10.5 }
+    }
+
+    function test_dayStripMapsHours() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var s = createTemporaryObject(dayStripComponent, tc)
+        compare(s.xOf(0), 0)
+        compare(s.xOf(24), 240)
+        compare(s.xOf(12), 120)
+    }
+
     Component {
         id: gallery
         Column {
+            KanteChip { text: "x" }
+            KanteSwatch { }
+            KanteKpi { value: "1"; label: "x"; delta: "+1"; trend: 1 }
+            KanteBulkBar { count: 2; width: 300 }
+            KanteSettingRow { title: "x"; width: 300 }
+            KanteCommandBox { text: "cmd" }
+            KanteStatusLight { name: "x" }
+            KanteListRow { text: "x" }
+            KanteBarChart { values: [1, 2]; width: 100; height: 60 }
+            KanteLineChart { series: [[1, 2]]; width: 100; height: 60 }
+            KanteSparkline { values: [1, 2, 3] }
+            KanteHeatmap { levels: [0, 1, 2, 3, 4] }
+            KanteCalendarGrid { width: 280 }
+            KanteDayStrip { width: 200 }
+            KanteClock { running: false }
             KanteLiveText { text: "1 687" }
             Item { width: 100; height: 20; KanteLiveLine { } }
             KanteDropZone { width: 40; height: 30 }
@@ -330,7 +513,7 @@ TestCase {
         for (var i = 0; i < kinds.length; i++) {
             KanteStyle.kind = kinds[i]
             wait(30)
-            verify(g.children.length >= 31)
+            verify(g.children.length >= 46)
         }
     }
 }

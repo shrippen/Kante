@@ -345,6 +345,45 @@ Not in QML: the sliding nav brand bar (A22) and the web-only catalogue parts (na
 
 Colours: cyan is `focusColor` and `infoColor`; `selectionColor` is the ground of a selected row or focused field; `accentHoverColor` / `accentPressedColor` step the primary fill; `onStateColor` is the text on a state fill. Leinen now has the same yellow primary fill (ink `#141312`) as the dark theme.
 
+### Added in Kante 1.5 (from the project integrations)
+
+Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally because Kante lacked it, plus the bugs the integrations found. The evaluation with every decision (built, stays local, deferred) is [`proposals/2026-09-stil/ergaenzungen.html`](proposals/2026-09-stil/ergaenzungen.html).
+
+**Fixes.** Entrances hide only elements that `shrippen.js` marked at load (`data-entrance`), never later inserts; `data-own-lang` on `<html>` switches Kante's language handling off; native `<dialog class="dialog">` is hidden while closed; `.ground-yellow` gives buttons the focus ring of the install box; the nav ground follows the theme; `fonts.css` + `fonts/` for offline apps; QML: `KanteDialogSkin` is a QtObject (no dialog content), non-editable combo boxes are read-only, spin box arrows are drawn, `KanteStyle.scrimColor`.
+
+**Tokens.** `--tint-1/-2/-hl/-hl-2/-warn` (translucent steps for hover, drop targets, selection), `--d1…--d6` (data palette in chart order), `--paper` / `--on-paper`; QML `tint1Color … tintWarnColor`, `dataColor(i)`.
+
+| Element | Web | QML |
+|---|---|---|
+| Chip (entity, filter) | `.chip`, `.chip-x`, `.chips-row` | `KanteChip` |
+| Swatch with origin ring | `.swatch[data-src]`, `.swatch-grid` | `KanteSwatch` |
+| Table: numbers, group row, total | `.table .num`, `.group-row`, `tfoot` | – |
+| Charts | `.chart`, `.spark`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
+| Month grid | `.cal` | `KanteCalendarGrid` |
+| KPI with change | `.kpi`, `.delta` | `KanteKpi` |
+| Bulk bar | `.bulk-bar` | `KanteBulkBar` |
+| Sheet | `.sheet` | `KanteSheetSkin` |
+| Setting row | `.setting` | `KanteSettingRow` |
+| Day strip | `.day-strip` | `KanteDayStrip` |
+| Status light | `.status[data-state]` | `KanteStatusLight` |
+| Board editor parts | `.tile-add`, `.grip`, `.tile-strip` | – |
+| Clock | `.clock` (SVG classes) | `KanteClock` |
+| Command palette, link tile | `.palette`, `a.link-tile` | – |
+| List row | `.list-row` | `KanteListRow` |
+| Map frame and pin | `.map-frame`, `.map-pin` | – |
+| Command line with copy | `.cmd-row.is-plain` | `KanteCommandBox` |
+| Toggle button, inline button | `.btn[aria-pressed]`, `.btn-inline` | – |
+| Option card, dropdown, toast stack | `.option`, `details.dropdown`, `.toast-stack` | – |
+| File input, wrapping label, section label | `.input[type=file]`, `label.field`, `.h-label` | – |
+| Dismissible callout with actions | `.callout.has-x` + `.callout-x` | `KanteCallout.dismissible`, `actions` |
+| Flow node done, fact tier | `.flow-node.done`, `.fact[data-tier]` | – |
+| Pill over an image | `.pill.is-solid` | – |
+| Tabs: icons, scrolling, counter kinds | – | `KanteTabBar` (`icons`, `countKinds`, `badges`) |
+| Segments: icons, tooltips | – | `KanteSegmented` (`icons`, `tooltips`) |
+| Empty state as a card | – | `KanteEmptyState.barColor` |
+
+Not built: pie charts (use stacked or segment bars), an editing bar on yellow (editing is selection, so cyan), sun and moon in the day strip. Deferred: curve editor with drag points, hover read-out in the line chart, week and agenda views.
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:

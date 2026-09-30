@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "Kante",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "source": "https://github.com/shrippen/shrippen.github.io",
     "base": "Gruvbox Dark (morhetz)",
     "formerly": "shrippen Design Default"
@@ -206,7 +206,11 @@
       "selection": "cyan-tint",
       "accentHover": "yellow-hi",
       "accentPressed": "yellow-lo",
-      "onState": "bg-void"
+      "onState": "bg-void",
+      "scrim": [
+        "bg-void",
+        0.62
+      ]
     },
     "light": {
       "text": "fg1",
@@ -247,7 +251,11 @@
       "selection": "cyan-tint",
       "accentHover": "#fcc845",
       "accentPressed": "#e5a823",
-      "onState": "#fbf8ee"
+      "onState": "#fbf8ee",
+      "scrim": [
+        "fg0",
+        0.5
+      ]
     },
     "notes": {
       "mutedText": "#bdae93 is fg3 one step lighter, for secondary text on glass (4.5:1 on the darkest tint)",
@@ -266,5 +274,14 @@
     "easeOut": "cubic-bezier(.2,.8,.2,1)",
     "easeSnap": "cubic-bezier(.3,1.5,.5,1)",
     "note": "warm and mechanical, never glitch; all motion only under prefers-reduced-motion: no-preference"
-  }
+  },
+  "data": [
+    "cyan",
+    "yellow",
+    "purple",
+    "aqua",
+    "orange",
+    "fg3"
+  ],
+  "data_note": "Series colours of charts, in this order (red stays danger). Web: --d1..--d6; QML: KanteStyle.dataColor(i)."
 }

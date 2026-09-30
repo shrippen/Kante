@@ -8,11 +8,15 @@
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!still && 'IntersectionObserver' in window) h.classList.add('motion');
 
+  // An app with its own language handling (Andon) puts data-own-lang on <html>: Kante then
+  // leaves <html lang> and the .lang switch alone.
+  var ownLang = h.hasAttribute('data-own-lang');
   var lang = 'en'; // English is the default, whatever the browser language is
   try { var s = localStorage.getItem(KEY); if (s === 'de' || s === 'en') lang = s; } catch (e) {}
-  h.lang = lang;
+  if (!ownLang) h.lang = lang;
 
   function mark() {
+    if (ownLang) return;
     [].forEach.call(d.querySelectorAll('.lang button'), function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === h.lang));
     });
@@ -22,7 +26,7 @@
     mark();
 
     d.addEventListener('click', function (e) {
-      var lb = e.target.closest && e.target.closest('.lang button');
+      var lb = !ownLang && e.target.closest && e.target.closest('.lang button');
       if (lb) {
         h.lang = lb.getAttribute('data-lang');
         try { localStorage.setItem(KEY, h.lang); } catch (x) {}
@@ -238,6 +242,9 @@
         }
       });
     }, { rootMargin: '0px 0px -8% 0px' });
-    [].forEach.call(targets, function (el) { io.observe(el); });
+    [].forEach.call(targets, function (el) {
+      if (el.classList.contains('feat') || el.matches('.tiles>.tile,.hero-shot,.showcase figure,.shots figure')) el.setAttribute('data-entrance', '');
+      io.observe(el);
+    });
   });
 })();

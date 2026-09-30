@@ -16,7 +16,7 @@ Rectangle {
     property int kind: 1
     property bool dark: true
     width: 1100
-    height: 1700
+    height: 2500
     color: KanteStyle.backgroundColor
 
     Binding { target: KanteStyle; property: "kind"; value: root.kind }
@@ -186,6 +186,56 @@ Rectangle {
                     KanteLiveText { text: "1 687" }
                 }
                 KanteScrollMeter { Layout.fillWidth: true; flickable: flick }
+            }
+
+            Section {
+                title: "1.5 · daten und listen"
+                RowLayout {
+                    spacing: KanteStyle.unit(20)
+                    KanteBarChart { Layout.preferredWidth: KanteStyle.unit(240); Layout.preferredHeight: KanteStyle.unit(110); values: [3, 5, 2, 6, 4]; labels: ["MO", "DI", "MI", "DO", "FR"]; goal: 4.5; highlight: 3 }
+                    KanteBarChart { Layout.preferredWidth: KanteStyle.unit(200); Layout.preferredHeight: KanteStyle.unit(110); values: [[2, 1], [3, 2], [1, 3]]; labels: ["A", "B", "C"] }
+                    KanteLineChart { Layout.preferredWidth: KanteStyle.unit(240); Layout.preferredHeight: KanteStyle.unit(110); series: [[1, 3, 2, 5, 4], [2, 2, 3, 3, 4]] }
+                    ColumnLayout {
+                        KanteSparkline { values: [1, 3, 2, 5, 4, 6] }
+                        KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(20)
+                    KanteCalendarGrid { Layout.preferredWidth: KanteStyle.unit(280); year: 2026; month: 10; holidays: [3]; absences: [12, 13, 14]; selectedDay: 20 }
+                    ColumnLayout {
+                        spacing: KanteStyle.unit(14)
+                        RowLayout {
+                            spacing: KanteStyle.unit(24)
+                            KanteKpi { value: "1 687"; label: "Umsatz · Woche"; delta: "+12,4 %"; trend: 1 }
+                            KanteKpi { value: "18,75"; label: "Stunden"; delta: "−3,1 %"; trend: -1 }
+                            KanteClock { running: false; time: new Date(2026, 9, 1, 10, 9, 42) }
+                        }
+                        KanteDayStrip { Layout.preferredWidth: KanteStyle.unit(320); segments: [{ from: 9, to: 12.5, kind: "work" }, { from: 14, to: 17, kind: "dim" }, { from: 11, to: 11.7, kind: "event" }]; now: 15.2 }
+                        RowLayout {
+                            spacing: KanteStyle.unit(8)
+                            KanteChip { text: "urlaub"; chipColor: KanteStyle.focusColor }
+                            KanteChip { text: "archiv"; checkable: true; checked: true }
+                            KanteChip { text: "rolle-12"; removable: true; chipColor: KanteStyle.warningColor }
+                            KanteSwatch { source: KanteSwatch.Source.Own }
+                            KanteSwatch { source: KanteSwatch.Source.Inherited; swatchColor: KanteStyle.tagColor }
+                            KanteSwatch { source: KanteSwatch.Source.Generated; swatchColor: KanteStyle.warningColor }
+                        }
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(16)
+                    KanteStatusLight { name: "Jellyfin"; detail: "OK · 42 ms" }
+                    KanteStatusLight { name: "Nextcloud"; detail: "langsam · 1,9 s"; state: KanteStatusLight.State.Warn }
+                    KanteStatusLight { name: "Gitea"; detail: "keine Antwort"; state: KanteStatusLight.State.Bad }
+                    KanteCommandBox { text: "kpackagetool6 -i kader.plasmoid" }
+                }
+                KanteBulkBar { Layout.fillWidth: true; count: 7; KanteButton { text: "Übergeben"; emphasis: KanteButton.Emphasis.Primary; size: KanteButton.Size.Small } }
+                KanteSettingRow { Layout.fillWidth: true; title: "Schwelle"; hint: "Ab hier dreht der Lüfter hoch."; modified: true; KanteTextField { text: "62" } }
+                KanteListRow { Layout.fillWidth: true; text: "Rohschnitt"; meta: "02:14"; selected: true; KanteSwatch { } }
+                KanteListRow { Layout.fillWidth: true; text: "Farbkorrektur"; meta: "01:05"; KanteSwatch { swatchColor: KanteStyle.tagColor } }
+                KanteTabBar { model: ["Alle", "Prüfen", "Fertig", "Archiv"]; counts: [42, 7, 35, 12]; countKinds: [0, 2, 0, 0]; badges: true }
+                KanteCallout { Layout.fillWidth: true; title: "Hinweis"; text: "Schließbar, mit Aktion."; dismissible: true; KanteButton { text: "Mehr"; emphasis: KanteButton.Emphasis.Data; size: KanteButton.Size.Small } }
             }
         }
     }
