@@ -289,6 +289,9 @@ html[lang="en"] [lang="de"],html[lang="de"] [lang="en"]{display:none!important}
 .nav-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
 .nav-links a:hover{color:var(--fg0);text-decoration:none}
 .nav-links a.nav-hl{color:var(--yellow)}
+.nav-inner.is-wrap{flex-wrap:wrap;gap:.5rem 1rem}
+.nav-inner.is-wrap .nav-links{flex-wrap:wrap;gap:.5rem 1.1rem;margin-left:0}
+.nav-inner.is-wrap .nav-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;margin-left:auto}
 .lang{display:flex;border:1px solid var(--bg2)}
 .lang button{background:none;border:0;padding:.3rem .6rem;font-family:var(--font-mono);font-size:.72rem;
   letter-spacing:.1em;color:var(--fg3);cursor:pointer}
@@ -463,7 +466,7 @@ main,.foot{position:relative;z-index:1}
 .faq details>div p{margin-bottom:.6rem}
 
 /* ── Key caps ── */
-kbd{font-family:var(--font-mono);font-size:.78em;padding:.05rem .4rem;border:1px solid var(--bg2);border-bottom-width:2px;background:var(--bg-hard);color:var(--fg1)}
+kbd{white-space:nowrap;font-family:var(--font-mono);font-size:.78em;padding:.05rem .4rem;border:1px solid var(--bg2);border-bottom-width:2px;background:var(--bg-hard);color:var(--fg1)}
 
 /* ── Badges (shields.io, optional) ── */
 .badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
@@ -940,10 +943,10 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .fact[data-tier="red"]{border-top-color:var(--red)}.fact[data-tier="red"] b{color:var(--red)}
 .fact[data-tier="cyan"]{border-top-color:var(--cyan)}.fact[data-tier="cyan"] b{color:var(--cyan)}
 /* Swatch: entity colours are squares; the ring tells where the colour comes from */
-.swatch{--c:var(--cyan);display:inline-block;width:18px;height:18px;background:var(--c);flex:none}
-.swatch[data-src="own"]{outline:2px solid var(--c);outline-offset:2px}
-.swatch[data-src="inherited"]{outline:2px dashed var(--c);outline-offset:2px}
-.swatch[data-src="generated"]{outline:2px dotted var(--c);outline-offset:2px}
+.swatch{--c:var(--cyan);--ring:color-mix(in srgb,var(--c) 55%,var(--fg0));display:inline-block;width:18px;height:18px;background:var(--c);flex:none;box-shadow:inset 0 0 0 1px var(--bg2)}
+.swatch[data-src="own"]{outline:2px solid var(--ring);outline-offset:2px}
+.swatch[data-src="inherited"]{outline:2px dashed var(--ring);outline-offset:2px}
+.swatch[data-src="generated"]{outline:2px dotted var(--ring);outline-offset:2px}
 .swatch[aria-selected="true"]{outline:2px solid var(--fg0);outline-offset:2px}
 .swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,26px);gap:8px}
 /* Table: numbers, group rows, total row */
@@ -1038,6 +1041,9 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .bulk-bar>.n small{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);font-weight:400;margin-left:.4rem}
 .bulk-bar>.grow{flex:1}
 .bulk-bar.is-sticky{position:sticky;bottom:1rem;z-index:5}
+.bulk-bar.is-fixed{position:fixed;left:0;right:0;bottom:0;z-index:20}
+/* A fixed bar lifts the toasts above it; --bar-h is the app's bar height */
+:root:has(.bulk-bar.is-fixed:not([hidden])) .toast-stack{bottom:calc(var(--toast-offset,1rem) + var(--bar-h,3.6rem))}
 /* Sheet: a panel from the bottom or the side, with an action row */
 .sheet{background:var(--bg-panel);border-top:4px solid var(--yellow);padding:1.1rem 1.3rem 1.3rem;display:flex;flex-direction:column;gap:.8rem;
   clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,0 100%)}
@@ -1046,6 +1052,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .sheet.is-side{position:fixed;top:0;right:0;bottom:0;width:min(26rem,100%);z-index:30;overflow-y:auto;clip-path:none;border-top-width:0;border-left:4px solid var(--yellow)}
 /* Setting row: label, hint, control; the reset button only when the value differs */
 .setting{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.15rem 1rem;align-items:center;padding-block:.7rem;border-bottom:1px solid var(--bg1)}
+.break{overflow-wrap:anywhere;word-break:break-word}
 .setting>b{font-weight:500;color:var(--fg0);font-size:.92rem}
 .setting>span{grid-column:1;font-size:.8rem;color:var(--fg3)}
 .setting>.ctl{grid-column:2;grid-row:1/3;display:flex;align-items:center;gap:.6rem}
@@ -1146,6 +1153,12 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 }
 @media(max-width:640px){
   .bands{grid-template-columns:minmax(0,1fr)}
+  .setting{grid-template-columns:minmax(0,1fr)}
+  .setting>.ctl{grid-column:1;grid-row:auto;flex-wrap:wrap}
+  .bulk-bar{flex-wrap:nowrap;overflow-x:auto;gap:.5rem}
+  .bulk-bar>*{flex:none}
+  .toolbar-sep{display:none}
+  .nav-inner.is-wrap .nav-links a{display:inline}
   .nav-links a{display:none}
   .install-card{padding:1.25rem 1.2rem 1.4rem}
   .cmd-box{font-size:.75rem}
