@@ -454,6 +454,96 @@ TestCase {
     }
 
     Component {
+        id: curveComponent
+        KanteCurveEditor {
+            width: 300; height: 180
+            xMin: 0; xMax: 100; yMin: 0; yMax: 100; step: 5
+            points: [{ x: 20, y: 20 }, { x: 50, y: 50 }, { x: 80, y: 80 }]
+            onEdited: function (p) { points = p }
+        }
+    }
+
+    function test_curveEditor() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(curveComponent, tc)
+        // Neighbours limit the move; monotonic keeps y between them.
+        c.setPoint(1, 95, 5)
+        compare(c.points[1].x, 75)
+        compare(c.points[1].y, 20)
+        c.setPoint(1, 50, 50)
+        compare(c.addPoint(60, 60), 2)
+        compare(c.points.length, 4)
+        compare(c.addPoint(60, 60), -1)
+        c.removePoint(2)
+        compare(c.points.length, 3)
+        c.removePoint(0)
+        c.removePoint(0)
+        compare(c.points.length, 2)
+    }
+
+    function test_curveEditorKeys() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(curveComponent, tc)
+        c.forceActiveFocus()
+        c.current = 1
+        keyClick(Qt.Key_Right)
+        compare(c.points[1].x, 55)
+        keyClick(Qt.Key_Up)
+        compare(c.points[1].y, 55)
+        keyClick(Qt.Key_BracketRight)
+        compare(c.current, 2)
+    }
+
+    Component {
+        id: bandComponent
+        KanteBandEditor {
+            min: 0; max: 100
+            bands: [{ value: 0, color: "#111111" }, { value: 50, color: "#222222" }]
+            onEdited: function (b) { bands = b }
+        }
+    }
+
+    function test_bandEditor() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var b = createTemporaryObject(bandComponent, tc)
+        b.addBand()
+        compare(b.bands.length, 3)
+        b.setValue(0, 90)
+        compare(b.bands[2].value, 90)
+        b.setValue(0, 500)
+        verify(b.bands[b.bands.length - 1].value <= 100)
+        b.removeBand(0)
+        compare(b.bands.length, 2)
+        b.removeBand(0)
+        b.removeBand(0)
+        compare(b.bands.length, 1)
+    }
+
+    function test_lineChartReadout() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(lineChartComponent, tc)
+        compare(c.nearest(0), 0)
+        compare(c.nearest(c.width), 2)
+        compare(c.nearest(c.width / 2), 1)
+        compare(c.hoverIndex, -1)
+    }
+
+    Component {
+        id: weekComponent
+        KanteWeekView {
+            width: 420
+            events: [{ day: 1, start: 9, end: 10, title: "a", kind: "warn" }, { day: 3, start: 20, end: 22, title: "b", kind: "" }]
+        }
+    }
+
+    function test_weekView() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var w = createTemporaryObject(weekComponent, tc)
+        compare(w.height, w.headHeight + 10 * w.hourHeight)
+        compare(w.toneOf("warn"), KanteStyle.warningColor)
+    }
+
+    Component {
         id: gallery
         Column {
             KanteChip { text: "x" }
@@ -469,6 +559,10 @@ TestCase {
             KanteSparkline { values: [1, 2, 3] }
             KanteHeatmap { levels: [0, 1, 2, 3, 4] }
             KanteCalendarGrid { width: 280 }
+            KanteCurveEditor { points: [{ x: 10, y: 10 }, { x: 90, y: 90 }] }
+            KanteBandEditor { bands: [{ value: 0, color: "red" }] }
+            KanteWeekView { width: 300 }
+            KanteAgenda { days: [{ label: "MO", today: true, entries: [{ time: "9:00", title: "x", kind: "" }] }] }
             KanteDayStrip { width: 200 }
             KanteClock { running: false }
             KanteLiveText { text: "1 687" }

@@ -1,7 +1,9 @@
 module Kante
 singleton KanteStyle 1.0 KanteStyle.qml
 singleton KantePalette 1.0 KantePalette.qml
+KanteAgenda 1.0 KanteAgenda.qml
 KanteAppear 1.0 KanteAppear.qml
+KanteBandEditor 1.0 KanteBandEditor.qml
 KanteBanner 1.0 KanteBanner.qml
 KanteBarChart 1.0 KanteBarChart.qml
 KanteBrackets 1.0 KanteBrackets.qml
@@ -15,6 +17,7 @@ KanteChip 1.0 KanteChip.qml
 KanteClock 1.0 KanteClock.qml
 KanteCommandBox 1.0 KanteCommandBox.qml
 KanteCounter 1.0 KanteCounter.qml
+KanteCurveEditor 1.0 KanteCurveEditor.qml
 KanteDayStrip 1.0 KanteDayStrip.qml
 KanteDialog 1.0 KanteDialog.qml
 KanteDialogSkin 1.0 KanteDialogSkin.qml
@@ -62,3 +65,4 @@ KanteTile 1.0 KanteTile.qml
 KanteToast 1.0 KanteToast.qml
 KanteToolButton 1.0 KanteToolButton.qml
 KanteTube 1.0 KanteTube.qml
+KanteWeekView 1.0 KanteWeekView.qml

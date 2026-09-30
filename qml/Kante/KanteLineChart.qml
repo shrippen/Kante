@@ -7,6 +7,8 @@ import "."
  * line its own colour; each ends in a square mark. Miter joins, 2 px lines, 1 px grid.
  * `compact` drops the grid and the marks' room for a sparkline; `accentIndex` picks the colour of
  * a single line (default: the first data colour).
+ * Hover (or `hoverIndex` set by the caller) shows a read-out: a rule at the nearest point,
+ * a square mark per line and a box with `labels[i]` and the values; `readout: false` turns it off.
  */
 Item {
     id: chart
@@ -18,6 +20,12 @@ Item {
     property bool compact: false
     property int colorIndex: 0
     property real lineWidth: compact ? 1.6 : 2
+    property bool readout: !compact
+    /** Captions of the points, e.g. the days; optional. */
+    property var labels: []
+    property string unit: ""
+    /** Index of the point under the pointer, -1 for none. */
+    property int hoverIndex: -1
 
     readonly property real scaleTop: {
         if (maxValue > 0) {
@@ -87,6 +95,92 @@ Item {
                 color: line.tone
                 x: line.pts.length > 0 ? line.pts[line.pts.length - 1].x - width / 2 : 0
                 y: line.pts.length > 0 ? line.pts[line.pts.length - 1].y - height / 2 : 0
+            }
+        }
+    }
+
+    function nearest(px) {
+        var n = 0
+        for (var i = 0; i < series.length; i++) {
+            n = Math.max(n, series[i].length)
+        }
+        if (n === 0) {
+            return -1
+        }
+        if (n === 1) {
+            return 0
+        }
+        var f = (px - mark / 2) / (width - mark) * (n - 1)
+        return Math.max(0, Math.min(n - 1, Math.round(f)))
+    }
+
+    HoverHandler {
+        id: hover
+        enabled: chart.readout
+        onPointChanged: chart.hoverIndex = hovered ? chart.nearest(point.position.x) : -1
+        onHoveredChanged: if (!hovered) chart.hoverIndex = -1
+    }
+
+    // Read-out: rule, marks, box.
+    Item {
+        id: probe
+        anchors.fill: parent
+        visible: chart.readout && chart.hoverIndex >= 0
+        readonly property real px: chart.pointsOf(chart.series.length > 0 ? chart.series[0] : []).length > chart.hoverIndex && chart.hoverIndex >= 0
+            ? chart.pointsOf(chart.series[0])[chart.hoverIndex].x : 0
+
+        Rectangle {
+            x: probe.px
+            width: 1
+            height: parent.height
+            color: KanteStyle.focusColor
+        }
+        Repeater {
+            model: chart.series.length
+            delegate: Rectangle {
+                required property int index
+                readonly property var values: chart.series[index]
+                visible: chart.hoverIndex >= 0 && chart.hoverIndex < values.length
+                width: chart.mark + 2
+                height: width
+                color: KanteStyle.cardColor
+                border.width: 2
+                border.color: KanteStyle.dataColor(chart.series.length === 1 ? chart.colorIndex : index)
+                x: visible ? chart.pointsOf(values)[chart.hoverIndex].x - width / 2 : 0
+                y: visible ? chart.pointsOf(values)[chart.hoverIndex].y - height / 2 : 0
+            }
+        }
+        Rectangle {
+            id: box
+            readonly property bool flip: probe.px > chart.width / 2
+            x: flip ? probe.px - width - KanteStyle.unit(8) : probe.px + KanteStyle.unit(8)
+            y: KanteStyle.unit(4)
+            width: col.implicitWidth + KanteStyle.unit(16)
+            height: col.implicitHeight + KanteStyle.unit(10)
+            color: KanteStyle.dialogColor
+            border.width: 1
+            border.color: KanteStyle.frameColor
+            Column {
+                id: col
+                x: KanteStyle.unit(8)
+                y: KanteStyle.unit(5)
+                Text {
+                    visible: chart.hoverIndex >= 0 && chart.hoverIndex < chart.labels.length
+                    text: visible ? chart.labels[chart.hoverIndex] : ""
+                    color: KanteStyle.mutedTextColor
+                    font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize * 0.85, false)
+                }
+                Repeater {
+                    model: chart.series.length
+                    delegate: Text {
+                        required property int index
+                        readonly property var values: chart.series[index]
+                        visible: chart.hoverIndex >= 0 && chart.hoverIndex < values.length
+                        text: visible ? values[chart.hoverIndex] + chart.unit : ""
+                        color: KanteStyle.dataColor(chart.series.length === 1 ? chart.colorIndex : index)
+                        font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize, true)
+                    }
+                }
             }
         }
     }
