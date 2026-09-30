@@ -334,6 +334,20 @@ TestCase {
         KanteStyle.kind = KanteStyle.Kind.System
     }
 
+    // Qt hides a replaced background; back in System it must show again.
+    function test_dialogSkinRestoresBackground() {
+        KanteStyle.kind = KanteStyle.Kind.System
+        var o = createTemporaryObject(dialogComponent, tc)
+        var platformBackground = o.dialog.background
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.kind = KanteStyle.Kind.System
+        o.dialog.open()
+        tryCompare(o.dialog, "opened", true)
+        wait(50)
+        verify(o.dialog.background === platformBackground)
+        verify(platformBackground.visible)
+    }
+
     Component {
         id: scrimDialogComponent
         KanteDialog { title: "x" }
@@ -454,6 +468,29 @@ TestCase {
         t.select(4)
         compare(t.currentIndex, 4)
         verify(t.implicitWidth > t.width)
+    }
+
+    // The software renderer paints a Shape outside a clipped Flickable: tabs out of view must not.
+    function test_tabBarHidesTabsOutOfView() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = false
+        var t = createTemporaryObject(tabsIconComponent, tc)
+        wait(50)
+        function polygons(it, out) {
+            for (var i = 0; i < it.children.length; ++i) {
+                var c = it.children[i]
+                if (c.cutTopRight !== undefined && c.width > 0 && c.width < t.implicitWidth) {
+                    out.push(c)
+                }
+                polygons(c, out)
+            }
+            return out
+        }
+        var all = polygons(t, [])
+        console.log("tabpoly", all.length, all.filter(function(p) { return p.visible }).length)
+        verify(all.length >= 5)
+        var shown = all.filter(function(p) { return p.visible })
+        verify(shown.length < all.length - 1, "tabs past the right edge are hidden")
     }
 
     Component {

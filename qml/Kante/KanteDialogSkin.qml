@@ -35,6 +35,22 @@ QtObject {
         restoreMode: Binding.RestoreBindingOrValue
     }
 
+    // Qt hides a replaced background and does not show it again when it comes back
+    // (Kirigami's ShadowedRectangle stayed invisible after Kante -> System).
+    readonly property Connections restoreBackground: Connections {
+        target: KanteStyle
+        function onThemedChanged() {
+            if (KanteStyle.themed) {
+                return
+            }
+            Qt.callLater(function() {
+                if (skin.dialog && skin.dialog.background) {
+                    skin.dialog.background.visible = true
+                }
+            })
+        }
+    }
+
     // Title strip: without it the platform's light strip stays on the dark card.
     readonly property Item kanteHeader: QQC2.Label {
         visible: !!skin.dialog && skin.dialog.title.length > 0
