@@ -313,6 +313,29 @@ QQC2.RadioButton { KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape
 | `../KantePlasma` | `KantePlasmaButton`, `KantePlasmaToolButton`, `KantePlasmaHeading`: the same wrappers on PlasmaComponents3 / PlasmaExtras for Plasma widgets |
 | `fonts/` | Rajdhani 600/700, JetBrains Mono 400/500 (SIL OFL), loaded by `KanteStyle`, never installed |
 
+### Components added in Kante 1.4
+
+Everything from the web catalogue that makes sense in an app, with the same shapes, sizes (32 / 40 / 48 px), 4 px bars, cyan focus and the chosen motion. Pure-drawn components (pill, counter, tab bar, …) draw in every kind with the `KanteStyle` roles, so in System they follow the platform colours and have no cuts and no motion; wrappers and skins still show the platform control in System. `demo/Gallery.qml` shows all of them (`qml -I kante/qml kante/qml/demo/Gallery.qml`); `KantePlasmaButton` is generated from `KanteButton` by `tools/build-qml.py`.
+
+| Component | Purpose | Motion (web idea) |
+|---|---|---|
+| `KanteButton` | `emphasis` Normal / Primary / Destructive / Data / Quiet, `size` Small / Medium / Large, `busy`, `raised` | cut opens on hover (A01), press 1 px in, `raised` presses into a hard shadow (A02) |
+| `KantePolygon`, `KanteCard` | cut shapes; card with `chamferBottom` (double cut) and `interactive` (link card) | card lifts and opens its cut on hover (A19) |
+| `KanteBrackets` | four cyan corners that lock onto a target | focus of `KanteTile` (A03) |
+| `KanteTextField`, `KanteFieldSkin` | 2 px bottom edge, cyan on focus, `invalid` | colour change |
+| `KanteCheckSkin` | box with a drawn tick, diamond with snapping core, snapping switch | A15, A18 |
+| `KanteTabBar`, `KanteSegmented`, `KanteSteps` | notched tabs with counters, segmented control, process steps | yellow tab slides (A11) |
+| `KantePill`, `KanteCounter`, `KanteSticker`, `KanteLamp`, `KanteHud` | status, counts, paper labels, status lamp, HUD line | breathing / ticking lamp (A16), teleprinter (A07) |
+| `KanteOdometer` | mechanical counter | reels roll (A06) |
+| `KanteProgressBar`, `KanteLoader`, `KanteSkeleton`, `KanteHazard` | bar, segments, indeterminate stripes, three squares, placeholder | marching stripes (A08), bar grows (A05) |
+| `KanteCallout`, `KanteToast`, `KanteBanner`, `KanteEmptyState` | notes, toasts, status banner, empty / offline / plugin-missing state | toast slides in with a life line (A14) |
+| `KanteTile`, `KanteRunner` | image tile with tier bar, selection, focus brackets; running light around a working surface | A21 |
+| `KanteReveal`, `KanteAppear`, `KanteTube`, `KanteScrollMeter` | scan reveal, lamp-style entrance (cascade), tube glow, scroll meter | A04, A17, A09, A20 |
+
+Not in QML: the sliding nav brand bar (A22) and the web-only catalogue parts (nav, footer, showcase, faq, code, flow). All motion follows `KanteStyle.motion` (bind it to the app's animation setting) and the platform's animation speed; `KanteStyle.animate` is false in System.
+
+Colours: cyan is `focusColor` and `infoColor`; `selectionColor` is the ground of a selected row or focused field; `accentHoverColor` / `accentPressedColor` step the primary fill; `onStateColor` is the text on a state fill. Leinen now has the same yellow primary fill (ink `#141312`) as the dark theme.
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:

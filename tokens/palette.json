@@ -157,7 +157,13 @@
       32,
       40,
       48
-    ]
+    ],
+    "heights": {
+      "small": 32,
+      "medium": 40,
+      "large": 48
+    },
+    "cutSmall": 6
   },
   "app": {
     "usage": "Qt Quick / Kirigami apps and Plasma widgets (qml/Kante). Surfaces are tints with alpha so a blurred or translucent platform ground shows through; colour only in small opaque areas.",
@@ -169,13 +175,13 @@
       "ground": "bg-hard",
       "accent": "yellow",
       "accentText": "yellow",
-      "accentForeground": "bg-hard",
+      "accentForeground": "bg-void",
       "positive": "aqua",
       "neutral": "orange",
       "negative": "red",
       "info": "cyan",
       "tag": "purple",
-      "warning": "yellow",
+      "warning": "orange",
       "card": [
         "bg1",
         0.6
@@ -195,7 +201,12 @@
       "dialog": [
         "bg0",
         0.97
-      ]
+      ],
+      "focus": "cyan",
+      "selection": "cyan-tint",
+      "accentHover": "yellow-hi",
+      "accentPressed": "yellow-lo",
+      "onState": "bg-void"
     },
     "light": {
       "text": "fg1",
@@ -203,15 +214,15 @@
       "mutedText": "fg2",
       "disabledText": "fg3",
       "ground": "bg-void",
-      "accent": "#d79921",
+      "accent": "#fabd2f",
       "accentText": "yellow",
-      "accentForeground": "fg0",
+      "accentForeground": "#141312",
       "positive": "aqua",
       "neutral": "orange",
       "negative": "red",
       "info": "cyan",
       "tag": "purple",
-      "warning": "yellow",
+      "warning": "orange",
       "card": [
         "bg1",
         0.7
@@ -231,11 +242,16 @@
       "dialog": [
         "bg-panel",
         0.98
-      ]
+      ],
+      "focus": "cyan",
+      "selection": "cyan-tint",
+      "accentHover": "#fcc845",
+      "accentPressed": "#e5a823",
+      "onState": "#fbf8ee"
     },
     "notes": {
       "mutedText": "#bdae93 is fg3 one step lighter, for secondary text on glass (4.5:1 on the darkest tint)",
-      "accent (light)": "#d79921 is yellow neutral: a button fill that works on linen; text in the accent uses accentText (#8a5a00)"
+      "accent (light)": "#fabd2f is the primary fill on linen, as in the dark theme, with ink #141312; text in the accent uses accentText (#8a5a00)"
     }
   },
   "extra": {
