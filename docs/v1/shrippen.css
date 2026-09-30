@@ -742,9 +742,8 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .menu :is(button,a):hover,.menu :is(button,a):focus-visible{outline:none;background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}
 .menu kbd{margin-left:auto}.menu .is-danger{color:var(--danger)}
 .menu hr{border:0;border-top:1px solid var(--bg1);margin:.3rem 0}
-/* Loading: three squares, a stepped square spinner, a placeholder */
+/* Loading: three squares, a placeholder */
 .loader{display:inline-flex;gap:4px}.loader i{width:9px;height:9px;background:var(--yellow)}
-.spin{display:inline-block;width:22px;height:22px;border:3px solid var(--bg1);border-top-color:var(--cyan)}
 .skel{display:flex;flex-direction:column;gap:.5rem}
 .skel i{display:block;height:12px;background:linear-gradient(90deg,var(--bg1) 0 40%,var(--bg2) 50%,var(--bg1) 60%);background-size:300% 100%}
 .skel i:nth-child(2){width:80%}.skel i:nth-child(3){width:55%}
@@ -790,7 +789,6 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
   .led[data-rhythm="puls"]{animation:k-breathe 1.2s ease-in-out infinite}
   .led[data-rhythm="takt"]{animation:k-tick 1s steps(1) infinite}
   .loader i{animation:k-hop .9s ease-in-out infinite}.loader i:nth-child(2){animation-delay:.15s}.loader i:nth-child(3){animation-delay:.3s}
-  .spin{animation:k-rot .8s steps(8) infinite}
   .skel i{animation:k-skel 1.6s linear infinite}
   .runner{animation:k-run 1.8s linear infinite}
   [data-type].is-typing::after{animation:k-blink 1s steps(1) infinite}
@@ -815,7 +813,6 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 @keyframes k-breathe{50%{opacity:.3}}
 @keyframes k-tick{0%{opacity:1}12%{opacity:.25}}
 @keyframes k-hop{0%,100%{opacity:.25;transform:none}40%{opacity:1;transform:translateY(-4px)}}
-@keyframes k-rot{to{transform:rotate(360deg)}}
 @keyframes k-skel{from{background-position:100% 0}to{background-position:-50% 0}}
 @keyframes k-run{to{--run:360deg}}
 @keyframes k-blink{50%{opacity:0}}

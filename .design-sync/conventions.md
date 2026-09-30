@@ -70,7 +70,7 @@ Headings are uppercase Rajdhani 700. Labels are small uppercase mono with letter
 | Status (app) | `.pill[data-state="analyzing\|reviewing\|locked\|applied\|failed"]`, `.progress > .progress-head + .progress-bar > i[--p][data-tier]`, `.toast[data-kind="ok\|error"]` |
 | Dialog (app) | `.scrim (+ .is-fixed) > .dialog > h3 + .dialog-facts + .callout + .dialog-actions`; lock a screen with `.is-locked` on its container and `[data-lockable]` on controls to disable |
 | Buttons on the dark page | `.btn-accent` (primary), `.btn-outline`, `.btn-danger`, `.btn-data` (cyan mono), `.btn-quiet`; sizes `.btn-sm`, `.btn-lg`, `.btn-icon`; `.btn-group`; `.is-busy`. `.btn-ghost` only inside the yellow box. Wrap one big action in `.press` (pressable) or `.tube` (glow) |
-| More controls | `.tabs > button[role="tab"][aria-selected]`, `label.check > input + .check-box svg` / `.check-dia`, `.affix > .input + span`, `.crumbs`, `.pager`, `.menu`, `.count`, `.sticker`, `.led[data-rhythm]`, `.hud`, `.loader`, `.spin`, `.skel`, `.empty`, `.drop`, `.runner` |
+| More controls | `.tabs > button[role="tab"][aria-selected]`, `label.check > input + .check-box svg` / `.check-dia`, `.affix > .input + span`, `.crumbs`, `.pager`, `.menu`, `.count`, `.sticker`, `.led[data-rhythm]`, `.hud`, `.loader`, `.skel`, `.empty`, `.drop`, `.runner` |
 
 Page order: nav, hero, facts (optional), feature boxes, showcases, sections (steps, tables, install, config, FAQ, roadmap), footer. Rich pages alternate `.showcase` and `.showcase.rev` rows, each pairing one pixelated screenshot with a short text. The hero puts the name first with no sentence above it; the tagline sits directly under the name.
 
