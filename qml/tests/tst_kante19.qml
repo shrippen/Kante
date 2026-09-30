@@ -428,6 +428,23 @@ TestCase {
         tryVerify(function () { return contrast(sys.color, tc.Window.contentItem.Kirigami.Theme.backgroundColor) >= 4.5 }, 1000, "System: platform colours")
     }
 
+    // ── Spin box text readable (desktop style uses the View colour set) ─
+    Component {
+        id: spinComponent
+        QQC2.SpinBox { value: 42; KanteFieldSkin { control: parent } }
+    }
+
+    function test_spinBoxTextReadable() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        var s = createTemporaryObject(spinComponent, stage())
+        var text = s.contentItem
+        tryVerify(function () { return contrast(text.color, KanteStyle.sunkenColor) >= 4.5 }, 1000,
+                  "spin box text " + text.color + " on " + KanteStyle.sunkenColor)
+        KanteStyle.kind = KanteStyle.Kind.System
+        tryVerify(function () { return !Qt.colorEqual(text.color, KanteStyle.palette.text) || KanteStyle.light }, 1000, "System: style colour again")
+    }
+
     // ── Page title is not elided ────────────────────────────────────────
     Component {
         id: titleComponent
