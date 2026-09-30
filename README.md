@@ -380,6 +380,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Pill over an image | `.pill.is-solid` | – |
 | Tabs: icons, scrolling, counter kinds | – | `KanteTabBar` (`icons`, `countKinds`, `badges`) |
 | Segments: icons, tooltips | – | `KanteSegmented` (`icons`, `tooltips`) |
+| Segments in one row over the full width (narrow panels) | `.seg.seg-fill` | `KanteSegmented` (`Layout.fillWidth`) |
 | Empty state as a card | – | `KanteEmptyState.barColor` |
 
 Not built: pie charts (use stacked or segment bars), an editing bar on yellow (editing is selection, so cyan). Sun and moon in the day strip came in 1.8.

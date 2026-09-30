@@ -404,6 +404,8 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .seg{display:inline-flex;border:1px solid var(--bg2);flex-wrap:wrap}
 .seg button{background:none;border:0;min-height:calc(var(--h-m) - 2px);padding:0 .9rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;color:var(--fg3);cursor:pointer}
 .seg button:hover{color:var(--fg0)}.seg button[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+/* .seg-fill: segments share the full width in one row (narrow side panels); a label that does not fit ends in … */
+.seg.seg-fill{display:flex;flex-wrap:nowrap}.seg-fill button{flex:1 1 auto;min-width:0;padding:0 .5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .range{--zones:var(--bg2);display:flex;flex-direction:column;gap:.4rem}
 .range-row{display:flex;align-items:center;gap:.9rem}
 .range input{-webkit-appearance:none;appearance:none;flex:1;min-width:0;height:22px;background:transparent;cursor:pointer}
