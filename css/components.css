@@ -50,6 +50,8 @@
   display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:3rem;align-items:end;
   position:relative}
 .hero>*{position:relative;z-index:1}
+/* The watermark bleeds right; clip it at the hero so the page never scrolls sideways. */
+.hero:has(>.hero-wm){overflow-x:clip}
 /* Watermark: the monochrome logo, huge and faint behind the hero. Scrolls with the page (not fixed).
    It may bleed below a short hero; the content after the hero (main, footer) paints above it. */
 main,.foot{position:relative;z-index:1}
@@ -902,8 +904,9 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
   font-family:var(--font-heading);font-weight:700;font-size:1.08rem;letter-spacing:.03em;text-transform:uppercase;color:var(--fg0)}
 .fold>summary::-webkit-details-marker{display:none}
 .fold>summary::before{content:"";flex:none;align-self:center;width:10px;height:10px;background:var(--fg3);clip-path:polygon(0 0,60% 0,100% 40%,100% 100%,0 100%);transform:rotate(-90deg)}
+.fold:not([open])>summary::before{background:none;box-shadow:inset 0 0 0 2px var(--fg3)}
 .fold[open]>summary::before{background:var(--cyan);transform:none}
-.fold>summary:hover::before{background:var(--fg0)}
+.fold:not([open])>summary:hover::before{box-shadow:inset 0 0 0 2px var(--fg0)}
 .fold[open]>summary:hover::before{background:var(--cyan)}
 .fold>summary:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 .fold>summary>.count{align-self:center;min-width:0;height:auto;padding:0;background:none;color:var(--fg3);font-weight:400}
@@ -949,6 +952,7 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 .hint-card .tier{display:inline-flex;align-items:center;gap:.4rem;color:var(--tier)}
 .hint-card .tier::before{content:"";width:10px;height:10px;background:currentColor}
 .hint-card[data-tier="red"] .tier::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.hint-card[data-tier="red"] .tier{color:var(--danger-text)}
 .hint-card[data-tier="yellow"] .tier::before{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
 .hint-card[data-tier="green"] .tier::before{clip-path:polygon(0 55%,20% 35%,40% 55%,85% 5%,100% 25%,40% 95%)}
 .hint-card>.title{color:var(--fg0);font-weight:600;font-size:.92rem;line-height:1.35}
@@ -1105,6 +1109,7 @@ a.hint-card>.title:hover,.hint-card>a.title:hover{color:var(--link)}
    tier of what they filter: data-tier="critical" red, "warn" orange */
 a.chip,a.chip:hover{text-decoration:none}
 .chip.is-filter[data-tier="critical"]{--c:var(--danger)}
+.chip.is-filter[data-tier="critical"]:not([aria-pressed="true"]){color:var(--danger-text)}
 .chip.is-filter[data-tier="warn"]{--c:var(--warn)}
 /* Charts drawn with preserveAspectRatio="none" (stretched to the card): lines keep their width.
    The spark end mark as a zero-length path <path class="end" d="M x y h0"> stays square.

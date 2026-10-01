@@ -480,6 +480,21 @@ Fixes (1.9): check box, radio and switch labels take the Kante text colour throu
 
 Tested with the real Plasma style (`org.kde.desktop`, Breeze Light and Breeze Dark) as well as plain Kirigami. The Gallery sits in a `KanteScope`, as an app does.
 
+### Kante 1.9.1 (readability review)
+
+| Change | Web | QML |
+|---|---|---|
+| Red as small text reads at 4.5:1 on every ground | `--danger-text` (`--red-text`: `#ff7d6b` dark, red on Leinen); critical `.hint-card .tier` and critical filter chips use it | – |
+| Fold state by shape, not only colour | `.fold` closed: outlined marker; open: filled cyan | – |
+| Hero watermark never widens the page | `.hero:has(>.hero-wm){overflow-x:clip}` | – |
+| Accent text on the platform colours | – | `KanteStyle.accentTextColor` in System / Kante Light lifts the system accent's lightness until it reads at 4.5:1 (`readable()`, `contrastOf()`) |
+| Empty check box, radio and switch edge | – | `KanteCheckSkin` draws it in `mutedTextColor` (was `frameColor`, 1.5:1) |
+| Line chart axis | – | `KanteLineChart` with `axis` rounds the scale to 1-2-5 steps and formats with `Qt.locale()` |
+| Dense list rows | – | `KanteListRow.Density.Dense` (24 px): opt-in for long navigation lists only, below the control heights |
+| Checked segment in a Plasma widget | – | `KantePlasmaToolButton` checked: sunken tint plus a 3 px accent bar (the accent fill needed dark text that Plasma's runtime did not pass to the label) |
+
+Fixes: no binding loop in `KanteFieldSkin` (spin box text colour).
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:

@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "Kante",
-    "version": "1.9.0",
+    "version": "1.9.1",
     "source": "https://github.com/shrippen/shrippen.github.io",
     "base": "Gruvbox Dark (morhetz)",
     "formerly": "shrippen Design Default"
@@ -99,7 +99,8 @@
     "link": "cyan",
     "info": "cyan",
     "warn": "orange",
-    "danger": "red"
+    "danger": "red",
+    "danger-text": "red-text (red that reads as small text on every ground, 4.5:1)"
   },
   "light": {
     "name": "Leinen",
@@ -144,7 +145,8 @@
       "on-primary": "#141312",
       "yellow-hi": "#fcc845",
       "yellow-lo": "#e5a823",
-      "on-state": "#fbf8ee"
+      "on-state": "#fbf8ee",
+      "red-text": "#9d0006"
     }
   },
   "shape": {
@@ -265,7 +267,8 @@
   "extra": {
     "cyan-tint": "#1e2b2a",
     "yellow-hi": "#fdc94a",
-    "yellow-lo": "#e5a823"
+    "yellow-lo": "#e5a823",
+    "red-text": "#ff7d6b"
   },
   "motion": {
     "fast": 120,
