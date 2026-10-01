@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Selbsttest des Kits (ohne Kimai): JS-Syntax, keine festen Farben im CSS, XLIFF wohlgeformt, de/en gleicher Key-Bestand,
+# assets.html.twig aktuell, kit.js-Tests (tests/kit.test.js), kein innerHTML in kit.js. Twig-Syntax prüft Kimai: bin/console lint:twig <bundle>/Resources/views/_kit
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+fail=0
+
+if command -v node >/dev/null 2>&1; then
+    node --check kit/js/kit.js && echo "ok   kit.js Syntax"
+    node tests/kit.test.js || { echo "FEHLER tests/kit.test.js" >&2; fail=1; }
+else
+    echo "skip kit.js Syntax und Tests (node fehlt)"
+fi
+
+# kit.js setzt nie HTML ein (Texte nur über textContent; Texte für Kimais alert-Plugin über escapeHtml)
+if grep -nE 'innerHTML|outerHTML|insertAdjacentHTML|document\.write' kit/js/kit.js | grep -v '^\s*[0-9]*:\s*\*'; then
+    echo "FEHLER kit.js setzt HTML ein (innerHTML & Co.)" >&2; fail=1
+else
+    echo "ok   kit.js ohne innerHTML & Co."
+fi
+
+if grep -nEi '#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|:\s*(white|black)\b' kit/css/kit.css; then
+    echo "FEHLER feste Farben in kit/css/kit.css" >&2; fail=1
+else
+    echo "ok   kit.css ohne feste Farben"
+fi
+
+keys() { grep -o 'resname="[^"]*"' "$1" | sort; }
+python3 -c "import sys,xml.dom.minidom as m; [m.parse(f) for f in sys.argv[1:]]" kit/translations/kpu.de.xlf kit/translations/kpu.en.xlf \
+    && echo "ok   XLIFF wohlgeformt"
+if diff <(keys kit/translations/kpu.de.xlf) <(keys kit/translations/kpu.en.xlf) >/dev/null; then
+    echo "ok   de/en gleicher Key-Bestand"
+else
+    echo "FEHLER de/en Keys unterschiedlich" >&2; fail=1
+fi
+
+# jeder in Makros/Assets benutzte kpu.-Key muss existieren
+for k in $(grep -ohE "'kpu\.[a-z_]+\.[a-z_]+'" kit/templates/_kit/*.twig | tr -d "'" | sort -u); do
+    grep -q "resname=\"$k\"" kit/translations/kpu.de.xlf || { echo "FEHLER Key fehlt: $k" >&2; fail=1; }
+done
+# dynamische Keys (kpu.status.<x>, kpu.period.<x>, …)
+for k in open requested approved rejected billed locked warning; do grep -q "resname=\"kpu.status.$k\"" kit/translations/kpu.de.xlf || { echo "FEHLER kpu.status.$k" >&2; fail=1; }; done
+for k in day week month year; do grep -q "resname=\"kpu.period.$k\"" kit/translations/kpu.de.xlf || { echo "FEHLER kpu.period.$k" >&2; fail=1; }; done
+# seit 0.6: kpu.delta.<richtung>, kpu.mark.<herkunft>, kpu.hint.<art>; seit 0.7: kpu.day.<art>
+for k in day.today day.holiday day.absence delta.up delta.down delta.flat mark.own mark.inherited mark.generated hint.info hint.warning hint.danger hint.success; do
+    grep -q "resname=\"kpu.$k\"" kit/translations/kpu.de.xlf || { echo "FEHLER kpu.$k" >&2; fail=1; }
+done
+[ "$fail" -eq 0 ] && echo "ok   alle benutzten kpu.-Keys vorhanden"
+
+cp kit/templates/_kit/assets.html.twig "${TMPDIR:-/tmp}/kpu-assets.$$"
+bin/build-assets.sh >/dev/null
+if cmp -s kit/templates/_kit/assets.html.twig "${TMPDIR:-/tmp}/kpu-assets.$$"; then
+    echo "ok   assets.html.twig aktuell"
+else
+    echo "FEHLER assets.html.twig war veraltet (jetzt neu erzeugt, bitte committen)" >&2; fail=1
+fi
+rm -f "${TMPDIR:-/tmp}/kpu-assets.$$"
+
+exit "$fail"
