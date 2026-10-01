@@ -13,14 +13,14 @@ utilities need rgba(var(--tblr-x-rgb), a).
                     primary, on-state, the grey scale (palette.json "knust")
   variables.css ──► role, tint, data and map expressions (:root block), renamed
 
-Usage: python3 kante/tools/build-knust.py   (build.sh runs it)
+Usage: python3 tools/build-knust.py   (build.sh runs it)
 """
 import json
 import re
 from pathlib import Path
 
 KANTE = Path(__file__).resolve().parent.parent
-REPO = KANTE.parent
+REPO = KANTE
 OUT = REPO / "docs/v1/knust-palette.css"
 PALETTE = json.loads((KANTE / "tokens/palette.json").read_text())
 VARIABLES = (KANTE / "tokens/variables.css").read_text()

@@ -8,16 +8,16 @@
   - Web and apps share one palette: every colour in tokens/palette.json (dark and the
     light theme "Leinen" and Kante Gold) has the same value as its custom property in tokens/variables.css.
 
-Scans kante/css/*.css, kante/templates/*.html and docs/index.html (in HTML only <style>, style="…"
+Scans css/*.css, templates/*.html, the landing pages in docs/ and any HTML file given as argument (in HTML only <style>, style="…"
 and fill/stroke/color attributes). Exits 1 on any finding.
-Usage: python3 kante/tools/check-tokens.py   (build.sh runs it)
+Usage: python3 tools/check-tokens.py [page.html ...]   (build.sh runs it; shrippen.github.io passes its overview)
 """
 import re
 import sys
 from pathlib import Path
 
 KANTE = Path(__file__).resolve().parent.parent
-REPO = KANTE.parent
+REPO = KANTE
 HEX = re.compile(r"#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b")
 TOKEN_HEX = {h.lower() for h in HEX.findall((KANTE / "tokens/variables.css").read_text())}
 FONT = re.compile(r"font-family\s*:\s*([^;}\"]+)", re.I)
@@ -46,7 +46,7 @@ def css_regions(path, text):
 
 def check(path):
     text = css_regions(path, path.read_text())
-    rel = path.relative_to(REPO)
+    rel = path.relative_to(REPO) if path.is_relative_to(REPO) else path
     line = lambda pos: text.count("\n", 0, pos) + 1
     for m in HEX.finditer(text):
         before = text[max(0, text.rfind(";", 0, m.start()), text.rfind("{", 0, m.start())) + 1:m.start()]
@@ -98,7 +98,7 @@ def check_shared_palette():
 
 
 # fonts.css declares the font families themselves: it is the one place that names them
-files = sorted(f for f in KANTE.glob("css/*.css") if f.name != "fonts.css") + sorted(KANTE.glob("templates/*.html")) + [REPO / "docs/index.html"]
+files = sorted(f for f in KANTE.glob("css/*.css") if f.name != "fonts.css") + sorted(KANTE.glob("templates/*.html")) + sorted(KANTE.glob("docs/**/index.html")) + [Path(a).resolve() for a in sys.argv[1:]]
 problems = [p for f in files if f.exists() for p in check(f)] + list(check_shared_palette())
 print("\n".join(problems) or f"token check ok ({len(files)} files)")
 sys.exit(1 if problems else 0)

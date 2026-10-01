@@ -10,7 +10,7 @@
   qml/Kante/fonts/             the bundled fonts from fonts/ plus OFL.txt
 
 Both .qml files are generated: edit tokens/palette.json and run ./build.sh.
-Usage: python3 kante/tools/build-qml.py   (paths below are relative to kante/)
+Usage: python3 tools/build-qml.py   (build.sh runs it)
 """
 import json
 import shutil
@@ -172,4 +172,4 @@ write_flat_palette()
 write_plasma_button()
 write_qmldir()
 copy_fonts()
-print("built kante/qml/Kante/KantePalette.qml, kante/tokens/palette.qml, kante/qml/Kante/fonts/")
+print("built qml/Kante/KantePalette.qml, tokens/palette.qml, qml/Kante/fonts/")

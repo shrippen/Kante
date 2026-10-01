@@ -1,16 +1,16 @@
-# Tag vX.Y.Z (must match composer.json's "version").
-#   ──► lint ──► build KnustBundle-X.Y.Z.zip ──► release with notes from CHANGELOG.md (if it has a
-#   matching heading), zip attached.
+# Knust release. Tag knust-vX.Y.Z (must match kimai/knust/composer.json's "version").
+#   ──► lint ──► build KnustBundle-X.Y.Z.zip (tools/knust-zip.sh) ──► release with notes from kimai/knust/CHANGELOG.md (if it
+#   has a matching heading), zip attached.
 #
 # This same file lives in .gitea/workflows and .github/workflows: Gitea reads the copy in
 # .gitea/workflows (falling back to .github/workflows only if that one is missing), GitHub only
 # ever reads .github/workflows. Kept as two files, not one, so each platform's copy is explicit and
 # a change here is a reminder to update the other one too.
-name: Release
+name: Knust release
 
 on:
   push:
-    tags: ['v*']
+    tags: ['knust-v*']
 
 permissions:
   contents: write
@@ -29,36 +29,37 @@ jobs:
 
       - name: Check version
         run: |
-          version="${GITHUB_REF_NAME#v}"
-          composer=$(php -r 'echo json_decode(file_get_contents("composer.json"), true)["version"];')
+          version="${GITHUB_REF_NAME#knust-v}"
+          composer=$(php -r 'echo json_decode(file_get_contents("kimai/knust/composer.json"), true)["version"];')
           if [ "$version" != "$composer" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match composer.json version $composer" >&2
+            echo "Tag $GITHUB_REF_NAME does not match kimai/knust/composer.json version $composer" >&2
             exit 1
           fi
           echo "VERSION=$version" >> "$GITHUB_ENV"
           echo "ZIP=KnustBundle-$version.zip" >> "$GITHUB_ENV"
 
       - name: Lint
-        run: find . -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
+        run: find kimai/knust -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
 
       - name: Palette
-        # knust.css without raw colours; knust-palette.css equal to Kante's published copy
-        run: bin/check-palette.sh
+        # knust.css without raw colours; knust-palette.css equal to Kante's build (docs/v1)
+        run: kimai/knust/bin/check-palette.sh
 
       - name: Build plugin zip
         # Kimai expects the folder name var/plugins/KnustBundle/
         run: |
-          git archive --format=zip --prefix=KnustBundle/ -o "$ZIP" HEAD
+          tools/knust-zip.sh HEAD
+          mv "dist/$ZIP" "$ZIP"
           unzip -l "$ZIP"
 
       - name: Release notes
         run: |
-          if [ -f CHANGELOG.md ] && grep -qE "^## v?$VERSION( |$)" CHANGELOG.md; then
+          if grep -qE "^## v?$VERSION( |$)" kimai/knust/CHANGELOG.md; then
             awk -v v="$VERSION" '
               $0 ~ "^## v?" v "( |$)" { on = 1; next }
               /^## /                  { on = 0 }
               on
-            ' CHANGELOG.md > notes.md
+            ' kimai/knust/CHANGELOG.md > notes.md
           else
             echo "Knust $VERSION." > notes.md
           fi
