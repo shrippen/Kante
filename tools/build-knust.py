@@ -74,7 +74,7 @@ def theme_colours(theme):
     values.update(light["foregrounds"])
     values.update({n: v for n, v in light["semantic"].items() if not n.endswith("-hover")})
     extra = light["extra"]
-    values.update({k: extra[k] for k in ("cyan-tint", "yellow-hi", "yellow-lo", "primary", "on-primary", "on-state")})
+    values.update({k: extra[k] for k in ("cyan-tint", "yellow-hi", "yellow-lo", "red-text", "primary", "on-primary", "on-state")})
     return [(n, values[n]) for n, _ in dark]
 
 
