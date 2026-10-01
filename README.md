@@ -358,7 +358,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Chip (entity, filter) | `.chip`, `.chip-x`, `.chips-row` | `KanteChip` |
 | Swatch with origin ring | `.swatch[data-src]`, `.swatch-grid` | `KanteSwatch` |
 | Table: numbers, group row, total | `.table .num`, `.group-row`, `tfoot` | – |
-| Charts | `.chart`, `.spark`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
+| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
 | Month grid | `.cal` | `KanteCalendarGrid` |
 | KPI with change | `.kpi`, `.delta` | `KanteKpi` |
 | Bulk bar | `.bulk-bar` | `KanteBulkBar` |
@@ -531,6 +531,14 @@ What the Leuchtfeuer web interface needed to become friendlier (fewer free-text 
 The save bar of an app with many settings is the existing `.editbar` (`.mode` text, `.grow`, Discard, Save) with `.is-fixed`; advanced settings fold away in the existing `details.fold`.
 
 Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none); on touch screens (`pointer: coarse`) `.chip` takes the small control height `--h-s`.
+
+### Added in Kante 1.12
+
+What Andon's boards needed to stay fast in Firefox with a hundred link tiles. Catalogue: [`proposals/2026-10-andon/`](proposals/2026-10-andon/).
+
+| Element | Web | QML |
+|---|---|---|
+| Uptime strip | `svg.uptime` (`viewBox="0 0 <days> 1"`, `preserveAspectRatio="none"`) > one `path[data-state="ok"\|"warn"\|"bad"\|"off"]` per state with a column `M<i> 0h.7v1h-.7z` per day; states as `.status`; summary in `aria-label`/`title` | – |
 
 ### Kante Gold
 

@@ -737,6 +737,13 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .spark{display:block;width:100%;height:auto}
 .spark path{fill:none;stroke:var(--d4);stroke-width:1.6}
 .spark rect{fill:var(--d4)}
+/* Uptime strip: one SVG, one column per day, one path per state (ok, warn, bad, off), so a board
+   with a hundred strips lays out a hundred elements instead of thousands of flex items:
+   <svg class="uptime" viewBox="0 0 30 1" preserveAspectRatio="none" role="img" aria-label="…">
+   <path data-state="ok" d="M0 0h.7v1h-.7zM1 0h.7v1h-.7z"/><path data-state="bad" d="M2 0h.7v1h-.7z"/></svg> */
+.uptime{display:block;width:100%;max-width:8rem;height:.4rem}
+.uptime path{fill:var(--aqua)}
+.uptime path[data-state="warn"]{fill:var(--warn)}.uptime path[data-state="bad"]{fill:var(--danger)}.uptime path[data-state="off"]{fill:var(--bg2)}
 .legend{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2)}
 .legend i{display:inline-block;width:10px;height:10px;margin-right:.4rem;vertical-align:-1px;background:var(--c,var(--d1))}
 .heat{display:grid;gap:3px}
