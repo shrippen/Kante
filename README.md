@@ -485,6 +485,7 @@ Tested with the real Plasma style (`org.kde.desktop`, Breeze Light and Breeze Da
 | Change | Web | QML |
 |---|---|---|
 | Red as small text reads at 4.5:1 on every ground | `--danger-text` (`--red-text`: `#ff7d6b` dark, red on Leinen); critical `.hint-card .tier` and critical filter chips use it | – |
+| Launch tile counters by shape | `.launch-hints` with a marker: square info, diamond warning, triangle critical | – |
 | Fold state by shape, not only colour | `.fold` closed: outlined marker; open: filled cyan | – |
 | Hero watermark never widens the page | `.hero:has(>.hero-wm){overflow-x:clip}` | – |
 | Accent text on the platform colours | – | `KanteStyle.accentTextColor` in System / Kante Light lifts the system accent's lightness until it reads at 4.5:1 (`readable()`, `contrastOf()`) |

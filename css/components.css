@@ -1180,12 +1180,16 @@ input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:
 .launch-state[data-state="warn"]{--k:var(--warn)}.launch-state[data-state="bad"]{--k:var(--danger);color:var(--danger)}.launch-state[data-state="off"]{--k:var(--bg2);color:var(--fg3)}
 .launch-info.is-error{color:var(--danger)}
 /* Hint count: outlined in the tier colour; red is filled, so the shape tells the tier too */
-.launch-hints{--k:var(--info);display:inline-grid;place-items:center;min-width:1.25rem;height:1.1rem;margin:0;padding:0 .3rem;background:none;border:1px solid var(--k);color:var(--k);
+.launch-hints{--k:var(--info);display:inline-flex;align-items:center;justify-content:center;gap:.2rem;min-width:1.25rem;height:1.1rem;margin:0;padding:0 .3rem;background:none;border:1px solid var(--k);color:var(--k);
   font-family:var(--font-mono);font-weight:500;font-size:.62rem;font-variant-numeric:tabular-nums;text-decoration:none;cursor:pointer}
 .launch-hints[data-tier="yellow"]{--k:var(--warn)}
 .launch-hints[data-tier="red"]{--k:var(--danger);background:var(--danger);color:var(--on-state)}
 .launch-hints:hover{background:var(--tint-2)}.launch-hints[data-tier="red"]:hover{background:var(--danger)}
 .launch-hints:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+/* Tier by shape as well as colour (as in .hint-card .tier): square info, diamond warning, triangle critical. */
+.launch-hints::before{content:"";flex:none;width:6px;height:6px;background:currentColor}
+.launch-hints[data-tier="yellow"]::before{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.launch-hints[data-tier="red"]::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
 .launch-key{align-self:flex-start;font-size:.62rem}
 /* small: one line, the state as a square only (the word stays for screen readers) */
 :is(.launch[data-size="small"],.launch-grid[data-size="small"] .launch){--icon:1.5rem;gap:.55rem;min-height:var(--h-m);padding:.3rem .6rem .3rem .45rem;border-top-width:2px}
