@@ -1,13 +1,16 @@
 # Knust
 
-shrippen-Theme für Kimai (`shrippen/kimai-knust-bundle`). Knust ist das Endstück vom Brot: abgeschnittenes Eck, warme Kruste.
+shrippen-Theme für Kimai (`shrippen/kimai-knust-bundle`, Teil des Repos [Kante](../../README.md) unter `kimai/knust/`). Knust ist das Endstück vom Brot: abgeschnittenes Eck, warme Kruste.
 
 Kimai-2.67-Plugin: shrippen Design Default (Gruvbox dunkel, „Leinen“ hell) über Tabler. Nur CSS-Variablen und wenige Komponentenregeln, Kimais Markup bleibt unverändert. Plugins, die `var(--tblr-*)` nutzen (kpu-Kit), übernehmen das Theme automatisch.
 
 ## Installation
 
+Das fertige ZIP (`KnustBundle-<version>.zip`, erzeugt von `./build.sh` bzw. beim Tag `knust-v<version>`) enthält den
+Ordner `KnustBundle`:
+
 ```bash
-cp -r . /opt/kimai/var/plugins/KnustBundle
+unzip KnustBundle-*.zip -d /opt/kimai/var/plugins
 bin/console kimai:reload
 bin/console kimai:bundle:knust:install   # kopiert CSS + Schriften nach public/bundles/knust/
 ```
@@ -47,22 +50,21 @@ Container ─► KnustExtension::prepend
 
 ## Palette aus Kante
 
-Die Farben schreibt niemand in Knust von Hand. Kantes Build erzeugt sie aus `kante/tokens/palette.json`:
+Die Farben schreibt niemand in Knust von Hand. `./build.sh` im Repo-Wurzelverzeichnis erzeugt sie aus `tokens/palette.json`:
 
 ```
-Kante  tokens/palette.json ─► ./build.sh (kante/tools/build-knust.py) ─► docs/v1/knust-palette.css
-                                                   https://shrippen.github.io/v1/knust-palette.css
-Knust  bin/sync-palette.sh [<kante-checkout>] ─► Resources/public/css/knust-palette.css (unverändert)
-       bin/check-palette.sh [<kante-checkout>]  keine Hex-Werte in knust.css, jedes --shr-* definiert,
-                                                Kopie gleich Kante (auch im Release-Workflow)
+tokens/palette.json ─► ./build.sh (tools/build-knust.py) ─► docs/v1/knust-palette.css
+                                                              └─► kimai/knust/Resources/public/css/knust-palette.css (unverändert kopiert)
+kimai/knust/bin/check-palette.sh   keine Hex-Werte in knust.css, jedes --shr-* definiert,
+                                   Kopie gleich docs/v1 (build.sh und Release-Workflow)
 ```
 
 Von Hand bleibt nur das Tabler-Mapping in `knust.css` (Abschnitt 3 ff.). Eine Farbe ändert sich in Kante, dann
-`bin/sync-palette.sh` hier.
+`./build.sh` und beides zusammen committen.
 
 ## Abgleich mit Kante
 
-Knust ist Kantes Ableger für Kimai (Regel in `shrippen.github.io/kante/AGENT-RULE.md`). Stand: Kante 1.9.
+Knust ist Kantes Ableger für Kimai (Regel in [`AGENT-RULE.md`](../../AGENT-RULE.md)). Stand: Kante 1.9.
 
 | Kante | Knust |
 |---|---|
@@ -109,8 +111,10 @@ Nicht übernommen:
 
 ## Repository
 
-Entwicklung: <https://git.arianw.de/shrippen/kimai-knust-bundle>
-Öffentlicher Spiegel: <https://github.com/shrippen/kimai-knust-bundle> (Gitea pusht automatisch dorthin, dort nichts direkt ändern)
+Knust liegt im Repo Kante unter `kimai/knust/` (bis Oktober 2026 eigenes Repo `kimai-knust-bundle`, Historie übernommen).
+Entwicklung: <https://git.arianw.de/shrippen/Kante>
+Öffentlicher Spiegel: <https://github.com/shrippen/Kante> (Gitea pusht automatisch dorthin, dort nichts direkt ändern)
+Release: Tag `knust-v<version>` (gleich `composer.json`), der Workflow hängt `KnustBundle-<version>.zip` an.
 
 ## Lizenz
 

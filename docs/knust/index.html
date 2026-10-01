@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knust — A Kimai theme in the shrippen design</title>
+<meta name="description" content="Kimai theme in the shrippen design: Gruvbox dark, 'Leinen' light, on top of Tabler. Only CSS variables and a few component rules, Kimai's markup stays untouched.">
+<meta property="og:title" content="Knust — A Kimai theme in the shrippen design">
+<meta property="og:description" content="Kimai theme in the shrippen design: Gruvbox dark, 'Leinen' light, on top of Tabler. Only CSS variables and a few component rules, Kimai's markup stays untouched.">
+<meta property="og:image" content="https://shrippen.github.io/Kante/knust/social-preview.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:url" content="https://shrippen.github.io/Kante/knust/">
+<link rel="icon" href="icon.svg">
+<script defer src="https://um.arianw.de/script.js" data-website-id="056d39ee-6a9d-4b14-9902-5a1ac399df08"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://shrippen.github.io/v1/shrippen.css">
+<script src="https://shrippen.github.io/v1/shrippen.js"></script>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="#"><img src="icon.svg" alt="">Knust</a>
+  <div class="nav-links">
+    <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a><a href="#palette"><span lang="en">Palette</span><span lang="de">Palette</span></a><a href="#plugins"><span lang="en">For plugins</span><span lang="de">Für Plugins</span></a><a href="#install"><span lang="en">Install</span><span lang="de">Installation</span></a><a href="#faq">FAQ</a><a class="nav-hl" href="https://github.com/shrippen/Kante/tree/main/kimai/knust">GitHub</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="de" aria-pressed="false">DE</button>
+    </div>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <img class="hero-wm" src="icon-mono.svg" alt="" aria-hidden="true">
+  <div class="hero-main">
+    <h1 style="--title-size:clamp(3rem,9vw,7rem);--title-size-narrow:clamp(2.5rem,15.4vw,13.1rem)">Knust</h1>
+    <p class="tagline" lang="en">A Kimai theme in the shrippen design: Gruvbox dark, “Leinen” light, on top of Tabler. Only CSS variables and a few component rules — Kimai’s markup stays untouched. Knust is the heel of the loaf: a cut-off corner, a warm crust.</p><p class="tagline" lang="de">Ein Kimai-Theme im shrippen-Design: Gruvbox dunkel, „Leinen“ hell, über Tabler. Nur CSS-Variablen und wenige Komponentenregeln, Kimais Markup bleibt unverändert. Knust ist das Endstück vom Brot: abgeschnittenes Eck, warme Kruste.</p>
+  </div>
+  <div class="hero-side">
+    <div class="install-card">
+      <label><span lang="en">Install (from the Kimai directory)</span><span lang="de">Installation (im Kimai-Verzeichnis)</span></label><div class="cmd-row"><div class="cmd-box">unzip KnustBundle-*.zip -d var/plugins &amp;&amp; bin/console kimai:reload &amp;&amp; bin/console kimai:bundle:knust:install</div><button class="copy-btn" type="button" title="Copy" aria-label="Copy"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      <p class="install-note" lang="en">Needs Kimai 2.67 or newer and PHP 8.1 or newer. The install command copies CSS and fonts to <code>public/bundles/knust/</code>. The zip is on the Download page. To update: unzip the new zip over the old folder, then the same two <code>bin/console</code> commands.</p><p class="install-note" lang="de">Braucht Kimai 2.67 oder neuer und PHP 8.1 oder neuer. Der Installationsbefehl kopiert CSS und Schriften nach <code>public/bundles/knust/</code>. Das ZIP liegt unter Download. Zum Aktualisieren: das neue ZIP über den alten Ordner entpacken, danach dieselben zwei <code>bin/console</code>-Befehle.</p>
+      <div class="install-links"><a class="btn btn-primary" href="https://github.com/shrippen/Kante/releases?q=knust">Download</a><a class="btn btn-ghost" href="https://github.com/shrippen/Kante/tree/main/kimai/knust">GitHub</a></div>
+    </div>
+    <div class="hero-shot"><img lang="en" src="shots/dashboard-dark-en.webp" alt="Kimai dashboard in Knust's dark palette: squared cards with a beveled corner, Rajdhani headings and monospaced numbers"><img lang="de" src="shots/dashboard-dark-de.webp" alt="Kimai dashboard in Knust's dark palette: squared cards with a beveled corner, Rajdhani headings and monospaced numbers"></div>
+  </div>
+</header>
+
+<main>
+<section class="facts"><div class="fact"><b>2</b><span><span lang="en">Palettes: Gruvbox dark, “Leinen” light</span><span lang="de">Paletten: Gruvbox dunkel, „Leinen“ hell</span></span></div><div class="fact"><b>4</b><span><span lang="en">Accent colors: blue, yellow, orange, aqua</span><span lang="de">Akzentfarben: Blau, Gelb, Orange, Aqua</span></span></div><div class="fact"><b>0px</b><span><span lang="en">Corner radius — square shapes, one beveled corner on cards</span><span lang="de">Eckradius — eckige Formen, eine Abschrägung auf Karten</span></span></div><div class="fact"><b>GPL-3</b><span><span lang="en">Open source</span><span lang="de">Open Source</span></span></div></section>
+<section class="features" id="features">
+  <div class="feat" data-tier="yellow">
+    <span class="feat-tag"><span lang="en">Palette</span><span lang="de">Palette</span></span>
+    <h3 lang="en">Two palettes, one per user</h3><h3 lang="de">Zwei Paletten, je Nutzer wählbar</h3>
+    <p lang="en">Gruvbox dark or “Leinen” light. Every user picks their own under Profile → Settings → Theme, independent of everyone else.</p><p lang="de">Gruvbox dunkel oder „Leinen“ hell. Jeder Benutzer wählt selbst unter Profil → Einstellungen → Theme, unabhängig von allen anderen.</p>
+  </div>
+  <div class="feat" data-tier="red">
+    <span class="feat-tag"><span lang="en">Accent</span><span lang="de">Akzent</span></span>
+    <h3 lang="en">One accent color for everyone</h3><h3 lang="de">Eine Akzentfarbe für alle</h3>
+    <p lang="en">Blue, yellow, orange or aqua, set once under System → Settings → Knust and applied across both palettes.</p><p lang="de">Blau, Gelb, Orange oder Aqua, einmal unter System → Einstellungen → Knust gesetzt und in beiden Paletten wirksam.</p>
+  </div>
+  <div class="feat" data-tier="blue">
+    <span class="feat-tag"><span lang="en">Shape</span><span lang="de">Form</span></span>
+    <h3 lang="en">Square, with one cut corner</h3><h3 lang="de">Eckig, mit einer Abschrägung</h3>
+    <p lang="en">No rounded corners anywhere — except a small beveled triangle on every card, in the background color, the “Knust” cut.</p><p lang="de">Keine runden Ecken irgendwo — außer einem kleinen abgeschrägten Dreieck auf jeder Karte, in der Hintergrundfarbe, dem „Knust“-Schnitt.</p>
+  </div>
+  <div class="feat" data-tier="yellow">
+    <span class="feat-tag"><span lang="en">Type</span><span lang="de">Schrift</span></span>
+    <h3 lang="en">Rajdhani and JetBrains Mono</h3><h3 lang="de">Rajdhani und JetBrains Mono</h3>
+    <p lang="en">Rajdhani for headings, JetBrains Mono for numbers, times and amounts — dates and durations line up instead of drifting.</p><p lang="de">Rajdhani für Überschriften, JetBrains Mono für Zahlen, Zeiten und Beträge — Daten und Dauern stehen bündig statt zu wandern.</p>
+  </div>
+  <div class="feat" data-tier="red">
+    <span class="feat-tag"><span lang="en">Kit</span><span lang="de">Kit</span></span>
+    <h3 lang="en">Styles the shrippen plugin kit</h3><h3 lang="de">Gestaltet das shrippen-Plugin-Kit</h3>
+    <p lang="en">Plugins using kimai-plugin-ui 0.4’s markers (<code>kpu-num</code>, <code>kpu-tier</code>, <code>kpu-mark</code>) — Drehzettel, Holiday, Abrechnung, Anfahrten, Farbfächer — pick up Knust automatically.</p><p lang="de">Plugins mit den Kennzeichnungen aus kimai-plugin-ui 0.4 (<code>kpu-num</code>, <code>kpu-tier</code>, <code>kpu-mark</code>) — Drehzettel, Holiday, Abrechnung, Anfahrten, Farbfächer — übernehmen Knust automatisch.</p>
+  </div>
+  <div class="feat" data-tier="blue">
+    <span class="feat-tag"><span lang="en">Scope</span><span lang="de">Umfang</span></span>
+    <h3 lang="en">Variables only, markup untouched</h3><h3 lang="de">Nur Variablen, Markup unverändert</h3>
+    <p lang="en">Only CSS variables and a few component rules on top of Tabler. Kimai’s own markup and behavior stay exactly as they are.</p><p lang="de">Nur CSS-Variablen und wenige Komponentenregeln über Tabler. Kimais eigenes Markup und Verhalten bleiben genau, wie sie sind.</p>
+  </div>
+</section>
+<section class="showcase" id="palette"><div class="showcase-text"><span class="showcase-tag"><span lang="en">Palette</span><span lang="de">Palette</span></span><h2 lang="en">One theme, two palettes</h2><h2 lang="de">Ein Theme, zwei Paletten</h2><p lang="en">Gruvbox dark for evenings, “Leinen” (linen) light for daylight — same shapes, same type, same accent color, just the palette underneath each user picks for themselves.</p><p lang="de">Gruvbox dunkel für den Abend, „Leinen“ hell für den Tag — gleiche Formen, gleiche Schrift, gleiche Akzentfarbe, nur die Palette darunter wählt jeder für sich.</p><ul lang="en"><li>Switch under Profile → Settings → Theme, or leave it on “Automatic” to follow the system</li><li>The sidebar always stays dark — Kimai fixes it to <code>data-bs-theme="dark"</code></li><li>Login screen swaps the logo for the light palette automatically</li></ul><ul lang="de"><li>Wechsel unter Profil → Einstellungen → Theme, oder auf „Automatisch“ lassen, dann folgt es dem System</li><li>Die Seitenleiste bleibt immer dunkel — Kimai setzt dort fest <code>data-bs-theme="dark"</code></li><li>Der Login-Bildschirm tauscht das Logo für die helle Palette automatisch</li></ul></div><figure><img lang="en" src="shots/dashboard-light-en.webp" alt="The same Kimai dashboard in Knust's light 'Leinen' palette" loading="lazy"><img lang="de" src="shots/dashboard-light-de.webp" alt="The same Kimai dashboard in Knust's light 'Leinen' palette" loading="lazy"><figcaption><span lang="en">Dashboard in the “Leinen” light palette (demo data)</span><span lang="de">Dashboard in der hellen Palette „Leinen“ (Demodaten)</span></figcaption></figure></section>
+<section class="showcase rev" id="plugins"><div class="showcase-text"><span class="showcase-tag"><span lang="en">For plugins</span><span lang="de">Für Plugins</span></span><h2 lang="en">A plugin says what, Knust says how</h2><h2 lang="de">Ein Plugin sagt was, Knust sagt wie</h2><p lang="en">A plugin marks what an element <em>is</em> — a number, a severity, a color dot — with Tabler classes and kimai-plugin-ui’s markers. Knust decides what that looks like. Without Knust, the plugin looks like a normal Kimai plugin.</p><p lang="de">Ein Plugin kennzeichnet, <em>was</em> ein Element ist — eine Zahl, eine Schwere, ein Farbpunkt — mit Tabler-Klassen und den Kennzeichnungen aus kimai-plugin-ui. Knust entscheidet, wie das aussieht. Ohne Knust sieht das Plugin aus wie ein normales Kimai-Plugin.</p><ul lang="en"><li><code>kpu-num</code> for numbers, times and amounts → JetBrains Mono</li><li><code>kpu-tier</code> + <code>data-kpu-tier="0–3"</code> for a severity → tinted band, colored bar and text</li><li><code>kpu-mark</code> for a customer/project/activity color dot → square instead of round</li><li>Own plugin CSS: <code>--knust-*</code> variables, always with a fallback, e.g. <code>border-radius: var(--knust-mark-radius, 50%)</code></li></ul><ul lang="de"><li><code>kpu-num</code> für Zahlen, Zeiten und Beträge → JetBrains Mono</li><li><code>kpu-tier</code> + <code>data-kpu-tier="0–3"</code> für eine Schwere → getönte Fläche, farbiger Balken und Text</li><li><code>kpu-mark</code> für Farbpunkte von Kunde, Projekt, Tätigkeit → eckig statt rund</li><li>Eigenes Plugin-CSS: <code>--knust-*</code>-Variablen, immer mit Rückfallwert, z. B. <code>border-radius: var(--knust-mark-radius, 50%)</code></li></ul><p lang="en">Full rules and every variable: <a href="https://github.com/shrippen/Kante/blob/main/kimai/knust/PLUGINS.md">PLUGINS.md</a>.</p><p lang="de">Alle Regeln und Variablen: <a href="https://github.com/shrippen/Kante/blob/main/kimai/knust/PLUGINS.md">PLUGINS.md</a>.</p></div><figure><img lang="en" src="shots/timesheet-dark-en.webp" alt="The timesheet table in Knust: monospaced dates and durations, square color dots per customer, project and activity" loading="lazy"><img lang="de" src="shots/timesheet-dark-de.webp" alt="The timesheet table in Knust: monospaced dates and durations, square color dots per customer, project and activity" loading="lazy"><figcaption><span lang="en">Timesheet table, styled through the shrippen plugin kit (demo data)</span><span lang="de">Zeiterfassungstabelle, gestaltet über das shrippen-Plugin-Kit (Demodaten)</span></figcaption></figure></section>
+<section class="section" id="how"><h2 lang="en">How it works</h2><h2 lang="de">So funktioniert es</h2><p lang="en">Knust hooks into Kimai’s own theming: a subscriber sets the accent, a square radius and the logo on every request, and a second subscriber loads Knust’s stylesheet on every page, login included.</p><p lang="de">Knust hängt sich in Kimais eigenes Theming ein: Ein Subscriber setzt bei jeder Anfrage Akzent, eckigen Radius und Logo, ein zweiter lädt auf jeder Seite, auch beim Login, das Knust-Stylesheet.</p><div class="flow"><div class="flow-node"><b><span lang="en">Request</span><span lang="de">Anfrage</span></b><span><span lang="en">ThemeOptionsSubscriber sets accent, radius 0 and the logo</span><span lang="de">ThemeOptionsSubscriber setzt Akzent, Radius 0 und Logo</span></span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-node hl"><b><span lang="en">Stylesheet</span><span lang="de">Stylesheet</span></b><span><span lang="en">knust.css: palette per data-bs-theme, Tabler mapping, screen rules</span><span lang="de">knust.css: Palette je data-bs-theme, Tabler-Mapping, Regeln je Screen</span></span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-node"><b><span lang="en">Color list</span><span lang="de">Farbliste</span></b><span><span lang="en">shrippen palette for customers, projects and activities</span><span lang="de">shrippen-Palette für Kunden, Projekte, Tätigkeiten</span></span></div></div></section>
+<section class="section" id="install"><h2 lang="en">Install</h2><h2 lang="de">Installation</h2><ol class="steps" lang="en"><li>Download <code>KnustBundle-&lt;version&gt;.zip</code> and unzip it into <code>var/plugins/</code>; it contains the folder <code>KnustBundle</code>, whose name must stay.</li><li>Run <code>bin/console kimai:reload</code>.</li><li>Run <code>bin/console kimai:bundle:knust:install</code> — it copies CSS and fonts to <code>public/bundles/knust/</code>.</li><li>Set the accent color under <strong>System → Settings → Knust</strong>. Light or dark is each user’s own choice under Profile → Settings → Theme.</li></ol><ol class="steps" lang="de"><li>Lade <code>KnustBundle-&lt;version&gt;.zip</code> herunter und entpacke es nach <code>var/plugins/</code>; es enthält den Ordner <code>KnustBundle</code>, dessen Name bleiben muss.</li><li>Führe <code>bin/console kimai:reload</code> aus.</li><li>Führe <code>bin/console kimai:bundle:knust:install</code> aus — kopiert CSS und Schriften nach <code>public/bundles/knust/</code>.</li><li>Stelle die Akzentfarbe unter <strong>System → Einstellungen → Knust</strong> ein. Hell oder dunkel wählt jeder Benutzer selbst unter Profil → Einstellungen → Theme.</li></ol><p lang="en">Logo: the shrippen mark with the “KIMAI” wordmark is the default; <code>theme.branding.company</code> or <code>theme.branding.logo</code> take priority if set.</p><p lang="de">Logo: die shrippen-Bildmarke mit der Wortmarke „KIMAI“ ist Standard; <code>theme.branding.company</code> oder <code>theme.branding.logo</code> haben Vorrang, falls gesetzt.</p></section>
+<section class="section" id="faq"><h2 lang="en">Questions</h2><h2 lang="de">Fragen</h2><div class="faq"><details><summary><span lang="en">Do I need the other shrippen plugins?</span><span lang="de">Brauche ich die anderen shrippen-Plugins?</span></summary><div><p lang="en">No. Knust works standalone on any Kimai 2.67. Plugins that use the kimai-plugin-ui kit (Drehzettel, Holiday, Abrechnung, Anfahrten, Farbfächer) simply look best with it, since their markers style automatically.</p><p lang="de">Nein. Knust funktioniert eigenständig auf jedem Kimai 2.67. Plugins mit dem kimai-plugin-ui-Kit (Drehzettel, Holiday, Abrechnung, Anfahrten, Farbfächer) sehen damit nur am besten aus, weil ihre Kennzeichnungen automatisch gestaltet werden.</p></div></details><details><summary><span lang="en">Does it change Kimai’s markup?</span><span lang="de">Ändert es Kimais Markup?</span></summary><div><p lang="en">No. Only CSS variables and a handful of component rules on top of Tabler. Kimai’s templates, JavaScript and behavior are untouched.</p><p lang="de">Nein. Nur CSS-Variablen und eine Handvoll Komponentenregeln über Tabler. Kimais Templates, JavaScript und Verhalten bleiben unverändert.</p></div></details><details><summary><span lang="en">Which browsers does it need?</span><span lang="de">Welche Browser braucht es?</span></summary><div><p lang="en">Any current browser for the theme itself. The dashboard counters color their bar via <code>:has()</code>, which needs Chrome 105+, Firefox 121+ or Safari 15.4+; older browsers just show the bar uncolored.</p><p lang="de">Für das Theme selbst jeder aktuelle Browser. Die Dashboard-Zähler färben ihren Balken über <code>:has()</code>, das braucht Chrome 105+, Firefox 121+ oder Safari 15.4+; ältere Browser zeigen den Balken einfach ungefärbt.</p></div></details><details><summary><span lang="en">What doesn’t Knust reach?</span><span lang="de">Was erreicht Knust nicht?</span></summary><div><p lang="en">The sidebar stays dark (Kimai fixes that), modals stay square-cornered (a clipped bevel would cut off “…” menus), and Chart.js diagrams color themselves via JavaScript, unstyled by Knust.</p><p lang="de">Die Seitenleiste bleibt dunkel (das setzt Kimai fest), Modals bleiben eckig ohne Abschrägung (ein Clip-Path würde die „…“-Menüs abschneiden), und Chart.js-Diagramme färben sich per JavaScript, unangepasst durch Knust.</p></div></details></div></section>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <img src="icon.svg" alt="">
+      <div><span class="foot-name">Knust</span><span class="foot-tag"><span lang="en">A Kimai theme in the shrippen design</span><span lang="de">Ein Kimai-Theme im shrippen-Design</span></span></div>
+    </div>
+    <nav class="foot-cols" aria-label="Footer">
+      <div><h4><span lang="en">Project</span><span lang="de">Projekt</span></h4><a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a><a href="#palette">Palette</a><a href="#plugins"><span lang="en">For plugins</span><span lang="de">Für Plugins</span></a><a href="#install"><span lang="en">Install</span><span lang="de">Installation</span></a><a href="#faq">FAQ</a></div>
+      <div><h4><span lang="en">Source</span><span lang="de">Quelltext</span></h4><a href="https://github.com/shrippen/Kante/tree/main/kimai/knust">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
+    </nav>
+  </div>
+  <div class="foot-meta"><p>GPL-3.0-or-later · shrippen · v1.2.0</p></div>
+</footer>
+
+</body>
+</html>

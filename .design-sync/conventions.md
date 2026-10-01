@@ -1,6 +1,6 @@
 # shrippen landing-page design system
 
-**Rule: a GUI is generated from Kante, not inspired by it.** Use the classes and tokens below as they are; if an element is missing, it is added to Kante first (see `kante/AGENT-RULE.md`). Only Kimai plugins use Knust instead.
+**Rule: a GUI is generated from Kante, not inspired by it.** Use the classes and tokens below as they are; if an element is missing, it is added to Kante first (see `AGENT-RULE.md`). Only Kimai plugins use Knust instead.
 
 Dark, Gruvbox-derived CSS system for single-page project landing pages. There is **no JavaScript component library and no CSS framework**: write plain HTML with the class names below, styled by one stylesheet plus one tiny script.
 

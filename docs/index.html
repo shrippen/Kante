@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante — the shrippen design system</title>
+<meta name="description" content="Kante: one palette, one type and one shape for the web, Qt Quick / Kirigami apps and Plasma widgets. With Kante Light, Kante Gold and Knust for Kimai.">
+<meta property="og:title" content="Kante — the shrippen design system">
+<meta property="og:description" content="One palette, one type and one shape for the web, Qt Quick / Kirigami apps and Plasma widgets.">
+<meta property="og:image" content="https://shrippen.github.io/Kante/social-preview.png">
+<meta property="og:url" content="https://shrippen.github.io/Kante/">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<!-- Umami tracker: mandatory on every landing page, same tag and ID everywhere, do not change -->
+<script defer src="https://um.arianw.de/script.js" data-website-id="056d39ee-6a9d-4b14-9902-5a1ac399df08"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://shrippen.github.io/v1/shrippen.css">
+<script src="https://shrippen.github.io/v1/shrippen.js"></script>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="#"><img src="icon.svg" alt="">Kante</a>
+  <div class="nav-links">
+    <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a>
+    <a href="#variants"><span lang="en">Variants</span><span lang="de">Varianten</span></a>
+    <a href="#use"><span lang="en">Use it</span><span lang="de">Einbinden</span></a>
+    <a href="knust/">Knust</a>
+    <a class="nav-hl" href="https://github.com/shrippen/Kante">GitHub</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="de" aria-pressed="false">DE</button>
+    </div>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <img class="hero-wm" src="icon-mono.svg" alt="" aria-hidden="true">
+  <div class="hero-main">
+    <h1 style="--title-size:clamp(3rem,10vw,8.5rem)">Kante</h1>
+    <p class="tagline" lang="en">One style for the web and for apps: the same palette, type, shapes and roles on landing pages and in Qt Quick, Kirigami and Plasma. Every box has its top-right corner cut, the edge (<em>Kante</em>) that gives the system its name.</p>
+    <p class="tagline" lang="de">Ein Stil für Web und Apps: dieselbe Palette, Schrift, Formen und Rollen auf Landing Pages und in Qt Quick, Kirigami und Plasma. Jede Fläche hat ihre obere rechte Ecke abgeschnitten, die Kante, nach der das System heißt.</p>
+  </div>
+
+  <div class="hero-side">
+    <div class="install-card">
+      <label><span lang="en">Web: one stylesheet</span><span lang="de">Web: ein Stylesheet</span></label>
+      <div class="cmd-row">
+        <div class="cmd-box">&lt;link rel="stylesheet" href="https://shrippen.github.io/v1/shrippen.css"&gt;</div>
+        <button class="copy-btn" type="button" title="Copy" aria-label="Copy">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </button>
+      </div>
+      <p class="install-note" lang="en">Plus <code>shrippen.js</code> for the language switch, copy buttons and tabs. Apps copy the QML module <code>qml/Kante</code> unchanged.</p>
+      <p class="install-note" lang="de">Dazu <code>shrippen.js</code> für Sprachumschalter, Kopierknöpfe und Tabs. Apps kopieren das QML-Modul <code>qml/Kante</code> unverändert.</p>
+      <div class="install-links">
+        <a class="btn btn-primary" href="https://github.com/shrippen/Kante/blob/main/README.md">README</a>
+        <a class="btn btn-ghost" href="https://github.com/shrippen/Kante">GitHub</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="facts">
+  <div class="fact"><b>1</b><span lang="en">palette.json for web and apps</span><span lang="de">palette.json für Web und Apps</span></div>
+  <div class="fact"><b>77</b><span lang="en">QML components</span><span lang="de">QML-Komponenten</span></div>
+  <div class="fact"><b>3</b><span lang="en">variants: Kante, Light, Gold</span><span lang="de">Varianten: Kante, Light, Gold</span></div>
+  <div class="fact"><b>0</b><span lang="en">raw colours outside the tokens</span><span lang="de">feste Farben außerhalb der Tokens</span></div>
+</div>
+
+<section class="features" id="features">
+  <div class="feat" data-tier="yellow">
+    <span class="feat-tag">Web</span>
+    <h3 lang="en">Landing pages and web apps</h3><h3 lang="de">Landing Pages und Web-Apps</h3>
+    <p lang="en">One built stylesheet with tokens, base styles and components: hero, feature boxes, tabs, dialogs, tables, conversations. Every shrippen landing page links it, so a change here reaches all of them.</p>
+    <p lang="de">Ein gebautes Stylesheet mit Tokens, Grundstilen und Komponenten: Hero, Funktionskästen, Tabs, Dialoge, Tabellen, Gespräche. Jede shrippen-Landing-Page bindet es ein, eine Änderung hier erreicht also alle.</p>
+  </div>
+  <div class="feat" data-tier="cyan">
+    <span class="feat-tag">Qt Quick · Kirigami · Plasma</span>
+    <h3 lang="en">Apps and widgets</h3><h3 lang="de">Apps und Widgets</h3>
+    <p lang="en">The QML module <code>Kante</code> brings the same shapes, sizes and motion to apps, <code>KantePlasma</code> wraps the Plasma components for widgets. Tested with qmltestrunner on every build.</p>
+    <p lang="de">Das QML-Modul <code>Kante</code> bringt dieselben Formen, Größen und Bewegungen in Apps, <code>KantePlasma</code> umhüllt die Plasma-Komponenten für Widgets. Bei jedem Build mit qmltestrunner getestet.</p>
+  </div>
+  <div class="feat" data-tier="red">
+    <span class="feat-tag">Tokens</span>
+    <h3 lang="en">One source of truth</h3><h3 lang="de">Eine Quelle</h3>
+    <p lang="en"><code>tokens/palette.json</code> feeds the CSS, the QML palette and Knust's Kimai palette. A check fails the build on any raw colour or font outside the tokens.</p>
+    <p lang="de"><code>tokens/palette.json</code> speist das CSS, die QML-Palette und Knusts Kimai-Palette. Eine Prüfung bricht den Build bei jeder festen Farbe oder Schrift außerhalb der Tokens ab.</p>
+  </div>
+</section>
+
+<section class="section" id="variants">
+  <h2 lang="en">Variants</h2><h2 lang="de">Varianten</h2>
+  <p lang="en">Same components, classes and roles; only the values underneath change.</p>
+  <p lang="de">Gleiche Komponenten, Klassen und Rollen; nur die Werte darunter ändern sich.</p>
+  <div class="table-wrap"><table class="table">
+    <tr><th></th><th><span lang="en">Where</span><span lang="de">Wo</span></th><th><span lang="en">Character</span><span lang="de">Charakter</span></th></tr>
+    <tr><td><strong>Kante</strong></td><td lang="en">Default, dark (Gruvbox), light “Leinen” for apps</td><td lang="de">Standard, dunkel (Gruvbox), hell „Leinen“ für Apps</td><td lang="en">Warm neutrals, yellow for action, cyan for focus and links</td><td lang="de">Warme Neutraltöne, Gelb für Aktionen, Cyan für Fokus und Links</td></tr>
+    <tr><td><strong>Kante Light</strong></td><td lang="en">Apps next to Breeze / Kirigami</td><td lang="de">Apps neben Breeze / Kirigami</td><td lang="en">All colours from the platform, Kante brings shape and type</td><td lang="de">Alle Farben von der Plattform, Kante bringt Form und Schrift</td></tr>
+    <tr><td><strong>Kante Gold</strong></td><td lang="en"><code>data-kante="gold"</code>, Kintsugi only</td><td lang="de"><code>data-kante="gold"</code>, nur Kintsugi</td><td lang="en">Lacquer and gold leaf: gilded cut edges, Spectral titles, gliding motion</td><td lang="de">Lack und Blattgold: vergoldete Schnittkanten, Spectral-Titel, gleitende Bewegung</td></tr>
+  </table></div>
+  <p><button class="btn btn-outline" type="button" id="gold-toggle" aria-pressed="false"><span lang="en">Show this page in Kante Gold</span><span lang="de">Diese Seite in Kante Gold zeigen</span></button></p>
+</section>
+
+<section class="section" id="use">
+  <h2 lang="en">Use it</h2><h2 lang="de">Einbinden</h2>
+  <ol class="steps" lang="en">
+    <li>Landing page: start from <a href="https://github.com/shrippen/Kante/blob/main/templates/landing.html"><code>templates/landing.html</code></a>, it links the stylesheet.</li>
+    <li>Offline web app: vendor <code>shrippen.css</code>, <code>shrippen.js</code>, <code>fonts.css</code> and <code>fonts/</code> from <code>https://shrippen.github.io/v1/</code> unchanged.</li>
+    <li>Qt Quick / Kirigami app: copy <code>qml/Kante</code>; Plasma widget: also <code>qml/KantePlasma</code>.</li>
+    <li>Missing something? It goes into Kante first, then into the project.</li>
+  </ol>
+  <ol class="steps" lang="de">
+    <li>Landing Page: mit <a href="https://github.com/shrippen/Kante/blob/main/templates/landing.html"><code>templates/landing.html</code></a> anfangen, sie bindet das Stylesheet ein.</li>
+    <li>Web-App ohne Netz: <code>shrippen.css</code>, <code>shrippen.js</code>, <code>fonts.css</code> und <code>fonts/</code> von <code>https://shrippen.github.io/v1/</code> unverändert übernehmen.</li>
+    <li>Qt-Quick-/Kirigami-App: <code>qml/Kante</code> kopieren; Plasma-Widget: zusätzlich <code>qml/KantePlasma</code>.</li>
+    <li>Fehlt etwas? Es kommt zuerst in Kante, dann ins Projekt.</li>
+  </ol>
+</section>
+
+<section class="section" id="kimai">
+  <h2 lang="en">For Kimai: Knust and the plugin kit</h2><h2 lang="de">Für Kimai: Knust und das Plugin-Kit</h2>
+  <p lang="en"><a href="knust/">Knust</a> is Kante's spinoff for Kimai, a theme plugin on top of Tabler with its palette generated from Kante. The plugin kit (<code>kpu-*</code> macros, CSS and JS) says what an element is; Knust decides how it looks. Both live in this repository.</p>
+  <p lang="de"><a href="knust/">Knust</a> ist Kantes Ableger für Kimai, ein Theme-Plugin auf Tabler, dessen Palette aus Kante erzeugt wird. Das Plugin-Kit (<code>kpu-*</code>-Makros, CSS und JS) sagt, was ein Element ist; Knust entscheidet, wie es aussieht. Beide liegen in diesem Repository.</p>
+  <p><a class="btn btn-outline" href="knust/">Knust</a></p>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <img src="icon.svg" alt="">
+      <div><span class="foot-name">Kante</span>
+        <span class="foot-tag"><span lang="en">The shrippen design system</span><span lang="de">Das shrippen-Designsystem</span></span></div>
+    </div>
+    <nav class="foot-cols" aria-label="Footer">
+      <div><h4><span lang="en">Project</span><span lang="de">Projekt</span></h4>
+        <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a><a href="#variants"><span lang="en">Variants</span><span lang="de">Varianten</span></a><a href="knust/">Knust</a><a href="https://shrippen.github.io/">shrippen</a></div>
+      <div><h4><span lang="en">Source</span><span lang="de">Quelltext</span></h4>
+        <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
+    </nav>
+  </div>
+  <div class="foot-meta"><p><span lang="en">All rights reserved</span><span lang="de">Alle Rechte vorbehalten</span> · shrippen · v1.10.0</p></div>
+</footer>
+
+<script>
+document.getElementById('gold-toggle').addEventListener('click', function () {
+  var on = document.documentElement.getAttribute('data-kante') !== 'gold';
+  if (on) document.documentElement.setAttribute('data-kante', 'gold');
+  else document.documentElement.removeAttribute('data-kante');
+  this.setAttribute('aria-pressed', on ? 'true' : 'false');
+});
+</script>
+</body>
+</html>

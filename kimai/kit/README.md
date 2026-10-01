@@ -139,7 +139,7 @@ document.addEventListener('kpu:selection-change', function (event) {
 
 ## Knust und Kante (seit 0.6)
 
-Kimai-Plugins nehmen ihre Oberfläche aus Knust (`shrippen/kimai-knust-bundle`), dem Kimai-Ableger von Kante. Das Kit
+Kimai-Plugins nehmen ihre Oberfläche aus Knust (`kimai/knust/` in diesem Repo), dem Kimai-Ableger von Kante. Das Kit
 sagt, *was* ein Element ist (`kpu-*`), Knust gestaltet es (Knust `PLUGINS.md`). 0.6 ergänzt die Kante-1.7-Bausteine,
 für die Knust noch keine Kennzeichnung hatte:
 

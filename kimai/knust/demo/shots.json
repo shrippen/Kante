@@ -1,0 +1,52 @@
+{
+  "kind": "web",
+  "group": "kimai",
+  "start": "{repo}/demo/kimai/reset.sh --lang {lang} --theme knust --port {port}",
+  "detach": true,
+  "stop": "{repo}/demo/kimai/reset.sh --down",
+  "ready": "http://127.0.0.1:{port}/en/login",
+  "base": "http://127.0.0.1:{port}",
+  "today": "real",
+  "timeout": 600,
+  "viewport": [1440, 900],
+  "user": "mara",
+  "setup": [
+    {"goto": "/{lang}/login"},
+    {"fill": "#username", "value": "{user}"},
+    {"fill": "#password", "value": "{password}"},
+    {"click": "form button[type=submit]"},
+    {"wait": "body.page-header-fixed, .page-wrapper"}
+  ],
+  "shots": [
+    {
+      "name": "dashboard-dark",
+      "url": "/{lang}/profile/{user}/prefs",
+      "actions": [
+        {"eval": "const s=document.querySelector('#user_preferences_form_preferences_skin_value'); s.value='dark'; s.dispatchEvent(new Event('change'));"},
+        {"click": "form[name=user_preferences_form] input[type=submit]"},
+        {"goto": "/{lang}/dashboard/"}
+      ],
+      "wait": ".page-wrapper"
+    },
+    {
+      "name": "dashboard-light",
+      "url": "/{lang}/profile/{user}/prefs",
+      "actions": [
+        {"eval": "const s=document.querySelector('#user_preferences_form_preferences_skin_value'); s.value='default'; s.dispatchEvent(new Event('change'));"},
+        {"click": "form[name=user_preferences_form] input[type=submit]"},
+        {"goto": "/{lang}/dashboard/"}
+      ],
+      "wait": ".page-wrapper"
+    },
+    {
+      "name": "timesheet-dark",
+      "url": "/{lang}/profile/{user}/prefs",
+      "actions": [
+        {"eval": "const s=document.querySelector('#user_preferences_form_preferences_skin_value'); s.value='dark'; s.dispatchEvent(new Event('change'));"},
+        {"click": "form[name=user_preferences_form] input[type=submit]"},
+        {"goto": "/{lang}/timesheet/"}
+      ],
+      "wait": ".page-wrapper"
+    }
+  ]
+}
