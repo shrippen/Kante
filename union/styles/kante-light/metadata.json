@@ -1,0 +1,12 @@
+{
+    "input-type": "css",
+    "input-version": 1,
+    "name": "Kante Light",
+    "description": "Kante Light (Leinen) for KDE Plasma.",
+    "version": "1.9.1",
+    "license": "MIT",
+    "url": "https://github.com/shrippen/shrippen.github.io",
+    "authors": [
+        "shrippen"
+    ]
+}
