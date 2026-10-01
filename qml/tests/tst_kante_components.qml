@@ -164,16 +164,16 @@ TestCase {
 
     Component {
         id: pillComponent
-        KantePill { text: "Fertig"; state: KantePill.State.Done }
+        KantePill { text: "Fertig"; status: KantePill.State.Done }
     }
 
     function test_pillTone() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         var p = createTemporaryObject(pillComponent, tc)
         compare(p.tone, KanteStyle.positiveTextColor)
-        p.state = KantePill.State.Failed
+        p.status = KantePill.State.Failed
         compare(p.tone, KanteStyle.negativeTextColor)
-        p.state = KantePill.State.Locked
+        p.status = KantePill.State.Locked
         compare(p.tone, KanteStyle.warningColor)
         verify(p.implicitWidth > 0)
     }
@@ -470,7 +470,7 @@ TestCase {
         compare(s.stateForUptime(99.95), KanteStatusLight.State.Ok)
         compare(s.stateForUptime(99.5), KanteStatusLight.State.Warn)
         compare(s.stateForUptime(98), KanteStatusLight.State.Bad)
-        s.state = KanteStatusLight.State.Bad
+        s.status = KanteStatusLight.State.Bad
         compare(s.tone, KanteStyle.negativeTextColor)
     }
 
@@ -717,7 +717,7 @@ TestCase {
             KanteLamp { rhythm: KanteLamp.Rhythm.Tick }
             KanteLoader { }
             KanteOdometer { value: 42 }
-            KantePill { text: "Fertig"; state: KantePill.State.Done }
+            KantePill { text: "Fertig"; status: KantePill.State.Done }
             KanteProgressBar { value: 0.5 }
             KanteProgressBar { segments: 8; value: 0.5 }
             KanteProgressBar { indeterminate: true }
