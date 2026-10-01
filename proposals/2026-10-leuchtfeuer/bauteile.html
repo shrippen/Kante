@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.11 elements</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<style>main{max-width:var(--max-w);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2rem 0}h2{margin-bottom:.8rem}.demo{background:var(--bg-panel);padding:1.1rem;display:flex;flex-direction:column;gap:.8rem}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.11</h1>
+<p>Elements the Leuchtfeuer web interface needed for a friendlier settings page. Narrow the window below 640 px to see the app bar.</p>
+
+<section><h2 class="block-title">Help</h2><div class="demo">
+<div class="field"><label for="q">Q <details class="help"><summary aria-label="What is this?">?</summary><div class="help-text">Width of the filter: higher = narrower. 1 to 4 for room modes.</div></details></label><input class="input" id="q" value="4.0"></div>
+</div></section>
+
+<section><h2 class="block-title">Toast with an action</h2><div class="demo">
+<div class="toast" data-kind="ok">Station deleted <button class="toast-action" type="button">Undo</button></div>
+</div></section>
+
+<section><h2 class="block-title">Advanced settings in a fold (existing)</h2><div class="demo">
+<details class="fold"><summary>Advanced</summary><div class="field"><label for="iv">Check every (seconds)</label><input class="input" id="iv" value="30"></div></details>
+</div></section>
+
+<section><h2 class="block-title">Screen-reader only</h2><div class="demo">
+<p>Number fields under a visible column head keep a real label: <label class="sr-only" for="mx">Spotify, highest volume %</label><input class="input" id="mx" value="80" style="width:5rem"></p>
+</div></section>
+
+<section><h2 class="block-title">Ring picker</h2><div class="demo">
+<div class="ring-pick" role="radiogroup" aria-label="Start LED"><button type="button" role="radio" style="--i:0" aria-checked="false" aria-label="LED 0"></button><button type="button" role="radio" style="--i:1" aria-checked="false" aria-label="LED 1"></button><button type="button" role="radio" style="--i:2" aria-checked="false" aria-label="LED 2"></button><button type="button" role="radio" style="--i:3" aria-checked="true" aria-label="LED 3"></button><button type="button" role="radio" style="--i:4" aria-checked="false" aria-label="LED 4"></button><button type="button" role="radio" style="--i:5" aria-checked="false" aria-label="LED 5"></button><button type="button" role="radio" style="--i:6" aria-checked="false" aria-label="LED 6"></button><button type="button" role="radio" style="--i:7" aria-checked="false" aria-label="LED 7"></button><button type="button" role="radio" style="--i:8" aria-checked="false" aria-label="LED 8"></button><button type="button" role="radio" style="--i:9" aria-checked="false" aria-label="LED 9"></button><button type="button" role="radio" style="--i:10" aria-checked="false" aria-label="LED 10"></button><button type="button" role="radio" style="--i:11" aria-checked="false" aria-label="LED 11"></button><span class="ring-pick-n">3</span></div>
+</div></section>
+
+<section><h2 class="block-title">Edit bar as save bar (existing, 1.7)</h2><div class="demo">
+<div class="editbar"><span class="mode">Unsaved changes</span><span class="grow"></span><button class="btn btn-outline btn-sm">Discard</button><button class="btn btn-accent btn-sm">Save</button></div>
+</div></section>
+</main>
+
+<nav class="bottom-nav" aria-label="Pages">
+<a href="#" aria-current="page"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M4 11l8-7 8 7v9H4z"/></svg>Overview</a>
+<a href="#"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/></svg>Radio</a>
+<a href="#"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="13" r="7"/><path d="M12 9v4l3 2"/></svg>Alarms</a>
+<details class="dropdown"><summary><svg viewBox="0 0 24 24" stroke-width="2"><path d="M5 12h.01M12 12h.01M19 12h.01"/></svg>More</summary>
+<ul class="menu"><li><a href="#">Settings</a></li><li><a href="#">System</a></li></ul></details>
+</nav>
+</body>
+</html>

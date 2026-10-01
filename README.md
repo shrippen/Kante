@@ -516,6 +516,22 @@ What Kintsugi and Hansei needed for their conversations, setup and app pages, pl
 
 Fixes (1.10): `KanteDialogSkin` no longer elides the title (with Kirigami 6.24 an elided title made a binding loop on the dialog size; a title wider than the dialog is clipped); in Gold the sliding tab indicator is the 2 px underline; `dialog.dialog` keeps its top bar (`border:0` removed it); `.kpi-row` tiles go down to 150 px, so four figures sit two by two on a phone.
 
+### Added in Kante 1.11
+
+What the Leuchtfeuer web interface needed to become friendlier (fewer free-text fields, one save bar, phone use). Catalogue: [`proposals/2026-10-leuchtfeuer/`](proposals/2026-10-leuchtfeuer/).
+
+| Element | Web | QML |
+|---|---|---|
+| App bar for phones | `.bottom-nav` > `a`/`button` (icon + label), `[aria-current="page"]`; only below 640 px, a last `details.dropdown` > `.menu` opens more pages; moves `.toast-stack` and `.editbar.is-fixed` above itself | – |
+| Help | `details.help` > `summary` ("?", with `aria-label`) + `.help-text`; `.is-right` opens to the left | – |
+| Toast with an action | `.toast` > `.toast-action` (e.g. Undo) | – |
+| Screen-reader only | `.sr-only` | – |
+| Ring picker | `.ring-pick` (`--n` marks, default 12, `--r` radius) > `button[role="radio"][aria-checked][style="--i:k"]`, mark 0 on top, clockwise; `.ring-pick-n` in the middle | – |
+
+The save bar of an app with many settings is the existing `.editbar` (`.mode` text, `.grow`, Discard, Save) with `.is-fixed`; advanced settings fold away in the existing `details.fold`.
+
+Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none); on touch screens (`pointer: coarse`) `.chip` takes the small control height `--h-s`.
+
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
