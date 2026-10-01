@@ -526,10 +526,11 @@ What the Leuchtfeuer web interface needed to become friendlier (fewer free-text 
 | Help | `details.help` > `summary` ("?", with `aria-label`) + `.help-text`; `.is-right` opens to the left | – |
 | Toast with an action | `.toast` > `.toast-action` (e.g. Undo) | – |
 | Screen-reader only | `.sr-only` | – |
+| Ring picker | `.ring-pick` (`--n` marks, default 12, `--r` radius) > `button[role="radio"][aria-checked][style="--i:k"]`, mark 0 on top, clockwise; `.ring-pick-n` in the middle | – |
 
 The save bar of an app with many settings is the existing `.editbar` (`.mode` text, `.grow`, Discard, Save) with `.is-fixed`; advanced settings fold away in the existing `details.fold`.
 
-Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none).
+Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none); on touch screens (`pointer: coarse`) `.chip` takes the small control height `--h-s`.
 
 ### Kante Gold
 
