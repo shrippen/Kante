@@ -100,12 +100,12 @@ Rectangle {
                 title: "anzeige"
                 RowLayout {
                     spacing: KanteStyle.unit(10)
-                    KantePill { text: "Analysiert"; state: KantePill.State.Running }
-                    KantePill { text: "Prüfen"; state: KantePill.State.Review }
-                    KantePill { text: "Gesperrt"; state: KantePill.State.Locked }
-                    KantePill { text: "Fertig"; state: KantePill.State.Done }
-                    KantePill { text: "Fehler"; state: KantePill.State.Failed }
-                    KantePill { text: "Pausiert"; state: KantePill.State.Off }
+                    KantePill { text: "Analysiert"; status: KantePill.State.Running }
+                    KantePill { text: "Prüfen"; status: KantePill.State.Review }
+                    KantePill { text: "Gesperrt"; status: KantePill.State.Locked }
+                    KantePill { text: "Fertig"; status: KantePill.State.Done }
+                    KantePill { text: "Fehler"; status: KantePill.State.Failed }
+                    KantePill { text: "Pausiert"; status: KantePill.State.Off }
                     KanteCounter { text: "7" }
                     KanteCounter { text: "42"; kind: KanteCounter.Kind.Info }
                     KanteCounter { text: "2"; kind: KanteCounter.Kind.Error }
@@ -268,8 +268,8 @@ Rectangle {
                 RowLayout {
                     spacing: KanteStyle.unit(16)
                     KanteStatusLight { name: "Jellyfin"; detail: "OK · 42 ms" }
-                    KanteStatusLight { name: "Nextcloud"; detail: "langsam · 1,9 s"; state: KanteStatusLight.State.Warn }
-                    KanteStatusLight { name: "Gitea"; detail: "keine Antwort"; state: KanteStatusLight.State.Bad }
+                    KanteStatusLight { name: "Nextcloud"; detail: "langsam · 1,9 s"; status: KanteStatusLight.State.Warn }
+                    KanteStatusLight { name: "Gitea"; detail: "keine Antwort"; status: KanteStatusLight.State.Bad }
                     KanteCommandBox { text: "kpackagetool6 -i kader.plasmoid" }
                 }
                 KanteBulkBar { Layout.fillWidth: true; count: 7; KanteButton { text: "Übergeben"; emphasis: KanteButton.Emphasis.Primary; size: KanteButton.Size.Small } }
