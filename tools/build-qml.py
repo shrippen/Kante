@@ -166,10 +166,11 @@ def copy_fonts():
         shutil.copy2(KANTE / "fonts" / name, dest / name)
 
 
-MODULE.mkdir(parents=True, exist_ok=True)
-write_palette_module()
-write_flat_palette()
-write_plasma_button()
-write_qmldir()
-copy_fonts()
-print("built qml/Kante/KantePalette.qml, tokens/palette.qml, qml/Kante/fonts/")
+if __name__ == "__main__":
+    MODULE.mkdir(parents=True, exist_ok=True)
+    write_palette_module()
+    write_flat_palette()
+    write_plasma_button()
+    write_qmldir()
+    copy_fonts()
+    print("built qml/Kante/KantePalette.qml, tokens/palette.qml, qml/Kante/fonts/")

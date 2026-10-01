@@ -11,7 +11,9 @@
 #   5. QML module test: qml/tests, if qmltestrunner is installed (tools/check-qml.sh)
 #   6. Kimai plugin kit: assets.html.twig from kit.css/kit.js, self test (kimai/kit/bin/lint.sh)
 #   7. Knust plugin zip: dist/KnustBundle-<version>.zip from the committed files (tools/knust-zip.sh)
-#   8. Claude Design upload: ds-bundle/ (.design-sync/make-bundle.py, gitignored)
+#   8. Union style (spike): union/ styles and KDE colour schemes from palette.json (tools/build-union.py),
+#      checked against Union's property list (tools/check-union.py)
+#   9. Claude Design upload: ds-bundle/ (.design-sync/make-bundle.py, gitignored)
 set -euo pipefail
 cd "$(dirname "$0")"
 OUT=docs/v1
@@ -35,4 +37,6 @@ tools/check-qml.sh
 kimai/kit/bin/build-assets.sh >/dev/null
 kimai/kit/bin/lint.sh
 tools/knust-zip.sh
+python3 tools/build-union.py
+python3 tools/check-union.py
 python3 .design-sync/make-bundle.py

@@ -1,0 +1,163 @@
+/*
+ * Kante for Union: the controls of the spike (window, label, buttons, fields).
+ * Colours come from variables.css (generated from tokens/palette.json); there are
+ * no raw colours here. Source for both styles: kante and kante-light.
+ *
+ * Kante cuts the top-right corner of surfaces and buttons. Union's CSS input only
+ * knows border-radius, so the cut is missing here: corners stay square (see
+ * union/README.md, "Gaps"). Fields stay rectangular in Kante anyway.
+ */
+
+applicationwindow,
+page
+{
+    background-color: var(--k-ground);
+    color: var(--k-text);
+}
+
+label
+{
+    color: var(--k-text);
+
+    &:disabled {
+        color: var(--k-text-disabled);
+    }
+}
+
+/* Buttons: 40 px (Kante medium), square corners, quiet frame. */
+button,
+toolbutton,
+combobox,
+roundbutton,
+delaybutton
+{
+    width: var(--k-control);
+    height: var(--k-control);
+    spacing: var(--k-gap);
+    padding: var(--k-pad);
+    border-radius: 0px;
+
+    layout-alignment: content fill fill 0;
+    text-alignment-horizontal: center;
+    icon-alignment-horizontal: center;
+
+    color: var(--k-text);
+    border: 1px solid var(--k-frame);
+    background-color: var(--k-card);
+
+    &:hovered {
+        border-color: var(--k-focus);
+    }
+
+    &:pressed {
+        border-color: var(--k-focus);
+        background-color: var(--k-selection);
+    }
+
+    &:checked {
+        border-color: var(--k-focus);
+        background-color: var(--k-selection);
+    }
+
+    &:visual-focus {
+        border-color: var(--k-focus);
+        outline: 2px solid var(--k-focus);
+    }
+
+    &:disabled {
+        color: var(--k-text-disabled);
+        border-color: var(--k-frame);
+        background-color: var(--k-sunken);
+    }
+}
+
+/* The primary action is the highlighted button (QQC2 Button.highlighted): yellow fill, dark ink. */
+button:highlighted
+{
+    color: var(--k-on-primary);
+    border-color: var(--k-primary);
+    background-color: var(--k-primary);
+
+    &:hovered {
+        border-color: var(--k-primary-hover);
+        background-color: var(--k-primary-hover);
+    }
+
+    &:pressed {
+        border-color: var(--k-primary-pressed);
+        background-color: var(--k-primary-pressed);
+    }
+
+    &:visual-focus {
+        outline: 2px solid var(--k-focus);
+    }
+
+    &:disabled {
+        color: var(--k-text-disabled);
+        border-color: var(--k-frame);
+        background-color: var(--k-sunken);
+    }
+}
+
+/* Tool buttons are flat until touched. */
+toolbutton,
+button.flat
+{
+    border: none;
+    background: none;
+
+    &:hovered {
+        border: 1px solid var(--k-focus);
+    }
+
+    &:checked {
+        border: none;
+        background-color: var(--k-selection);
+    }
+
+    &:disabled {
+        border: none;
+        background: none;
+    }
+}
+
+/* Fields stay rectangular; hover and focus draw the cyan frame, never a fill. */
+textfield,
+textarea,
+spinbox,
+searchfield
+{
+    height: var(--k-control);
+    padding: var(--k-pad);
+    border-radius: 0px;
+
+    color: var(--k-text);
+    border: 1px solid var(--k-frame);
+    background-color: var(--k-field);
+
+    &:hovered,
+    &:active-focus {
+        border: 1px solid var(--k-focus);
+    }
+
+    &:visual-focus {
+        outline: 2px solid var(--k-focus);
+    }
+
+    & > .placeholder {
+        color: var(--k-text-muted);
+    }
+
+    &:disabled {
+        color: var(--k-text-disabled);
+        border: 1px solid var(--k-frame);
+        background-color: var(--k-sunken);
+    }
+}
+
+textfield,
+searchfield
+{
+    text-alignment: content start center 0;
+    width: var(--k-field-width);
+}
