@@ -1352,15 +1352,9 @@ details.help.is-right>.help-text{left:auto;right:-.5rem}
 .toast>.toast-action:hover{background:var(--cyan-tint)}
 .toast>.toast-action:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
-/* ── Disclosure: settings that most people never need ("Advanced") folded away.
-   details.disclosure > summary + content; plain, inside a card (FAQ is the boxed variant). ── */
-details.disclosure{border-top:1px solid var(--bg1);padding-top:.4rem}
-details.disclosure>summary{cursor:pointer;list-style:none;padding:.3rem 0;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg2)}
-details.disclosure>summary::-webkit-details-marker{display:none}
-details.disclosure>summary::before{content:"+";display:inline-block;width:1.1rem;color:var(--cyan)}
-details.disclosure[open]>summary::before{content:"–"}
-details.disclosure>summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-details.disclosure[open]>summary{margin-bottom:.5rem}
+/* ── Keyboard focus on segments and switches (they had none) ── */
+.seg button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.switch:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 /* ── Screen-reader only: a label that is read out but not shown (e.g. a column of number fields with a visible head) ── */
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}

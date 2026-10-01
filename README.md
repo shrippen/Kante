@@ -525,10 +525,11 @@ What the Leuchtfeuer web interface needed to become friendlier (fewer free-text 
 | App bar for phones | `.bottom-nav` > `a`/`button` (icon + label), `[aria-current="page"]`; only below 640 px, a last `details.dropdown` > `.menu` opens more pages; moves `.toast-stack` and `.editbar.is-fixed` above itself | – |
 | Help | `details.help` > `summary` ("?", with `aria-label`) + `.help-text`; `.is-right` opens to the left | – |
 | Toast with an action | `.toast` > `.toast-action` (e.g. Undo) | – |
-| Disclosure | `details.disclosure` > `summary` + content (plain, inside a card; `.faq` stays the boxed variant) | – |
 | Screen-reader only | `.sr-only` | – |
 
-The save bar of an app with many settings is the existing `.editbar` (`.mode` text, `.grow`, Discard, Save) with `.is-fixed`.
+The save bar of an app with many settings is the existing `.editbar` (`.mode` text, `.grow`, Discard, Save) with `.is-fixed`; advanced settings fold away in the existing `details.fold`.
+
+Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none).
 
 ### Kante Gold
 
