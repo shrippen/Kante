@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="de" datatype="plaintext" original="KnustBundle">
+    <body>
+      <trans-unit id="st000" resname="knust.section">
+        <source>knust.section</source>
+        <target>Knust</target>
+      </trans-unit>
+      <trans-unit id="st001" resname="knust.accent">
+        <source>knust.accent</source>
+        <target>Akzentfarbe</target>
+      </trans-unit>
+      <trans-unit id="st002" resname="knust.accent_help">
+        <source>knust.accent_help</source>
+        <target>Für Hauptschaltflächen. Links, Fokus und Auswahl sind immer cyan.</target>
+      </trans-unit>
+      <trans-unit id="st003" resname="knust.accent.blue">
+        <source>knust.accent.blue</source>
+        <target>Blau (Standard)</target>
+      </trans-unit>
+      <trans-unit id="st004" resname="knust.accent.yellow">
+        <source>knust.accent.yellow</source>
+        <target>Gelb</target>
+      </trans-unit>
+      <trans-unit id="st005" resname="knust.accent.orange">
+        <source>knust.accent.orange</source>
+        <target>Orange</target>
+      </trans-unit>
+      <trans-unit id="st006" resname="knust.accent.aqua">
+        <source>knust.accent.aqua</source>
+        <target>Aqua</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
