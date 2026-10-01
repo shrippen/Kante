@@ -1560,7 +1560,8 @@ div.kpu-bulk-bar {
     color: var(--shr-fg2);
 }
 
-/* Calendar day (.cal): mono number, weekend sunken, today yellow frame,
+/* Calendar day (.cal): mono number, weekend lifted (a light tint, not sunk: sunk weekends were
+ * hard to tell from workdays in the absence calendar), today yellow frame,
  * holiday orange / absence cyan bar, selected cyan tint with frame; a day of a
  * plugin object (entity, e.g. a shooting day) purple, Kante's entity colour */
 :root .kpu-day {
@@ -1579,9 +1580,10 @@ div.kpu-bulk-bar {
     font-size: .72rem;
 }
 
-:root .kpu-day[data-kpu-day~="weekend"] {
-    background: var(--shr-hard);
-    color: var(--shr-fg3);
+:root .kpu-day[data-kpu-day~="weekend"],
+.card .kpu-days > .kpu-day[data-kpu-day~="weekend"] {
+    background: color-mix(in srgb, var(--shr-fg3) 16%, var(--shr-panel));
+    color: var(--shr-fg2);
 }
 
 :root .kpu-day[data-kpu-day~="entity"] {
@@ -1621,4 +1623,15 @@ div.kpu-bulk-bar {
     background: var(--kpu-pin-color, var(--knust-map-marker));
     border-color: var(--shr-void);
     border-radius: 0;
+}
+
+/* Kimai's floating help button sits over right-aligned values while scrolling (tables reach
+ * the edge in Knust): faint until hovered or focused, so the value underneath stays readable. */
+:root .float-help {
+    opacity: .28;
+}
+
+:root .float-help:hover,
+:root .float-help:focus-visible {
+    opacity: 1;
 }

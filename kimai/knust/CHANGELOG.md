@@ -1,5 +1,14 @@
 # Changelog
 
+## Unveröffentlicht
+
+- Palette aus Kante 1.9.1: `--shr-red-text` für rote Schrift (4,5:1 auf jedem Grund).
+- Kalendertage (`kpu-day`): Wochenenden hell getönt statt abgesenkt; im dunklen Thema waren sie im
+  Abwesenheitskalender kaum von Werktagen zu unterscheiden.
+- Kimais schwebender Hilfe-Knopf ist blass, bis man darüberfährt oder ihn fokussiert; er lag über
+  rechtsbündigen Beträgen (Drehzettel-Woche, Fahrtkosten).
+- Die Quellenangabe der Karten bleibt lesbar (hell auf hell, siehe vorheriger Commit).
+
 ## 1.4.0
 
 Farben aus Kante, Kit 0.6/0.7 gestaltet, Abgleich mit Kante 1.9.
