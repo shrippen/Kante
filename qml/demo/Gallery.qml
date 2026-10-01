@@ -5,7 +5,7 @@ import org.kde.kirigami as Kirigami
 import Kante
 
 /**
- * Every Kante component in one view (Kante 1.9): buttons, fields, controls,
+ * Every Kante component in one view (Kante 1.10): buttons, fields, controls,
  * tabs, display, feedback, surfaces and the motion pieces. Not part of the module;
  * load it in an app or with qml to look at the style:
  *   qml -I kante/qml kante/qml/demo/Gallery.qml
@@ -415,6 +415,42 @@ Rectangle {
                             }
                         }
                     }
+                }
+            }
+
+            Section {
+                title: "1.10 · gespräch, kleine diagramme"
+                RowLayout {
+                spacing: KanteStyle.unit(24)
+                ColumnLayout {
+                    Layout.preferredWidth: KanteStyle.unit(460)
+                    spacing: KanteStyle.unit(10)
+                    KanteMessage {
+                        Layout.fillWidth: true
+                        author: "KI"; time: "09:12"
+                        text: "Das Passwort steht im Klartext. Ersetzen durch einen Verweis auf Bitwarden?"
+                        head: KanteChip { text: "Änderung 2"; compact: false }
+                    }
+                    KanteMessage {
+                        Layout.fillWidth: true
+                        from: KanteMessage.From.Own; author: "Du"; time: "09:14"
+                        text: "Ja, aber nicht löschen."
+                    }
+                    KanteMessage {
+                        Layout.fillWidth: true
+                        from: KanteMessage.From.System; time: "09:15"
+                        text: "Neue Version für 2 Dateien"
+                    }
+                }
+                ColumnLayout {
+                    Layout.preferredWidth: KanteStyle.unit(240)
+                    spacing: KanteStyle.unit(10)
+                    KanteSectionLabel { text: "Regelkonform"; rule: true; Layout.fillWidth: true }
+                    KanteBarChart { compact: true; values: [0.62, 0.7, 0.66, 0.74, 0.8, 0.83, 0.87]; highlight: 6; labels: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]; formatter: v => Math.round(v * 100) + " %" }
+                    KanteSectionLabel { text: "Fortschritt" }
+                    KanteProgressBar { Layout.fillWidth: true; parts: [{ value: 0.3, color: KanteStyle.positiveTextColor }, { value: 0.12, color: KanteStyle.negativeTextColor }] }
+                    KanteChip { text: "nur Anzeige"; interactive: false }
+                }
                 }
             }
         }

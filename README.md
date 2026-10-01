@@ -496,6 +496,47 @@ Tested with the real Plasma style (`org.kde.desktop`, Breeze Light and Breeze Da
 
 Fixes: no binding loop in `KanteFieldSkin` (spin box text colour).
 
+### Added in Kante 1.10
+
+What Kintsugi and Hansei needed for their conversations, setup and app pages, plus Kante Gold. Catalogue: [`proposals/2026-10-gold/`](proposals/2026-10-gold/).
+
+| Element | Web | QML |
+|---|---|---|
+| Conversation | `.thread` > `.msg[data-from="ai"\|"me"]` > `header` (who, time) + text; the other side left with an info bar, the reader right with the primary bar | `KanteMessage` (`from` Other / Own / System, `author`, `time`, `text`, `head` items, children under the text, `ownIndent`) |
+| App page titles | `h1.page-title`, `h2.block-title` (Rajdhani, in Gold Spectral) | `KantePageTitle` |
+| Steps with state | `.steps > li.is-done` (ticked), `li[aria-current="step"]`; `.steps.is-row` in one line (setup wizards) | – |
+| Current page in the nav | `.nav-links a[aria-current="page"]` (primary underline) | – |
+| Long chips | `.chip` never wider than its row; `.chip.is-wrap` breaks onto more lines | – |
+| Seam | `.seam` (a drawn gold line that mends a break), `.seam.is-short` under titles, `.nav > .seam` under the nav | – |
+| Control font | `--font-control` (buttons, file button); equals `--font-heading` except in Gold | – |
+| Section label | `.h-label` | `KanteSectionLabel` (`rule` adds the line) |
+| Bar sparkline | – | `KanteBarChart.compact` (no grid or labels, read-out above) |
+| Stacked progress | several `.progress-bar > i` | `KanteProgressBar.parts` ([{value, color}]) |
+| Chip as a label, own tooltip | – | `KanteChip.interactive: false`, `toolTip`, `hovered` |
+
+Fixes (1.10): `KanteDialogSkin` no longer elides the title (with Kirigami 6.24 an elided title made a binding loop on the dialog size; a title wider than the dialog is clipped); in Gold the sliding tab indicator is the 2 px underline; `dialog.dialog` keeps its top bar (`border:0` removed it); `.kpi-row` tiles go down to 150 px, so four figures sit two by two on a phone.
+
+### Kante Gold
+
+The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
+
+| | Kante | Kante Gold |
+|---|---|---|
+| Ground, cards, text | Gruvbox `#141312`, `#2a2826`, `#ebdbb2` | urushi `#14110f`, lacquer `#1c1815`, paper `#efe8d8` |
+| Primary | yellow `#fabd2f` | gold `#d4a640` (8.4:1); pale gold `#e8d4a6` as `--accent` |
+| Focus, links, info | cyan `#5ccfc4` | patina `#8fb8aa` (verdigris, gold's counterpart on metal) |
+| Success, warning, error, tags | aqua, orange, red, purple | jade `#97ad7a`, copper `#d08a55`, cinnabar `#d0705a`, ume `#c497a8` |
+| Titles and figures | Rajdhani 700, uppercase | Spectral 500, uppercase, +0.06 em; figures lining and tabular |
+| Controls | Rajdhani | Rajdhani 600 (`--font-control`) |
+| Cut edges | cut | cut with a 1.6 px gold line (`--gild`) on `.ch`, `.feat`, `.callout`, `.codeblock`, `.table-wrap`, cards, dialogs, `.login` |
+| Bars, frames | 4 px, `--bg2` | 2 px (`--bar`), gold hairlines (`--gold-line`, gold at 32 %) |
+| Tabs | yellow fill | gold text with a 2 px gold underline |
+| Busy | marching hazard stripes | slow gold shimmer (2.6 s) |
+| Motion | 120 / 200 / 450 ms, snap with overshoot | 160 / 280 / 700 ms, glide without overshoot |
+| Ground | plain | crackle ground behind the page (gold at 5 %, drifting 160 s; still without motion) |
+
+All text colours reach 4.5:1 on ground, cards and fields (ash `#a39885` 5.7:1 on `--bg1`, cinnabar as text `--red-text` 6.3:1). Gold is precious: up to 10 % of a view and one gold fill per view (the primary action); gold is line and type, not surface. Spectral (SIL OFL) comes with `fonts.css` as woff2 (Latin subset). Tokens in `tokens/variables.css` (`:root[data-kante="gold"]`) and `palette.json` (`gold`), the details in the "Kante Gold" block of `css/components.css`. No QML yet: Kintsugi is web only; `KanteStyle.Kind.Gold` comes with the first app that needs it.
+
 ### Kante Light
 
 The quieter variant for apps that should sit next to Breeze / Kirigami apps and still read as Kante. **Every color comes from the platform:** in Qt `KanteStyle` forwards `Kirigami.Theme` live (any color scheme, light or dark, switched at runtime); on the web the Breeze palette follows `prefers-color-scheme`. Kante contributes shape and type only:

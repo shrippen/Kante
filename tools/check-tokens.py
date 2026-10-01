@@ -4,9 +4,9 @@
   - No raw hex colours outside tokens/variables.css. The only exception is a custom
     property that re-sets a token locally (e.g. `.stage{--bg1:#3c3836}`), and its value
     must be one of the hex values defined in tokens/variables.css.
-  - font-family always comes from a token: var(--font-heading|--font-sans|--font-mono) or inherit.
+  - font-family always comes from a token: var(--font-heading|--font-sans|--font-mono|--font-control) or inherit.
   - Web and apps share one palette: every colour in tokens/palette.json (dark and the
-    light theme "Leinen") has the same value as its custom property in tokens/variables.css.
+    light theme "Leinen" and Kante Gold) has the same value as its custom property in tokens/variables.css.
 
 Scans kante/css/*.css, kante/templates/*.html and docs/index.html (in HTML only <style>, style="…"
 and fill/stroke/color attributes). Exits 1 on any finding.
@@ -21,7 +21,7 @@ REPO = KANTE.parent
 HEX = re.compile(r"#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b")
 TOKEN_HEX = {h.lower() for h in HEX.findall((KANTE / "tokens/variables.css").read_text())}
 FONT = re.compile(r"font-family\s*:\s*([^;}\"]+)", re.I)
-FONT_OK = re.compile(r"^(var\(--font-(heading|sans|mono)\)|inherit)$")
+FONT_OK = re.compile(r"^(var\(--font-(heading|sans|mono|control)\)|inherit)$")
 CUSTOM_PROP = re.compile(r"\s*--[\w-]+\s*:")
 
 
@@ -59,7 +59,7 @@ def check(path):
     for m in FONT.finditer(text):
         value = " ".join(m.group(1).split())
         if not FONT_OK.match(value):
-            yield f"{rel}:{line(m.start())}: font-family {value!r}, use var(--font-heading|sans|mono)"
+            yield f"{rel}:{line(m.start())}: font-family {value!r}, use var(--font-heading|sans|mono|control)"
 
 
 def css_block(text, selector):
@@ -76,6 +76,7 @@ def check_shared_palette():
     palette = json.loads((KANTE / "tokens/palette.json").read_text())
     css = (KANTE / "tokens/variables.css").read_text()
     dark, light = css_block(css, ":root {"), css_block(css, ':root[data-theme="light"]')
+    gold = css_block(css, ':root[data-kante="gold"]')
     expected = [(":root", dark, "accent", palette["accent"])]
     for group in ("backgrounds", "foregrounds"):
         expected += [(":root", dark, k, v) for k, v in palette[group].items()]
@@ -87,6 +88,10 @@ def check_shared_palette():
     for group in ("backgrounds", "foregrounds", "semantic"):
         expected += [("light", light, k, v) for k, v in lt[group].items()]
     expected += [("light", light, k, v) for k, v in lt.get("extra", {}).items()]
+    gd = palette["gold"]
+    expected += [("gold", gold, "accent", gd["accent"])]
+    for group in ("backgrounds", "foregrounds", "semantic", "extra"):
+        expected += [("gold", gold, k, v) for k, v in gd[group].items()]
     for block, props, name, value in expected:
         if props.get(name) != value.lower():
             yield f"tokens/palette.json {name} = {value} but tokens/variables.css ({block}) has {props.get(name)}"

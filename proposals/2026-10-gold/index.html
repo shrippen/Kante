@@ -1,3 +1,341 @@
+<!doctype html>
+<html lang="de" data-kante="gold" data-own-lang>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kante Gold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>/* Kante v1 — https://github.com/shrippen/shrippen.github.io */
+/*
+ * Kante — CSS custom properties (web). Apps: qml/Kante, same values via tokens/palette.json
+ * https://github.com/shrippen/shrippen.github.io
+ *
+ * Gruvbox-inspired, warm, dark-first palette.
+ * Copy this block into your landing page <style> or import as a stylesheet.
+ */
+
+:root {
+  /* ── Backgrounds ── */
+  --bg-void:  #141312;   /* landing-page ground, darker than bg-hard */
+  --bg-hard:  #1d2021;   /* deepest: hero gradient, code blocks */
+  --bg0:      #282828;   /* page / widget background */
+  --bg-panel: #2a2826;   /* landing-page cards and panels */
+  --bg1:      #3c3836;   /* cards, elevated surfaces */
+  --bg2:      #504945;   /* borders, dividers */
+
+  /* ── Foregrounds ── */
+  --fg0:      #fbf1c7;   /* primary heading (sparingly) */
+  --fg1:      #ebdbb2;   /* body text */
+  --fg2:      #d5c4a1;   /* secondary text */
+  --fg3:      #a89984;   /* placeholder, disabled, footer */
+
+  /* ── Brand accent ── */
+  --accent:   #e8dcc4;   /* warm cream — icon fills, version badges */
+
+  /* ── Semantic colors (Gruvbox bright) ── */
+  --blue:     #83a598;   /* links, primary action */
+  --blue-hover: #6d9181; /* primary button hover (~10% darker) */
+  --aqua:     #8ec07c;   /* success, confirm */
+  --green:    #b8bb26;   /* positive diff, badges */
+  --yellow:   #fabd2f;   /* warning, attention */
+  --orange:   #fe8019;   /* active, highlight */
+  --red:      #fb4934;   /* error, destructive */
+  --purple:   #d3869b;   /* tags, categories */
+  --cyan:     #5ccfc4;   /* technical layer: focus, links, data, brackets. Lines and text, never large fills */
+  --cyan-tint: #1e2b2a;  /* ground of a selected row or a focused field */
+  --yellow-hi: #fdc94a;  /* primary hover (one step lighter) */
+  --red-text: #ff7d6b;   /* red as small text: 4.5:1 on every dark ground, bg1 included */
+  --yellow-lo: #e5a823;  /* primary pressed */
+
+  /* ── Semantic colors (Gruvbox neutral — for quieter contexts) ── */
+  --blue-n:   #458588;
+  --aqua-n:   #689d6a;
+  --green-n:  #98971a;
+  --yellow-n: #d79921;
+  --orange-n: #d65d0e;
+  --red-n:    #cc241d;
+  --purple-n: #b16286;
+  --cyan-n:   #3f9a94;   /* quiet lines only (4.4:1 on cards) */
+
+  /* ── Roles (follow the theme; see Light theme below) ── */
+  --field:    var(--bg-hard); /* input fields, nested surfaces */
+  --score:    var(--yellow);  /* scores, points, "how good is it" */
+  --hl:       var(--cyan);    /* current selection (selected tile, active row) */
+  --focus:    var(--cyan);    /* focus ring, everywhere */
+  --link:     var(--cyan);    /* links in running text */
+  --info:     var(--cyan);    /* info callouts and toasts, third feature tier */
+  --warn:     var(--orange);  /* warnings: callout, banner, middle tier of states */
+  --danger:   var(--red);     /* errors, destructive actions */
+  --danger-text: var(--red-text); /* error text, critical labels and counts (not fills) */
+  --on-state: var(--bg-void); /* text on a filled state colour (danger button, counters) */
+  --scrim:    rgba(20,19,18,.62); /* dimmed area behind dialogs and outside a crop */
+  --primary:  var(--yellow);  /* primary action, pressed segment, switch on, focus ring */
+  --on-primary: var(--bg-void); /* text on --primary */
+  --map-marker: var(--focus);   /* pins on a map (QML mapMarkerColor) */
+  --map-route:  var(--primary); /* a route or track on a map (QML mapRouteColor) */
+  --entity-fallback: var(--fg3); /* an entity without a colour of its own (QML entityFallbackColor) */
+
+  /* ── Tints: translucent steps of the theme colours for hover, drop targets, selection, outlines ── */
+  --tint-1:    color-mix(in srgb, var(--fg1) 8%, transparent);
+  --tint-2:    color-mix(in srgb, var(--fg1) 16%, transparent);
+  --tint-hl:   color-mix(in srgb, var(--cyan) 12%, transparent);
+  --tint-hl-2: color-mix(in srgb, var(--cyan) 25%, transparent);
+  --tint-warn: color-mix(in srgb, var(--orange) 14%, transparent);
+
+  /* ── Data palette: series colours of charts, in this order (red stays danger) ── */
+  --d1: var(--cyan);
+  --d2: var(--yellow);
+  --d3: var(--purple);
+  --d4: var(--aqua);
+  --d5: var(--orange);
+  --d6: var(--fg3);
+
+  /* ── Paper: stickers and brand chips (cream label, dark ink) ── */
+  --paper:    var(--accent);
+  --on-paper: var(--bg-void);
+
+  /* ── Layout ── */
+  --radius:   12px;
+  --max-w:    860px;
+  --max-w-wide: 1280px;  /* landing hero and feature rows */
+  --gutter:   clamp(1rem, 5.6vw, 4.5rem);
+  --chamfer:  16px;      /* top-right corner cut on boxes (surfaces) */
+  --cut-m:    10px;      /* buttons, tiles, tabs, menus */
+  --cut-s:    6px;       /* small buttons, stickers */
+  --h-s:      32px;      /* control heights: small, medium, large */
+  --h-m:      40px;
+  --h-l:      48px;
+
+  /* ── Motion (only under prefers-reduced-motion: no-preference) ── */
+  --dur-fast: 120ms;     /* colour and border changes */
+  --dur:      200ms;     /* cut grows, lift, slide */
+  --dur-slow: 450ms;     /* entrances: bar, scan, cascade */
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --ease-snap: cubic-bezier(.3,1.5,.5,1); /* mechanical snap with a small overshoot */
+
+  /* ── Typography ── */
+  --font-heading: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+               Ubuntu, Cantarell, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  --font-control: var(--font-heading); /* buttons; Kante Gold keeps Rajdhani here while titles turn serif */
+}
+
+/*
+ * Light theme ("Leinen") — opt-in via <html data-theme="light">.
+ * Token names describe ROLES, not lightness: --bg-void is still the page
+ * ground, --bg-panel the cards, --bg2 the borders, --fg1 the body text.
+ * Landing pages stay dark-first; apps that need a light mode use this.
+ * Semantic colors are the darkened counterparts so every text pair reaches
+ * WCAG AA on the ground and on cards.
+ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* ── Backgrounds ── */
+  --bg-void:  #f0e9d6;   /* page ground: linen, between too-yellow #fbf1c7 and too-bright #f5f1e8 */
+  --bg-hard:  #e6dec6;   /* sunk areas: code, progress tracks */
+  --bg0:      #f0e9d6;
+  --bg-panel: #f7f2e4;   /* cards and panels */
+  --bg1:      #fbf8ee;   /* fields, elevated surfaces */
+  --bg2:      #d3c8ac;   /* borders, dividers */
+
+  /* ── Foregrounds ── */
+  --fg0:      #282828;
+  --fg1:      #3c3836;
+  --fg2:      #665c54;
+  --fg3:      #6a5f52;
+
+  /* ── Brand accent ── */
+  --accent:   #3c3836;   /* icon fill on light: dark square, yellow marks */
+
+  /* ── Semantic colors (darkened for light grounds) ── */
+  --blue:     #076678;
+  --blue-hover: #05505f;
+  --aqua:     #427b58;
+  --green:    #4f5d0a;
+  --yellow:   #8a5a00;
+  --orange:   #af3a03;
+  --red:      #9d0006;
+  --purple:   #8f3f71;
+  --cyan:     #0f6b66;   /* 5.2:1 on the ground */
+  --cyan-tint: #d9ebe4;
+  --red-text: #9d0006;
+
+  --field:    var(--bg1);
+  --scrim:    rgba(40,40,40,.5);
+  --primary:  #fabd2f;   /* yellow fill with ink, as in the dark theme (not ochre with brown text) */
+  --on-primary: #141312;
+  --yellow-hi: #fcc845;
+  --yellow-lo: #e5a823;
+  --on-state: #fbf8ee;
+}
+
+/*
+ * Kante Light (apps) — opt-in via <html data-kante="light">.
+ * Kante shapes on the platform look: colors are Breeze and follow the
+ * system's light/dark setting (prefers-color-scheme), like Kirigami.Theme
+ * does for Qt apps. Controls keep a small radius and the system font;
+ * css/components.css "Kante Light" adds the shape and type rules.
+ * Semantic colors are the Breeze inks (readable as text on the ground).
+ */
+:root[data-kante="light"] {
+  color-scheme: light;
+
+  --bg-void:  #eff0f1;   /* window ground */
+  --bg-hard:  #e3e5e7;   /* sunk areas, tracks */
+  --bg0:      #eff0f1;
+  --bg-panel: #fcfcfc;   /* cards, panels (view) */
+  --bg1:      #fcfcfc;   /* fields */
+  --bg2:      #c9ced2;   /* borders */
+
+  --fg0:      #232629;
+  --fg1:      #232629;
+  --fg2:      #4d545b;
+  --fg3:      #646e78;
+
+  --accent:   #232629;
+
+  --blue:     #1d6fa5;
+  --blue-hover: #155a87;
+  --aqua:     #1e8449;
+  --green:    #1e8449;
+  --yellow:   #a84f00;   /* "check" tier: Breeze neutral, darkened */
+  --orange:   #a84f00;
+  --red:      #bf2e3e;
+  --purple:   #8e44ad;
+
+  --field:    var(--bg1);
+  --score:    var(--blue);
+  --hl:       #3daee9;   /* Breeze highlight: selection, focus */
+  --scrim:    rgba(35,38,41,.5);
+  --primary:  #3daee9;
+  --on-primary: #ffffff;
+  --cyan:     #1d6fa5;   /* Kante Light has no cyan: the platform's link and focus colours */
+  --cyan-n:   #1d6fa5;
+  --cyan-tint: #e3eef6;
+  --red-text: var(--red);
+  --yellow-hi: #3daee9;
+  --yellow-lo: #2e9bd4;
+  --on-state: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-kante="light"] {
+    color-scheme: dark;
+
+    --bg-void:  #202326;
+    --bg-hard:  #1b1e20;
+    --bg0:      #202326;
+    --bg-panel: #292c30;
+    --bg1:      #1b1e20;
+    --bg2:      #41464b;
+
+    --fg0:      #ffffff;
+    --fg1:      #fcfcfc;
+    --fg2:      #d1d5d9;
+    --fg3:      #a1a9b1;
+
+    --accent:   #fcfcfc;
+
+    --blue:     #3daee9;
+    --blue-hover: #2e9bd4;
+    --aqua:     #3ec57a;
+    --green:    #3ec57a;
+    --yellow:   #f69a3d;
+    --orange:   #f69a3d;
+    --red:      #ed5a6a;
+    --purple:   #b56fd0;
+
+    --scrim:    rgba(0,0,0,.55);
+    --cyan:     #3daee9;
+    --cyan-n:   #3daee9;
+    --cyan-tint: #1e3342;
+    --red-text: var(--red);
+    --yellow-hi: #3daee9;
+    --yellow-lo: #2e9bd4;
+    --on-state: #202326;
+  }
+}
+
+/*
+ * Kante Gold — opt-in via <html data-kante="gold">. Only Kintsugi uses it (see AGENT-RULE.md).
+ * The noble variant: the same components and sizes on urushi lacquer, paper text and gold.
+ * Every cut edge is gilded, bars are 2 px, titles and figures are Spectral, motion glides.
+ * Dark only. css/components.css "Kante Gold" adds the shape, type and motion rules.
+ * Patina (verdigris) takes cyan's roles: focus, links, info.
+ */
+:root[data-kante="gold"] {
+  color-scheme: dark;
+
+  /* ── Backgrounds: lacquer ── */
+  --bg-void:  #14110f;   /* urushi: page ground */
+  --bg-hard:  #0f0d0b;   /* sunk areas, fields, tracks */
+  --bg0:      #1c1815;
+  --bg-panel: #1c1815;   /* lacquer: cards and panels */
+  --bg1:      #262019;   /* elevated, hover */
+  --bg2:      #3b3229;   /* borders, dividers */
+
+  /* ── Foregrounds: paper ── */
+  --fg0:      #faf5e9;
+  --fg1:      #efe8d8;
+  --fg2:      #cdc2ae;
+  --fg3:      #a39885;   /* ash: 6.6:1 on the ground */
+
+  /* ── Brand accent: pale gold ── */
+  --accent:   #e8d4a6;
+
+  /* ── Semantic colors: metals and pigments ── */
+  --blue:     #8aa1ab;   /* slate */
+  --blue-hover: #77909a;
+  --aqua:     #97ad7a;   /* jade: success */
+  --green:    #a9b26b;
+  --yellow:   #d4a640;   /* gold: primary, lines, score */
+  --orange:   #d08a55;   /* copper: warning */
+  --red:      #d0705a;   /* cinnabar: error */
+  --purple:   #c497a8;   /* ume: tags */
+  --cyan:     #8fb8aa;   /* patina: focus, links, info */
+  --cyan-n:   #6f9488;
+  --cyan-tint: #1b2321;
+  --yellow-hi: #e0b65a;
+  --yellow-lo: #b88f2f;
+  --red-text: #e48b74;
+
+  --scrim:    rgba(15,13,11,.72);
+  --d1: var(--yellow);
+  --d2: var(--cyan);
+
+  /* ── Gold only ── */
+  --gold-line: color-mix(in srgb, var(--yellow) 32%, transparent); /* hairlines, frames */
+  --gild:     1.6px;     /* the gold line on every cut edge */
+  --bar:      2px;       /* state and tier bars (Kante: 4 px) */
+
+  /* ── Motion: glides, no overshoot ── */
+  --dur-fast: 160ms;
+  --dur:      280ms;
+  --dur-slow: 700ms;
+  --ease-snap: cubic-bezier(.2,.8,.2,1);
+
+  /* ── Typography: serif titles and figures, Rajdhani stays on the controls ── */
+  --font-heading: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-control: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+/* ── Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg-void);color:var(--fg1);font-family:var(--font-sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--font-mono);font-size:.85em;color:var(--fg2)}
+/* The hidden attribute wins over every Kante display rule (.tile-tools, .bulk-bar, .editbar, …) */
+
+/* ── Language: paired elements, e.g. <p lang="en">…</p><p lang="de">…</p>.
+   <html lang> is "en" by default; shrippen.js switches it. ── */
+html[lang="en"] [lang="de"],html[lang="de"] [lang="en"]{display:none!important}
 /* Registered so the cut can animate (A01, A19). */
 /* [hidden] wins over every display rule below; here, not in base.css, so apps without the reset get it too */
 [hidden]{display:none!important}
@@ -1400,3 +1738,500 @@ input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:
   .foot-brand img{width:64px;height:64px}
   .foot-cols{gap:2rem}
 }
+</style>
+<style>/* Seitenlayout des Katalogs */
+.cat{max-width:1180px;margin:0 auto;padding:2.4rem var(--gutter) 5rem;display:flex;flex-direction:column;gap:3rem}
+.cat-head,.cat-sec{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.thesis{font-family:var(--font-heading);font-style:italic;font-size:clamp(1.2rem,3vw,1.55rem);line-height:1.4;color:var(--fg0);max-width:40rem}
+.lead{color:var(--fg2);max-width:46rem}.muted{color:var(--fg3)}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:1rem;align-items:start}
+.cat-cell{display:flex;flex-direction:column;gap:.8rem;min-width:0}
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:.8rem}
+.sw{display:flex;flex-direction:column;gap:.15rem;padding-bottom:.5rem;border-bottom:1px solid var(--gold-line)}
+.sw>i{display:block;height:3rem;background:var(--c);box-shadow:inset 0 0 0 1px var(--gold-line);margin-bottom:.35rem}
+.sw>b{font-family:var(--font-heading);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--fg0)}
+.sw>span{font-family:var(--font-mono);font-size:.68rem;color:var(--fg3)}
+.type-row{display:grid;grid-template-columns:minmax(8rem,12rem) minmax(0,1fr);gap:.4rem 1.4rem;align-items:center;padding-block:.8rem;border-bottom:1px solid var(--gold-line)}
+.type-row>span:first-child{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.shots-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:1rem}
+.shots-2 figure{border:1px solid var(--gold-line)}.shots-2 img{display:block;width:100%;height:auto}
+@media (max-width:560px){.type-row{grid-template-columns:1fr}}
+</style>
+<script>/* Kante v1 — language switch, nav brand reveal, copy button, motion.
+ * Load synchronously in <head> so the stored language applies before first paint.
+ * Motion (entrances, counters, typing, sliding tabs, scroll meter) only runs when
+ * the reader has not asked for reduced motion; html.motion marks that. */
+(function () {
+  var d = document, h = d.documentElement, KEY = 'shrippen-lang';
+  h.classList.add('js');
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!still && 'IntersectionObserver' in window) h.classList.add('motion');
+
+  // An app with its own language handling (Andon) puts data-own-lang on <html>: Kante then
+  // leaves <html lang> and the .lang switch alone.
+  var ownLang = h.hasAttribute('data-own-lang');
+  var lang = 'en'; // English is the default, whatever the browser language is
+  try { var s = localStorage.getItem(KEY); if (s === 'de' || s === 'en') lang = s; } catch (e) {}
+  if (!ownLang) h.lang = lang;
+
+  function mark() {
+    if (ownLang) return;
+    [].forEach.call(d.querySelectorAll('.lang button'), function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === h.lang));
+    });
+  }
+
+  d.addEventListener('DOMContentLoaded', function () {
+    mark();
+
+    d.addEventListener('click', function (e) {
+      var lb = !ownLang && e.target.closest && e.target.closest('.lang button');
+      if (lb) {
+        h.lang = lb.getAttribute('data-lang');
+        try { localStorage.setItem(KEY, h.lang); } catch (x) {}
+        mark();
+        return;
+      }
+      var cb = e.target.closest && e.target.closest('.copy-btn');
+      if (cb) {
+        var box = cb.closest('.cmd-row').querySelector('.cmd-box');
+        navigator.clipboard.writeText(box.textContent.trim()).then(function () {
+          cb.classList.add('copied');
+          setTimeout(function () { cb.classList.remove('copied'); }, 1500);
+        });
+      }
+    });
+
+    // Project name in the nav appears once the hero is out of view.
+    var nav = d.querySelector('.nav'), hero = d.querySelector('.hero');
+    if (nav && hero && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        nav.classList.toggle('brand-on', !en[0].isIntersecting);
+      }, { rootMargin: '-56px 0px 0px 0px' }).observe(hero);
+    } else if (nav) {
+      nav.classList.add('brand-on');
+    }
+
+    // Scroll meter under the nav (A20).
+    if (nav) {
+      var meter = d.createElement('span');
+      meter.className = 'nav-meter';
+      meter.setAttribute('aria-hidden', 'true');
+      nav.appendChild(meter);
+      var onScroll = function () {
+        var max = d.documentElement.scrollHeight - innerHeight;
+        nav.style.setProperty('--scroll', max > 0 ? Math.min(1, scrollY / max) : 0);
+      };
+      addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    // Tabs: the yellow tab slides to the selected one (A11).
+    [].forEach.call(d.querySelectorAll('.tabs'), function (tabs) {
+      var ind = d.createElement('span');
+      ind.className = 'tabs-ind';
+      ind.setAttribute('aria-hidden', 'true');
+      tabs.insertBefore(ind, tabs.firstChild);
+      tabs.classList.add('has-ind');
+      var place = function () {
+        var cur = tabs.querySelector('[aria-selected="true"],[aria-current="page"]');
+        ind.style.width = cur ? cur.offsetWidth + 'px' : '0';
+        ind.style.left = cur ? cur.offsetLeft + 'px' : '0';
+      };
+      tabs.addEventListener('click', function (e) {
+        var t = e.target.closest('[role="tab"]');
+        if (!t) return;
+        [].forEach.call(tabs.querySelectorAll('[role="tab"]'), function (x) { x.setAttribute('aria-selected', String(x === t)); });
+        place();
+      });
+      place();
+      addEventListener('resize', place);
+      if (d.fonts) d.fonts.ready.then(place);
+    });
+
+    // ── Chart read-out and curve editor (Kante 1.6) ──────────────────────
+    // .chart-wrap[data-readout] > svg.chart: on hover a rule and marks sit on the nearest point,
+    //   .readout shows data-labels (svg) and data-values (each .line) at that index.
+    // svg.curve[data-editable]: drag .pt squares, arrows move the focused one; fires "change"
+    //   with detail = [{x, y}]. data-x/y-min/max and data-step give the range.
+    var NS = 'http://www.w3.org/2000/svg';
+    [].forEach.call(d.querySelectorAll('.chart-wrap[data-readout]'), function (wrap) {
+      var svg = wrap.querySelector('svg'), lines = svg.querySelectorAll('.line'), tip = wrap.querySelector('.readout');
+      if (!lines.length || !tip) return;
+      var pts = [].map.call(lines, function (l) {
+        return l.getAttribute('points').trim().split(/\s+/).map(function (p) { var a = p.split(','); return [+a[0], +a[1]]; });
+      });
+      var probe = d.createElementNS(NS, 'line'), marks = [];
+      probe.setAttribute('class', 'probe'); probe.style.display = 'none'; svg.appendChild(probe);
+      [].forEach.call(lines, function (l, i) {
+        var m = d.createElementNS(NS, 'rect');
+        m.setAttribute('class', 'mark ' + (l.getAttribute('class').match(/s\d/) || [''])[0]); m.setAttribute('width', 7); m.setAttribute('height', 7);
+        m.style.display = 'none'; svg.appendChild(m); marks.push(m);
+      });
+      function off() { probe.style.display = 'none'; marks.forEach(function (m) { m.style.display = 'none'; }); wrap.classList.remove('is-reading'); }
+      svg.addEventListener('pointerleave', off);
+      svg.addEventListener('pointermove', function (e) {
+        var r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal, x = (e.clientX - r.left) / r.width * vb.width + vb.x;
+        var best = 0;
+        pts[0].forEach(function (p, i) { if (Math.abs(p[0] - x) < Math.abs(pts[0][best][0] - x)) best = i; });
+        var px = pts[0][best][0], labels = (svg.dataset.labels || '').split(',');
+        probe.setAttribute('x1', px); probe.setAttribute('x2', px); probe.setAttribute('y1', vb.y); probe.setAttribute('y2', vb.y + vb.height);
+        probe.style.display = '';
+        var html = labels[best] ? '<b>' + labels[best] + '</b>' : '';
+        [].forEach.call(lines, function (l, i) {
+          var p = pts[i][best]; if (!p) return;
+          marks[i].setAttribute('x', p[0] - 3.5); marks[i].setAttribute('y', p[1] - 3.5); marks[i].style.display = '';
+          html += (l.dataset.values || '').split(',')[best] + (svg.dataset.unit || '') + ' ';
+        });
+        tip.innerHTML = html;
+        wrap.classList.add('is-reading');
+        var w = tip.offsetWidth, left = (px - vb.x) / vb.width * r.width;
+        tip.style.left = (left > r.width / 2 ? left - w - 8 : left + 8) + 'px';
+      });
+    });
+    [].forEach.call(d.querySelectorAll('svg.curve[data-editable]'), function (svg) {
+      var D = svg.dataset, X0 = +D.xMin, X1 = +D.xMax, Y0 = +D.yMin, Y1 = +D.yMax, step = +(D.step || 1);
+      var box = svg.querySelector('.frame').getBBox(), line = svg.querySelector('.line');
+      var dots = [].slice.call(svg.querySelectorAll('.pt')), cur = null;
+      function pos(p) { return [box.x + (p.x - X0) / (X1 - X0) * box.width, box.y + box.height - (p.y - Y0) / (Y1 - Y0) * box.height]; }
+      function val(dot) { return { x: +dot.dataset.x, y: +dot.dataset.y }; }
+      function draw() {
+        var p = dots.map(function (dt) { return pos(val(dt)); });
+        dots.forEach(function (dt, i) { dt.setAttribute('x', p[i][0] - 5); dt.setAttribute('y', p[i][1] - 5); dt.setAttribute('aria-valuenow', dt.dataset.y); dt.setAttribute('aria-valuetext', dt.dataset.x + ' → ' + dt.dataset.y); });
+        var all = [[box.x, p[0][1]]].concat(p, [[box.x + box.width, p[p.length - 1][1]]]);
+        line.setAttribute('points', all.map(function (q) { return q.join(','); }).join(' '));
+      }
+      function put(i, x, y) {
+        var lo = i > 0 ? +dots[i - 1].dataset.x + step : X0, hi = i < dots.length - 1 ? +dots[i + 1].dataset.x - step : X1;
+        var ylo = i > 0 ? +dots[i - 1].dataset.y : Y0, yhi = i < dots.length - 1 ? +dots[i + 1].dataset.y : Y1;
+        var sn = function (v) { return Math.round(v / step) * step; };
+        dots[i].dataset.x = Math.max(lo, Math.min(hi, sn(x)));
+        dots[i].dataset.y = Math.max(ylo, Math.min(yhi, sn(y)));
+        draw();
+        svg.dispatchEvent(new CustomEvent('change', { detail: dots.map(val) }));
+      }
+      dots.forEach(function (dt, i) {
+        dt.setAttribute('tabindex', 0); dt.setAttribute('role', 'slider');
+        dt.addEventListener('pointerdown', function (e) { cur = i; dt.setPointerCapture(e.pointerId); dt.focus(); e.preventDefault(); });
+        dt.addEventListener('pointermove', function (e) {
+          if (cur !== i) return;
+          var r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+          var sx = (e.clientX - r.left) / r.width * vb.width + vb.x, sy = (e.clientY - r.top) / r.height * vb.height + vb.y;
+          put(i, X0 + (sx - box.x) / box.width * (X1 - X0), Y0 + (box.y + box.height - sy) / box.height * (Y1 - Y0));
+        });
+        dt.addEventListener('pointerup', function () { cur = null; });
+        dt.addEventListener('keydown', function (e) {
+          var v = val(dt), k = e.key, dx = k === 'ArrowRight' ? step : k === 'ArrowLeft' ? -step : 0, dy = k === 'ArrowUp' ? step : k === 'ArrowDown' ? -step : 0;
+          if (!dx && !dy) return;
+          e.preventDefault(); put(i, v.x + dx, v.y + dy);
+        });
+      });
+      draw();
+    });
+
+    // ── Live data API (window.Kante) ─────────────────────────────────────
+    // tick(el, text)   a value changed: it counts up to the new number and a cyan strip fades
+    // fresh(el)        new data arrived: a 2px line runs along the bottom edge of the tile
+    // stale(el, on, t) data is old: the tile dims, warning stripes sit on its bottom edge, t is the age
+    // edit(box, on)    edit mode: tier bars turn cyan, brackets appear one after the other
+    // settle(el, from) after a drop: the element glides from `from` (a DOMRect) into place with a small overshoot
+    var K = window.Kante = window.Kante || {};
+    var moving = h.classList.contains('motion');
+    function restart(el, cls, ms) {
+      el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls);
+      setTimeout(function () { el.classList.remove(cls); }, ms);
+    }
+    function lineOf(el) {
+      var l = el.querySelector(':scope > .live-line');
+      if (!l) {
+        l = d.createElement('span');
+        l.className = 'live-line';
+        l.setAttribute('aria-hidden', 'true');
+        el.appendChild(l);
+      }
+      return l;
+    }
+    K.fresh = function (el) {
+      if (!moving || !el) return;
+      el.setAttribute('data-live-tile', '');
+      lineOf(el);
+      restart(el, 'is-fresh', 950);
+    };
+    K.stale = function (el, on, text) {
+      if (!el) return;
+      el.setAttribute('data-live-tile', '');
+      var l = lineOf(el);
+      if (text !== undefined) l.setAttribute('data-text', text);
+      el.classList.toggle('is-stale', !!on);
+    };
+    var counting = false;
+    function ints(a, b) {
+      var re = /^\D*\d[\d\s\u00a0.,]*\D*$/;
+      return re.test(a) && re.test(b) && !/[.,]\d{1,2}(\D|$)/.test(a + b);
+    }
+    K.tick = function (el, text) {
+      if (!el) return;
+      var from = el.textContent, to = text === undefined ? from : text;
+      if (text !== undefined && text === from) return;
+      if (moving) restart(el, 'is-changed', 1150);
+      if (!moving || from === to || !ints(from, to)) { if (text !== undefined) el.textContent = to; return; }
+      var a = parseInt(from.replace(/\D/g, ''), 10), b = parseInt(to.replace(/\D/g, ''), 10);
+      var sep = (/\d([\s\u00a0.,])\d/.exec(to) || [])[1] || '';
+      var pre = /^\D*/.exec(to)[0], post = /\D*$/.exec(to)[0];
+      var n = 0, steps = 14;
+      counting = true;
+      var t = setInterval(function () {
+        n++;
+        var v = Math.round(a + (b - a) * (1 - Math.pow(1 - n / steps, 3)));
+        var s = String(v).replace(/\B(?=(\d{3})+(?!\d))/g, sep === '' ? '' : sep);
+        el.textContent = n >= steps ? to : pre + s + post;
+        if (n >= steps) { clearInterval(t); setTimeout(function () { counting = false; }, 0); }
+      }, 45);
+    };
+    K.edit = function (box, on) {
+      if (!box) return;
+      [].forEach.call(box.children, function (c, i) { c.style.setProperty('--i', i % 12); });
+      box.classList.toggle('is-editing', on === undefined ? !box.classList.contains('is-editing') : !!on);
+    };
+    K.settle = function (el, from) {
+      if (!moving || !el || !from || !el.animate) return;
+      var to = el.getBoundingClientRect();
+      var dx = from.left - to.left, dy = from.top - to.top;
+      if (!dx && !dy) return;
+      el.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }],
+                 { duration: 380, easing: 'cubic-bezier(.3,1.5,.5,1)' });
+    };
+    // Automatic: [data-live] values react to text changes, [data-live-tile] surfaces to a settled htmx swap.
+    if ('MutationObserver' in window) {
+      var seen = new WeakMap();
+      [].forEach.call(d.querySelectorAll('[data-live]'), function (e) { seen.set(e, e.textContent); });
+      new MutationObserver(function (list) {
+        if (counting) return;
+        list.forEach(function (m) {
+          var e = m.target.nodeType === 1 ? m.target : m.target.parentNode;
+          e = e && e.closest && e.closest('[data-live]');
+          if (!e) return;
+          var was = seen.get(e), now = e.textContent;
+          seen.set(e, now);
+          if (was !== undefined && was !== now && moving) { restart(e, 'is-changed', 1150); }
+        });
+      }).observe(d.body, { subtree: true, childList: true, characterData: true });
+    }
+    d.addEventListener('htmx:afterSettle', function (e) {
+      var t = e.target;
+      if (!t || !t.querySelectorAll) return;
+      if (t.hasAttribute && t.hasAttribute('data-live-tile')) K.fresh(t);
+      [].forEach.call(t.querySelectorAll('[data-live-tile]'), K.fresh);
+    });
+
+    // ── Fold state (Kante 1.8) ───────────────────────────────────────────
+    // details.fold[data-key]: data-open ("true" / "false", written by the server) sets the fold at
+    // load and after an htmx swap. Every open or close by the user fires "kante:fold" (bubbles)
+    // with detail {key, open}, so the app can keep it on the server:
+    //   document.addEventListener('kante:fold', function (e) { post('/fold', e.detail); });
+    var FOLD = 'details.fold[data-key]';
+    K.folds = function (root) {
+      root = root || d;
+      var all = [].slice.call(root.querySelectorAll ? root.querySelectorAll(FOLD) : []);
+      if (root.matches && root.matches(FOLD)) all.push(root);
+      all.forEach(function (f) {
+        if (f.dataset.open === undefined) { f.dataset.open = String(f.open); return; }
+        f.open = f.dataset.open === 'true';
+      });
+    };
+    K.folds();
+    d.addEventListener('htmx:afterSettle', function (e) { if (e.target) K.folds(e.target); });
+    // toggle does not bubble: listen while capturing. A toggle that matches data-open was ours.
+    d.addEventListener('toggle', function (e) {
+      var f = e.target;
+      if (!f.matches || !f.matches(FOLD)) return;
+      var open = String(f.open);
+      if (f.dataset.open === undefined || f.dataset.open === open) { f.dataset.open = open; return; }
+      f.dataset.open = open;
+      f.dispatchEvent(new CustomEvent('kante:fold', { bubbles: true, detail: { key: f.dataset.key, open: f.open } }));
+    }, true);
+
+    if (!h.classList.contains('motion')) return;
+
+    // Counter (A06): figures in the facts strip roll up digit by digit.
+    [].forEach.call(d.querySelectorAll('.fact b'), function (b) {
+      var m = /^(\D*)(\d+)(\D*)$/.exec(b.textContent.trim());
+      if (!m) return;
+      b.setAttribute('aria-label', b.textContent.trim());
+      b.textContent = m[1];
+      m[2].split('').forEach(function (ch) {
+        var col = d.createElement('i'), roll = d.createElement('i');
+        col.className = 'odo-d';
+        roll.className = 'odo-r';
+        col.setAttribute('aria-hidden', 'true');
+        for (var i = 0; i <= 9; i++) { var x = d.createElement('i'); x.textContent = i; roll.appendChild(x); }
+        col.appendChild(roll);
+        col.dataset.v = ch;
+        b.appendChild(col);
+      });
+      if (m[3]) b.appendChild(d.createTextNode(m[3]));
+      b.classList.add('odo');
+    });
+
+    // Teleprinter (A07): [data-type] labels type in with a block cursor.
+    [].forEach.call(d.querySelectorAll('[data-type]'), function (el) {
+      el.dataset.text = el.textContent;
+      el.style.minHeight = el.offsetHeight + 'px';
+      el.textContent = '';
+    });
+
+    // Entrances (A04 scan, A05 bar, A17 cascade) and the two above, once in view.
+    var targets = d.querySelectorAll('.feat,.tiles>.tile,.hero-shot,.showcase figure,.shots figure,.fact b.odo,[data-type]');
+    [].forEach.call(d.querySelectorAll('.features,.tiles'), function (g) {
+      [].forEach.call(g.children, function (c, i) { c.style.setProperty('--i', i % 12); });
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        io.unobserve(el);
+        el.classList.add('is-in');
+        if (el.classList.contains('odo')) {
+          [].forEach.call(el.querySelectorAll('.odo-d'), function (col, i) {
+            var roll = col.firstChild;
+            roll.style.transitionDelay = (i * 120) + 'ms';
+            requestAnimationFrame(function () { roll.style.transform = 'translateY(-' + col.dataset.v + 'em)'; });
+          });
+        }
+        if (el.dataset.text !== undefined) {
+          var text = el.dataset.text, n = 0;
+          el.classList.add('is-typing');
+          var t = setInterval(function () {
+            el.textContent = text.slice(0, ++n);
+            if (n >= text.length) { clearInterval(t); setTimeout(function () { el.classList.remove('is-typing'); }, 2000); }
+          }, 55);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    [].forEach.call(targets, function (el) {
+      if (el.classList.contains('feat') || el.matches('.tiles>.tile,.hero-shot,.showcase figure,.shots figure')) el.setAttribute('data-entrance', '');
+      io.observe(el);
+    });
+  });
+})();
+</script>
+</head>
+<body>
+<nav class="nav brand-on"><div class="nav-inner is-wrap">
+  <a class="nav-brand" href="#top">Kante Gold</a>
+  <div class="nav-links">
+    <a href="#grundsaetze">Grundsätze</a><a href="#palette">Palette</a><a href="#schrift">Schrift</a><a href="#bauteile" aria-current="page">Bauteile 1.10</a><a href="#kintsugi">Kintsugi</a>
+  </div>
+</div><span class="seam" aria-hidden="true"></span></nav>
+
+<main class="cat" id="top">
+
+<header class="cat-head">
+  <span class="toolbar-label">Kante 1.10 · Variante · nur Kintsugi</span>
+  <h1 class="page-title">Kante Gold</h1>
+  <span class="seam is-short" aria-hidden="true"></span>
+  <p class="thesis">Kante ist die Werkstatt. Kante Gold ist der Lack und das Blattgold darauf: dasselbe Gerüst, edler ausgeführt.</p>
+  <p class="lead">Kintsugi repariert Brüche mit Gold, Kante heißt nach seinem Bruch, der abgeschnittenen Ecke. In Kante Gold <strong>wird die Kante vergoldet</strong>. Bauteile, Klassen, Maße und Rollen bleiben die von Kante; <code>&lt;html data-kante="gold"&gt;</code> tauscht Farben, Titelschrift, Linien und Bewegung. Diese Seite ist selbst in Kante Gold gesetzt.</p>
+</header>
+
+<section class="cat-sec" id="grundsaetze">
+  <h2 class="block-title">Grundsätze</h2>
+  <div class="cat-grid">
+    <div class="tier-card" data-tier="yellow"><b>Die vergoldete Kante</b><span>Jede Schnittecke trägt eine 1,6-px-Goldlinie (<code>--gild</code>). Das einzige Ornament.</span></div>
+    <div class="tier-card" data-tier="yellow"><b>Gold ist kostbar</b><span>Höchstens 10 % Gold, eine gefüllte Goldfläche pro Ansicht. Gold ist Linie und Schrift.</span></div>
+    <div class="tier-card"><b>Weniger Gewicht</b><span>Balken 2 px (<code>--bar</code>), Rahmen als Goldhaarlinie (<code>--gold-line</code>), keine Warnstreifen.</span></div>
+    <div class="tier-card"><b>Serife für Titel und Zahlen</b><span>Spectral 500 in gesperrten Versalien. Bedienelemente bleiben Rajdhani (<code>--font-control</code>), Labels JetBrains Mono.</span></div>
+    <div class="tier-card" data-tier="cyan"><b>Ruhe statt Mechanik</b><span>160 / 280 / 700 ms, gleiten ohne Überschwingen; ein Goldschimmer zeigt Arbeit.</span></div>
+    <div class="tier-card" data-tier="cyan"><b>Naht und Bruchgrund</b><span><code>.seam</code> unter Navigation und Titeln, das Bruchmuster liegt leise hinter jeder Seite.</span></div>
+  </div>
+</section>
+
+<section class="cat-sec" id="palette">
+  <h2 class="block-title">Palette</h2>
+  <p class="muted">Kontrast gegen den Lackgrund in Klammern; alle Textpaare erreichen 4,5:1 auch auf Feldern.</p>
+  <div class="swatches">
+    <div class="sw" style="--c:var(--bg-void)"><i></i><b>Urushi</b><span>--bg-void</span></div>
+    <div class="sw" style="--c:var(--bg-panel)"><i></i><b>Lack</b><span>--bg-panel</span></div>
+    <div class="sw" style="--c:var(--bg1)"><i></i><b>Lack hell</b><span>--bg1</span></div>
+    <div class="sw" style="--c:var(--fg1)"><i></i><b>Papier</b><span>--fg1 (15,4)</span></div>
+    <div class="sw" style="--c:var(--fg3)"><i></i><b>Asche</b><span>--fg3 (6,6)</span></div>
+    <div class="sw" style="--c:var(--yellow)"><i></i><b>Gold</b><span>--primary (8,4)</span></div>
+    <div class="sw" style="--c:var(--accent)"><i></i><b>Blassgold</b><span>--accent (12,9)</span></div>
+    <div class="sw" style="--c:var(--cyan)"><i></i><b>Patina</b><span>--focus, --link (8,6)</span></div>
+    <div class="sw" style="--c:var(--aqua)"><i></i><b>Jade</b><span>Erfolg (7,7)</span></div>
+    <div class="sw" style="--c:var(--orange)"><i></i><b>Kupfer</b><span>--warn (6,7)</span></div>
+    <div class="sw" style="--c:var(--red)"><i></i><b>Zinnober</b><span>--danger (5,5)</span></div>
+    <div class="sw" style="--c:var(--purple)"><i></i><b>Ume</b><span>Tags (7,5)</span></div>
+  </div>
+</section>
+
+<section class="cat-sec" id="schrift">
+  <h2 class="block-title">Schrift</h2>
+  <div class="type-row"><span>Titel · Spectral 500</span><span class="page-title">Guten Morgen</span></div>
+  <div class="type-row"><span>Zahlen</span><div class="kpi-row"><div class="kpi"><b>62%</b><span>Annahmequote</span><span class="delta up">+8 Pkt.</span></div><div class="kpi"><b>1 480 €</b><span>Angebot</span></div></div></div>
+  <div class="type-row"><span>Bedienung · Rajdhani 600</span><span class="row"><button class="btn btn-accent" type="button">Annehmen</button><button class="btn btn-outline" type="button">Zurückstellen</button><button class="btn btn-data btn-sm" type="button">Mail-Entwurf</button><button class="btn btn-quiet btn-sm" type="button">Verwerfen</button></span></div>
+  <div class="type-row"><span>Label · JetBrains Mono</span><span class="toolbar-label">Letzter Lauf heute 06:30</span></div>
+  <div class="type-row"><span>Text · System-Sans</span><span class="muted">Fließtext bleibt die Systemschrift wie in Kante.</span></div>
+</section>
+
+<section class="cat-sec" id="bauteile">
+  <h2 class="block-title">Bauteile 1.10</h2>
+  <p class="muted">Neu in Kante 1.10 und für alle Projekte nutzbar; hier im Stil Gold. Ohne <code>data-kante="gold"</code> sehen sie aus wie der Rest von Kante.</p>
+
+  <div class="cat-grid">
+    <div class="cat-cell">
+      <span class="h-label"><code>.thread</code> · <code>.msg</code> (QML <code>KanteMessage</code>)</span>
+      <div class="thread">
+        <div class="msg" data-from="ai"><header><span>Kintsugi</span><time>09:12</time></header>Welchen Tagessatz nimmst du für Schnitt?</div>
+        <div class="msg" data-from="me"><header><time>09:14</time><span>Du</span></header>520 €, mit eigenem Equipment 890 €.</div>
+      </div>
+    </div>
+    <div class="cat-cell">
+      <span class="h-label"><code>.steps.is-row</code> · <code>.is-done</code> · <code>aria-current="step"</code></span>
+      <ol class="steps is-row"><li class="is-done">KI</li><li aria-current="step">Profil</li><li>Zustellung</li></ol>
+      <span class="h-label"><code>.page-title</code> · <code>.block-title</code> · <code>.seam.is-short</code></span>
+      <h3 class="page-title">Vorschläge</h3>
+      <span class="seam is-short" aria-hidden="true"></span>
+      <h4 class="block-title">Profil schärfen</h4>
+    </div>
+    <div class="cat-cell">
+      <span class="h-label"><code>.chip.is-wrap</code> · lange Chips umbrechen</span>
+      <div class="chips-row" style="max-width:16rem">
+        <button class="chip is-filter" type="button">Welche Ziele hast du?</button>
+        <button class="chip is-filter is-wrap" type="button">Welches Equipment fehlt dir für größere Aufträge?</button>
+      </div>
+      <span class="h-label">Gold: Arbeit läuft</span>
+      <div class="progress-bar is-indeterminate"></div>
+      <button class="btn btn-accent btn-sm is-busy" type="button">Wird erzeugt</button>
+    </div>
+    <div class="cat-cell">
+      <span class="h-label">Gold: vergoldete Kanten, 2-px-Balken</span>
+      <div class="hint-card" data-tier="yellow"><header><span class="tier">Akquise</span><span class="pill" data-state="reviewing">Neu</span></header><span class="title">Imagefilm-Paket für Handwerksbetriebe</span><span class="due">Quellen: hwk-hamburg.de</span></div>
+      <div class="status" data-state="warn"><span class="name">Recherche</span><span class="row">3,80 € von 5 €</span></div>
+    </div>
+    <div class="cat-cell">
+      <span class="h-label"><code>dialog.dialog</code> (Fix: oberer Balken bleibt)</span>
+      <div class="dialog"><h3>Projekt anlegen</h3><div class="field"><label for="cat-t">Titel</label><input class="input" id="cat-t" value="Imagefilm Elbmetall"></div><div class="dialog-actions"><button class="btn btn-quiet btn-sm" type="button">Abbrechen</button><button class="btn btn-accent btn-sm" type="button">Anlegen</button></div></div>
+    </div>
+    <div class="cat-cell">
+      <span class="h-label"><code>.tabs</code> · <code>.callout</code> in Gold</span>
+      <div class="tabs" role="tablist"><button role="tab" aria-selected="true">Offen<span class="count">4</span></button><button role="tab" aria-selected="false">Erledigt</button></div>
+      <div class="callout callout-warn"><strong>Noch nicht startklar.</strong> Das Profil braucht noch Substanz.</div>
+    </div>
+  </div>
+</section>
+
+<section class="cat-sec" id="kintsugi">
+  <h2 class="block-title">Kintsugi in Gold</h2>
+  <p class="muted">Aus Kintsugi mit Beispieldaten, Desktop. Das Bruchmuster liegt hinter der Seite.</p>
+  <div class="shots-2">
+    <figure><img src="kintsugi-uebersicht.jpg" alt="Kintsugi, Übersicht in Kante Gold"></figure>
+    <figure><img src="kintsugi-vorschlaege.jpg" alt="Kintsugi, Vorschläge in Kante Gold"></figure>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

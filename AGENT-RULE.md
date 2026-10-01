@@ -19,6 +19,10 @@ This is the one rule about GUIs that applies to **all** shrippen repositories. C
 - Exception: Kimai plugins take their GUI from Knust (`shrippen/kimai-knust-bundle`), the
   Kante spinoff that adapts Kante to Kimai's look. The same rule applies to Knust: use it
   as it is, and add missing elements to Knust.
+- Exception: Kintsugi (`shrippen/kintsugi`) uses Kante Gold (`<html data-kante="gold">`),
+  the noble variant defined in Kante itself. The same rule applies: use it as it is, and
+  add a missing element or Gold detail to Kante (its Gold block) first. No other project
+  uses Kante Gold without a decision recorded here.
 - A project without a GUI (library, CLI, scripts) has nothing to do here.
 ```
 
@@ -26,4 +30,5 @@ This is the one rule about GUIs that applies to **all** shrippen repositories. C
 
 - **"Generated" means taken over.** Changing how something looks is a change to Kante (then every project gets it), not to the project.
 - **Knust** stays a spinoff: it follows Kante's shapes, sizes, roles and motion where Kimai's own style allows and departs from them only to fit Kimai. Elements a Kimai plugin needs that Knust lacks are added to Knust. Where such an element would also help elsewhere, add it to Kante as well.
+- **Kante Gold** is not a spinoff: it lives in Kante (tokens, one block in `components.css`) like Kante Light, so Kintsugi gets every Kante change. Gold details that other projects could use (the seam, the thread) are plain Kante components.
 - **Checks.** `kante/tools/check-tokens.py` fails on raw colours and fonts in the design system itself; projects should run the same idea over their own CSS and QML (no hex values outside vendored Kante files).

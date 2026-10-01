@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "Kante",
-    "version": "1.9.1",
+    "version": "1.10.0",
     "source": "https://github.com/shrippen/shrippen.github.io",
     "base": "Gruvbox Dark (morhetz)",
     "formerly": "shrippen Design Default"
@@ -302,6 +302,79 @@
       "800": "dark.bg1",
       "900": "dark.bg0",
       "950": "dark.bg-hard"
+    }
+  },
+  "gold": {
+    "name": "Kante Gold",
+    "usage": "opt-in via data-kante=\"gold\"; dark only; Kintsugi only (AGENT-RULE.md)",
+    "backgrounds": {
+      "bg-void": "#14110f",
+      "bg-hard": "#0f0d0b",
+      "bg0": "#1c1815",
+      "bg-panel": "#1c1815",
+      "bg1": "#262019",
+      "bg2": "#3b3229"
+    },
+    "foregrounds": {
+      "fg0": "#faf5e9",
+      "fg1": "#efe8d8",
+      "fg2": "#cdc2ae",
+      "fg3": "#a39885"
+    },
+    "accent": "#e8d4a6",
+    "semantic": {
+      "blue": "#8aa1ab",
+      "blue-hover": "#77909a",
+      "aqua": "#97ad7a",
+      "green": "#a9b26b",
+      "yellow": "#d4a640",
+      "orange": "#d08a55",
+      "red": "#d0705a",
+      "purple": "#c497a8",
+      "cyan": "#8fb8aa"
+    },
+    "extra": {
+      "cyan-n": "#6f9488",
+      "cyan-tint": "#1b2321",
+      "yellow-hi": "#e0b65a",
+      "yellow-lo": "#b88f2f",
+      "red-text": "#e48b74"
+    },
+    "names": {
+      "bg-void": "urushi",
+      "bg-panel": "lacquer",
+      "fg1": "paper",
+      "fg3": "ash",
+      "accent": "pale gold",
+      "yellow": "gold",
+      "cyan": "patina",
+      "aqua": "jade",
+      "orange": "copper",
+      "red": "cinnabar",
+      "purple": "ume",
+      "blue": "slate"
+    },
+    "typography": {
+      "heading": "Spectral",
+      "headingWeights": [
+        400,
+        500,
+        600
+      ],
+      "headingSource": "Google Fonts or fonts.css (woff2, SIL OFL)",
+      "control": "Rajdhani",
+      "headingLetterSpacing": "0.06em"
+    },
+    "shape": {
+      "gild": "1.6px",
+      "bar": "2px",
+      "goldLine": "yellow at 32 %"
+    },
+    "motion": {
+      "fast": "160ms",
+      "base": "280ms",
+      "slow": "700ms",
+      "easeSnap": "cubic-bezier(.2,.8,.2,1)"
     }
   }
 }

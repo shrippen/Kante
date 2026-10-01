@@ -111,6 +111,7 @@
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
                Ubuntu, Cantarell, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  --font-control: var(--font-heading); /* buttons; Kante Gold keeps Rajdhani here while titles turn serif */
 }
 
 /*
@@ -248,4 +249,68 @@
     --yellow-lo: #2e9bd4;
     --on-state: #202326;
   }
+}
+
+/*
+ * Kante Gold — opt-in via <html data-kante="gold">. Only Kintsugi uses it (see AGENT-RULE.md).
+ * The noble variant: the same components and sizes on urushi lacquer, paper text and gold.
+ * Every cut edge is gilded, bars are 2 px, titles and figures are Spectral, motion glides.
+ * Dark only. css/components.css "Kante Gold" adds the shape, type and motion rules.
+ * Patina (verdigris) takes cyan's roles: focus, links, info.
+ */
+:root[data-kante="gold"] {
+  color-scheme: dark;
+
+  /* ── Backgrounds: lacquer ── */
+  --bg-void:  #14110f;   /* urushi: page ground */
+  --bg-hard:  #0f0d0b;   /* sunk areas, fields, tracks */
+  --bg0:      #1c1815;
+  --bg-panel: #1c1815;   /* lacquer: cards and panels */
+  --bg1:      #262019;   /* elevated, hover */
+  --bg2:      #3b3229;   /* borders, dividers */
+
+  /* ── Foregrounds: paper ── */
+  --fg0:      #faf5e9;
+  --fg1:      #efe8d8;
+  --fg2:      #cdc2ae;
+  --fg3:      #a39885;   /* ash: 6.6:1 on the ground */
+
+  /* ── Brand accent: pale gold ── */
+  --accent:   #e8d4a6;
+
+  /* ── Semantic colors: metals and pigments ── */
+  --blue:     #8aa1ab;   /* slate */
+  --blue-hover: #77909a;
+  --aqua:     #97ad7a;   /* jade: success */
+  --green:    #a9b26b;
+  --yellow:   #d4a640;   /* gold: primary, lines, score */
+  --orange:   #d08a55;   /* copper: warning */
+  --red:      #d0705a;   /* cinnabar: error */
+  --purple:   #c497a8;   /* ume: tags */
+  --cyan:     #8fb8aa;   /* patina: focus, links, info */
+  --cyan-n:   #6f9488;
+  --cyan-tint: #1b2321;
+  --yellow-hi: #e0b65a;
+  --yellow-lo: #b88f2f;
+  --red-text: #e48b74;
+
+  --scrim:    rgba(15,13,11,.72);
+  --d1: var(--yellow);
+  --d2: var(--cyan);
+
+  /* ── Gold only ── */
+  --gold-line: color-mix(in srgb, var(--yellow) 32%, transparent); /* hairlines, frames */
+  --gild:     1.6px;     /* the gold line on every cut edge */
+  --bar:      2px;       /* state and tier bars (Kante: 4 px) */
+
+  /* ── Motion: glides, no overshoot ── */
+  --dur-fast: 160ms;
+  --dur:      280ms;
+  --dur-slow: 700ms;
+  --ease-snap: cubic-bezier(.2,.8,.2,1);
+
+  /* ── Typography: serif titles and figures, Rajdhani stays on the controls ── */
+  --font-heading: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-control: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  Oxygen, Ubuntu, Cantarell, sans-serif;
 }
