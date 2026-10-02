@@ -582,7 +582,7 @@ dialog.dialog.detail
 |---|---|---|
 | Detail dialog | `dialog.dialog.detail` (wide, no padding, scrolls inside); `.detail-head` with `.launch-icon`, `.detail-name` > `h3` + `.detail-sub`, `.launch-state`, buttons, `.btn-icon` close | – |
 | Facts line | `.detail-line` > `span` > `small` (label) + `b` (value) | – |
-| Body and columns | `.detail-body` > `.detail-side` (start) / `.detail-list` (start, `.list-row`s) / `.detail-main` / `.detail-side.is-end`; one column below 60rem | – |
+| Body and columns | `.detail-body` > `.detail-side` (start) / `.detail-list` (start, `.list-row`s; `button.list-row` when a row opens its entry) / `.detail-main` / `.detail-side.is-end`; one column below 60rem | – |
 | Blocks | `.detail-block` > `.h-label.detail-label` (text left, meta right) + content; `.detail-facts` (row of `.fact`); `.detail-hero` (taller chart; a block's chart or `.chart-wrap` is 8rem, a hero's 13rem); `.detail-ticks`; `.detail-pair` (two columns) | – |
 | Chosen day | `.sheet.detail-day` > `.detail-day-head` (`h3` + `.launch-state`) + `.kpi-row` | – |
 | Rows | `.detail-rows`: name, `svg.uptime` or `.progress-bar`, value, three cells per row | – |
