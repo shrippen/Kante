@@ -75,7 +75,7 @@ The ground sits between Gruvbox `light0` (`#fbf1c7`, too yellow) and `#f5f1e8` (
 
 ### App components (`.tile`, `.stage`, `.band`, `.field`, `.pill`, `.dialog`, …)
 
-Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags and `KanteStyle.warningColor` for mild warnings), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading). Group colours: green `--aqua`, yellow `--yellow`, red `--red`; status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
+Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags and `KanteStyle.warningColor` for mild warnings), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading). Tiers (`data-tier`): green `--aqua`, yellow `--warn` (orange, since 1.13), red `--red`. Colour labels (`data-label="green|yellow|red|blue|purple"` on `.tile`, `.band`, `.strip button`, `.fact`, `.progress-bar > i`) show a named colour that is the data itself, e.g. Kader's groups, which become darktable / Lightroom colour labels: yellow stays yellow. Status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
 
 ### Local theme override rule
 
@@ -231,12 +231,16 @@ Every landing page imports these variables (or copies them):
 
 | Rule | Detail |
 |---|---|
-| Heights | `--h-s` 32, `--h-m` 40, `--h-l` 48 px for every control (buttons, fields, tabs, segments) |
+| Heights | `--h-s` 32, `--h-m` 40, `--h-l` 48 px for every control (buttons, fields, tabs, segments); below that only `--h-xs` 24 (chips, pills, stickers, inline buttons, toast actions; `--h-s` on touch) and `--h-mark` 20 (counters, hint counts, the help "?") |
 | Cut | `--chamfer` 16 px on surfaces, `--cut-m` 10 px on buttons, tiles, tabs, menus, `--cut-s` 6 px on small parts. A second cut bottom-left only on primary and danger buttons, the dialog and the install box |
 | Holes | Fields are sunk into the surface and stay rectangular, with a 2 px bottom edge; on focus the edge turns cyan and the field gets `--cyan-tint` |
-| Bars | 4 px for state and tier on every surface, 2 px for lines and underlines, 1 px for borders |
+| Bars | 4 px for state and tier on every surface and bar (edit bar, bulk bar), 2 px for lines, underlines and popups (menu, combo list, help), 1 px for borders |
 | Focus | Cyan, 2 px. Outside with a small gap, or inside on cut shapes (`clip-path` cuts an outer ring). Tiles and linked cards show four cyan brackets |
 | Markers | Square: pill dots are squares, the radio is a diamond. Round are only icons |
+| Titles | `--title-s` (cards, rows, tiles, bars), `--title-m` (blocks, sheets, dialogs, login), `--title-l` (app page); Rajdhani 700 uppercase, `--title-track` |
+| Tiers | `green` aqua, `yellow` = warning = `--warn` (orange), `red` danger, `blue`/`cyan` info. The same on every app element: tile, band, strip, progress, tier and hint card, timeline, launch counts, status, callout, toast. In an app yellow is never a warning: it is the primary action; a card or hint that is only emphasised (the main thing on a page, the main kind of hint) is `data-tier="primary"` on `.tier-card` / `.hint-card`. A colour that is the data itself (a colour label) is `data-label`, not a tier. Landing pages: `.feat` and `.fact` tiers are the priority-band rotation (red, yellow, blue), decoration without a state, so their yellow stays yellow |
+| Chosen vs marked | **Yellow (`--primary`) is the chosen value of a control**: one of a few (tab, segment, page, radio, ring mark). **Cyan marks entries**: filters, multi-select, list rows, edit mode (mode bar, filter chips, chip pick, option cards, selected rows). Fills that mean "active" use `--primary` with `--on-primary`, never `--yellow` (`tools/check-tokens.py` fails on it) |
+| One primary per view | At most one filled primary button per view or dialog. Actions repeated per list item (hint cards, rows) are outline or quiet buttons |
 | Buttons | `.btn-accent` (primary), `.btn-outline`, `.btn-danger`, `.btn-data` (cyan, mono), `.btn-quiet`; `.btn-primary` / `.btn-ghost` inside the yellow box; sizes `.btn-sm` / `.btn-lg`, `.btn-icon`, `.btn-group`, `.is-busy` |
 
 **Motion** is warm and mechanical, modelled on devices (keys, tubes, counters, tabs, lamps), never glitch. It lives in one block at the end of `css/components.css` under `prefers-reduced-motion: no-preference`; entrances also need `html.motion`, which `shrippen.js` sets, so without the script nothing is hidden. Durations `--dur-fast` 120, `--dur` 200, `--dur-slow` 450 ms; easings `--ease-out`, `--ease-snap`.
@@ -542,6 +546,22 @@ What Andon's boards needed: a fast uptime strip, and a detail dialog per link ti
 | Stacked check columns | `svg.uptime` with `viewBox="0 0 <days> 100"`: per day a `path[data-state="ok"]` column with `path[data-state="bad"]` on top | – |
 | Day picker | `.chart-wrap` > chart + `.day-pick` > one `button[aria-pressed]` per day column (focus frame on the chosen day) | – |
 | Detail button on a link tile | `.launch-live` > `.launch-trend` > `svg.uptime` + `.launch-detail` (icon, `role="button"`, `tabindex="0"`; a span, as the tile is a link) | – |
+
+### Added in Kante 1.13 (coherence review)
+
+The review after 1.5 to 1.12 found the shapes coherent and the meaning of colours drifting. Record: [`proposals/2026-10-kohaerenz/`](proposals/2026-10-kohaerenz/) (frozen with the 1.12 stylesheet). Every web element is on `tools/specimen.html`; `build.sh` renders it in dark, Leinen, Kante Light and Gold at 1200 and 390 px (`tools/shoot-specimen.py` → `dist/specimen/`, with `$KANTE_PY` or the shrippen.github.io demo venv). **A new element is done when it looks right in all four.**
+
+| Change | Web | QML |
+|---|---|---|
+| Colour labels | `data-label` on `.tile`, `.band`, `.strip button`, `.fact`, `.progress-bar > i`: the named colour as data (Kader's green / yellow / red groups) | – |
+| Warning is orange in every app element | `data-tier="yellow"` on `.tile`, `.band`, `.strip`, `.progress-bar > i`, `.tier-card`, `.hint-card`, `.timeline` → `--warn` (landing `.feat` / `.fact` bands stay yellow); `data-tier="primary"` on `.tier-card` / `.hint-card` for emphasis; `.pill[data-state="reviewing"]` → `--info` (a state, not a warning) | `KanteTile.Tier.Check` → `warningColor` |
+| Active fills by role | `.tabs`, `.tabs-ind`, `.pager`, `.count`, `.loader`, `.runner`, typing cursor, `.lang` → `--primary` / `--on-primary` (in Leinen they were brown, in Kante Light orange) | – |
+| One filter chip | `.chip.is-filter` reads like `.chip-pick`: hollow square when off (`aria-pressed="false"`, or a filter link), filled square on a tint when pressed (no full fill); chips without a state (actions, suggestions) keep the filled square | – |
+| Sizes | tokens `--h-xs`, `--h-mark`; `.chip`, `.chip-pick`, `.pill`, `.sticker`, `.btn-inline`, `.toast-action` at 24, `.count`, `.launch-hints`, `.launch-detail`, `details.help` at 20; bulk and edit bar 4 px, menu, combo list and help 2 px; toast cut `--cut-m` | – |
+| Title scale | tokens `--title-s/-m/-l`, `--title-track` for card, block, dialog, sheet, login and page titles | – |
+| Option card frame | border plus drawn diagonal (as `.btn-outline`), follows the cut | – |
+| Kante Light | the 1.5–1.12 parts too: card titles in the system font, tabs, mode bar, pager, chips, chip pick, toast action in the system font with a small radius, round help | – |
+| Kante Gold | gilded cut and 2 px bars also on `.launch`, `a.link-tile`, `.option`, `.editbar`, `.bulk-bar`, `.toast`; 2 px timeline bar | – |
 
 ### Kante Gold
 

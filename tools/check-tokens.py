@@ -5,6 +5,9 @@
     property that re-sets a token locally (e.g. `.stage{--bg1:#3c3836}`), and its value
     must be one of the hex values defined in tokens/variables.css.
   - font-family always comes from a token: var(--font-heading|--font-sans|--font-mono|--font-control) or inherit.
+  - A fill that marks "active / chosen / working" uses --primary, never --yellow: in Leinen and
+    Kante Light --yellow is a text colour (ochre, orange). Only the brand marks in YELLOW_FILL_OK
+    may fill with --yellow.
   - Web and apps share one palette: every colour in tokens/palette.json (dark and the
     light theme "Leinen" and Kante Gold) has the same value as its custom property in tokens/variables.css.
 
@@ -23,6 +26,10 @@ TOKEN_HEX = {h.lower() for h in HEX.findall((KANTE / "tokens/variables.css").rea
 FONT = re.compile(r"font-family\s*:\s*([^;}\"]+)", re.I)
 FONT_OK = re.compile(r"^(var\(--font-(heading|sans|mono|control)\)|inherit)$")
 CUSTOM_PROP = re.compile(r"\s*--[\w-]+\s*:")
+YELLOW_FILL = re.compile(r"background(?:-color)?\s*:\s*var\(--yellow\)")
+# Brand marks on the landing page, the "today" mark (a data colour, as its yellow text), the crop
+# handles on the always-dark image stage, and Kante Gold
+YELLOW_FILL_OK = re.compile(r'\.nav-brand|\.foot-meta|\.install-card|\.showcase|\.today|\.handle|\.seam|data-kante="gold"')
 
 
 def blank(m):
@@ -56,6 +63,10 @@ def check(path):
             yield f"{rel}:{line(m.start())}: {m.group(0)} is not a value from tokens/variables.css"
         else:
             yield f"{rel}:{line(m.start())}: raw colour {m.group(0)}, use a token via var()"
+    for m in YELLOW_FILL.finditer(text):
+        selector = text[max(text.rfind("}", 0, m.start()), 0):m.start()]
+        if not YELLOW_FILL_OK.search(selector):
+            yield f"{rel}:{line(m.start())}: fill with var(--yellow), use var(--primary) (and --on-primary for its text)"
     for m in FONT.finditer(text):
         value = " ".join(m.group(1).split())
         if not FONT_OK.match(value):

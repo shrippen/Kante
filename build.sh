@@ -14,6 +14,8 @@
 #   8. Union style (spike): union/ styles and KDE colour schemes from palette.json (tools/build-union.py),
 #      checked against Union's property list (tools/check-union.py)
 #   9. Claude Design upload: ds-bundle/ (.design-sync/make-bundle.py, gitignored)
+#  10. Specimen: tools/specimen.html in dark, Leinen, Kante Light and Gold -> dist/specimen/
+#      (tools/shoot-specimen.py; skipped when $KANTE_PY has no Playwright)
 set -euo pipefail
 cd "$(dirname "$0")"
 OUT=docs/v1
@@ -40,3 +42,9 @@ tools/knust-zip.sh
 python3 tools/build-union.py
 python3 tools/check-union.py
 python3 .design-sync/make-bundle.py
+KANTE_PY="${KANTE_PY:-$(realpath -m ../shrippen.github.io/demo/tools/.venv/bin/python)}"
+if "$KANTE_PY" -c "import playwright" 2>/dev/null; then
+  "$KANTE_PY" tools/shoot-specimen.py
+else
+  echo "specimen skipped (no Playwright in \$KANTE_PY)"
+fi
