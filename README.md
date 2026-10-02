@@ -536,7 +536,7 @@ The save bar of an app with many settings is the existing `.editbar` (`.mode` te
 
 Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none); on touch screens (`pointer: coarse`) `.chip` takes the small control height `--h-s`.
 
-### Kante 1.13 (coherence review)
+### Added in Kante 1.13 (coherence review)
 
 The review after 1.5 to 1.12 found the shapes coherent and the meaning of colours drifting. Record: [`proposals/2026-10-kohaerenz/`](proposals/2026-10-kohaerenz/) (frozen with the 1.12 stylesheet). Every web element is on `tools/specimen.html`; `build.sh` renders it in dark, Leinen, Kante Light and Gold at 1200 and 390 px (`tools/shoot-specimen.py` → `dist/specimen/`, with `$KANTE_PY` or the shrippen.github.io demo venv). **A new element is done when it looks right in all four.**
 
