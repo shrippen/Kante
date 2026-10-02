@@ -75,7 +75,7 @@ The ground sits between Gruvbox `light0` (`#fbf1c7`, too yellow) and `#f5f1e8` (
 
 ### App components (`.tile`, `.stage`, `.band`, `.field`, `.pill`, `.dialog`, …)
 
-Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags and `KanteStyle.warningColor` for mild warnings), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading). Group colours: green `--aqua`, yellow `--yellow`, red `--red`; status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
+Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags and `KanteStyle.warningColor` for mild warnings), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading). Group colours: green `--aqua`, yellow `--warn` (orange, since 1.13), red `--red`; status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
 
 ### Local theme override rule
 
@@ -231,12 +231,16 @@ Every landing page imports these variables (or copies them):
 
 | Rule | Detail |
 |---|---|
-| Heights | `--h-s` 32, `--h-m` 40, `--h-l` 48 px for every control (buttons, fields, tabs, segments) |
+| Heights | `--h-s` 32, `--h-m` 40, `--h-l` 48 px for every control (buttons, fields, tabs, segments); below that only `--h-xs` 24 (chips, pills, stickers, inline buttons, toast actions; `--h-s` on touch) and `--h-mark` 20 (counters, hint counts, the help "?") |
 | Cut | `--chamfer` 16 px on surfaces, `--cut-m` 10 px on buttons, tiles, tabs, menus, `--cut-s` 6 px on small parts. A second cut bottom-left only on primary and danger buttons, the dialog and the install box |
 | Holes | Fields are sunk into the surface and stay rectangular, with a 2 px bottom edge; on focus the edge turns cyan and the field gets `--cyan-tint` |
-| Bars | 4 px for state and tier on every surface, 2 px for lines and underlines, 1 px for borders |
+| Bars | 4 px for state and tier on every surface and bar (edit bar, bulk bar), 2 px for lines, underlines and popups (menu, combo list, help), 1 px for borders |
 | Focus | Cyan, 2 px. Outside with a small gap, or inside on cut shapes (`clip-path` cuts an outer ring). Tiles and linked cards show four cyan brackets |
 | Markers | Square: pill dots are squares, the radio is a diamond. Round are only icons |
+| Titles | `--title-s` (cards, rows, tiles, bars), `--title-m` (blocks, sheets, dialogs, login), `--title-l` (app page); Rajdhani 700 uppercase, `--title-track` |
+| Tiers | `green` aqua, `yellow` = warning = `--warn` (orange), `red` danger, `blue`/`cyan` info. The same on every element: tile, feat, tier and hint card, timeline, launch counts, status, callout, toast. Yellow is never a warning: it is the primary action |
+| Chosen vs marked | **Yellow (`--primary`) is the chosen value of a control**: one of a few (tab, segment, page, radio, ring mark). **Cyan marks entries**: filters, multi-select, list rows, edit mode (mode bar, filter chips, chip pick, option cards, selected rows). Fills that mean "active" use `--primary` with `--on-primary`, never `--yellow` (`tools/check-tokens.py` fails on it) |
+| One primary per view | At most one filled primary button per view or dialog. Actions repeated per list item (hint cards, rows) are outline or quiet buttons |
 | Buttons | `.btn-accent` (primary), `.btn-outline`, `.btn-danger`, `.btn-data` (cyan, mono), `.btn-quiet`; `.btn-primary` / `.btn-ghost` inside the yellow box; sizes `.btn-sm` / `.btn-lg`, `.btn-icon`, `.btn-group`, `.is-busy` |
 
 **Motion** is warm and mechanical, modelled on devices (keys, tubes, counters, tabs, lamps), never glitch. It lives in one block at the end of `css/components.css` under `prefers-reduced-motion: no-preference`; entrances also need `html.motion`, which `shrippen.js` sets, so without the script nothing is hidden. Durations `--dur-fast` 120, `--dur` 200, `--dur-slow` 450 ms; easings `--ease-out`, `--ease-snap`.
@@ -531,6 +535,21 @@ What the Leuchtfeuer web interface needed to become friendlier (fewer free-text 
 The save bar of an app with many settings is the existing `.editbar` (`.mode` text, `.grow`, Discard, Save) with `.is-fixed`; advanced settings fold away in the existing `details.fold`.
 
 Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none); on touch screens (`pointer: coarse`) `.chip` takes the small control height `--h-s`.
+
+### Kante 1.13 (coherence review)
+
+The review after 1.5 to 1.12 found the shapes coherent and the meaning of colours drifting. Record: [`proposals/2026-10-kohaerenz/`](proposals/2026-10-kohaerenz/) (frozen with the 1.12 stylesheet). Every web element is on `tools/specimen.html`; `build.sh` renders it in dark, Leinen, Kante Light and Gold at 1200 and 390 px (`tools/shoot-specimen.py` → `dist/specimen/`, with `$KANTE_PY` or the shrippen.github.io demo venv). **A new element is done when it looks right in all four.**
+
+| Change | Web | QML |
+|---|---|---|
+| Warning is orange everywhere | `data-tier="yellow"` on `.feat`, `.tile`, `.band`, `.strip`, `.progress-bar > i`, `.fact`, `.tier-card`, `.hint-card`, `.timeline` → `--warn`; `.pill[data-state="reviewing"]` → `--info` (a state, not a warning) | `KanteTile.Tier.Check` → `warningColor` |
+| Active fills by role | `.tabs`, `.tabs-ind`, `.pager`, `.count`, `.loader`, `.runner`, typing cursor, `.lang` → `--primary` / `--on-primary` (in Leinen they were brown, in Kante Light orange) | – |
+| One filter chip | `.chip.is-filter` reads like `.chip-pick`: hollow square off, filled square on a tint when pressed (no full fill) | – |
+| Sizes | tokens `--h-xs`, `--h-mark`; `.chip`, `.chip-pick`, `.pill`, `.sticker`, `.btn-inline`, `.toast-action` at 24, `.count`, `.launch-hints`, `.launch-detail`, `details.help` at 20; bulk and edit bar 4 px, menu, combo list and help 2 px; toast cut `--cut-m` | – |
+| Title scale | tokens `--title-s/-m/-l`, `--title-track` for card, block, dialog, sheet, login and page titles | – |
+| Option card frame | border plus drawn diagonal (as `.btn-outline`), follows the cut | – |
+| Kante Light | the 1.5–1.12 parts too: card titles in the system font, tabs, mode bar, pager, chips, chip pick, toast action in the system font with a small radius, round help | – |
+| Kante Gold | gilded cut and 2 px bars also on `.launch`, `a.link-tile`, `.option`, `.editbar`, `.bulk-bar`, `.toast`; 2 px timeline bar | – |
 
 ### Added in Kante 1.12
 

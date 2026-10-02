@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante specimen</title>
+<!-- Every Kante web element on one page, grouped by family. tools/shoot-specimen.py renders it in
+     all four variants (dark, Leinen, Kante Light, Gold) at 1200 and 390 px. A new element is added here. -->
+<link rel="stylesheet" href="../docs/v1/fonts.css">
+<link rel="stylesheet" href="../docs/v1/shrippen.css">
+<style>
+body{background:var(--bg-void)}
+main{max-width:1180px;margin:0 auto;padding:1.2rem 1rem 3rem}
+section{margin:0 0 1.6rem;padding:1rem;background:var(--bg0);outline:1px dashed var(--bg2)}
+section>h2{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);margin:0 0 .8rem}
+.row{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start;margin-bottom:.9rem}
+.cap{display:block;font-family:var(--font-mono);font-size:.6rem;color:var(--fg3);margin-top:.25rem}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;align-items:start}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;align-items:start}
+.cell{min-width:0}
+</style>
+</head>
+<body>
+<main>
+
+<!-- 1 Surfaces: bar, cut, padding -->
+<section id="surfaces"><h2>1 · Flächen mit Leiste (1.4 Basis vs. 1.5–1.12)</h2>
+<div class="g4">
+ <div class="cell"><div class="feat" data-tier="yellow" style="padding:1rem"><span class="feat-tag">1.4 feat</span><h3>Feature</h3><p>Text.</p></div></div>
+ <div class="cell"><div class="callout callout-warn"><strong>1.4 callout-warn</strong> Hinweis.</div></div>
+ <div class="cell"><div class="toast" data-kind="warn">1.4 toast warn <button class="toast-action">Undo</button></div><span class="cap">toast + 1.11 toast-action</span></div>
+ <div class="cell"><div class="dialog" style="padding:1rem"><h3>Dialog</h3><p>1.4</p></div></div>
+
+ <div class="cell"><div class="tier-card" data-tier="yellow"><h3>Tier card</h3><small>1.7</small>Status.</div></div>
+ <div class="cell"><article class="hint-card" data-tier="yellow"><header><span class="tier">Warnung</span><span>Kimai</span></header><a class="title" href="#">Hint card yellow</a><span class="due">bis 12.10.</span><details><summary>Warum?</summary><p>…</p></details><div class="actions"><button class="btn btn-outline btn-sm">Erledigt</button><button class="btn btn-quiet btn-inline">Später</button></div></article><span class="cap">1.7 hint-card</span></div>
+ <div class="cell"><div class="status" data-state="warn"><span class="name">Status warn</span><span class="row">1.5 · 412 ms</span></div></div>
+ <div class="cell"><a class="link-tile" href="#" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16"/></svg><span class="name">Link tile</span><span></span><span class="hint">1.5 · short form</span></a></div>
+
+ <div class="cell"><a class="launch" href="#" style="--c:var(--purple)"><span class="launch-icon"><span class="monogram">NC</span></span><span class="launch-body"><b class="launch-title">Nextcloud <small>cloud.lan</small></b><span class="launch-desc">Dateien und Kalender</span><span class="launch-live"><span class="launch-state" data-state="warn">Langsam</span><span>812 ms</span><span class="launch-hints" data-tier="yellow">2</span><span class="launch-hints" data-tier="red">1</span><span class="launch-trend"><svg class="uptime" viewBox="0 0 10 1" preserveAspectRatio="none"><path data-state="ok" d="M0 0h.7v1h-.7zM1 0h.7v1h-.7zM2 0h.7v1h-.7zM3 0h.7v1h-.7zM5 0h.7v1h-.7zM6 0h.7v1h-.7zM8 0h.7v1h-.7zM9 0h.7v1h-.7z"/><path data-state="warn" d="M4 0h.7v1h-.7z"/><path data-state="bad" d="M7 0h.7v1h-.7z"/></svg><span class="launch-detail" role="button" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span></span></span></span></a><span class="cap">1.9 launch + 1.12 uptime/detail</span></div>
+ <div class="cell"><button class="option" aria-checked="true"><span><b>Option</b><br><small>1.5 option selected</small></span></button></div>
+ <div class="cell"><div class="sheet"><h3>Sheet</h3><p>1.5</p><div class="actions"><button class="btn btn-accent btn-sm">OK</button></div></div></div>
+ <div class="cell"><ul class="menu" style="min-width:0"><li><button>1.4 menu</button></li><li><button>Eintrag</button></li></ul></div>
+
+ <div class="cell"><div class="bulk-bar"><span class="n">3<small>gewählt</small></span><span class="grow"></span><button class="btn btn-outline btn-sm">Löschen</button></div><span class="cap">1.5 bulk-bar</span></div>
+ <div class="cell"><div class="editbar"><span class="mode">Bearbeiten<small>1.7</small></span><span class="grow"></span><button class="btn btn-quiet btn-sm">Verwerfen</button><button class="btn btn-accent btn-sm">Speichern</button></div><span class="cap">1.7 editbar</span></div>
+ <div class="cell"><div class="thread"><div class="msg" data-from="ai"><header><b>KI</b><time>09:12</time></header>1.10 msg ai</div><div class="msg" data-from="me"><header><b>Ich</b><time>09:13</time></header>msg me</div></div></div>
+ <div class="cell"><ol class="timeline"><li data-tier="yellow"><time class="date-tile"><b>12</b>Okt</time><span class="what">Frist<small>1.7 timeline</small></span><em class="state">bald</em></li><li data-tier="red"><time class="date-tile"><b>03</b>Okt</time><span class="what">Rechnung<small>überfällig</small></span><em class="state">überfällig</em></li></ol></div>
+</div>
+</section>
+
+<!-- 2 Selection / current -->
+<section id="select"><h2>2 · Auswahl und „aktuell“</h2>
+<div class="row">
+ <div><div class="tabs"><button aria-selected="true">Tabs <span class="count">3</span></button><button>Zwei</button></div><span class="cap">1.4 tabs</span></div>
+ <div><div class="seg"><button aria-pressed="true">Tag</button><button>Woche</button><button>Monat</button></div><span class="cap">1.4 seg</span></div>
+ <div><div class="modebar"><button aria-pressed="true">Alle <small>12</small></button><button>Kimai <small>4</small></button><button>Ninja <small>2</small></button></div><span class="cap">1.7 modebar</span></div>
+ <div><button class="btn btn-outline" aria-pressed="true">Toggle</button><span class="cap">1.5 btn[aria-pressed]</span></div>
+</div>
+<div class="row">
+ <div><div class="chips-row"><button class="chip" aria-pressed="true">Studio</button><button class="chip">Weber</button><button class="chip is-filter" aria-pressed="true">Filter</button><button class="chip is-filter">Filter</button><button class="chip is-filter" data-tier="warn">warn</button><button class="chip is-filter" data-tier="critical">kritisch</button></div><span class="cap">1.5/1.9 chip</span></div>
+ <div><label class="chip-pick"><input type="checkbox" checked><span>Offen</span><small>4</small></label> <label class="chip-pick"><input type="checkbox"><span>Erledigt</span><small>9</small></label><span class="cap">1.7 chip-pick</span></div>
+ <div><nav class="pager"><a href="#">1</a><a href="#" aria-current="page">2</a><a href="#">3</a></nav><span class="cap">1.4 pager</span></div>
+</div>
+<div class="row">
+ <div style="width:16rem"><div class="list-row" aria-selected="true"><span class="led"></span><span>1.5 list-row</span><span class="meta">3</span></div><div class="list-row"><span class="led" style="--c:var(--aqua)"></span><span>Zeile</span><span class="meta">7</span></div></div>
+ <div style="width:14rem"><div class="cal"><b>Mo</b><b>Di</b><b>Mi</b><b>Do</b><b>Fr</b><b>Sa</b><b>So</b><i>1</i><i class="today">2</i><i aria-selected="true">3</i><i class="abs">4</i><i class="hol">5</i><i class="we">6</i><i class="we">7</i></div><span class="cap">1.5 cal: today / selected</span></div>
+ <div><div class="ring-pick" style="--n:8;--r:2.6rem"><button role="radio" aria-checked="false" style="--i:0"></button><button role="radio" aria-checked="false" style="--i:1"></button><button role="radio" aria-checked="true" style="--i:2"></button><button role="radio" aria-checked="false" style="--i:3"></button><button role="radio" aria-checked="false" style="--i:4"></button><button role="radio" aria-checked="false" style="--i:5"></button><button role="radio" aria-checked="false" style="--i:6"></button><button role="radio" aria-checked="false" style="--i:7"></button><span class="ring-pick-n">3</span></div><span class="cap">1.11 ring-pick</span></div>
+ <div><label class="check"><input type="radio" name="r" checked><span class="check-dia"></span>1.4 Radio</label><br><label class="check"><input type="checkbox" checked><span class="check-box"><svg viewBox="0 0 16 16"><path d="M3 8l3 3 7-7"/></svg></span>1.4 Check</label><br><button class="switch" role="switch" aria-checked="true"><span class="switch-track"></span>Switch</button></div>
+ <div style="width:13rem"><div class="chart-wrap" style="height:60px"><svg class="uptime" viewBox="0 0 7 100" preserveAspectRatio="none" style="max-width:none;height:100%"><path data-state="ok" d="M0.15 0h.7v100h-.7zM1.15 0h.7v100h-.7zM2.15 20h.7v80h-.7zM3.15 0h.7v100h-.7zM4.15 0h.7v100h-.7zM5.15 0h.7v100h-.7zM6.15 0h.7v100h-.7z"/><path data-state="bad" d="M2.15 0h.7v20h-.7z"/></svg><div class="day-pick"><button></button><button></button><button aria-pressed="true"></button><button></button><button></button><button></button><button></button></div></div><span class="cap">1.12 day-pick</span></div>
+</div>
+<div class="row">
+ <ol class="steps is-row"><li class="is-done">Konto</li><li aria-current="step">Dienste</li><li>Fertig</li></ol>
+ <span class="cap">1.10 steps.is-row</span>
+</div>
+</section>
+
+<!-- 3 Markers, badges, counts -->
+<section id="markers"><h2>3 · Marker, Zähler, Badges</h2>
+<div class="row" style="align-items:center">
+ <span class="pill" data-state="analyzing">1.4 pill</span><span class="pill" data-state="locked">locked</span><span class="pill" data-state="applied">ok</span>
+ <span class="count">3</span><span class="count" data-kind="info">4</span><span class="count" data-kind="error">1</span>
+ <span class="sticker">1.4 sticker</span>
+ <span class="led"></span>
+ <span class="launch-hints">2</span><span class="launch-hints" data-tier="yellow">2</span><span class="launch-hints" data-tier="red">1</span>
+ <span class="launch-state">ok</span><span class="launch-state" data-state="warn">warn</span><span class="launch-state" data-state="bad">bad</span>
+ <span class="delta up">+12 %</span><span class="delta dn">−4 %</span>
+ <span class="contrast" data-level="aa"><span class="sample" style="color:var(--fg0)">Aa</span><span class="ratio">5.1</span><span class="badge">AA</span></span>
+ <details class="help"><summary aria-label="Hilfe">?</summary><div class="help-text">1.11 help</div></details>
+ <span class="swatch" data-src="own" style="--c:var(--purple)"></span>
+ <kbd>⌘K</kbd>
+</div>
+</section>
+
+<!-- 4 Warning colour across elements -->
+<section id="warn"><h2>4 · „Warnung“ quer durch die Elemente (alle data-tier=yellow bzw. warn)</h2>
+<div class="row" style="align-items:center">
+ <div class="hint-card" data-tier="yellow" style="width:11rem"><header><span class="tier">hint yellow</span></header></div>
+ <span class="launch-hints" data-tier="yellow">2</span><span class="cap">launch-hints yellow</span>
+ <div class="tier-card" data-tier="yellow" style="width:9rem"><b>tier-card</b></div>
+ <div class="feat" data-tier="yellow" style="width:8rem;padding:.6rem"><span class="feat-tag">feat</span></div>
+ <div class="status" data-state="warn" style="width:9rem"><span class="name">status warn</span></div>
+ <div class="callout callout-warn" style="margin:0;width:9rem">callout-warn</div>
+ <div class="toast" data-kind="warn">toast warn</div>
+ <span class="pill" data-state="reviewing">pill reviewing</span><span class="pill" data-state="locked">pill locked</span>
+ <button class="chip is-filter" data-tier="warn">chip warn</button>
+ <span class="launch-state" data-state="warn">state warn</span>
+</div>
+</section>
+
+<!-- 5 Headings -->
+<section id="heads"><h2>5 · Überschriften und Labels</h2>
+<div class="g3">
+ <div><h1 class="page-title">page-title</h1><h2 class="block-title">block-title</h2><div class="fold" open><details class="fold" open><summary>fold summary <span class="count">4</span></summary><div class="body">…</div></details></div></div>
+ <div><div class="h-label">h-label 1.5</div><br><label class="field">label.field 1.5</label><div class="field"><label>.field > label 1.4</label><input class="input" value="Eingabe"></div><br><div class="toolbar-label">toolbar-label</div><div class="kpi"><b>12.480 €</b><span>kpi label</span></div></div>
+ <div><div class="feat" style="padding:.6rem"><h3>feat h3</h3></div><br><div class="tier-card"><h3>tier-card h3</h3></div><br><div class="status"><span class="name">status name</span></div><br><span class="launch-title">launch-title</span></div>
+</div>
+</section>
+
+<!-- 6 Heights -->
+<section id="heights"><h2>6 · Höhen (Regel 32/40/48)</h2>
+<div class="row" style="align-items:flex-end">
+ <button class="btn btn-outline btn-sm">btn-sm</button>
+ <button class="btn btn-accent">btn</button>
+ <input class="input" style="width:7rem" value="input">
+ <div class="seg"><button aria-pressed="true">seg</button></div>
+ <div class="modebar"><button aria-pressed="true">modebar</button></div>
+ <button class="chip">chip</button>
+ <label class="chip-pick"><input type="checkbox"><span>chip-pick</span></label>
+ <span class="pill">pill</span>
+ <button class="btn btn-quiet btn-inline">btn-inline</button>
+ <div class="toast" style="clip-path:none;padding:.3rem .5rem">toast <button class="toast-action">action</button></div>
+ <nav class="pager"><a href="#">1</a></nav>
+ <details class="help"><summary>?</summary></details>
+ <span class="sticker">sticker</span>
+</div>
+</section>
+
+</main>
+</body>
+</html>

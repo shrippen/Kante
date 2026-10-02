@@ -1,3 +1,343 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Kante-Kohärenzprüfung 1.12</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@600;700&display=swap">
+<style>
+/* Kante v1 — https://github.com/shrippen/shrippen.github.io */
+/*
+ * Kante — CSS custom properties (web). Apps: qml/Kante, same values via tokens/palette.json
+ * https://github.com/shrippen/shrippen.github.io
+ *
+ * Gruvbox-inspired, warm, dark-first palette.
+ * Copy this block into your landing page <style> or import as a stylesheet.
+ */
+
+:root {
+  /* ── Backgrounds ── */
+  --bg-void:  #141312;   /* landing-page ground, darker than bg-hard */
+  --bg-hard:  #1d2021;   /* deepest: hero gradient, code blocks */
+  --bg0:      #282828;   /* page / widget background */
+  --bg-panel: #2a2826;   /* landing-page cards and panels */
+  --bg1:      #3c3836;   /* cards, elevated surfaces */
+  --bg2:      #504945;   /* borders, dividers */
+
+  /* ── Foregrounds ── */
+  --fg0:      #fbf1c7;   /* primary heading (sparingly) */
+  --fg1:      #ebdbb2;   /* body text */
+  --fg2:      #d5c4a1;   /* secondary text */
+  --fg3:      #a89984;   /* placeholder, disabled, footer */
+
+  /* ── Brand accent ── */
+  --accent:   #e8dcc4;   /* warm cream — icon fills, version badges */
+
+  /* ── Semantic colors (Gruvbox bright) ── */
+  --blue:     #83a598;   /* links, primary action */
+  --blue-hover: #6d9181; /* primary button hover (~10% darker) */
+  --aqua:     #8ec07c;   /* success, confirm */
+  --green:    #b8bb26;   /* positive diff, badges */
+  --yellow:   #fabd2f;   /* warning, attention */
+  --orange:   #fe8019;   /* active, highlight */
+  --red:      #fb4934;   /* error, destructive */
+  --purple:   #d3869b;   /* tags, categories */
+  --cyan:     #5ccfc4;   /* technical layer: focus, links, data, brackets. Lines and text, never large fills */
+  --cyan-tint: #1e2b2a;  /* ground of a selected row or a focused field */
+  --yellow-hi: #fdc94a;  /* primary hover (one step lighter) */
+  --red-text: #ff7d6b;   /* red as small text: 4.5:1 on every dark ground, bg1 included */
+  --yellow-lo: #e5a823;  /* primary pressed */
+
+  /* ── Semantic colors (Gruvbox neutral — for quieter contexts) ── */
+  --blue-n:   #458588;
+  --aqua-n:   #689d6a;
+  --green-n:  #98971a;
+  --yellow-n: #d79921;
+  --orange-n: #d65d0e;
+  --red-n:    #cc241d;
+  --purple-n: #b16286;
+  --cyan-n:   #3f9a94;   /* quiet lines only (4.4:1 on cards) */
+
+  /* ── Roles (follow the theme; see Light theme below) ── */
+  --field:    var(--bg-hard); /* input fields, nested surfaces */
+  --score:    var(--yellow);  /* scores, points, "how good is it" */
+  --hl:       var(--cyan);    /* current selection (selected tile, active row) */
+  --focus:    var(--cyan);    /* focus ring, everywhere */
+  --link:     var(--cyan);    /* links in running text */
+  --info:     var(--cyan);    /* info callouts and toasts, third feature tier */
+  --warn:     var(--orange);  /* warnings: callout, banner, middle tier of states */
+  --danger:   var(--red);     /* errors, destructive actions */
+  --danger-text: var(--red-text); /* error text, critical labels and counts (not fills) */
+  --on-state: var(--bg-void); /* text on a filled state colour (danger button, counters) */
+  --scrim:    rgba(20,19,18,.62); /* dimmed area behind dialogs and outside a crop */
+  --primary:  var(--yellow);  /* primary action, pressed segment, switch on, focus ring */
+  --on-primary: var(--bg-void); /* text on --primary */
+  --map-marker: var(--focus);   /* pins on a map (QML mapMarkerColor) */
+  --map-route:  var(--primary); /* a route or track on a map (QML mapRouteColor) */
+  --entity-fallback: var(--fg3); /* an entity without a colour of its own (QML entityFallbackColor) */
+
+  /* ── Tints: translucent steps of the theme colours for hover, drop targets, selection, outlines ── */
+  --tint-1:    color-mix(in srgb, var(--fg1) 8%, transparent);
+  --tint-2:    color-mix(in srgb, var(--fg1) 16%, transparent);
+  --tint-hl:   color-mix(in srgb, var(--cyan) 12%, transparent);
+  --tint-hl-2: color-mix(in srgb, var(--cyan) 25%, transparent);
+  --tint-warn: color-mix(in srgb, var(--orange) 14%, transparent);
+
+  /* ── Data palette: series colours of charts, in this order (red stays danger) ── */
+  --d1: var(--cyan);
+  --d2: var(--yellow);
+  --d3: var(--purple);
+  --d4: var(--aqua);
+  --d5: var(--orange);
+  --d6: var(--fg3);
+
+  /* ── Paper: stickers and brand chips (cream label, dark ink) ── */
+  --paper:    var(--accent);
+  --on-paper: var(--bg-void);
+
+  /* ── Layout ── */
+  --radius:   12px;
+  --max-w:    860px;
+  --max-w-wide: 1280px;  /* landing hero and feature rows */
+  --gutter:   clamp(1rem, 5.6vw, 4.5rem);
+  --chamfer:  16px;      /* top-right corner cut on boxes (surfaces) */
+  --cut-m:    10px;      /* buttons, tiles, tabs, menus */
+  --cut-s:    6px;       /* small buttons, stickers */
+  --h-s:      32px;      /* control heights: small, medium, large */
+  --h-m:      40px;
+  --h-l:      48px;
+
+  /* ── Motion (only under prefers-reduced-motion: no-preference) ── */
+  --dur-fast: 120ms;     /* colour and border changes */
+  --dur:      200ms;     /* cut grows, lift, slide */
+  --dur-slow: 450ms;     /* entrances: bar, scan, cascade */
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --ease-snap: cubic-bezier(.3,1.5,.5,1); /* mechanical snap with a small overshoot */
+
+  /* ── Typography ── */
+  --font-heading: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+               Ubuntu, Cantarell, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  --font-control: var(--font-heading); /* buttons; Kante Gold keeps Rajdhani here while titles turn serif */
+}
+
+/*
+ * Light theme ("Leinen") — opt-in via <html data-theme="light">.
+ * Token names describe ROLES, not lightness: --bg-void is still the page
+ * ground, --bg-panel the cards, --bg2 the borders, --fg1 the body text.
+ * Landing pages stay dark-first; apps that need a light mode use this.
+ * Semantic colors are the darkened counterparts so every text pair reaches
+ * WCAG AA on the ground and on cards.
+ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* ── Backgrounds ── */
+  --bg-void:  #f0e9d6;   /* page ground: linen, between too-yellow #fbf1c7 and too-bright #f5f1e8 */
+  --bg-hard:  #e6dec6;   /* sunk areas: code, progress tracks */
+  --bg0:      #f0e9d6;
+  --bg-panel: #f7f2e4;   /* cards and panels */
+  --bg1:      #fbf8ee;   /* fields, elevated surfaces */
+  --bg2:      #d3c8ac;   /* borders, dividers */
+
+  /* ── Foregrounds ── */
+  --fg0:      #282828;
+  --fg1:      #3c3836;
+  --fg2:      #665c54;
+  --fg3:      #6a5f52;
+
+  /* ── Brand accent ── */
+  --accent:   #3c3836;   /* icon fill on light: dark square, yellow marks */
+
+  /* ── Semantic colors (darkened for light grounds) ── */
+  --blue:     #076678;
+  --blue-hover: #05505f;
+  --aqua:     #427b58;
+  --green:    #4f5d0a;
+  --yellow:   #8a5a00;
+  --orange:   #af3a03;
+  --red:      #9d0006;
+  --purple:   #8f3f71;
+  --cyan:     #0f6b66;   /* 5.2:1 on the ground */
+  --cyan-tint: #d9ebe4;
+  --red-text: #9d0006;
+
+  --field:    var(--bg1);
+  --scrim:    rgba(40,40,40,.5);
+  --primary:  #fabd2f;   /* yellow fill with ink, as in the dark theme (not ochre with brown text) */
+  --on-primary: #141312;
+  --yellow-hi: #fcc845;
+  --yellow-lo: #e5a823;
+  --on-state: #fbf8ee;
+}
+
+/*
+ * Kante Light (apps) — opt-in via <html data-kante="light">.
+ * Kante shapes on the platform look: colors are Breeze and follow the
+ * system's light/dark setting (prefers-color-scheme), like Kirigami.Theme
+ * does for Qt apps. Controls keep a small radius and the system font;
+ * css/components.css "Kante Light" adds the shape and type rules.
+ * Semantic colors are the Breeze inks (readable as text on the ground).
+ */
+:root[data-kante="light"] {
+  color-scheme: light;
+
+  --bg-void:  #eff0f1;   /* window ground */
+  --bg-hard:  #e3e5e7;   /* sunk areas, tracks */
+  --bg0:      #eff0f1;
+  --bg-panel: #fcfcfc;   /* cards, panels (view) */
+  --bg1:      #fcfcfc;   /* fields */
+  --bg2:      #c9ced2;   /* borders */
+
+  --fg0:      #232629;
+  --fg1:      #232629;
+  --fg2:      #4d545b;
+  --fg3:      #646e78;
+
+  --accent:   #232629;
+
+  --blue:     #1d6fa5;
+  --blue-hover: #155a87;
+  --aqua:     #1e8449;
+  --green:    #1e8449;
+  --yellow:   #a84f00;   /* "check" tier: Breeze neutral, darkened */
+  --orange:   #a84f00;
+  --red:      #bf2e3e;
+  --purple:   #8e44ad;
+
+  --field:    var(--bg1);
+  --score:    var(--blue);
+  --hl:       #3daee9;   /* Breeze highlight: selection, focus */
+  --scrim:    rgba(35,38,41,.5);
+  --primary:  #3daee9;
+  --on-primary: #ffffff;
+  --cyan:     #1d6fa5;   /* Kante Light has no cyan: the platform's link and focus colours */
+  --cyan-n:   #1d6fa5;
+  --cyan-tint: #e3eef6;
+  --red-text: var(--red);
+  --yellow-hi: #3daee9;
+  --yellow-lo: #2e9bd4;
+  --on-state: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-kante="light"] {
+    color-scheme: dark;
+
+    --bg-void:  #202326;
+    --bg-hard:  #1b1e20;
+    --bg0:      #202326;
+    --bg-panel: #292c30;
+    --bg1:      #1b1e20;
+    --bg2:      #41464b;
+
+    --fg0:      #ffffff;
+    --fg1:      #fcfcfc;
+    --fg2:      #d1d5d9;
+    --fg3:      #a1a9b1;
+
+    --accent:   #fcfcfc;
+
+    --blue:     #3daee9;
+    --blue-hover: #2e9bd4;
+    --aqua:     #3ec57a;
+    --green:    #3ec57a;
+    --yellow:   #f69a3d;
+    --orange:   #f69a3d;
+    --red:      #ed5a6a;
+    --purple:   #b56fd0;
+
+    --scrim:    rgba(0,0,0,.55);
+    --cyan:     #3daee9;
+    --cyan-n:   #3daee9;
+    --cyan-tint: #1e3342;
+    --red-text: var(--red);
+    --yellow-hi: #3daee9;
+    --yellow-lo: #2e9bd4;
+    --on-state: #202326;
+  }
+}
+
+/*
+ * Kante Gold — opt-in via <html data-kante="gold">. Only Kintsugi uses it (see AGENT-RULE.md).
+ * The noble variant: the same components and sizes on urushi lacquer, paper text and gold.
+ * Every cut edge is gilded, bars are 2 px, titles and figures are Spectral, motion glides.
+ * Dark only. css/components.css "Kante Gold" adds the shape, type and motion rules.
+ * Patina (verdigris) takes cyan's roles: focus, links, info.
+ */
+:root[data-kante="gold"] {
+  color-scheme: dark;
+
+  /* ── Backgrounds: lacquer ── */
+  --bg-void:  #14110f;   /* urushi: page ground */
+  --bg-hard:  #0f0d0b;   /* sunk areas, fields, tracks */
+  --bg0:      #1c1815;
+  --bg-panel: #1c1815;   /* lacquer: cards and panels */
+  --bg1:      #262019;   /* elevated, hover */
+  --bg2:      #3b3229;   /* borders, dividers */
+
+  /* ── Foregrounds: paper ── */
+  --fg0:      #faf5e9;
+  --fg1:      #efe8d8;
+  --fg2:      #cdc2ae;
+  --fg3:      #a39885;   /* ash: 6.6:1 on the ground */
+
+  /* ── Brand accent: pale gold ── */
+  --accent:   #e8d4a6;
+
+  /* ── Semantic colors: metals and pigments ── */
+  --blue:     #8aa1ab;   /* slate */
+  --blue-hover: #77909a;
+  --aqua:     #97ad7a;   /* jade: success */
+  --green:    #a9b26b;
+  --yellow:   #d4a640;   /* gold: primary, lines, score */
+  --orange:   #d08a55;   /* copper: warning */
+  --red:      #d0705a;   /* cinnabar: error */
+  --purple:   #c497a8;   /* ume: tags */
+  --cyan:     #8fb8aa;   /* patina: focus, links, info */
+  --cyan-n:   #6f9488;
+  --cyan-tint: #1b2321;
+  --yellow-hi: #e0b65a;
+  --yellow-lo: #b88f2f;
+  --red-text: #e48b74;
+
+  --scrim:    rgba(15,13,11,.72);
+  --d1: var(--yellow);
+  --d2: var(--cyan);
+
+  /* ── Gold only ── */
+  --gold-line: color-mix(in srgb, var(--yellow) 32%, transparent); /* hairlines, frames */
+  --gild:     1.6px;     /* the gold line on every cut edge */
+  --bar:      2px;       /* state and tier bars (Kante: 4 px) */
+
+  /* ── Motion: glides, no overshoot ── */
+  --dur-fast: 160ms;
+  --dur:      280ms;
+  --dur-slow: 700ms;
+  --ease-snap: cubic-bezier(.2,.8,.2,1);
+
+  /* ── Typography: serif titles and figures, Rajdhani stays on the controls ── */
+  --font-heading: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-control: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+/* ── Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg-void);color:var(--fg1);font-family:var(--font-sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--font-mono);font-size:.85em;color:var(--fg2)}
+/* The hidden attribute wins over every Kante display rule (.tile-tools, .bulk-bar, .editbar, …) */
+
+/* ── Language: paired elements, e.g. <p lang="en">…</p><p lang="de">…</p>.
+   <html lang> is "en" by default; shrippen.js switches it. ── */
+html[lang="en"] [lang="de"],html[lang="de"] [lang="en"]{display:none!important}
 /* Registered so the cut can animate (A01, A19). */
 /* [hidden] wins over every display rule below; here, not in base.css, so apps without the reset get it too */
 [hidden]{display:none!important}
@@ -42,7 +382,7 @@
 .lang button{background:none;border:0;padding:.3rem .6rem;font-family:var(--font-mono);font-size:.72rem;
   letter-spacing:.1em;color:var(--fg3);cursor:pointer}
 .lang button:hover{color:var(--fg0)}
-.lang button[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+.lang button[aria-pressed="true"]{background:var(--yellow);color:var(--bg-void)}
 .nav a:focus-visible,.lang button:focus-visible,.copy-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 /* ── Hero: name and tagline left, install box and screenshot right ── */
@@ -226,7 +566,7 @@ kbd{white-space:nowrap;font-family:var(--font-mono);font-size:.78em;padding:.05r
 .feat{--tier:var(--info);position:relative;background:var(--bg-panel);border-top:4px solid transparent;
   padding:1.6rem 1.75rem 2rem;display:flex;flex-direction:column;gap:.75rem}
 .feat[data-tier="red"]{--tier:var(--red)}
-.feat[data-tier="yellow"]{--tier:var(--warn)}
+.feat[data-tier="yellow"]{--tier:var(--yellow)}
 .feat[data-tier="blue"],.feat[data-tier="cyan"]{--tier:var(--info)}
 .feat::before{content:"";position:absolute;left:0;right:0;top:-4px;height:4px;background:var(--tier);transform-origin:left}
 a.feat{color:inherit;text-decoration:none}
@@ -331,7 +671,7 @@ a.feat:focus-visible::after{inset:6px;background:var(--brk)}
 /* 1 · Bildkachel */
 .tile{--tier:var(--aqua);position:relative;display:flex;flex-direction:column;text-align:left;cursor:pointer;background:var(--bg-panel);border:0;border-top:4px solid var(--tier);padding:0;
   clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,0 100%)}
-.tile[data-tier="green"]{--tier:var(--aqua)}.tile[data-tier="yellow"]{--tier:var(--warn)}.tile[data-tier="red"]{--tier:var(--red)}
+.tile[data-tier="green"]{--tier:var(--aqua)}.tile[data-tier="yellow"]{--tier:var(--yellow)}.tile[data-tier="red"]{--tier:var(--red)}
 .tile::after{content:"";position:absolute;inset:0;border:2px solid transparent;pointer-events:none;transition:border-color .12s}
 .tile:hover::after{border-color:var(--bg2)}
 .tile:focus-visible{outline:0}.tile:focus-visible::after{border-color:transparent;inset:5px;background:var(--brk)}
@@ -373,14 +713,14 @@ a.feat:focus-visible::after{inset:6px;background:var(--brk)}
 .readout{white-space:nowrap;pointer-events:none;position:absolute;right:.5rem;bottom:.5rem;background:var(--bg-void);border:1px solid var(--bg2);padding:.15rem .5rem;font-family:var(--font-mono);font-size:.68rem;color:var(--fg2);font-variant-numeric:tabular-nums}
 .strip{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.3rem}
 .strip button{--tier:var(--aqua);flex:0 0 5.2rem;aspect-ratio:3/2;background:var(--bg0);border:2px solid transparent;border-top:3px solid var(--tier);padding:0;cursor:pointer;overflow:hidden}
-.strip button[data-tier="yellow"]{--tier:var(--warn)}.strip button[data-tier="red"]{--tier:var(--red)}
+.strip button[data-tier="yellow"]{--tier:var(--yellow)}.strip button[data-tier="red"]{--tier:var(--red)}
 .strip button[aria-current="true"]{border-color:var(--primary);border-top-color:var(--tier)}
 .strip svg{display:block;width:100%;height:100%}
 
 /* 3 · Umsortieren (Drag-and-drop) */
 .bands{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
 .band{--tier:var(--aqua);background:var(--bg-hard);border-top:4px solid var(--tier);padding:.6rem;min-height:9.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:.5rem;align-content:start;transition:background .12s}
-.band[data-tier="yellow"]{--tier:var(--warn)}.band[data-tier="red"]{--tier:var(--red)}
+.band[data-tier="yellow"]{--tier:var(--yellow)}.band[data-tier="red"]{--tier:var(--red)}
 .band-head{grid-column:1/-1;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tier)}
 .band-head span:last-child{color:var(--fg3);font-variant-numeric:tabular-nums}
 .band.is-over{outline:2px dashed var(--tier);outline-offset:-4px;background:var(--bg-panel)}
@@ -425,10 +765,10 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .panel-grid .wide{grid-column:1/-1}
 
 /* 5 · Status & Fortschritt */
-.pill{--c:var(--fg3);display:inline-flex;align-items:center;gap:.45rem;min-height:var(--h-xs);padding:0 .6rem;border:1px solid var(--c);color:var(--c);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.pill{--c:var(--fg3);display:inline-flex;align-items:center;gap:.45rem;padding:.18rem .6rem;border:1px solid var(--c);color:var(--c);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
 .pill::before{content:"";width:.45rem;height:.45rem;background:var(--c)}
 .pill[data-state="analyzing"]{--c:var(--info)}
-.pill[data-state="reviewing"]{--c:var(--info)}.pill[data-state="reviewing"]::before{background:none;border:2px solid var(--c)}
+.pill[data-state="reviewing"]{--c:var(--yellow)}.pill[data-state="reviewing"]::before{background:none;border:2px solid var(--c)}
 .pill[data-state="locked"]{--c:var(--warn)}.pill[data-state="locked"]::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
 .pill[data-state="applied"]{--c:var(--aqua)}.pill[data-state="applied"]::before{content:"✓";width:auto;height:auto;background:none;font-size:.75rem;line-height:1}
 .pill[data-state="failed"]{--c:var(--red)}.pill[data-state="failed"]::before{content:"✕";width:auto;height:auto;background:none;font-size:.75rem;line-height:1}
@@ -441,9 +781,9 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .progress-segs>i.on{background:var(--primary)}
 .progress-segs[data-tier="green"]>i.on{background:var(--aqua)}.progress-segs[data-tier="red"]>i.on{background:var(--red)}
 .progress-bar.is-indeterminate{background:repeating-linear-gradient(-45deg,var(--yellow) 0 8px,var(--bg-hard) 8px 16px);background-size:22.63px 22.63px}
-.progress-bar>i[data-tier="green"]{background:var(--aqua)}.progress-bar>i[data-tier="yellow"]{background:var(--warn)}.progress-bar>i[data-tier="red"]{background:var(--red)}
+.progress-bar>i[data-tier="green"]{background:var(--aqua)}.progress-bar>i[data-tier="yellow"]{background:var(--yellow)}.progress-bar>i[data-tier="red"]{background:var(--red)}
 .toast{position:relative;overflow:hidden;background:var(--bg-panel);border-top:4px solid var(--info);padding:.7rem 1rem;display:flex;align-items:center;gap:.8rem;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.04em;color:var(--fg1);max-width:26rem;
-  clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}
 .toast[data-kind="ok"]{border-top-color:var(--aqua)}.toast[data-kind="warn"]{border-top-color:var(--warn)}.toast[data-kind="error"]{border-top-color:var(--danger)}
 /* Remaining time: a 2px line in the kind's colour, shrinking over --life (A14) */
 .toast-life{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--info);transform-origin:left}
@@ -456,7 +796,7 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .dialog{background:var(--bg-panel);border-top:4px solid var(--yellow);padding:1.4rem 1.5rem 1.5rem;display:flex;flex-direction:column;gap:1rem;max-width:30rem;width:100%;
   clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,var(--chamfer) 100%,0 calc(100% - var(--chamfer)))}
 .dialog.is-danger{border-top-color:var(--danger)}
-.dialog h3{font-family:var(--font-heading);font-weight:700;font-size:var(--title-m);text-transform:uppercase;letter-spacing:var(--title-track);color:var(--fg0);line-height:1.05}
+.dialog h3{font-family:var(--font-heading);font-weight:700;font-size:1.6rem;text-transform:uppercase;letter-spacing:.03em;color:var(--fg0);line-height:1.05}
 .dialog-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .dialog-facts .fact b{font-size:2rem}
 .dialog-actions{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:flex-end}
@@ -472,10 +812,10 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
   font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
 .tabs :is(button,a):hover{color:var(--fg0);text-decoration:none}
-.tabs :is(button,a)[aria-selected="true"],.tabs :is(button,a)[aria-current="page"]{background:var(--primary);color:var(--on-primary)}
+.tabs :is(button,a)[aria-selected="true"],.tabs :is(button,a)[aria-current="page"]{background:var(--yellow);color:var(--bg-void)}
 .tabs :is(button,a):focus-visible{outline:none;box-shadow:inset 0 -3px 0 var(--focus)}
 .tabs.has-ind :is(button,a)[aria-selected="true"],.tabs.has-ind :is(button,a)[aria-current="page"]{background:transparent}
-.tabs-ind{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--primary);clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%);pointer-events:none}
+.tabs-ind{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--yellow);clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%);pointer-events:none}
 .tabs .count{margin-left:.45rem}
 /* Check box and radio: square box with a drawn tick (A15), radio as a diamond */
 .check{position:relative;display:inline-flex;align-items:center;gap:.65rem;cursor:pointer;font-size:.92rem;color:var(--fg1)}
@@ -495,15 +835,15 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .check:has(input:disabled){color:var(--fg3);cursor:not-allowed}
 .check input:disabled+:is(.check-box,.check-dia){opacity:.45}
 /* Counter, sticker, status lamp, HUD line */
-.count{display:inline-grid;place-items:center;min-width:var(--h-mark);height:var(--h-mark);padding-inline:.3rem;background:var(--primary);color:var(--on-primary);font-family:var(--font-mono);font-size:.68rem;font-weight:500;font-variant-numeric:tabular-nums}
+.count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding-inline:.3rem;background:var(--yellow);color:var(--bg-void);font-family:var(--font-mono);font-size:.68rem;font-weight:500;font-variant-numeric:tabular-nums}
 .count[data-kind="info"]{background:var(--info);color:var(--on-state)}.count[data-kind="error"]{background:var(--danger);color:var(--on-state)}
-.sticker{display:inline-flex;align-items:center;gap:.5rem;min-height:var(--h-xs);padding:0 .9rem 0 .6rem;background:var(--paper);color:var(--on-paper);font-family:var(--font-mono);font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+.sticker{display:inline-flex;align-items:center;gap:.5rem;min-height:28px;padding:0 .9rem 0 .6rem;background:var(--paper);color:var(--on-paper);font-family:var(--font-mono);font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
   clip-path:polygon(0 0,calc(100% - var(--cut-s)) 0,100% var(--cut-s),100% 100%,0 100%)}
 .sticker::before{content:"";width:7px;height:7px;background:var(--dot,var(--on-paper))}
 .led{display:inline-block;width:10px;height:10px;background:var(--c,var(--info))}
 .hud{display:flex;flex-wrap:wrap;gap:.2rem .9rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
 .hud b{color:var(--yellow);font-weight:500}.hud em{font-style:normal;color:var(--cyan)}
-[data-type].is-typing::after{content:"";display:inline-block;width:.6em;height:1.05em;margin-left:.15em;vertical-align:-.18em;background:var(--primary)}
+[data-type].is-typing::after{content:"";display:inline-block;width:.6em;height:1.05em;margin-left:.15em;vertical-align:-.18em;background:var(--yellow)}
 /* Path and pages */
 .crumbs{display:flex;flex-wrap:wrap;gap:.4rem;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3)}
 .crumbs a{color:var(--fg2)}.crumbs [aria-current]{color:var(--fg0)}
@@ -511,22 +851,22 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .pager{display:flex;flex-wrap:wrap;gap:.3rem}
 .pager :is(a,button){display:inline-grid;place-items:center;min-width:var(--h-s);height:var(--h-s);padding-inline:.4rem;background:var(--bg-hard);border:1px solid var(--bg2);color:var(--fg2);cursor:pointer;font-family:var(--font-mono);font-size:.76rem;font-variant-numeric:tabular-nums;text-decoration:none}
 .pager :is(a,button):hover{border-color:var(--fg3);color:var(--fg0)}
-.pager [aria-current="page"]{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.pager [aria-current="page"]{background:var(--yellow);border-color:var(--yellow);color:var(--bg-void)}
 /* Menu */
-.menu{margin:0;list-style:none;background:var(--bg-panel);border-top:2px solid var(--cyan);padding:.35rem 0;min-width:15rem;
+.menu{margin:0;list-style:none;background:var(--bg-panel);border-top:3px solid var(--cyan);padding:.35rem 0;min-width:15rem;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
 .menu :is(button,a){display:flex;width:100%;align-items:center;gap:.7rem;min-height:36px;padding-inline:.9rem;background:none;border:0;color:var(--fg1);cursor:pointer;font-size:.9rem;text-align:left;text-decoration:none}
 .menu :is(button,a):hover,.menu :is(button,a):focus-visible{outline:none;background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}
 .menu kbd{margin-left:auto}.menu .is-danger{color:var(--danger)}
 .menu hr{border:0;border-top:1px solid var(--bg1);margin:.3rem 0}
 /* Loading: three squares, a placeholder */
-.loader{display:inline-flex;gap:4px}.loader i{width:9px;height:9px;background:var(--primary)}
+.loader{display:inline-flex;gap:4px}.loader i{width:9px;height:9px;background:var(--yellow)}
 .skel{display:flex;flex-direction:column;gap:.5rem}
 .skel i{display:block;height:12px;background:linear-gradient(90deg,var(--bg1) 0 40%,var(--bg2) 50%,var(--bg1) 60%);background-size:300% 100%}
 .skel i:nth-child(2){width:80%}.skel i:nth-child(3){width:55%}
 /* Empty state and drop zone */
 .empty{border:1px dashed var(--bg2);padding:1.6rem 1.2rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;text-align:center}
-.empty b{font-family:var(--font-heading);font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+.empty b{font-family:var(--font-heading);font-size:1.25rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fg0)}
 .empty p{font-size:.86rem;color:var(--fg2)}
 .drop{border:2px dashed var(--bg2);padding:1.3rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;text-align:center;color:var(--fg2);font-size:.88rem}
 .drop:hover,.drop.is-over{border-color:var(--cyan);background:var(--cyan-tint)}
@@ -534,7 +874,7 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .table tbody tr[aria-selected="true"] td:first-child{box-shadow:inset 3px 0 0 var(--cyan)}
 /* Running light (A21): put <span class="runner" aria-hidden="true"></span> in a positioned surface that is working */
 .runner{position:absolute;inset:0;padding:2px;pointer-events:none;
-  background:conic-gradient(from var(--run),transparent 0 78%,var(--primary) 90%,transparent 100%);
+  background:conic-gradient(from var(--run),transparent 0 78%,var(--yellow) 90%,transparent 100%);
   -webkit-mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0);mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0)}
 
 /* ── Motion ────────────────────────────────────────────────────────────
@@ -660,35 +1000,28 @@ dialog.dialog::backdrop{background:var(--scrim)}
 /* Toggle state of a button (aria-pressed) */
 .btn-outline[aria-pressed="true"],.btn-data[aria-pressed="true"],.btn-quiet[aria-pressed="true"]{--bc:var(--cyan);background-color:var(--cyan-tint);color:var(--fg0);box-shadow:inset 0 -2px 0 var(--cyan)}
 /* Inline button for dense rows (hints, tables): the one exception to the 32/40/48 heights */
-.btn-inline{--cut:0px;--grow:0px;min-height:var(--h-xs);padding:0 .5rem;font-size:.78rem;letter-spacing:.1em}
+.btn-inline{--cut:0px;--grow:0px;min-height:0;padding:.1rem .5rem;font-size:.78rem;letter-spacing:.1em}
 /* Chip: an entity or a filter, a colour square and a name; pressed = filled; .chip-x removes it */
 .chips-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
-.chip{--c:var(--purple);display:inline-flex;align-items:center;gap:.4rem;height:var(--h-xs);padding-inline:.5rem;border:1px solid var(--c);background:none;color:var(--c);cursor:pointer;
+.chip{--c:var(--purple);display:inline-flex;align-items:center;gap:.4rem;height:24px;padding-inline:.5rem;border:1px solid var(--c);background:none;color:var(--c);cursor:pointer;
   font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;white-space:nowrap}
 .chip::before{content:"";width:8px;height:8px;background:var(--c)}
 /* A chip never runs out of its row; .is-wrap lets a long chip (a question, a sentence) break onto more lines */
 .chip{max-width:100%}
 .chip::before{flex:none}
-.chip.is-wrap{height:auto;min-height:var(--h-xs);padding-block:.25rem;white-space:normal;text-align:left;line-height:1.35}
+.chip.is-wrap{height:auto;min-height:24px;padding-block:.25rem;white-space:normal;text-align:left;line-height:1.35}
 .chip[aria-pressed="true"]{background:var(--c);color:var(--on-state)}
 .chip[aria-pressed="true"]::before{background:var(--on-state)}
 .chip:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .chip.is-filter{--c:var(--cyan)}
-/* A filter chip reads like .chip-pick: hollow square off; on = filled square on a tint (a fill in the entity colour is for entity chips) */
-.chip.is-filter:not([aria-pressed="true"])::before{background:none;box-shadow:inset 0 0 0 2px var(--c)}
-.chip.is-filter[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--fg0)}
-.chip.is-filter[aria-pressed="true"]::before{background:var(--c)}
 .chip-x{background:none;border:0;color:inherit;cursor:pointer;width:16px;height:16px;line-height:1;padding:0;font-family:var(--font-mono)}
 /* Pill over an image */
 .pill.is-solid{background:color-mix(in srgb,var(--bg-void) 85%,transparent)}
 /* Selectable option card (radio card): aria-checked or aria-selected marks the choice */
-.option{position:relative;display:flex;gap:.8rem;align-items:flex-start;padding:.9rem 1rem 1rem;background:var(--bg-panel);border:1px solid transparent;border-top:4px solid var(--bg2);cursor:pointer;
-  background-origin:border-box;background-repeat:no-repeat;background-position:top right;background-size:var(--cut-m) var(--cut-m);color:var(--fg1);text-align:left;font:inherit;
+.option{position:relative;display:flex;gap:.8rem;align-items:flex-start;padding:.9rem 1rem 1rem;background:var(--bg-panel);border-top:4px solid var(--bg2);cursor:pointer;color:var(--fg1);text-align:left;font:inherit;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
 .option:hover{background-color:var(--tint-1)}
-/* The frame is a border plus the drawn diagonal (as .btn-outline), so it follows the cut */
-.option[aria-checked="true"],.option[aria-selected="true"]{border-color:var(--cyan);background-color:var(--cyan-tint);
-  background-image:linear-gradient(to bottom left,transparent 50%,var(--cyan) 50%,var(--cyan) calc(50% + 1px),transparent calc(50% + 1px))}
+.option[aria-checked="true"],.option[aria-selected="true"]{border-top-color:var(--cyan);background-color:var(--cyan-tint);box-shadow:inset 0 0 0 1px var(--cyan)}
 .option:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
 /* Dropdown: a <details> that shows a .menu */
 details.dropdown{position:relative;display:inline-block}
@@ -717,7 +1050,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .flow-node.done{border-top-color:var(--aqua)}
 .flow-node.done b::before{content:"✓ ";color:var(--aqua)}
 .fact[data-tier="green"]{border-top-color:var(--aqua)}.fact[data-tier="green"] b{color:var(--aqua)}
-.fact[data-tier="yellow"]{border-top-color:var(--warn)}.fact[data-tier="yellow"] b{color:var(--warn)}
+.fact[data-tier="yellow"]{border-top-color:var(--yellow)}.fact[data-tier="yellow"] b{color:var(--yellow)}
 .fact[data-tier="red"]{border-top-color:var(--red)}.fact[data-tier="red"] b{color:var(--red)}
 .fact[data-tier="cyan"]{border-top-color:var(--cyan)}.fact[data-tier="cyan"] b{color:var(--cyan)}
 /* Swatch: entity colours are squares; the ring tells where the colour comes from */
@@ -832,7 +1165,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .delta[data-good="down"].up{color:var(--red)}.delta[data-good="down"].dn{color:var(--aqua)}
 .delta[data-good="none"]:is(.up,.dn){color:var(--fg2)}
 /* Bulk bar: appears when something is selected; cyan bar because selection is cyan */
-.bulk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;background:var(--bg1);border-top:4px solid var(--cyan);padding:.5rem .8rem;
+.bulk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;background:var(--bg1);border-top:3px solid var(--cyan);padding:.5rem .8rem;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
 .bulk-bar>.n{font-family:var(--font-heading);font-weight:700;font-size:1.3rem;color:var(--fg0);font-variant-numeric:tabular-nums}
 .bulk-bar>.n small{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);font-weight:400;margin-left:.4rem}
@@ -847,7 +1180,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 /* Sheet: a panel from the bottom or the side, with an action row */
 .sheet{background:var(--bg-panel);border-top:4px solid var(--yellow);padding:1.1rem 1.3rem 1.3rem;display:flex;flex-direction:column;gap:.8rem;
   clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,0 100%)}
-.sheet>h3{font-family:var(--font-heading);font-weight:700;font-size:var(--title-m);text-transform:uppercase;letter-spacing:var(--title-track);color:var(--fg0);line-height:1.05}
+.sheet>h3{font-family:var(--font-heading);font-weight:700;font-size:1.4rem;text-transform:uppercase;letter-spacing:.03em;color:var(--fg0);line-height:1.05}
 .sheet>.actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:flex-end}
 .sheet.is-side{position:fixed;top:0;right:0;bottom:0;width:min(26rem,100%);z-index:30;overflow-y:auto;clip-path:none;border-top-width:0;border-left:4px solid var(--yellow)}
 /* Setting row: label, hint, control; the reset button only when the value differs */
@@ -871,7 +1204,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .status{--k:var(--aqua);background:var(--bg-panel);border-top:4px solid var(--k);padding:.7rem .9rem .8rem;display:flex;flex-direction:column;gap:.3rem;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
 .status[data-state="warn"]{--k:var(--warn)}.status[data-state="bad"]{--k:var(--danger)}.status[data-state="off"]{--k:var(--bg2)}
-.status>.name{font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+.status>.name{font-family:var(--font-heading);font-weight:700;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fg0)}
 .status>.row{display:flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.68rem;color:var(--fg2)}
 .status>.row::before{content:"";width:9px;height:9px;background:var(--k)}
 /* Board editor: add tile, grip, hover strip */
@@ -901,7 +1234,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 :is(a.link-tile,.launch):focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
 a.link-tile{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.2rem .8rem;align-items:center;padding:.8rem 1rem}
 a.link-tile>img,a.link-tile>svg{width:28px;height:28px;grid-row:1/3}
-a.link-tile>.name{font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+a.link-tile>.name{font-family:var(--font-heading);font-weight:700;font-size:1.05rem;letter-spacing:.05em;text-transform:uppercase;color:var(--fg0)}
 a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;color:var(--fg3)}
 /* List row: marker, text, meta; selected = cyan tint with a bar */
 .list-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:.7rem;min-height:var(--h-m);padding-inline:.8rem;border-bottom:1px solid var(--bg1);color:var(--fg1);cursor:pointer}
@@ -920,7 +1253,7 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 .cmd-row.is-plain .copy-btn{background:var(--bg1);border-color:var(--bg1);color:var(--fg1)}
 
 /* Chip pick: a checkbox as a chip (multi-select filter). A real input inside keeps keyboard and forms working; hollow square = off, filled cyan = on */
-.chip-pick{position:relative;display:inline-flex;align-items:center;gap:.45rem;min-height:var(--h-xs);padding-inline:.6rem;border:1px solid var(--bg2);color:var(--fg2);cursor:pointer;
+.chip-pick{position:relative;display:inline-flex;align-items:center;gap:.45rem;min-height:28px;padding-inline:.6rem;border:1px solid var(--bg2);color:var(--fg2);cursor:pointer;
   font-family:var(--font-mono);font-size:.72rem;letter-spacing:.06em;white-space:nowrap}
 .chip-pick>input{position:absolute;opacity:0;width:1px;height:1px}
 .chip-pick>span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:.45rem;border:2px solid var(--fg3);vertical-align:-1px}
@@ -933,7 +1266,7 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 /* Fold: collapsible section with title and count; a <details>, no script. The cut square turns a quarter when open */
 .fold{border-bottom:1px solid var(--bg1)}
 .fold>summary{display:flex;align-items:baseline;gap:.6rem;min-height:var(--h-m);padding-block:.5rem;cursor:pointer;list-style:none;
-  font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+  font-family:var(--font-heading);font-weight:700;font-size:1.08rem;letter-spacing:.03em;text-transform:uppercase;color:var(--fg0)}
 .fold>summary::-webkit-details-marker{display:none}
 .fold>summary::before{content:"";flex:none;align-self:center;width:10px;height:10px;background:var(--fg3);clip-path:polygon(0 0,60% 0,100% 40%,100% 100%,0 100%);transform:rotate(-90deg)}
 .fold:not([open])>summary::before{background:none;box-shadow:inset 0 0 0 2px var(--fg3)}
@@ -968,13 +1301,13 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 .tier-card,.hint-card,.timeline>li{--tier:var(--bg2)}
 .hint-card{--tier:var(--info)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="green"]{--tier:var(--aqua)}
-:is(.tier-card,.hint-card,.timeline>li)[data-tier="yellow"]{--tier:var(--warn)}
+:is(.tier-card,.hint-card,.timeline>li)[data-tier="yellow"]{--tier:var(--yellow)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="red"]{--tier:var(--red)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="blue"],:is(.tier-card,.hint-card,.timeline>li)[data-tier="cyan"]{--tier:var(--info)}
 /* Tier card: a card with a tier bar and no click behaviour (a status, not a link) */
 .tier-card{display:flex;flex-direction:column;gap:.3rem;padding:.8rem 1rem .9rem;background:var(--bg-panel);border-top:4px solid var(--tier);color:var(--fg2);font-size:.88rem;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
-.tier-card>h3,.tier-card>b{font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+.tier-card>h3,.tier-card>b{font-family:var(--font-heading);font-weight:700;font-size:1.05rem;letter-spacing:.05em;text-transform:uppercase;color:var(--fg0)}
 .tier-card>small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;color:var(--fg3)}
 /* Hint card: tier as icon shape + text + colour (never colour alone), source, expandable "why", actions.
    Icon: red = triangle, yellow = diamond, blue = square, green = check */
@@ -1005,14 +1338,14 @@ a.hint-card>.title:hover,.hint-card>a.title:hover{color:var(--link)}
 .timeline>li>.what>small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;color:var(--fg3)}
 .timeline>li>.state{font-family:var(--font-mono);font-style:normal;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2);white-space:nowrap}
 .timeline>li[data-tier="red"]>.state{color:var(--danger)}
-.timeline>li[data-tier="yellow"]>.state{color:var(--warn)}
+.timeline>li[data-tier="yellow"]>.state{color:var(--yellow)}
 
 /* Edit bar: the edit mode of a page (save, discard, history). Cyan, because editing is selection; .is-sticky sticks to the top, .is-fixed to the bottom edge */
-.editbar{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;background:var(--bg1);border-top:4px solid var(--cyan);padding:.5rem .8rem;
+.editbar{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;background:var(--bg1);border-top:3px solid var(--cyan);padding:.5rem .8rem;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,0 100%)}
 /* Popovers hanging below the bar need the clip off: the cut corner is given up */
 .editbar.has-menu{clip-path:none}
-.editbar>.mode{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+.editbar>.mode{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-weight:700;font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fg0)}
 .editbar>.mode::before{content:"";width:10px;height:10px;background:var(--cyan)}
 .editbar>.mode small{font-family:var(--font-mono);font-size:.64rem;font-weight:400;letter-spacing:.1em;color:var(--fg3)}
 .editbar>.grow{flex:1}
@@ -1037,7 +1370,7 @@ a.hint-card>.title:hover,.hint-card>a.title:hover{color:var(--link)}
 .login.is-wide{max-width:30rem}
 .login>.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-heading);font-weight:700;font-size:1.1rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
 .login>.brand>:is(img,svg){width:30px;height:30px}
-.login>h1{font-family:var(--font-heading);font-weight:700;font-size:var(--title-m);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0);line-height:1.05}
+.login>h1{font-family:var(--font-heading);font-weight:700;font-size:1.6rem;letter-spacing:.03em;text-transform:uppercase;color:var(--fg0);line-height:1.05}
 .login form{display:flex;flex-direction:column;gap:.8rem}
 .login label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
 .login .btn{width:100%}
@@ -1107,7 +1440,7 @@ a.hint-card>.title:hover,.hint-card>a.title:hover{color:var(--link)}
 .combo-search>.input{padding-right:2rem;background-image:linear-gradient(45deg,transparent 50%,var(--fg2) 50%),linear-gradient(135deg,var(--fg2) 50%,transparent 50%);
   background-position:calc(100% - 1.05rem) 55%,calc(100% - .75rem) 55%;background-size:.3rem .3rem;background-repeat:no-repeat}
 .combo-search>[role="listbox"]{position:absolute;left:0;right:0;top:calc(100% + 2px);z-index:30;margin:0;padding:.3rem 0;list-style:none;max-height:16rem;overflow:auto;
-  background:var(--bg-panel);border:1px solid var(--bg2);border-top:2px solid var(--cyan)}
+  background:var(--bg-panel);border:1px solid var(--bg2);border-top:3px solid var(--cyan)}
 .combo-search>[aria-expanded="false"]~[role="listbox"],.combo-search>[role="listbox"][hidden]{display:none}
 .combo-search [role="option"]{display:flex;align-items:center;gap:.6rem;min-height:var(--h-s);padding:0 .8rem;color:var(--fg1);font-size:.9rem;cursor:pointer}
 .combo-search.has-colors [role="option"]:not(.is-new)::before{content:"";flex:none;width:10px;height:10px;background:var(--c,var(--entity-fallback))}
@@ -1176,7 +1509,7 @@ input[type="color"]:hover{border-color:var(--fg3)}
 input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 /* Pills in a tile or a badge row shorten with an ellipsis instead of widening the tile */
 .tile-badges{display:flex;flex-wrap:wrap;gap:.3rem;min-width:0}
-.tile .pill,.tile-badges .pill{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;line-height:calc(var(--h-xs) - 2px);letter-spacing:.06em;padding-inline:.4rem}
+.tile .pill,.tile-badges .pill{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;letter-spacing:.06em;padding-inline:.4rem}
 .tile .pill::before,.tile-badges .pill::before{display:inline-block;margin-right:.3rem;vertical-align:1px}
 /* App page head: the title with its actions, apart from the first card or panel under it */
 .page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:.6rem 1rem;margin-bottom:1.25rem}
@@ -1201,7 +1534,7 @@ input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:
 :root:is([data-theme="light"],[data-kante="light"]) .launch-icon>img.is-glyph{filter:none}
 @media (prefers-color-scheme:dark){:root[data-kante="light"] .launch-icon>img.is-glyph{filter:invert(.9)}}
 .launch-body{display:flex;flex-direction:column;flex:1;min-width:0}
-.launch-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);line-height:1.25;letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+.launch-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-heading);font-weight:700;font-size:1.05rem;line-height:1.25;letter-spacing:.05em;text-transform:uppercase;color:var(--fg0)}
 .launch-title>small{font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.02em;text-transform:none;color:var(--fg3)}
 .launch-desc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.8rem;line-height:1.35;color:var(--fg2)}
 .launch-tags{display:flex;flex-wrap:wrap;gap:0 .5rem;font-family:var(--font-mono);font-size:.62rem;color:var(--fg3)}
@@ -1214,13 +1547,13 @@ input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:
 /* Uptime strip with its detail button on one line: <span class="launch-trend"><svg class="uptime">…</svg>
    <span class="launch-detail" role="button" tabindex="0" aria-label="…"><svg>…</svg></span></span>; a span, as the tile is a link */
 .launch-trend{flex-basis:100%;display:flex;align-items:center;gap:.4rem;min-width:0}
-.launch-detail{flex:none;display:inline-grid;place-items:center;width:1.6rem;height:var(--h-mark);padding:0;background:none;border:1px solid transparent;color:var(--fg3);cursor:pointer}
+.launch-detail{flex:none;display:inline-grid;place-items:center;width:1.6rem;height:1.25rem;padding:0;background:none;border:1px solid transparent;color:var(--fg3);cursor:pointer}
 .launch-detail svg{width:14px;height:14px}
 .launch-detail:hover{color:var(--fg0);border-color:var(--bg2)}
 .launch-detail:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
 @media (pointer:coarse){.launch-detail{width:2.2rem;height:2rem}}
 /* Hint count: outlined in the tier colour; red is filled, so the shape tells the tier too */
-.launch-hints{--k:var(--info);display:inline-flex;align-items:center;justify-content:center;gap:.2rem;min-width:var(--h-mark);height:var(--h-mark);margin:0;padding:0 .3rem;background:none;border:1px solid var(--k);color:var(--k);
+.launch-hints{--k:var(--info);display:inline-flex;align-items:center;justify-content:center;gap:.2rem;min-width:1.25rem;height:1.1rem;margin:0;padding:0 .3rem;background:none;border:1px solid var(--k);color:var(--k);
   font-family:var(--font-mono);font-weight:500;font-size:.62rem;font-variant-numeric:tabular-nums;text-decoration:none;cursor:pointer}
 .launch-hints[data-tier="yellow"]{--k:var(--warn)}
 .launch-hints[data-tier="red"]{--k:var(--danger);background:var(--danger);color:var(--on-state)}
@@ -1317,14 +1650,6 @@ input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:
 :root[data-kante="light"] .tile,:root[data-kante="light"] .flow-node,:root[data-kante="light"] .dialog,:root[data-kante="light"] .toast{box-shadow:inset 0 0 0 1px var(--bg2)}
 :root[data-kante="light"] .toolbar{background:var(--bg-panel);border-color:var(--bg2);border-radius:4px}
 :root[data-kante="light"] .pill{border-radius:1rem}
-/* Kante 1.13: the parts added since 1.5 follow the same rule (controls in the system font, normal case, small radius; card titles in the system font) */
-:root[data-kante="light"] :is(.sheet>h3,.tier-card>h3,.tier-card>b,.status>.name,a.link-tile>.name,.launch-title,.editbar>.mode,.fold>summary,.empty b){font-family:var(--font-sans);text-transform:none;letter-spacing:0}
-:root[data-kante="light"] .tabs{gap:0}
-:root[data-kante="light"] .tabs :is(button,a),:root[data-kante="light"] .tabs-ind{clip-path:none;border-radius:4px 4px 0 0}
-:root[data-kante="light"] :is(.tabs :is(button,a),.modebar>:is(button,a),.pager :is(a,button),.chip,.chip-pick,.toast>.toast-action){font-family:var(--font-sans);font-size:.85rem;letter-spacing:0;text-transform:none}
-:root[data-kante="light"] :is(.modebar,.pager :is(a,button),.chip,.chip-pick,.toast>.toast-action,.combo-search>[role="listbox"],details.help>.help-text){border-radius:4px}
-:root[data-kante="light"] .modebar{overflow:hidden}
-:root[data-kante="light"] details.help>summary{border-radius:50%}
 
 /* ── Thread: a conversation (Kintsugi's chat, Hansei's talk with the AI) ──
    .thread > .msg[data-from="ai"|"me"] > header (who, time) + text. The other side sits left
@@ -1339,8 +1664,8 @@ input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:
 .msg :is(ul,ol){padding-left:1.2rem}
 
 /* ── App page titles: the h1 of an app page and the heading of a block on it ── */
-.page-title{font-family:var(--font-heading);font-weight:700;font-size:var(--title-l);line-height:1.02;text-transform:uppercase;letter-spacing:.02em;color:var(--fg0);text-wrap:balance}
-.block-title{font-family:var(--font-heading);font-weight:700;font-size:var(--title-m);line-height:1.1;text-transform:uppercase;letter-spacing:var(--title-track);color:var(--fg0)}
+.page-title{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.8rem,4.2vw,2.5rem);line-height:1.02;text-transform:uppercase;letter-spacing:.02em;color:var(--fg0);text-wrap:balance}
+.block-title{font-family:var(--font-heading);font-weight:700;font-size:1.3rem;line-height:1.1;text-transform:uppercase;letter-spacing:.04em;color:var(--fg0)}
 
 /* ── Steps with state: .is-done ticks the number, aria-current="step" marks where you are;
    .steps.is-row lays a short process out in one line (setup wizards) ── */
@@ -1376,16 +1701,16 @@ input[type="color"]:focus-visible{outline:2px solid var(--focus);outline-offset:
 /* ── Help: a small "?" beside a label that opens a short explanation (term, unit, where to find a value).
    details.help > summary (the "?", aria-label) + .help-text. Opens on click or keyboard, closes on a second click. ── */
 details.help{position:relative;display:inline-block;vertical-align:middle;margin-left:.3rem;text-transform:none;letter-spacing:0}
-details.help>summary{display:inline-grid;place-items:center;width:var(--h-mark);height:var(--h-mark);border:1px solid var(--cyan);color:var(--cyan);font-family:var(--font-mono);font-size:.68rem;line-height:1;cursor:pointer;list-style:none}
+details.help>summary{display:inline-grid;place-items:center;width:18px;height:18px;border:1px solid var(--cyan);color:var(--cyan);font-family:var(--font-mono);font-size:.68rem;line-height:1;cursor:pointer;list-style:none}
 details.help>summary::-webkit-details-marker{display:none}
 details.help>summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 details.help[open]>summary{background:var(--cyan-tint)}
-details.help>.help-text{position:absolute;z-index:25;top:calc(100% + 6px);left:-.5rem;width:max-content;max-width:min(20rem,80vw);background:var(--bg-panel);border-top:2px solid var(--cyan);padding:.6rem .8rem;
+details.help>.help-text{position:absolute;z-index:25;top:calc(100% + 6px);left:-.5rem;width:max-content;max-width:min(20rem,80vw);background:var(--bg-panel);border-top:3px solid var(--cyan);padding:.6rem .8rem;
   font-family:var(--font-sans);font-size:.82rem;line-height:1.4;color:var(--fg1);border-inline:1px solid var(--bg2);border-bottom:1px solid var(--bg2)}
 details.help.is-right>.help-text{left:auto;right:-.5rem}
 
 /* ── Toast with an action, e.g. "Undo" after a delete: .toast > .toast-action (a quiet button) ── */
-.toast>.toast-action{margin-left:auto;flex:none;display:inline-flex;align-items:center;min-height:var(--h-xs);background:none;border:1px solid currentColor;color:var(--fg0);padding:0 .6rem;cursor:pointer;
+.toast>.toast-action{margin-left:auto;flex:none;background:none;border:1px solid currentColor;color:var(--fg0);padding:.2rem .6rem;cursor:pointer;
   font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
 .toast>.toast-action:hover{background:var(--cyan-tint)}
 .toast>.toast-action:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
@@ -1402,7 +1727,7 @@ details.help.is-right>.help-text{left:auto;right:-.5rem}
 .ring-pick>.ring-pick-n{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-mono);font-size:1.4rem;color:var(--fg2);pointer-events:none}
 
 /* ── Touch: chips get the small control height, so a finger hits them ── */
-@media (pointer:coarse){.chip{height:var(--h-s)}.chip-pick{min-height:var(--h-s)}}
+@media (pointer:coarse){.chip{height:var(--h-s)}}
 
 /* ── Keyboard focus on segments and switches (they had none) ── */
 .seg button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
@@ -1430,9 +1755,7 @@ details.help.is-right>.help-text{left:auto;right:-.5rem}
 :root[data-kante="gold"] .btn{font-weight:600}
 :root[data-kante="gold"] .feat-icon{stroke-width:1.5}
 /* Less weight: 2 px bars, gold hairlines */
-:root[data-kante="gold"] :is(.flow-node,.faq details,.feat,.callout,.band,.toast,.dialog,.sheet,.status,.palette,a.link-tile,.launch,.tier-card,.hint-card,.login,.tile,.option,.editbar,.bulk-bar){border-top-width:var(--bar)}
-:root[data-kante="gold"] .timeline>li{border-left-width:var(--bar)}
-:root[data-kante="gold"] .option{border-color:var(--gold-line)}
+:root[data-kante="gold"] :is(.flow-node,.faq details,.feat,.callout,.band,.toast,.dialog,.sheet,.status,.palette,a.link-tile,.launch,.tier-card,.hint-card,.login,.tile){border-top-width:var(--bar)}
 :root[data-kante="gold"] .feat::before{top:calc(-1 * var(--bar));height:var(--bar)}
 :root[data-kante="gold"] .msg{border-left-width:var(--bar)}
 :root[data-kante="gold"] .msg[data-from="me"]{border-right-width:var(--bar)}
@@ -1450,8 +1773,8 @@ details.help.is-right>.help-text{left:auto;right:-.5rem}
 :root[data-kante="gold"] .tabs.has-ind :is(button,a):is([aria-selected="true"],[aria-current="page"]){box-shadow:none}
 /* The gilded edge: a gold line along the cut of every surface */
 :root[data-kante="gold"] :is(.ch,.feat:not(a),.callout,.codeblock,.table-wrap,.flow-node,.faq details,.dialog,.sheet,.palette,.login){--gc:var(--chamfer)}
-:root[data-kante="gold"] :is(.status,.tier-card,.hint-card,.menu,.bulk-bar,.launch,a.link-tile,.option,.editbar:not(.has-menu),.toast){--gc:var(--cut-m)}
-:root[data-kante="gold"] :is(.ch,.feat:not(a),.callout,.codeblock,.table-wrap,.flow-node,.faq details,.dialog,.sheet,.palette,.login,.status,.tier-card,.hint-card,.menu,.bulk-bar,.launch,a.link-tile,.option,.editbar:not(.has-menu),.toast){
+:root[data-kante="gold"] :is(.status,.tier-card,.hint-card,.menu,.bulk-bar){--gc:var(--cut-m)}
+:root[data-kante="gold"] :is(.ch,.feat:not(a),.callout,.codeblock,.table-wrap,.flow-node,.faq details,.dialog,.sheet,.palette,.login,.status,.tier-card,.hint-card,.menu,.bulk-bar){
   background-image:linear-gradient(to bottom left,transparent calc(50% - var(--gild) / 2),var(--yellow) calc(50% - var(--gild) / 2),var(--yellow) calc(50% + var(--gild) / 2),transparent calc(50% + var(--gild) / 2));
   background-repeat:no-repeat;background-position:top right;background-size:var(--gc) var(--gc);background-origin:border-box}
 /* Busy: a slow shimmer instead of marching hazard stripes */
@@ -1497,3 +1820,266 @@ details.help.is-right>.help-text{left:auto;right:-.5rem}
   .foot-brand img{width:64px;height:64px}
   .foot-cols{gap:2rem}
 }
+
+/* Page layout: one reading column, findings as blocks with "Ist" and "Vorschlag" side by side. Only Kante tokens. */
+main{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:1.5rem 4rem;display:flex;flex-direction:column;gap:2.2rem}
+.viewbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;padding:.6rem 16px;background:var(--bg-panel);border-bottom:1px solid var(--bg2)}
+.viewbar .h-label{border:0;padding:0}
+.lede{max-width:44rem;color:var(--fg2)}
+.finding{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.finding-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem 1rem}
+.finding p{max-width:46rem;color:var(--fg2);font-size:.95rem}
+.finding p b{color:var(--fg0);font-weight:600}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:1rem}
+.pane{display:flex;flex-direction:column;gap:.7rem;min-width:0;padding:1rem;background:var(--bg0);border:1px solid var(--bg1)}
+.wrow{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.ev{display:flex;flex-direction:column;gap:.35rem;margin:0}
+.ev img{display:block;max-width:100%;height:auto;border:1px solid var(--bg2)}
+.ev figcaption,.cap{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;color:var(--fg3)}
+.fix-list{margin:0;padding-left:1.1rem;color:var(--fg2);font-size:.9rem;display:flex;flex-direction:column;gap:.3rem;max-width:46rem}
+.fix-list code{color:var(--cyan)}
+.m{display:inline-flex;flex-direction:column;align-items:flex-start;gap:.25rem}
+.hold{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:.8rem}
+.table-wrap{overflow-x:auto}
+/* Proposals, shown live on the right side: only Kante roles */
+.fix-warn :is(.hint-card,.tier-card,.timeline>li,.feat)[data-tier="yellow"]{--tier:var(--warn)}
+.fix-warn .timeline>li[data-tier="yellow"]>.state{color:var(--warn)}
+.fix-warn .pill[data-state="reviewing"]{--c:var(--warn)}
+.fix-role .tabs :is(button,a)[aria-selected="true"]{background:var(--primary);color:var(--on-primary)}
+.fix-role .pager [aria-current="page"]{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.fix-role .count:not([data-kind]){background:var(--primary);color:var(--on-primary)}
+.fix-sel .chip.is-filter[aria-pressed="true"]{background:var(--cyan-tint);color:var(--fg0)}
+.fix-sel .chip.is-filter[aria-pressed="true"]::before{background:var(--cyan)}
+.fix-h :is(.chip,.chip-pick,.pill,.sticker,.btn-inline,.toast-action){box-sizing:border-box;height:24px;min-height:24px;padding-block:0;display:inline-flex;align-items:center}
+.fix-h details.help>summary,.fix-h .count,.fix-h .launch-hints{box-sizing:border-box;height:20px;min-width:20px}
+</style>
+
+<div class="viewbar" role="group" aria-label="Variante">
+  <span class="h-label">Ansicht</span>
+  <div class="seg" id="view">
+    <button type="button" data-v="dark" aria-pressed="true">Dunkel</button>
+    <button type="button" data-v="leinen" aria-pressed="false">Leinen</button>
+    <button type="button" data-v="klight" aria-pressed="false">Kante Light</button>
+    <button type="button" data-v="gold" aria-pressed="false">Gold</button>
+  </div>
+  <span class="cap">Alle Muster sind live mit Kante 1.12 (<code>docs/v1/shrippen.css</code>) gerendert.</span>
+</div>
+
+<main>
+
+<header class="finding">
+  <h1 class="page-title">Ist Kante noch kohärent?</h1>
+  <p class="lede">Prüfung nach dem 1.4-Redesign und den Ergänzungen 1.5 bis 1.12 (30.09. bis 02.10.2026). Grundlage: eine Musterseite mit dem aktuellen Stylesheet in vier Varianten bei 1200 und 390&nbsp;px, dazu Andons Demo (Übersicht, Hinweise).</p>
+  <div class="callout callout-warn"><strong>Urteil:</strong> Die Form hält. Schnittkante, Leisten, Mono-Labels und eckige Marker sind auch in allen neuen Teilen durchgezogen. Die <strong>Bedeutung der Farben</strong> und die <strong>Varianten</strong> driften: fünf Brüche, drei davon in Andon direkt sichtbar.</div>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>#</th><th>Befund</th><th>Sichtbar in</th><th>Aufwand</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td><a href="#b1">Warnung ist mal gelb, mal orange</a></td><td>Andon Übersicht und Hinweise</td><td>klein, eine Zuordnung</td></tr>
+      <tr><td class="num">2</td><td><a href="#b2">1.4-Teile nutzen noch <code>--yellow</code> statt <code>--primary</code></a></td><td>Leinen, Kante Light</td><td>klein</td></tr>
+      <tr><td class="num">3</td><td><a href="#b3">Zwei Auswahlsprachen ohne Regel</a></td><td>überall</td><td>Regel plus kleine Änderung</td></tr>
+      <tr><td class="num">4</td><td><a href="#b4">Kleine Höhen und Leisten ohne Skala</a></td><td>Filterzeilen, Leisten</td><td>mittel, neue Tokens</td></tr>
+      <tr><td class="num">5</td><td><a href="#b5">Varianten kennen nur die 1.4-Teile</a></td><td>Kante Light, Gold</td><td>mittel</td></tr>
+    </tbody>
+  </table></div>
+</header>
+
+<!-- 1 -->
+<section class="finding" id="b1">
+  <div class="finding-head"><h2 class="block-title">1 · Warnung hat zwei Farben</h2><span class="pill" data-state="failed">Bruch</span></div>
+  <p>Stufe <code>yellow</code> wird bei <b>hint-card, tier-card, feat, timeline</b> und <b>pill[reviewing]</b> gelb. Bei <b>launch-hints, status, callout-warn, toast, chip[warn]</b> und <b>launch-state</b> wird sie orange (<code>--warn</code>). Laut README ist Warnung Orange; Gelb ist die Primäraktion. In Andon zeigt dieselbe Warnung im Balken braun und auf der Kachel rostrot.</p>
+  <div class="cmp">
+    <div class="pane"><span class="h-label">Ist</span>
+      <div class="wrow">
+        <article class="hint-card" data-tier="yellow" style="width:12rem"><header><span class="tier">Warnung</span><span>Kimai</span></header><span class="title">Rechnung offen</span></article>
+        <div class="tier-card" data-tier="yellow" style="width:9rem"><b>Tier card</b><small>yellow</small></div>
+      </div>
+      <div class="wrow">
+        <span class="launch-hints" data-tier="yellow">13</span>
+        <span class="launch-state" data-state="warn">Langsam</span>
+        <button class="chip is-filter" data-tier="warn" type="button">Warnung 48</button>
+        <span class="pill" data-state="reviewing">Prüfen</span>
+      </div>
+      <ol class="timeline"><li data-tier="yellow"><time class="date-tile"><b>12</b>Okt</time><span class="what">USt-Voranmeldung<small>in 10 Tagen</small></span><em class="state">bald</em></li></ol>
+    </div>
+    <div class="pane fix-warn"><span class="h-label">Vorschlag: Stufe yellow → <code>--warn</code></span>
+      <div class="wrow">
+        <article class="hint-card" data-tier="yellow" style="width:12rem"><header><span class="tier">Warnung</span><span>Kimai</span></header><span class="title">Rechnung offen</span></article>
+        <div class="tier-card" data-tier="yellow" style="width:9rem"><b>Tier card</b><small>yellow</small></div>
+      </div>
+      <div class="wrow">
+        <span class="launch-hints" data-tier="yellow">13</span>
+        <span class="launch-state" data-state="warn">Langsam</span>
+        <button class="chip is-filter" data-tier="warn" type="button">Warnung 48</button>
+        <span class="pill" data-state="reviewing">Prüfen</span>
+      </div>
+      <ol class="timeline"><li data-tier="yellow"><time class="date-tile"><b>12</b>Okt</time><span class="what">USt-Voranmeldung<small>in 10 Tagen</small></span><em class="state">bald</em></li></ol>
+    </div>
+  </div>
+  <figure class="ev"><img src="data:image/webp;base64,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" alt="Andon: Hinweisbalken mit Warnung in Braun" width="1005" height="65"><figcaption>Andon, Leinen: „48 Warnung“ im Balken braun (gelbe Rolle) …</figcaption></figure>
+  <figure class="ev"><img src="data:image/webp;base64,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" alt="Andon: Dienstkacheln mit orangen Hinweiszählern" width="1005" height="225"><figcaption>… und auf den Dienstkacheln als rostrote Raute (◆13, ◆9, ◆3).</figcaption></figure>
+  <figure class="ev"><img src="data:image/webp;base64,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" alt="Andon: Filterchips Kritisch, Warnung, Info" width="1100" height="32"><figcaption>Hinweise-Seite: Filterchip „Warnung“ orange, die Gruppen darunter gelb.</figcaption></figure>
+  <ul class="fix-list">
+    <li><code>data-tier="yellow"</code> bei <code>.feat .tile .tier-card .hint-card .timeline .band .progress</code> auf <code>--warn</code> legen; Name bleibt (Kompatibilität).</li>
+    <li><code>pill[data-state="reviewing"]</code> klären: „in Prüfung“ ist ein Zustand, keine Warnung; eher <code>--info</code>.</li>
+    <li>Andons lokale <code>.hint-group[data-tier="yellow"] .sq</code> folgt dann über die Rolle.</li>
+  </ul>
+</section>
+
+<!-- 2 -->
+<section class="finding" id="b2">
+  <div class="finding-head"><h2 class="block-title">2 · Rollen nur halb umgestellt</h2><span class="pill" data-state="failed">Bruch</span></div>
+  <p>Seit 1.4 sollen Teile Rollen nutzen, nicht Farbnamen. <b>.tabs, .pager, .count, .loader, .runner</b> füllen aber noch mit <code>--yellow</code>; <b>.seg, .check, .switch, .steps, .ring-pick</b> mit <code>--primary</code>. Im Dunkel-Theme ist beides gleich. In Leinen ist <code>--yellow</code> Braun, in Kante Light Orange. Zum Sehen oben auf <b>Leinen</b> oder <b>Kante Light</b> schalten.</p>
+  <div class="cmp">
+    <div class="pane"><span class="h-label">Ist</span>
+      <div class="wrow"><div class="tabs"><button type="button" aria-selected="true">Tabs <span class="count">3</span></button><button type="button">Zwei</button></div></div>
+      <div class="wrow"><div class="seg"><button type="button" aria-pressed="true">Tag</button><button type="button">Woche</button></div><nav class="pager"><a href="#b2">1</a><a href="#b2" aria-current="page">2</a><a href="#b2">3</a></nav></div>
+    </div>
+    <div class="pane fix-role"><span class="h-label">Vorschlag: <code>--primary</code> / <code>--on-primary</code></span>
+      <div class="wrow"><div class="tabs"><button type="button" aria-selected="true">Tabs <span class="count">3</span></button><button type="button">Zwei</button></div></div>
+      <div class="wrow"><div class="seg"><button type="button" aria-pressed="true">Tag</button><button type="button">Woche</button></div><nav class="pager"><a href="#b2">1</a><a href="#b2" aria-current="page">2</a><a href="#b2">3</a></nav></div>
+    </div>
+  </div>
+  <figure class="ev"><img src="data:image/webp;base64,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" alt="Leinen: Tab braun, Segment gelb" width="820" height="70"><figcaption>Leinen: ausgewählter Tab braun, Segment gelb.</figcaption></figure>
+  <figure class="ev"><img src="data:image/webp;base64,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" alt="Kante Light: Tab orange, Segment blau" width="820" height="70"><figcaption>Kante Light: Tab orange, Segment Breeze-blau.</figcaption></figure>
+  <ul class="fix-list">
+    <li>Fläche „aktiv/gewählt“ immer <code>--primary</code> + <code>--on-primary</code>; <code>--yellow</code> nur noch für Daten (Punkte, Score, Ziel-Linie).</li>
+    <li><code>tools/check-tokens.py</code> um eine Prüfung erweitern: <code>background:var(--yellow)</code> außerhalb von Chart-Regeln ist ein Fehler.</li>
+  </ul>
+</section>
+
+<!-- 3 -->
+<section class="finding" id="b3">
+  <div class="finding-head"><h2 class="block-title">3 · Zwei Auswahlsprachen</h2><span class="pill" data-state="locked">Unklar</span></div>
+  <p><b>Gelb gefüllt:</b> .tabs, .seg, .pager, Radio, .ring-pick. <b>Cyan getönt mit Strich:</b> .modebar, .chip-pick, .option, btn[aria-pressed], .list-row, .day-pick. Beides ist sinnvoll, aber nirgends als Regel festgehalten. Deshalb sehen <b>.seg</b> und <b>.modebar</b> fast gleich aus und wählen verschieden. Filterchips gibt es zweimal: <b>.chip.is-filter</b> füllt sich, <b>.chip-pick</b> tönt.</p>
+  <div class="cmp">
+    <div class="pane"><span class="h-label">Ist</span>
+      <div class="wrow"><div class="seg"><button type="button" aria-pressed="true">Tag</button><button type="button">Woche</button></div><div class="modebar"><button type="button" aria-pressed="true">Alle <small>12</small></button><button type="button">Kimai <small>4</small></button></div></div>
+      <div class="wrow"><button class="chip is-filter" aria-pressed="true" type="button">Offen 4</button><button class="chip is-filter" type="button">Erledigt 9</button><label class="chip-pick"><input type="checkbox" checked><span>Offen</span><small>4</small></label><label class="chip-pick"><input type="checkbox"><span>Erledigt</span><small>9</small></label></div>
+    </div>
+    <div class="pane fix-sel"><span class="h-label">Vorschlag: eine Filterchip-Form</span>
+      <div class="wrow"><div class="seg"><button type="button" aria-pressed="true">Tag</button><button type="button">Woche</button></div><div class="modebar"><button type="button" aria-pressed="true">Alle <small>12</small></button><button type="button">Kimai <small>4</small></button></div></div>
+      <div class="wrow"><button class="chip is-filter" aria-pressed="true" type="button">Offen 4</button><button class="chip is-filter" type="button">Erledigt 9</button><label class="chip-pick"><input type="checkbox" checked><span>Offen</span><small>4</small></label><label class="chip-pick"><input type="checkbox"><span>Erledigt</span><small>9</small></label></div>
+    </div>
+  </div>
+  <div class="callout"><strong>Regel für das README:</strong> Gelb (<code>--primary</code>) ist der <em>gewählte Wert eines Bedienelements</em>: genau einer aus wenigen (Tab, Segment, Seite, Radio). Cyan ist eine <em>Markierung von Einträgen</em>: Filter, Mehrfachauswahl, Listenzeilen, Bearbeitung. Danach bleibt .modebar cyan (Filter); .seg bleibt gelb (Wert). Gefüllte Fläche in Entitätsfarbe nur für <code>.chip</code> ohne <code>.is-filter</code>.</div>
+</section>
+
+<!-- 4 -->
+<section class="finding" id="b4">
+  <div class="finding-head"><h2 class="block-title">4 · Höhen und Leisten ohne Skala</h2><span class="pill" data-state="locked">Unklar</span></div>
+  <p>Regel sind 32/40/48&nbsp;px. Darunter sind sieben Höhen gewachsen, gemessen live (Zahl unter jedem Teil). <b>.chip</b> und <b>.chip-pick</b> stehen in derselben Filterzeile und sind verschieden hoch. Leisten: Regel 4&nbsp;px Status, 2&nbsp;px Linie; <b>.bulk-bar, .editbar, .menu</b>, Combo-Liste und <b>.help-text</b> haben 3&nbsp;px.</p>
+  <div class="cmp">
+    <div class="pane"><span class="h-label">Ist</span>
+      <div class="wrow" data-measure>
+        <details class="help"><summary aria-label="Hilfe">?</summary><div class="help-text">Hilfe</div></details>
+        <span class="count">3</span><span class="launch-hints" data-tier="red">1</span>
+        <button class="btn btn-quiet btn-inline" type="button">inline</button>
+        <button class="chip" type="button">chip</button>
+        <label class="chip-pick"><input type="checkbox"><span>pick</span></label>
+        <span class="pill">pill</span><span class="sticker">sticker</span>
+      </div>
+    </div>
+    <div class="pane fix-h"><span class="h-label">Vorschlag: <code>--h-xs</code> 24, Marker 20</span>
+      <div class="wrow" data-measure>
+        <details class="help"><summary aria-label="Hilfe">?</summary><div class="help-text">Hilfe</div></details>
+        <span class="count">3</span><span class="launch-hints" data-tier="red">1</span>
+        <button class="btn btn-quiet btn-inline" type="button">inline</button>
+        <button class="chip" type="button">chip</button>
+        <label class="chip-pick"><input type="checkbox"><span>pick</span></label>
+        <span class="pill">pill</span><span class="sticker">sticker</span>
+      </div>
+    </div>
+  </div>
+  <ul class="fix-list">
+    <li>Token <code>--h-xs: 24px</code> für dichte Bedienteile (chip, chip-pick, pill, sticker, btn-inline, toast-action), auf Touch weiter <code>--h-s</code>.</li>
+    <li>Token <code>--h-mark: 20px</code> für Zähler und Marker (count, launch-hints, help).</li>
+    <li>3-px-Leisten: Bars über Flächen (bulk-bar, editbar) auf 4, Popups (menu, Combo, help-text) auf 2.</li>
+  </ul>
+</section>
+
+<!-- 5 -->
+<section class="finding" id="b5">
+  <div class="finding-head"><h2 class="block-title">5 · Varianten kennen nur 1.4</h2><span class="pill" data-state="locked">Unklar</span></div>
+  <p><b>Kante Light</b> passt nur .btn, .input, .seg, .switch, .toolbar und .pill an. .modebar, .chip, .tabs und .pager bleiben Mono und eckig; das runde Segment steht neben der eckigen Modebar. Neue Kartentitel (tier-card, status, launch, editbar) sind großes Rajdhani, der Dialogtitel normale Schrift. In <b>Gold</b> fehlt der vergoldete Schnitt bei .launch, .link-tile, .option, .editbar und .toast; .option hat einen grauen Rahmen. Oben auf die Variante schalten.</p>
+  <div class="pane">
+    <div class="wrow"><div class="seg"><button type="button" aria-pressed="true">Tag</button><button type="button">Woche</button></div><div class="modebar"><button type="button" aria-pressed="true">Alle <small>12</small></button><button type="button">Kimai <small>4</small></button></div><div class="tabs"><button type="button" aria-selected="true">Tabs</button><button type="button">Zwei</button></div></div>
+    <div class="hold">
+      <a class="launch" href="#b5" style="--c:var(--purple)"><span class="launch-icon"><span class="monogram">NC</span></span><span class="launch-body"><b class="launch-title">Nextcloud <small>cloud.lan</small></b><span class="launch-desc">Dateien und Kalender</span><span class="launch-live"><span class="launch-state">Online</span><span>142 ms</span></span></span></a>
+      <button class="option" aria-checked="true" type="button"><span><b>Option</b><br><small>gewählt</small></span></button>
+      <div class="editbar"><span class="mode">Bearbeiten</span><span class="grow"></span><button class="btn btn-accent btn-sm" type="button">Speichern</button></div>
+      <div class="tier-card" data-tier="green"><h3>Tier card</h3><small>Titel</small></div>
+    </div>
+  </div>
+  <ul class="fix-list">
+    <li>Kante Light: Block um 1.5–1.12-Teile ergänzen (Mono-Labels bleiben, Bedienteile in Systemschrift und kleinem Radius).</li>
+    <li>Gold: Listen in „gilded edge“ und „2 px bars“ um die neuen Flächen ergänzen.</li>
+    <li>Ab jetzt: ein neues Element gilt erst als fertig, wenn es in allen vier Varianten gerendert wurde (Musterseite als Teil von <code>build.sh</code>).</li>
+  </ul>
+</section>
+
+<section class="finding">
+  <h2 class="block-title">Kleinere Punkte</h2>
+  <ul class="fix-list">
+    <li>Rajdhani-Titel in 1.05, 1.08, 1.15, 1.3, 1.4, 1.6 und 1.75&nbsp;rem, Laufweite .02 bis .06&nbsp;em. Vorschlag: drei Stufen als Tokens (Karte, Block, Seite).</li>
+    <li><code>.option</code>: Rahmen aus Innenschatten wird an der Schnittkante abgeschnitten und folgt der Diagonale nicht.</li>
+    <li>Andon Übersicht: zwei Suchfelder in verschiedenem Stil (Kopfzeile, <code>.search</code>). „Zuletzt“ mit unterstrichenen Links und Rauten neben der Hinweisliste mit Quadraten.</li>
+    <li>Andon Hinweise: ein gelber Primärknopf je Karte, Dutzende pro Seite. Gold kennt „eine Füllung pro Ansicht“, Kante hat keine Regel dafür.</li>
+  </ul>
+</section>
+
+<section class="finding">
+  <h2 class="block-title">Was hält</h2>
+  <div class="hold">
+    <div class="tier-card" data-tier="green"><b>Schnitt und Leiste</b>Alle neuen Flächen tragen Schnittkante und Leiste oben.</div>
+    <div class="tier-card" data-tier="green"><b>Stufe auch als Form</b>Dreieck, Raute, Quadrat bei hint-card, launch-hints und pill.</div>
+    <div class="tier-card" data-tier="green"><b>Labels</b>h-label, label.field, kpi und toolbar-label einheitlich: Mono, klein, groß.</div>
+    <div class="tier-card" data-tier="green"><b>1.12 fügt sich ein</b>Uptime-Streifen und Tagauswahl nutzen die Zustände von .status und die Rahmen von .cal.</div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var KEY='kante-review-view';
+  var root=document.documentElement, seg=document.getElementById('view');
+  var VIEWS={dark:{theme:'dark',kante:null},leinen:{theme:'light',kante:null},klight:{theme:null,kante:'light'},gold:{theme:'dark',kante:'gold'}};
+
+  // Shows each element's rendered height under it (finding 4).
+  function measure(){
+    document.querySelectorAll('[data-measure]>:not(.mh)').forEach(function(el){
+      var tag=el.nextElementSibling&&el.nextElementSibling.classList.contains('mh')?el.nextElementSibling:null;
+      if(!tag){tag=document.createElement('span');tag.className='cap mh';el.after(tag)}
+      tag.textContent=Math.round(el.getBoundingClientRect().height)+' px';
+    });
+  }
+
+  function apply(v){
+    var c=VIEWS[v]||VIEWS.dark;
+    if(c.theme){root.setAttribute('data-theme',c.theme)}else{root.removeAttribute('data-theme')}
+    if(c.kante){root.setAttribute('data-kante',c.kante)}else{root.removeAttribute('data-kante')}
+    seg.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===v))});
+    requestAnimationFrame(measure);
+  }
+
+  var start=null;
+  try{start=localStorage.getItem(KEY)}catch(e){}
+  if(!start){
+    var t=root.getAttribute('data-theme');
+    var light=t==='light'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches);
+    start=light?'leinen':'dark';
+  }
+  apply(start);
+
+  seg.addEventListener('click',function(e){
+    var b=e.target.closest('button');
+    if(!b){return}
+    apply(b.dataset.v);
+    try{localStorage.setItem(KEY,b.dataset.v)}catch(e){}
+  });
+  document.fonts&&document.fonts.ready.then(measure);
+})();
+</script>
+
+</body>
+</html>
