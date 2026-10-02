@@ -556,7 +556,7 @@ The review after 1.5 to 1.12 found the shapes coherent and the meaning of colour
 | Colour labels | `data-label` on `.tile`, `.band`, `.strip button`, `.fact`, `.progress-bar > i`: the named colour as data (Kader's green / yellow / red groups) | – |
 | Warning is orange in every app element | `data-tier="yellow"` on `.tile`, `.band`, `.strip`, `.progress-bar > i`, `.tier-card`, `.hint-card`, `.timeline` → `--warn` (landing `.feat` / `.fact` bands stay yellow); `.tier-card[data-tier="primary"]` for emphasis; `.pill[data-state="reviewing"]` → `--info` (a state, not a warning) | `KanteTile.Tier.Check` → `warningColor` |
 | Active fills by role | `.tabs`, `.tabs-ind`, `.pager`, `.count`, `.loader`, `.runner`, typing cursor, `.lang` → `--primary` / `--on-primary` (in Leinen they were brown, in Kante Light orange) | – |
-| One filter chip | `.chip.is-filter` reads like `.chip-pick`: hollow square off, filled square on a tint when pressed (no full fill) | – |
+| One filter chip | `.chip.is-filter` reads like `.chip-pick`: hollow square when off (`aria-pressed="false"`, or a filter link), filled square on a tint when pressed (no full fill); chips without a state (actions, suggestions) keep the filled square | – |
 | Sizes | tokens `--h-xs`, `--h-mark`; `.chip`, `.chip-pick`, `.pill`, `.sticker`, `.btn-inline`, `.toast-action` at 24, `.count`, `.launch-hints`, `.launch-detail`, `details.help` at 20; bulk and edit bar 4 px, menu, combo list and help 2 px; toast cut `--cut-m` | – |
 | Title scale | tokens `--title-s/-m/-l`, `--title-track` for card, block, dialog, sheet, login and page titles | – |
 | Option card frame | border plus drawn diagonal (as `.btn-outline`), follows the cut | – |
