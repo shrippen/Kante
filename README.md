@@ -589,7 +589,7 @@ dialog.dialog.detail
 | Wall of figures | `.detail-wall` > `.detail-card[data-tier]` > `span` (label), `b` (value), `svg.spark`, `small` | – |
 | Tasks | `.detail-progress` (`.progress-bar` + count), `.detail-tasks` > `.detail-task[.is-done]` > `.led`, `span` (text + `small`), action button | – |
 | Heatmap of a year | `.heat.is-weeks`: one column per week, days in order, Monday on top | – |
-| Reading text, waiting | `.detail-read` (large view text); `.detail-wait` > `.loader` while the content loads | – |
+| Reading text, picture, waiting | `.detail-read` (large view text: `h3`, paragraphs); `figure.detail-figure` > `img` + `figcaption`; `.detail-wait` > `.loader` while the content loads | – |
 | Columns in a frame, cells in a state colour | `.chart-wrap > svg.uptime` fills the frame (stacked check columns); `.table td[data-state="ok"\|"warn"\|"bad"]` colours the text | – |
 | Opening it | `.launch-detail` (1.12) opens the dialog from any tile: a span inside a link tile, a `button.launch-detail` in a card title | – |
 
