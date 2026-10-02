@@ -534,11 +534,14 @@ Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard f
 
 ### Added in Kante 1.12
 
-What Andon's boards needed to stay fast in Firefox with a hundred link tiles. Catalogue: [`proposals/2026-10-andon/`](proposals/2026-10-andon/).
+What Andon's boards needed: a fast uptime strip, and a detail dialog per link tile with its history. Catalogue: [`proposals/2026-10-andon/`](proposals/2026-10-andon/).
 
 | Element | Web | QML |
 |---|---|---|
 | Uptime strip | `svg.uptime` (`viewBox="0 0 <days> 1"`, `preserveAspectRatio="none"`) > one `path[data-state="ok"\|"warn"\|"bad"\|"off"]` per state with a column `M<i> 0h.7v1h-.7z` per day; states as `.status`; summary in `aria-label`/`title` | – |
+| Stacked check columns | `svg.uptime` with `viewBox="0 0 <days> 100"`: per day a `path[data-state="ok"]` column with `path[data-state="bad"]` on top | – |
+| Day picker | `.chart-wrap` > chart + `.day-pick` > one `button[aria-pressed]` per day column (focus frame on the chosen day) | – |
+| Detail button on a link tile | `.launch-live` > `.launch-trend` > `svg.uptime` + `.launch-detail` (icon, `role="button"`, `tabindex="0"`; a span, as the tile is a link) | – |
 
 ### Kante Gold
 
