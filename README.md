@@ -369,7 +369,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Sheet | `.sheet` | `KanteSheetSkin` |
 | Setting row | `.setting` | `KanteSettingRow` |
 | Day strip | `.day-strip` | `KanteDayStrip` |
-| Status light | `.status[data-state]` | `KanteStatusLight` |
+| Status light | `.status[data-state]`; `button.status` opens its entry (`aria-pressed="true"` the open one) | `KanteStatusLight` |
 | Board editor parts | `.tile-add`, `.grip`, `.tile-strip` | – |
 | Clock | `.clock` (SVG classes) | `KanteClock` |
 | Command palette, link tile | `.palette`, `a.link-tile` | – |
