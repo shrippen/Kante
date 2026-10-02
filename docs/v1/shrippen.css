@@ -562,7 +562,7 @@ kbd{white-space:nowrap;font-family:var(--font-mono);font-size:.78em;padding:.05r
 .feat{--tier:var(--info);position:relative;background:var(--bg-panel);border-top:4px solid transparent;
   padding:1.6rem 1.75rem 2rem;display:flex;flex-direction:column;gap:.75rem}
 .feat[data-tier="red"]{--tier:var(--red)}
-.feat[data-tier="yellow"]{--tier:var(--warn)}
+.feat[data-tier="yellow"]{--tier:var(--yellow)}
 .feat[data-tier="blue"],.feat[data-tier="cyan"]{--tier:var(--info)}
 .feat::before{content:"";position:absolute;left:0;right:0;top:-4px;height:4px;background:var(--tier);transform-origin:left}
 a.feat{color:inherit;text-decoration:none}
@@ -1058,7 +1058,7 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .flow-node.done{border-top-color:var(--aqua)}
 .flow-node.done b::before{content:"✓ ";color:var(--aqua)}
 .fact[data-tier="green"]{border-top-color:var(--aqua)}.fact[data-tier="green"] b{color:var(--aqua)}
-.fact[data-tier="yellow"]{border-top-color:var(--warn)}.fact[data-tier="yellow"] b{color:var(--warn)}
+.fact[data-tier="yellow"]{border-top-color:var(--yellow)}.fact[data-tier="yellow"] b{color:var(--yellow)}
 .fact[data-tier="red"]{border-top-color:var(--red)}.fact[data-tier="red"] b{color:var(--red)}
 .fact[data-tier="cyan"]{border-top-color:var(--cyan)}.fact[data-tier="cyan"] b{color:var(--cyan)}
 .fact[data-label]{--l:var(--fg3);border-top-color:var(--l)}.fact[data-label] b{color:var(--l)}
@@ -1315,6 +1315,8 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 .hint-card{--tier:var(--info)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="green"]{--tier:var(--aqua)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="yellow"]{--tier:var(--warn)}
+/* Emphasis, not a state: the card of the main thing on a page (e.g. Kintsugi's pitch and progress) */
+.tier-card[data-tier="primary"]{--tier:var(--primary)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="red"]{--tier:var(--red)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="blue"],:is(.tier-card,.hint-card,.timeline>li)[data-tier="cyan"]{--tier:var(--info)}
 /* Tier card: a card with a tier bar and no click behaviour (a status, not a link) */
