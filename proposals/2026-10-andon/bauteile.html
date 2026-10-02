@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.12 elements</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<style>main{max-width:var(--max-w);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2rem 0}h2{margin-bottom:.8rem}.demo{background:var(--bg-panel);padding:1.1rem;display:flex;flex-direction:column;gap:.8rem}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.12</h1>
+<p>Elements Andon's boards needed: a strip of daily uptime that costs one element per tile instead of one per day.</p>
+
+<section><h2 class="block-title">Uptime strip</h2><div class="demo">
+<svg class="uptime" viewBox="0 0 10 1" preserveAspectRatio="none" role="img" aria-label="80 % reachable in 10 days"><title>80 % reachable in 10 days</title><path data-state="off" d="M0 0h.7v1h-.7z"/><path data-state="ok" d="M1 0h.7v1h-.7zM2 0h.7v1h-.7zM3 0h.7v1h-.7zM5 0h.7v1h-.7zM6 0h.7v1h-.7zM8 0h.7v1h-.7zM9 0h.7v1h-.7z"/><path data-state="warn" d="M4 0h.7v1h-.7z"/><path data-state="bad" d="M7 0h.7v1h-.7z"/></svg>
+<div class="launch-live"><span class="launch-state">Online</span><span>182 ms</span><svg class="uptime" viewBox="0 0 30 1" preserveAspectRatio="none" role="img" aria-label="100 % reachable in 30 days"><path data-state="ok" d="M0 0h.7v1h-.7zM1 0h.7v1h-.7zM2 0h.7v1h-.7zM3 0h.7v1h-.7zM4 0h.7v1h-.7zM5 0h.7v1h-.7zM6 0h.7v1h-.7zM7 0h.7v1h-.7zM8 0h.7v1h-.7zM9 0h.7v1h-.7zM10 0h.7v1h-.7zM11 0h.7v1h-.7zM12 0h.7v1h-.7zM13 0h.7v1h-.7zM14 0h.7v1h-.7zM15 0h.7v1h-.7zM16 0h.7v1h-.7zM17 0h.7v1h-.7zM18 0h.7v1h-.7zM19 0h.7v1h-.7zM20 0h.7v1h-.7zM21 0h.7v1h-.7zM22 0h.7v1h-.7zM23 0h.7v1h-.7zM24 0h.7v1h-.7zM25 0h.7v1h-.7zM26 0h.7v1h-.7zM27 0h.7v1h-.7zM28 0h.7v1h-.7zM29 0h.7v1h-.7z"/></svg></div>
+</div></section>
+
+<section><h2 class="block-title">Detail button next to the strip</h2><div class="demo">
+<a class="launch" href="#" style="max-width:18rem"><span class="launch-icon"><span class="monogram">NC</span></span><span class="launch-body"><b class="launch-title">Nextcloud</b><span class="launch-live"><span class="launch-state">Online</span><span>142 ms</span><span class="launch-trend"><svg class="uptime" viewBox="0 0 30 1" preserveAspectRatio="none" role="img" aria-label="100 % reachable in 30 days"><path data-state="ok" d="M0 0h.7v1h-.7zM1 0h.7v1h-.7zM2 0h.7v1h-.7zM3 0h.7v1h-.7zM4 0h.7v1h-.7zM5 0h.7v1h-.7zM6 0h.7v1h-.7zM7 0h.7v1h-.7zM8 0h.7v1h-.7zM9 0h.7v1h-.7zM10 0h.7v1h-.7zM11 0h.7v1h-.7zM12 0h.7v1h-.7zM13 0h.7v1h-.7zM14 0h.7v1h-.7zM15 0h.7v1h-.7zM16 0h.7v1h-.7zM17 0h.7v1h-.7zM18 0h.7v1h-.7zM19 0h.7v1h-.7zM20 0h.7v1h-.7zM21 0h.7v1h-.7zM22 0h.7v1h-.7zM23 0h.7v1h-.7zM24 0h.7v1h-.7zM25 0h.7v1h-.7zM26 0h.7v1h-.7zM27 0h.7v1h-.7zM28 0h.7v1h-.7zM29 0h.7v1h-.7z"/></svg><span class="launch-detail" role="button" tabindex="0" aria-label="History and details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span></span></span></span></a>
+</div></section>
+
+<section><h2 class="block-title">Stacked check columns with a day picker</h2><div class="demo">
+<div class="chart-wrap" style="height:120px"><svg class="uptime" viewBox="0 0 14 100" preserveAspectRatio="none" role="img" aria-label="Checks per day" style="max-width:none;height:100%"><path data-state="ok" d="M0.15 0h.7v100h-.7zM1.15 0h.7v100h-.7zM2.15 0h.7v100h-.7zM3.15 0h.7v100h-.7zM4.15 0h.7v100h-.7zM5.15 0h.7v100h-.7zM6.15 0h.7v100h-.7zM7.15 3h.7v97h-.7zM8.15 0h.7v100h-.7zM9.15 0h.7v100h-.7zM10.15 100h.7v0h-.7zM11.15 26h.7v74h-.7zM12.15 0h.7v100h-.7zM13.15 0h.7v100h-.7z"/><path data-state="bad" d="M10.15 0h.7v100h-.7zM11.15 0h.7v26h-.7zM7.15 0h.7v3h-.7z"/></svg><div class="day-pick"><button type="button" aria-pressed="false" aria-label="Day 1"></button><button type="button" aria-pressed="false" aria-label="Day 2"></button><button type="button" aria-pressed="false" aria-label="Day 3"></button><button type="button" aria-pressed="false" aria-label="Day 4"></button><button type="button" aria-pressed="false" aria-label="Day 5"></button><button type="button" aria-pressed="false" aria-label="Day 6"></button><button type="button" aria-pressed="false" aria-label="Day 7"></button><button type="button" aria-pressed="false" aria-label="Day 8"></button><button type="button" aria-pressed="false" aria-label="Day 9"></button><button type="button" aria-pressed="false" aria-label="Day 10"></button><button type="button" aria-pressed="true" aria-label="Day 11"></button><button type="button" aria-pressed="false" aria-label="Day 12"></button><button type="button" aria-pressed="false" aria-label="Day 13"></button><button type="button" aria-pressed="false" aria-label="Day 14"></button></div></div>
+</div></section>
+</main>
+</body>
+</html>
