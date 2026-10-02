@@ -981,8 +981,10 @@ a.link-tile>.hint{grid-column:2/4;font-family:var(--font-mono);font-size:.66rem;
 .hint-card{--tier:var(--info)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="green"]{--tier:var(--aqua)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="yellow"]{--tier:var(--warn)}
-/* Emphasis, not a state: the card of the main thing on a page (e.g. Kintsugi's pitch and progress) */
-.tier-card[data-tier="primary"]{--tier:var(--primary)}
+/* Emphasis, not a state: the card of the main thing on a page, or the main kind of a hint (e.g. Kintsugi's
+   pitch, progress and acquisition suggestions). The bar takes the primary fill, the text the text-safe yellow */
+:is(.tier-card,.hint-card)[data-tier="primary"]{--tier:var(--primary)}
+.hint-card[data-tier="primary"] .tier{color:var(--yellow)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="red"]{--tier:var(--red)}
 :is(.tier-card,.hint-card,.timeline>li)[data-tier="blue"],:is(.tier-card,.hint-card,.timeline>li)[data-tier="cyan"]{--tier:var(--info)}
 /* Tier card: a card with a tier bar and no click behaviour (a status, not a link) */
