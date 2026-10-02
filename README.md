@@ -536,6 +536,17 @@ The save bar of an app with many settings is the existing `.editbar` (`.mode` te
 
 Fixes (1.11): `.seg button` and `.switch` show the cyan focus ring on keyboard focus (they had none); on touch screens (`pointer: coarse`) `.chip` takes the small control height `--h-s`.
 
+### Added in Kante 1.12
+
+What Andon's boards needed: a fast uptime strip, and a detail dialog per link tile with its history. Catalogue: [`proposals/2026-10-andon/`](proposals/2026-10-andon/).
+
+| Element | Web | QML |
+|---|---|---|
+| Uptime strip | `svg.uptime` (`viewBox="0 0 <days> 1"`, `preserveAspectRatio="none"`) > one `path[data-state="ok"\|"warn"\|"bad"\|"off"]` per state with a column `M<i> 0h.7v1h-.7z` per day; states as `.status`; summary in `aria-label`/`title` | – |
+| Stacked check columns | `svg.uptime` with `viewBox="0 0 <days> 100"`: per day a `path[data-state="ok"]` column with `path[data-state="bad"]` on top | – |
+| Day picker | `.chart-wrap` > chart + `.day-pick` > one `button[aria-pressed]` per day column (focus frame on the chosen day) | – |
+| Detail button on a link tile | `.launch-live` > `.launch-trend` > `svg.uptime` + `.launch-detail` (icon, `role="button"`, `tabindex="0"`; a span, as the tile is a link) | – |
+
 ### Added in Kante 1.13 (coherence review)
 
 The review after 1.5 to 1.12 found the shapes coherent and the meaning of colours drifting. Record: [`proposals/2026-10-kohaerenz/`](proposals/2026-10-kohaerenz/) (frozen with the 1.12 stylesheet). Every web element is on `tools/specimen.html`; `build.sh` renders it in dark, Leinen, Kante Light and Gold at 1200 and 390 px (`tools/shoot-specimen.py` → `dist/specimen/`, with `$KANTE_PY` or the shrippen.github.io demo venv). **A new element is done when it looks right in all four.**
@@ -550,17 +561,6 @@ The review after 1.5 to 1.12 found the shapes coherent and the meaning of colour
 | Option card frame | border plus drawn diagonal (as `.btn-outline`), follows the cut | – |
 | Kante Light | the 1.5–1.12 parts too: card titles in the system font, tabs, mode bar, pager, chips, chip pick, toast action in the system font with a small radius, round help | – |
 | Kante Gold | gilded cut and 2 px bars also on `.launch`, `a.link-tile`, `.option`, `.editbar`, `.bulk-bar`, `.toast`; 2 px timeline bar | – |
-
-### Added in Kante 1.12
-
-What Andon's boards needed: a fast uptime strip, and a detail dialog per link tile with its history. Catalogue: [`proposals/2026-10-andon/`](proposals/2026-10-andon/).
-
-| Element | Web | QML |
-|---|---|---|
-| Uptime strip | `svg.uptime` (`viewBox="0 0 <days> 1"`, `preserveAspectRatio="none"`) > one `path[data-state="ok"\|"warn"\|"bad"\|"off"]` per state with a column `M<i> 0h.7v1h-.7z` per day; states as `.status`; summary in `aria-label`/`title` | – |
-| Stacked check columns | `svg.uptime` with `viewBox="0 0 <days> 100"`: per day a `path[data-state="ok"]` column with `path[data-state="bad"]` on top | – |
-| Day picker | `.chart-wrap` > chart + `.day-pick` > one `button[aria-pressed]` per day column (focus frame on the chosen day) | – |
-| Detail button on a link tile | `.launch-live` > `.launch-trend` > `svg.uptime` + `.launch-detail` (icon, `role="button"`, `tabindex="0"`; a span, as the tile is a link) | – |
 
 ### Kante Gold
 
