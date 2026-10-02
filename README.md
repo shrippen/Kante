@@ -589,6 +589,7 @@ dialog.dialog.detail
 | Wall of figures | `.detail-wall` > `.detail-card[data-tier]` > `span` (label), `b` (value), `svg.spark`, `small` | – |
 | Tasks | `.detail-progress` (`.progress-bar` + count), `.detail-tasks` > `.detail-task[.is-done]` > `.led`, `span` (text + `small`), action button | – |
 | Reading text, waiting | `.detail-read` (large view text); `.detail-wait` > `.loader` while the content loads | – |
+| Opening it | `.launch-detail` (1.12) opens the dialog from any tile: a span inside a link tile, a `button.launch-detail` in a card title | – |
 
 ### Kante Gold
 
