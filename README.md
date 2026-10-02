@@ -563,6 +563,33 @@ The review after 1.5 to 1.12 found the shapes coherent and the meaning of colour
 | Kante Light | the 1.5–1.12 parts too: card titles in the system font, tabs, mode bar, pager, chips, chip pick, toast action in the system font with a small radius, round help | – |
 | Kante Gold | gilded cut and 2 px bars also on `.launch`, `a.link-tile`, `.option`, `.editbar`, `.bulk-bar`, `.toast`; 2 px timeline bar | – |
 
+### Added in Kante 1.14
+
+What Andon's detail views needed: one dialog frame for every tile, with layouts that come from what the body holds, so a new layout is a new combination and not a new component. Catalogue: [`proposals/2026-10-andon/detail.html`](proposals/2026-10-andon/detail.html).
+
+```
+dialog.dialog.detail
+  header.detail-head      icon · .detail-name (h3 + .detail-sub) · .launch-state · actions · close
+  div.detail-line         facts as one line (optional)
+  div.detail-body         columns follow from the children:
+    aside.detail-side + section.detail-main            record (facts left)
+    nav.detail-list + section.detail-main              list and detail
+    section.detail-main + aside.detail-side.is-end     large view
+    section.detail-main                                timeline, grid, wall, tabs, tasks
+```
+
+| Element | Web | QML |
+|---|---|---|
+| Detail dialog | `dialog.dialog.detail` (wide, no padding, scrolls inside); `.detail-head` with `.launch-icon`, `.detail-name` > `h3` + `.detail-sub`, `.launch-state`, buttons, `.btn-icon` close | – |
+| Facts line | `.detail-line` > `span` > `small` (label) + `b` (value) | – |
+| Body and columns | `.detail-body` > `.detail-side` (start) / `.detail-list` (start, `.list-row`s) / `.detail-main` / `.detail-side.is-end`; one column below 60rem | – |
+| Blocks | `.detail-block` > `.h-label.detail-label` (text left, meta right) + content; `.detail-facts` (row of `.fact`); `.detail-hero` (taller chart); `.detail-ticks`; `.detail-pair` (two columns) | – |
+| Chosen day | `.sheet.detail-day` > `.detail-day-head` (`h3` + `.launch-state`) + `.kpi-row` | – |
+| Rows | `.detail-rows`: name, `svg.uptime` or `.progress-bar`, value, three cells per row | – |
+| Wall of figures | `.detail-wall` > `.detail-card[data-tier]` > `span` (label), `b` (value), `svg.spark`, `small` | – |
+| Tasks | `.detail-progress` (`.progress-bar` + count), `.detail-tasks` > `.detail-task[.is-done]` > `.led`, `span` (text + `small`), action button | – |
+| Reading text, waiting | `.detail-read` (large view text); `.detail-wait` > `.loader` while the content loads | – |
+
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
