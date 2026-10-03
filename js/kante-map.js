@@ -11,7 +11,6 @@
  */
 (function () {
   'use strict';
-  var K = window.Kante = window.Kante || {};
   var base = (document.currentScript && document.currentScript.src || '').replace(/[^/]*$/, '') + 'map/';
   var ASSETS = 'https://protomaps.github.io/basemaps-assets/';
   var SOURCE = 'protomaps';
@@ -152,6 +151,11 @@
     });
   }
 
-  K.map = { mount: mount };
-  if (document.readyState !== 'loading') { mount(document); } else { document.addEventListener('DOMContentLoaded', function () { mount(document); }); }
+  // install joins window.Kante once the page is parsed: shrippen.js creates it then, and pages
+  // wait for window.Kante to know that shrippen.js ran.
+  function install() {
+    (window.Kante = window.Kante || {}).map = { mount: mount };
+    mount(document);
+  }
+  if (document.readyState !== 'loading') { install(); } else { document.addEventListener('DOMContentLoaded', install); }
 })();
