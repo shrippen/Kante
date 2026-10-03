@@ -587,7 +587,7 @@ dialog.dialog.detail
 | Chosen day | `.sheet.detail-day` > `.detail-day-head` (`h3` + `.launch-state`) + `.kpi-row` | – |
 | Rows | `.detail-rows`: name, `svg.uptime` or `.progress-bar`, value, three cells per row | – |
 | Block label | `.detail-label` > `span` (label), `span` (meta) or `a` (a download, e.g. CSV) | – |
-| Wall of figures | `.detail-wall` > `.detail-card[data-tier]` > `span` (label), `b` (value), `svg.spark`, `small` | – |
+| Wall of figures | `.detail-wall` > `.detail-card[data-tier]` > `span` (label), `b` (value), `svg.spark`, `small`; `--c` gives a card its own colour (a customer's) | – |
 | Tasks | `.detail-progress` (`.progress-bar` + count), `.detail-tasks` > `.detail-task[.is-done]` > `.led`, `span` (text + `small`), action button | – |
 | Heatmap of a year | `.heat.is-weeks`: one column per week, days in order, Monday on top | – |
 | Reading text, picture, waiting | `.detail-read` (large view text: `h3`, paragraphs); `figure.detail-figure` > `img` or `iframe` (an embedded page, 70 % of the screen high) + `figcaption`; `.detail-wait` > `.loader` while the content loads | – |
