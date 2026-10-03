@@ -369,7 +369,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Sheet | `.sheet` | `KanteSheetSkin` |
 | Setting row | `.setting` | `KanteSettingRow` |
 | Day strip | `.day-strip` | `KanteDayStrip` |
-| Status light | `.status[data-state]` | `KanteStatusLight` |
+| Status light | `.status[data-state]`; `button.status` opens its entry (`aria-pressed="true"` the open one) | `KanteStatusLight` |
 | Board editor parts | `.tile-add`, `.grip`, `.tile-strip` | – |
 | Clock | `.clock` (SVG classes) | `KanteClock` |
 | Command palette, link tile | `.palette`, `a.link-tile` | – |
@@ -582,14 +582,16 @@ dialog.dialog.detail
 |---|---|---|
 | Detail dialog | `dialog.dialog.detail` (wide, no padding, scrolls inside); `.detail-head` with `.launch-icon`, `.detail-name` > `h3` + `.detail-sub`, `.launch-state`, buttons, `.btn-icon` close | – |
 | Facts line | `.detail-line` > `span` > `small` (label) + `b` (value) | – |
-| Body and columns | `.detail-body` > `.detail-side` (start) / `.detail-list` (start, `.list-row`s) / `.detail-main` / `.detail-side.is-end`; one column below 60rem | – |
+| Body and columns | `.detail-body` > `.detail-side` (start) / `.detail-list` (start, `.list-row`s; `button.list-row` when a row opens its entry) / `.detail-main` / `.detail-side.is-end`; one column below 60rem | – |
 | Blocks | `.detail-block` > `.h-label.detail-label` (text left, meta right) + content; `.detail-facts` (row of `.fact`); `.detail-hero` (taller chart; a block's chart or `.chart-wrap` is 8rem, a hero's 13rem); `.detail-ticks`; `.detail-pair` (two columns) | – |
 | Chosen day | `.sheet.detail-day` > `.detail-day-head` (`h3` + `.launch-state`) + `.kpi-row` | – |
 | Rows | `.detail-rows`: name, `svg.uptime` or `.progress-bar`, value, three cells per row | – |
-| Wall of figures | `.detail-wall` > `.detail-card[data-tier]` > `span` (label), `b` (value), `svg.spark`, `small` | – |
+| Block label | `.detail-label` > `span` (label), `span` (meta) or `a` (a download, e.g. CSV) | – |
+| Form in a block | `.detail-block` > `form` > `.field` (label + `.input` / `.select` / `textarea.input`) …, `.btn` | – |
+| Wall of figures | `.detail-wall` > `.detail-card[data-tier]` > `span` (label), `b` (value), `svg.spark`, `small`; `--c` gives a card its own colour (a customer's) | – |
 | Tasks | `.detail-progress` (`.progress-bar` + count), `.detail-tasks` > `.detail-task[.is-done]` > `.led`, `span` (text + `small`), action button | – |
 | Heatmap of a year | `.heat.is-weeks`: one column per week, days in order, Monday on top | – |
-| Reading text, picture, waiting | `.detail-read` (large view text: `h3`, paragraphs); `figure.detail-figure` > `img` or `iframe` (an embedded page, 70 % of the screen high) + `figcaption`; `.detail-wait` > `.loader` while the content loads | – |
+| Reading text, picture, waiting | `.detail-read` (large view text: `h3`, paragraphs); `figure.detail-figure` > `img` or `iframe` (an embedded page, 70 % of the screen high) + `figcaption`; `.detail-thumbs` lays figures out as small thumbnails; `.detail-wait` > `.loader` while the content loads | – |
 | Columns in a frame, cells in a state colour | `.chart-wrap > svg.uptime` fills the frame (stacked check columns); `.table td[data-state="ok"\|"warn"\|"bad"]` colours the text | – |
 | Opening it | `.launch-detail` (1.12) opens the dialog from any tile: a span inside a link tile, a `button.launch-detail` in a card title | – |
 
