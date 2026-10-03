@@ -374,7 +374,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Clock | `.clock` (SVG classes) | `KanteClock` |
 | Command palette, link tile | `.palette`, `a.link-tile` | – |
 | List row | `.list-row` | `KanteListRow` |
-| Map frame and pin | `.map-frame`, `.map-pin` | – |
+| Map frame and pin | `.map-frame`, `.map-pin` (`[data-state]` ok, warn, bad); a vector map with `js/kante-map.js`: `.map-frame[data-map][data-map-source]` (see below) | – |
 | Command line with copy | `.cmd-row.is-plain` | `KanteCommandBox` |
 | Toggle button, inline button | `.btn[aria-pressed]`, `.btn-inline` | – |
 | Option card, dropdown, toast stack | `.option`, `details.dropdown`, `.toast-stack` | – |
@@ -592,6 +592,7 @@ dialog.dialog.detail
 | Tasks | `.detail-progress` (`.progress-bar` + count), `.detail-tasks` > `.detail-task[.is-done]` > `.led`, `span` (text + `small`), action button | – |
 | Heatmap of a year | `.heat.is-weeks`: one column per week, days in order, Monday on top | – |
 | Reading text, picture, waiting | `.detail-read` (large view text: `h3`, paragraphs); `figure.detail-figure` > `img` or `iframe` (an embedded page, 70 % of the screen high) + `figcaption`; `.detail-thumbs` lays figures out as small thumbnails; `.detail-wait` > `.loader` while the content loads | – |
+| Map | `.map-frame[data-map]` with `js/kante-map.js`: a Protomaps basemap drawn by MapLibre GL in Kante's colours (read from the tokens, so it follows the theme), route in `--map-route`, `.map-pin`s; `data-map-source` is a `.pmtiles` file or a TileJSON URL (Protomaps API). The script loads `map/` (MapLibre, pmtiles, basemaps; BSD-3) on first use; glyphs and sprites come from protomaps.github.io. `Kante.map.mount(root)` for frames added later | – |
 | Columns in a frame, cells in a state colour | `.chart-wrap > svg.uptime` fills the frame (stacked check columns); `.table td[data-state="ok"\|"warn"\|"bad"]` colours the text | – |
 | Opening it | `.launch-detail` (1.12) opens the dialog from any tile: a span inside a link tile, a `button.launch-detail` in a card title | – |
 
