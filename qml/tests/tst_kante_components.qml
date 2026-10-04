@@ -183,6 +183,22 @@ TestCase {
         KanteCard { width: 100; height: 60 }
     }
 
+    Component {
+        id: sheetSkinComponent
+        KanteSheetSkin { popup: null }
+    }
+
+    // A drawer skin is raised and cut on the side that faces the content.
+    function test_sheetSkinDrawer() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var skin = createTemporaryObject(sheetSkinComponent, tc)
+        compare(skin.kanteBackground.mirrored, false)
+        compare(skin.kanteBackground.color, KanteStyle.dialogColor)
+        skin.drawer = true
+        compare(skin.kanteBackground.mirrored, true)
+        verify(skin.kanteBackground.color !== KanteStyle.dialogColor)
+    }
+
     function test_cardLiftOnlyWhenInteractive() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         var c = createTemporaryObject(cardComponent, tc)

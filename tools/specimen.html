@@ -141,6 +141,19 @@ section>h2{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;tex
 </div>
 </section>
 
+<!-- 1.15 Drawer over a dialog -->
+<section id="drawer"><h2>1.15 · Drawer über einem Dialog</h2>
+<div class="dialog detail" style="position:relative;height:22rem;overflow:hidden">
+ <header class="detail-head"><div class="detail-name"><h3>Kachel hinzufügen</h3><span class="detail-sub">in Übersicht › Dienste</span></div></header>
+ <div style="padding:0 1rem;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem">
+  <div class="tile" style="height:7rem"></div><div class="tile" style="height:7rem"></div><div class="tile" style="height:7rem"></div><div class="tile" style="height:7rem"></div>
+ </div>
+ <div class="scrim"></div>
+ <aside class="sheet is-drawer" style="width:min(26rem,calc(100% - 2rem))"><h3>Heute</h3><p>Termine, Timer, Abfahrten.</p><div class="actions"><button class="btn btn-accent btn-sm">Hinzufügen</button></div></aside>
+</div>
+<span class="cap">sheet.is-drawer + scrim</span>
+</section>
+
 <!-- 7 Detail dialog -->
 <section id="detail"><h2>7 · Detail-Dialog (1.14)</h2>
 <div style="display:grid;gap:1.2rem">
