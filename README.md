@@ -365,6 +365,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
 | Month grid | `.cal` | `KanteCalendarGrid` |
 | KPI with change | `.kpi`, `.delta` | `KanteKpi` |
+| Wide KPI with spark line | `.kpi` > `.spark` from 24rem content width on (container query on the `.kpi`): figures left, the line right; the value stays on one line | – |
 | Bulk bar | `.bulk-bar` | `KanteBulkBar` |
 | Sheet | `.sheet` | `KanteSheetSkin` |
 | Setting row | `.setting` | `KanteSettingRow` |
