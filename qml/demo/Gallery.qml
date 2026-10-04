@@ -287,6 +287,7 @@ Rectangle {
                     KanteDayStrip {
                         Layout.preferredWidth: KanteStyle.unit(420)
                         sunrise: 7.2; sunset: 19.1; workFrom: 8; workTo: 17; now: 15.2
+                        allDay: [{ title: "Urlaub Lena" }]
                         segments: [{ from: 8.25, to: 12, kind: "work", color: KanteStyle.dataColor(0) }, { from: 12.75, to: 14.5, kind: "work", color: KanteStyle.dataColor(2) },
                                    { from: 14.5, to: 16.5, kind: "dim" }, { from: 10, to: 10.5, kind: "event" }]
                     }

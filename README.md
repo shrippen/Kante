@@ -436,6 +436,7 @@ What Andon, Kurrent, Plasmai and the Kimai plugins still solved locally: a day a
 | Element | Web | QML |
 |---|---|---|
 | Day strip: segment colour | `.day-strip > i` with `--c` | `KanteDayStrip` `segments[].color` |
+| Day strip: all-day events | `.day-allday` right before the `.day-strip`, one `span` per event (name; `--c` replaces cyan) | `KanteDayStrip` `allDay` ({title, color}) |
 | Day strip: daylight, sun and moon, work hours | `.day-strip.has-sky` > `.day` (first child), `.sun`, `.moon`; `.has-work` > `.work` | `sunrise`, `sunset`, `workFrom`, `workTo`; roles `daylightColor`, `sunColor`, `moonColor`, `workBandColor` |
 | Stacked bars with own colours, hours axis | `.chart .c` (`--c`), `.chart .axis` (labels as h:mm) | `KanteBarChart` `stackColors`, `axis`, `valueFormat: KanteBarChart.ValueFormat.Hours`, `formatter`, `unit` |
 | Week of hours (days as rows over 0–24 h) | `.week-line` > `.scale`, `b` (`.today`), `.track` > `i` (`--from`, `--to`, `--c`) + `.now` (`--at`), `small` (sum, `.is-zero`) | `KanteWeekTimeline` (`entries` {day, start, end, color, title}, `totals`, `today`, `now`, `entryClicked`) |
