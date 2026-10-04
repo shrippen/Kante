@@ -541,6 +541,20 @@ TestCase {
     }
 
     Component {
+        id: dayStripAllDayComponent
+        KanteDayStrip { width: 240; allDay: [{ title: "Urlaub" }, { title: "Messe", color: "#ff0000" }] }
+    }
+
+    function test_dayStripAllDayLane() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var plain = createTemporaryObject(dayStripComponent, tc)
+        var s = createTemporaryObject(dayStripAllDayComponent, tc)
+        verify(s.allDayHeight > 2 * s.allDayRow, "one row per all-day event")
+        compare(s.implicitHeight, plain.implicitHeight + s.allDayHeight)
+        compare(plain.allDayHeight, 0)
+    }
+
+    Component {
         id: curveComponent
         KanteCurveEditor {
             width: 300; height: 180
