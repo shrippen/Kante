@@ -368,6 +368,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Wide KPI with spark line | `.kpi` > `.spark` from 24rem content width on (container query on the `.kpi`): figures left, the line right; the value stays on one line | – |
 | Bulk bar | `.bulk-bar` | `KanteBulkBar` |
 | Sheet | `.sheet` | `KanteSheetSkin` |
+| Drawer over a dialog | `.sheet.is-drawer` in a positioned parent, a `.scrim` right before it; inset on the right, one surface step raised (`--bg1`), cut top left; slides in, `.is-leaving` slides it out | `KanteSheetSkin` with `drawer: true` |
 | Setting row | `.setting` | `KanteSettingRow` |
 | Day strip | `.day-strip` | `KanteDayStrip` |
 | Status light | `.status[data-state]`; `button.status` opens its entry (`aria-pressed="true"` the open one) | `KanteStatusLight` |
