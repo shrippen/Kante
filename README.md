@@ -546,6 +546,7 @@ What Andon's boards needed: a fast uptime strip, and a detail dialog per link ti
 | Stacked check columns | `svg.uptime` with `viewBox="0 0 <days> 100"`: per day a `path[data-state="ok"]` column with `path[data-state="bad"]` on top | – |
 | Day picker | `.chart-wrap` > chart + `.day-pick` > one `button[aria-pressed]` per day column (focus frame on the chosen day) | – |
 | Detail button on a link tile | `.launch-live` > `.launch-trend` > `svg.uptime` + `.launch-detail` (icon, `role="button"`, `tabindex="0"`; a span, as the tile is a link) | – |
+| Wide link tile | `.launch-live` > `.launch-wide` (`svg.spark`, `.launch-info`): the right half of a `.launch` from 24rem content width on (container query), hidden below; the text keeps the left half | – |
 
 ### Added in Kante 1.13 (coherence review)
 
