@@ -198,6 +198,28 @@ section>h2{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;tex
 <span class="cap">.btn-row · tr:has(.btn-row) centred</span>
 </section>
 
+<section id="board-card"><h2>1.20 · Board-Karte mit Grundriss</h2>
+<div class="board-grid">
+ <article class="board-card is-start"><span class="grip"></span>
+  <div class="plan" aria-hidden="true"><div style="--cols:3"><i></i><i data-tier="yellow"></i><i></i></div><div style="--cols:4"><i style="--w:2;--h:3"></i><i style="--w:2;--h:3"></i></div><div style="--cols:3"><i style="--h:2"></i><i style="--h:2"></i><i style="--h:2" data-tier="red"></i></div></div>
+  <div class="board-body"><div class="board-name"><a href="#board-card">Übersicht</a><span class="pill">Start</span></div>
+   <div class="board-meta"><span>Ich</span><span>22 Kacheln</span><span class="is-warn">2 Hinweise</span></div>
+   <div class="board-foot"><button class="switch" role="switch" aria-checked="true"><span class="switch-track"></span>Navigation</button><a class="btn btn-outline btn-sm" href="#board-card">Bearbeiten</a>
+    <details class="dropdown is-right"><summary class="btn btn-outline btn-sm btn-icon" aria-label="Mehr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="menu"><a href="#board-card">Einstellungen</a><a href="#board-card">Mein Layout</a></div></details></div></div>
+ </article>
+ <article class="board-card is-off"><span class="grip"></span>
+  <div class="plan" aria-hidden="true"><div style="--cols:6"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="board-body"><div class="board-name"><a href="#board-card">Reisen</a></div>
+   <div class="board-meta"><span>Ich</span><span>3 Kacheln</span></div>
+   <div class="board-foot"><button class="switch" role="switch" aria-checked="false"><span class="switch-track"></span>Navigation</button><a class="btn btn-outline btn-sm" href="#board-card">Bearbeiten</a></div></div>
+ </article>
+ <a class="board-add" href="#board-card"><b>+</b>Neues Board</a>
+</div>
+<span class="cap">.board-card · .plan · .board-add</span>
+<div class="menu" style="max-width:16rem;margin-top:1rem"><a href="#board-card">Freigeben</a><hr><select class="select"><option>Mara Weber</option></select><button>Als Kopie übernehmen</button></div>
+<span class="cap">.menu .select</span>
+</section>
+
 <!-- 7 Detail dialog -->
 <section id="detail"><h2>7 · Detail-Dialog (1.14)</h2>
 <div style="display:grid;gap:1.2rem">
