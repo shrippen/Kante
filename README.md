@@ -604,6 +604,7 @@ dialog.dialog.detail
 | Record on a page | `.dialog.detail.is-page`: the detail frame in the page flow, full width, no own scroll (a settings record instead of a popup); `nav.tabs.detail-tabs` under the head, one `a` per tab with `aria-current="page"` | – |
 | Row of buttons | `.btn-row`: buttons (and forms with one button each) on one line, centred; in a table cell the whole row centres vertically | – |
 | Board card | `.board-grid` > `.board-card` (`.is-start` primary bar, `.is-off` dimmed) > `.grip`, `.plan` (one `div` per section, `--cols`; one `i` per tile, `--w`/`--h` its span, `data-tier` its state), `.board-body` > `.board-name` (`a` + `.pill`), `.board-meta` (`.is-warn`), `.board-foot` (switch, button, menu); `.board-add` is the dashed card that adds one | – |
+| Topic icon | `span.topic-icon[data-topic]` before a group name: `overview`, `work`, `analysis`, `homelab`, `network`, `security`, `media`, `home`, `world`, `dev`, `links`; line icon in the text colour, sized by `font-size` | – |
 | Field in a menu | `.menu .select` / `.menu .input`: full width with the menu's inset, e.g. a target picker above its button | – |
 | Menu in a table row | `details.dropdown` in a `.table-wrap` cell: while it is open the frame drops its cut and scroll box, so the menu shows in full | – |
 
