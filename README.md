@@ -599,6 +599,8 @@ dialog.dialog.detail
 | Map | `.map-frame[data-map]` with `js/kante-map.js`: a Protomaps basemap drawn by MapLibre GL in Kante's colours (read from the tokens, so it follows the theme), route in `--map-route`, `.map-pin`s; `data-map-source` is a `.pmtiles` file, a TileJSON URL or a MapLibre style URL (Protomaps API; of a style only its vector source is used). The script loads `map/` (MapLibre, pmtiles, basemaps; BSD-3) on first use; glyphs and sprites come from protomaps.github.io. `Kante.map.mount(root)` for frames added later | – |
 | Columns in a frame, cells in a state colour | `.chart-wrap > svg.uptime` fills the frame (stacked check columns); `.table td[data-state="ok"\|"warn"\|"bad"]` colours the text | – |
 | Opening it | `.launch-detail` (1.12) opens the dialog from any tile: a span inside a link tile, a `button.launch-detail` in a card title | – |
+| Settings with levels | `.settings` > `nav.settings-nav` (`.h-label` per group, `a` per page, `aria-current="page"`, a `.count` right) + `.settings-main`; nav sticky, one column below 48rem | – |
+| Before and after | `.table.diff`: one row per field, `td.was` (struck through), `td.now` (marked like `.is-changed`), `td.same` (`colspan="2"`, unchanged) | – |
 
 ### Kante Gold
 
