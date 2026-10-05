@@ -602,6 +602,7 @@ dialog.dialog.detail
 | Settings with levels | `.settings` > `nav.settings-nav` (`.h-label` per group, `a` per page, `aria-current="page"`, a `.count` right) + `.settings-main`; nav sticky; below 48rem one column, the page above the nav | – |
 | Before and after | `.table.diff`: one row per field, `td.was` (struck through), `td.now` (marked like `.is-changed`), `td.same` (`colspan="2"`, unchanged) | – |
 | Record on a page | `.dialog.detail.is-page`: the detail frame in the page flow, full width, no own scroll (a settings record instead of a popup); `nav.tabs.detail-tabs` under the head, one `a` per tab with `aria-current="page"` | – |
+| Row of buttons | `.btn-row`: buttons (and forms with one button each) on one line, centred; in a table cell the whole row centres vertically | – |
 
 ### Kante Gold
 
