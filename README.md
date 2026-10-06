@@ -608,6 +608,20 @@ dialog.dialog.detail
 | Field in a menu | `.menu .select` / `.menu .input`: full width with the menu's inset, e.g. a target picker above its button | – |
 | Menu in a table row | `details.dropdown` in a `.table-wrap` cell: while it is open the frame drops its cut and scroll box, so the menu shows in full | – |
 
+
+### Added in Kante 1.15
+
+Readable charts: every chart has an axis or a legend, and in a popup a value on hover. Catalogue: [`proposals/2026-10-andon/charts.html`](proposals/2026-10-andon/charts.html).
+
+| Element | Web | QML |
+|---|---|---|
+| Value axis beside a stretched chart | `.chart-frame` > `.chart-axis` (labels top to bottom, e.g. max, half, 0; a first `span.unit` names the unit) + `svg.chart` or `.chart-wrap`. HTML, because SVG text distorts under `preserveAspectRatio="none"`; in a `.detail-block` the frame takes the chart's height | `KanteLineChart.axis` (1.7) |
+| Row labels | `.chart-axis.is-rows`: one label centred per row, e.g. the weekdays beside a `.heat` in a `.chart-frame` | – |
+| Read-out of single elements | `data-tip="Label · value"` on any bar, cell or strip inside `.chart-wrap[data-readout]`; the `.readout` shows the label above the value | – |
+| Read-out of path lines | `.chart-wrap[data-readout]` also reads `path.line` (`M`/`L` points), not only `polyline.line` | – |
+| Values with decimal commas | `data-labels` / `data-values` split on `\|` when they contain one (`"1,5\|2,25"`), else on `,` | – |
+
+The read-out is delegated: charts added after load (a dialog fetched by htmx) read out without a mount call.
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
