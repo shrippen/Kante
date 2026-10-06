@@ -616,6 +616,7 @@ Readable charts: every chart has an axis or a legend, and in a popup a value on 
 | Element | Web | QML |
 |---|---|---|
 | Value axis beside a stretched chart | `.chart-frame` > `.chart-axis` (labels top to bottom, e.g. max, half, 0; a first `span.unit` names the unit) + `svg.chart` or `.chart-wrap`. HTML, because SVG text distorts under `preserveAspectRatio="none"`; in a `.detail-block` the frame takes the chart's height | `KanteLineChart.axis` (1.7) |
+| Row labels | `.chart-axis.is-rows`: one label centred per row, e.g. the weekdays beside a `.heat` in a `.chart-frame` | – |
 | Read-out of single elements | `data-tip="Label · value"` on any bar, cell or strip inside `.chart-wrap[data-readout]`; the `.readout` shows the label above the value | – |
 | Read-out of path lines | `.chart-wrap[data-readout]` also reads `path.line` (`M`/`L` points), not only `polyline.line` | – |
 | Values with decimal commas | `data-labels` / `data-values` split on `\|` when they contain one (`"1,5\|2,25"`), else on `,` | – |
