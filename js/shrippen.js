@@ -93,7 +93,7 @@
     // ── Chart read-out and curve editor (Kante 1.6, 1.15) ────────────────
     // .chart-wrap[data-readout] > svg.chart: on hover a rule and marks sit on the nearest point
     //   of each .line (polyline points or path d), .readout shows data-labels (svg) and
-    //   data-values (each .line) at that index. An element with data-tip (a bar, a cell, a
+    //   data-values (each .line) at that index, split on "|" if present ("1,5|2,25"), else ",". An element with data-tip (a bar, a cell, a
     //   strip) shows its own text instead. Delegated, so charts added later work too.
     // svg.curve[data-editable]: drag .pt squares, arrows move the focused one; fires "change"
     //   with detail = [{x, y}]. data-x/y-min/max and data-step give the range.
@@ -103,6 +103,8 @@
       for (var i = 0; i + 1 < n.length; i += 2) out.push([+n[i], +n[i + 1]]);
       return out;
     }
+    // data-labels / data-values: split on "|" when present (values with decimal commas), else ",".
+    function list(v) { v = v || ''; return v.split(v.indexOf('|') >= 0 ? '|' : ','); }
     function esc(t) { var x = d.createElement('span'); x.textContent = t; return x.innerHTML; }
     function readOff(wrap) {
       if (!wrap) return;
@@ -133,7 +135,7 @@
       var r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal, x = (e.clientX - r.left) / r.width * vb.width + vb.x;
       var best = 0;
       pts[0].forEach(function (p, i) { if (Math.abs(p[0] - x) < Math.abs(pts[0][best][0] - x)) best = i; });
-      var px = pts[0][best][0], labels = (svg.dataset.labels || '').split(',');
+      var px = pts[0][best][0], labels = list(svg.dataset.labels);
       probe.setAttribute('x1', px); probe.setAttribute('x2', px); probe.setAttribute('y1', vb.y); probe.setAttribute('y2', vb.y + vb.height);
       probe.style.display = '';
       var html = labels[best] ? '<b>' + labels[best] + '</b>' : '';
@@ -143,7 +145,7 @@
         var p = pts[i][best]; if (!p) return;
         marks[i].setAttribute('width', mw); marks[i].setAttribute('height', mh);
         marks[i].setAttribute('x', p[0] - mw / 2); marks[i].setAttribute('y', p[1] - mh / 2); marks[i].style.display = '';
-        html += (l.dataset.values || '').split(',')[best] + (svg.dataset.unit || '') + ' ';
+        html += list(l.dataset.values)[best] + (svg.dataset.unit || '') + ' ';
       });
       readTip(wrap, tip, html, (px - vb.x) / vb.width * r.width, r.width);
       return true;
