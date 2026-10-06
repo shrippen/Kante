@@ -622,6 +622,12 @@ Readable charts: every chart has an axis or a legend, and in a popup a value on 
 | Values with decimal commas | `data-labels` / `data-values` split on `\|` when they contain one (`"1,5\|2,25"`), else on `,` | – |
 
 The read-out is delegated: charts added after load (a dialog fetched by htmx) read out without a mount call.
+
+### Added in Kante 1.16
+
+| Element | Web | QML |
+|---|---|---|
+| Sub-links of a launch tile | `ul.launch-items` right after the `.launch` (not inside the link), `li` > `a` (optional `img` icon, then the title); indented to the tile title, mono, wraps | – |
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
