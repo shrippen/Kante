@@ -221,6 +221,9 @@
         {{ kit.hint_card('Monat September abgeschlossen', {type: 'success', source: 'Anfahrten'}) }}
     </div>
 
+    {# Update-Hinweis: im Demo-Modus immer aus (kein Netz); sonst erscheint er nur, wenn versions.json eine höhere Version hat #}
+    {{ kit.update_hint('kimai-anfahrten', '0.9.3', {enabled: false}) }}
+
     {# Einstellungen und aufklappbarer Abschnitt #}
     <div class="card mb-3">
         <div class="card-body">

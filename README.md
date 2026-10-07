@@ -683,6 +683,12 @@ A wall display that shows a board one screen at a time: the tiles are packed int
 |---|---|---|
 | Card key label | In `table.cards-sm`, the `td[data-card="key"]` shows its `data-label` small above the value (mono, `--fg3`), so the figure top right of a card says what it is | – |
 
+### Added in Kante 1.22
+
+| Element | Web | QML |
+|---|---|---|
+| Update check | – (Kimai: `kit.update_hint`, kit 0.8) | `KanteUpdateCheck` (non-visual): asks `https://shrippen.github.io/versions.json` (no parameters) at most once per `interval` (a day), offers `available`, `latestVersion`, `latestUrl`, `dismiss()`; `memory` (JSON) to persist, so a restart does not ask again. Shows nothing itself: pair it with `KanteCallout`. Only in builds nothing else updates, off in demo mode. Format: `shrippen.github.io/overview/VERSIONS.md` |
+
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.

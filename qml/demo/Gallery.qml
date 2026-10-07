@@ -278,6 +278,18 @@ Rectangle {
                 KanteListRow { Layout.fillWidth: true; text: "Farbkorrektur"; meta: "01:05"; KanteSwatch { swatchColor: KanteStyle.tagColor } }
                 KanteTabBar { model: ["Alle", "Prüfen", "Fertig", "Archiv"]; counts: [42, 7, 35, 12]; countKinds: [0, 2, 0, 0]; badges: true }
                 KanteCallout { Layout.fillWidth: true; title: "Hinweis"; text: "Schließbar, mit Aktion."; dismissible: true; KanteButton { text: "Mehr"; emphasis: KanteButton.Emphasis.Data; size: KanteButton.Size.Small } }
+                // KanteUpdateCheck: no network in the gallery (enabled false), the answer is fed in once
+                KanteUpdateCheck {
+                    id: updateCheck
+                    project: "kante"; version: "1.0.0"; enabled: false
+                    Component.onCompleted: { enabled = true; receive(JSON.stringify({ format: 1, projects: { kante: { version: "1.1.0", date: "", url: "https://github.com/shrippen/Kante" } } })) }
+                }
+                KanteCallout {
+                    Layout.fillWidth: true; visible: updateCheck.available; dismissible: true
+                    title: "Update"; text: "Version " + updateCheck.latestVersion
+                    onDismissed: updateCheck.dismiss()
+                    KanteButton { text: "Release"; emphasis: KanteButton.Emphasis.Data; size: KanteButton.Size.Small; onClicked: Qt.openUrlExternally(updateCheck.latestUrl) }
+                }
             }
 
             Section {

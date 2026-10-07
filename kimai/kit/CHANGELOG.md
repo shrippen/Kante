@@ -2,6 +2,16 @@
 
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/).
 
+## [0.8.0] – 2026-10-07
+
+### Neu
+- `update_hint(project, version, options)` (`kpu-update`): Hinweis auf eine neue Version des Plugins, nur mit dem Recht
+  `plugins`. kit.js fragt höchstens einmal am Tag `https://shrippen.github.io/versions.json`
+  (ohne Parameter, Cookies und Referrer, Format in `shrippen.github.io/overview/VERSIONS.md`) und zeigt bei einer höheren Version
+  eine Hinweiskarte mit Link zur Release-Seite; „Ausblenden“ gilt bis zur nächsten Version. Fehler bleiben still,
+  nur `https`-Links. `options.enabled` (aus im Demo-Modus, abschaltbar), `options.url`. Keys `kpu.update.*`.
+- `KimaiPluginUi.compareVersions(a, b)`, `KimaiPluginUi.checkUpdates()`.
+
 ## [0.7.1] – 2026-10-01
 
 ### Geändert

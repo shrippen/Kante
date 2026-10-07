@@ -71,5 +71,6 @@ KanteTimeField 1.0 KanteTimeField.qml
 KanteToast 1.0 KanteToast.qml
 KanteToolButton 1.0 KanteToolButton.qml
 KanteTube 1.0 KanteTube.qml
+KanteUpdateCheck 1.0 KanteUpdateCheck.qml
 KanteWeekTimeline 1.0 KanteWeekTimeline.qml
 KanteWeekView 1.0 KanteWeekView.qml

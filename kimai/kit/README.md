@@ -13,7 +13,7 @@ Gemeinsamer UI-Leitfaden und kleines UI-Kit für die Kimai-2.67-Plugins **Drehze
 ```
 kit/templates/_kit/macros.html.twig   Makros: period_nav, kpi_bar, status_badge, group_header, empty_state,
                                       result_callout(s), context_line, bulk_bar, bulk_checkbox, bulk_select_all,
-                                      bulk_select_group, mark, delta, setting, chip_pick, fold, modebar, hint_card,
+                                      bulk_select_group, mark, delta, setting, chip_pick, fold, modebar, hint_card, update_hint,
                                       calendar_day, map_pin
 kit/templates/_kit/assets.html.twig   CSS + JS inline (generiert aus kit/css und kit/js)
 kit/css/kit.css                       Klassen .kpu-*, nur var(--tblr-…)
@@ -152,6 +152,7 @@ für die Knust noch keine Kennzeichnung hatte:
 {{ kit.fold('holiday.fold.past'|trans, body, {count: past|length}) }}
 {{ kit.modebar([{label: '…', url: '…', count: 42|amount, active: true}, …], 'mileage.trips.kind'|trans) }}
 <div class="kpu-hint-cards">{{ kit.hint_card('…', {type: 'warning', source: 'ACME', why: '…', url: '#'}) }}</div>
+{{ kit.update_hint('kimai-anfahrten', plugin_version, {enabled: update_check}) }}   {# 0.8: Hinweis auf neue Version, nur Recht "plugins" #}
 <div class="kpu-days">{{ kit.calendar_day(3, {holiday: true, label: 'Tag der Deutschen Einheit', weekend: true}) }}…</div>
 {% set fields %}{{ form_row(form.drehzettel) }}{% endset %}{{ kit.field_group('Drehzettel', fields) }}
 {{ kit.map_pin('Studio Adlershof') }}   {# Leaflet: L.divIcon({className: 'kpu-map-pin', iconSize: [14, 14]}) #}
