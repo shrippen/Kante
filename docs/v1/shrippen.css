@@ -785,6 +785,8 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .input::placeholder{color:var(--fg3)}
 .input:hover,.select:hover{border-color:var(--fg3)}
 .input:focus,.select:focus{outline:none;border-color:var(--cyan-n);border-bottom-color:var(--cyan);background-color:var(--cyan-tint)}
+/* Keyboard focus also gets the ring every other control has: the tint alone is too faint on a light ground */
+.input:focus-visible,.select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .select{background-image:linear-gradient(45deg,transparent 50%,var(--fg2) 50%),linear-gradient(135deg,var(--fg2) 50%,transparent 50%);background-position:calc(100% - 1.05rem) 55%,calc(100% - .75rem) 55%;background-size:.3rem .3rem;background-repeat:no-repeat;padding-right:2rem}
 .seg{display:inline-flex;border:1px solid var(--bg2);flex-wrap:wrap}
 .seg button{background:none;border:0;min-height:calc(var(--h-m) - 2px);padding:0 .9rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;color:var(--fg3);cursor:pointer}
