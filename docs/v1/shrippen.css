@@ -517,6 +517,41 @@ main,.foot{position:relative;z-index:1}
 .showcase figure.native figcaption{align-self:stretch}
 .showcase figcaption{padding:.55rem .9rem;border-top:1px solid var(--bg1);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
 
+/* ── Changelog (1.17): one entry per release on a rail, newest first; version and date left,
+      lead, change groups (new, improved, fixed) and pictures right; older ones in a details ── */
+.changelog{list-style:none;padding:0;margin:1.5rem 0 0;display:flex;flex-direction:column;gap:2.6rem;border-left:2px solid var(--bg2)}
+.section .changelog{max-width:var(--max-w-wide)}
+.release{position:relative;display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1.6rem;padding-left:1.4rem}
+.release::before{content:"";position:absolute;left:-.4rem;top:.55rem;width:.7rem;height:.7rem;background:var(--bg2)}
+.release:first-child::before{background:var(--primary)}
+.release-head{display:flex;flex-direction:column;gap:.35rem}
+.release-version{font-family:var(--font-heading);font-size:1.9rem;font-weight:700;line-height:1;color:var(--fg1)}
+.release:first-child .release-version{color:var(--primary)}
+.release-head time{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.release-body{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.section .release-lead{color:var(--fg1);font-size:1rem;margin:0}
+.release-group h3{display:flex;align-items:center;gap:.5rem;margin-bottom:.45rem;font-family:var(--font-mono);font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--fg3)}
+.release-group h3::before{content:"";width:.5rem;height:.5rem;background:var(--kind,var(--fg3))}
+.release-group[data-kind="new"]{--kind:var(--aqua)}
+.release-group[data-kind="improved"]{--kind:var(--cyan)}
+.release-group[data-kind="fixed"]{--kind:var(--orange)}
+.release-group[data-kind="breaking"]{--kind:var(--red)}
+.section .release-group ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem}
+.section .release-group li{position:relative;margin:0;padding-left:1.1rem;color:var(--fg2);font-size:.92rem}
+.section .release-group li::before{content:"";position:absolute;left:0;top:.62em;width:.35rem;height:.35rem;background:var(--kind,var(--fg3))}
+.release-shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
+.release-shots figure{position:relative;margin:0;background:var(--bg-panel);border:1px solid var(--bg1);
+  clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,0 100%)}
+.release-shots figure>img,.release-shots figure>svg{display:block;width:100%;height:auto}
+.release-shots figcaption{padding:.5rem .8rem;border-top:1px solid var(--bg1);font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.release-notes{font-family:var(--font-mono);font-size:.78rem}
+details.changelog-more{margin-top:2rem}
+details.changelog-more>summary{cursor:pointer;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--link)}
+details.changelog-more>.changelog{margin-top:1.5rem}
+details.changelog-more .release:first-child::before{background:var(--bg2)}
+details.changelog-more .release:first-child .release-version{color:var(--fg1)}
+@media (max-width:40rem){.release{grid-template-columns:1fr;gap:.8rem}.release-head{flex-direction:row;align-items:baseline;gap:.8rem}}
+
 /* ── Flow: boxes joined by arrows, e.g. an architecture in one line ── */
 .flow{display:flex;align-items:stretch;gap:0;margin-bottom:1rem}
 .flow-node{flex:1;background:var(--bg-panel);border-top:4px solid var(--bg2);padding:1rem 1.1rem 1.2rem;
