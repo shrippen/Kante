@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de" data-own-lang>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.20 Wandanzeige</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<script src="../../docs/v1/shrippen.js"></script>
+<script src="../../docs/v1/kante-wall.js"></script>
+</head>
+<body>
+<section class="section">
+  <h2>Wandanzeige</h2>
+  <p>Kante 1.20: eine Bühne zeigt einen Satz Kacheln, der genau einen Bildschirm füllt, und wechselt mit einem Übergang zum nächsten. Beispiel aus Andon (Demo-Welt „Studio Weber“).</p>
+  <p>
+    <label>Übergang <select class="select" id="turn">
+      <option value="cut">Kante-Schnitt</option><option value="fade">Überblenden</option><option value="stagger">Kachel für Kachel</option>
+      <option value="flap">Fallblatt</option><option value="shutter">Rollladen</option><option value="scan">Scanlinie</option><option value="rotate">Abwechselnd</option>
+    </select></label>
+    <label>Beschleunigung <select class="select" id="ease">
+      <option value="standard">Standard</option><option value="linear">Linear</option><option value="quad">Quadratisch</option><option value="cubic">Kubisch</option>
+      <option value="expo">Exponentiell</option><option value="soft">Sanft auslaufend</option><option value="snap">Federnd</option>
+    </select></label>
+    <button type="button" class="btn btn-primary" id="play">Abspielen</button>
+  </p>
+  <div class="wall-stage is-preview" id="stage">
+    <div class="wall-set"><div class="wall-tiles">
+      <div class="wall-tile"><b>Kimai</b><small>Link</small></div><div class="wall-tile"><b>Invoice Ninja</b><small>Link</small></div>
+      <div class="wall-tile" data-tier="red"><b>Backups</b><small>Sicherungen</small></div><div class="wall-tile"><b>Uptime Kuma</b><small>Monitore</small></div>
+      <div class="wall-tile"><b>Proxmox</b><small>Link</small></div><div class="wall-tile"><b>Zertifikate</b><small>TLS</small></div>
+      <div class="wall-tile"><b>Gitea</b><small>Link</small></div><div class="wall-tile"><b>Updates</b><small>Liste</small></div>
+    </div></div>
+    <div class="wall-set" hidden><div class="wall-tiles">
+      <div class="wall-tile"><b>Stundensatz</b><small>Kennzahl</small></div><div class="wall-tile"><b>Umsatz 2026</b><small>Kennzahl</small></div>
+      <div class="wall-tile"><b>Offene Rechnungen</b><small>Liste</small></div><div class="wall-tile"><b>Abos</b><small>Wallos</small></div>
+      <div class="wall-tile"><b>Kalender</b><small>Termine</small></div><div class="wall-tile"><b>Fristen</b><small>Steuer</small></div>
+      <div class="wall-tile"><b>Wetter</b><small>Hamburg</small></div><div class="wall-tile"><b>Uhr</b><small>Europe/Berlin</small></div>
+    </div></div>
+    <div class="wall-pager" aria-hidden="true"><i class="is-on"></i><i></i></div>
+  </div>
+</section>
+<script>
+  // Plays the chosen transition between the two sets, forced (an explicit click).
+  var n = 0, busy = false;
+  document.getElementById('play').addEventListener('click', function () {
+    if (busy) { return; }
+    busy = true;
+    var sets = document.querySelectorAll('#stage > .wall-set');
+    var from = [].find.call(sets, function (s) { return !s.hidden; });
+    var to = [].find.call(sets, function (s) { return s.hidden; });
+    to.parentElement.insertBefore(to, from.nextSibling);
+    to.hidden = false;
+    var name = Kante.wall.pick(document.getElementById('turn').value, n++);
+    Kante.wall.run(name, from, to, { easing: document.getElementById('ease').value, force: true }).then(function () {
+      from.hidden = true;
+      document.querySelectorAll('#stage .wall-pager > i').forEach(function (p, i) { p.classList.toggle('is-on', sets[i] === to); });
+      busy = false;
+    });
+  });
+</script>
+</body>
+</html>

@@ -650,6 +650,19 @@ Fields show keyboard focus like every other control.
 |---|---|---|
 | Field focus | `.input` and `.select` get the `--focus` ring (2px, offset 2px) on `:focus-visible`, on top of the cyan tint of `:focus`. The board search (`.search > .input`) had no visible focus on a light ground | – |
 
+### Added in Kante 1.20
+
+A wall display that shows a board one screen at a time: the tiles are packed into sets that fill the screen, and a transition switches from one set to the next. Catalogue: [`proposals/2026-10-andon/wall.html`](proposals/2026-10-andon/wall.html).
+
+| Element | Web | QML |
+|---|---|---|
+| Stage | `.wall-stage` (`.is-screen`: fixed to the whole screen, no scrolling; `.is-preview`: a framed 16:9 preview) > `.wall-set` (one set, the next one after the shown one); `.wall-set.is-fit` scales its children by `--wall-scale` (a set taller than the stage); `[data-wall-off]` hides a tile or section outside the shown set | – |
+| Time and place | `.wall-progress > i` runs over `--wall-time` (only with motion); `.wall-pager > i` one square per set, `.is-on` the shown one | – |
+| Transitions | `js/kante-wall.js`: `Kante.wall.run(name, from, to, {easing, tiles, force})` → promise; `fade`, `cut` (yellow blade `.wall-blade` at the cut's angle, diagonal wipe), `stagger` (tile by tile), `flap` (split-flap, row by row), `shutter` (slides up), `scan` (`.wall-scan` line, wipe from the top); `Kante.wall.pick("rotate", n)` takes them in turn | – |
+| Easing | `easing`: `standard` (each transition's own), `linear`, `quad`, `cubic`, `expo`, `soft`, `snap` (`--ease-snap`) or any CSS easing | – |
+| Reduced motion | without `force` the sets switch at once; a preview the user starts passes `force` | – |
+| Preview tiles | `.wall-tiles` > `.wall-tile` (`b` name, `small` kind, `--tier` bar) | – |
+
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.

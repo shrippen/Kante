@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds everything in Kante: the design system, Knust and the Kimai plugin kit.
-#   1. Kante for the web: docs/v1/shrippen.css, shrippen.js, kante-map.js and map/, fonts.css and fonts/
+#   1. Kante for the web: docs/v1/shrippen.css, shrippen.js, kante-map.js and map/, kante-wall.js, fonts.css and fonts/
 #      -> shrippen.github.io copies docs/v1/ (its build.sh), served at https://shrippen.github.io/v1/
 #   2. Kante for apps: qml/Kante/KantePalette.qml, tokens/palette.qml and the bundled fonts,
 #      generated from tokens/palette.json (tools/build-qml.py)
@@ -27,6 +27,8 @@ mkdir -p "$OUT"
 cp js/shrippen.js "$OUT/shrippen.js"
 # Vector maps: kante-map.js and the map libraries it loads on first use (map/)
 cp js/kante-map.js "$OUT/kante-map.js"
+# Wall display transitions (Kante.wall)
+cp js/kante-wall.js "$OUT/kante-wall.js"
 mkdir -p "$OUT/map"
 cp js/map/* "$OUT/map/"
 # Offline fonts: fonts.css plus the font files next to it (opt-in, apps that must work without Google Fonts)
