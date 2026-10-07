@@ -642,6 +642,14 @@ A changelog on the landing page: every release with what it brought and pictures
 | Release head | `.release-head` > `b.release-version` + `time[datetime]`; left of the body, above it below 40rem | – |
 | Release body | `.release-body` > `p.release-lead` (one or two sentences: what the release is about), `.release-group[data-kind]` (`new` aqua, `improved` cyan, `fixed` orange, `breaking` red) > `h3` + `ul`, `.release-shots` > `figure` (`img` or an inline `svg` diagram, `figcaption`), `a.release-notes` (the full notes on the forge) | – |
 | Older releases | `details.changelog-more` > `summary` + `ol.changelog`: collapsed below the newest entries | – |
+### Added in Kante 1.18
+
+Fields show keyboard focus like every other control.
+
+| Element | Web | QML |
+|---|---|---|
+| Field focus | `.input` and `.select` get the `--focus` ring (2px, offset 2px) on `:focus-visible`, on top of the cyan tint of `:focus`. The board search (`.search > .input`) had no visible focus on a light ground | – |
+
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
