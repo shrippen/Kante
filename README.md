@@ -677,6 +677,12 @@ A wall display that shows a board one screen at a time: the tiles are packed int
 | Reduced motion | without `force` the sets switch at once; a preview the user starts passes `force` | – |
 | Preview tiles | `.wall-tiles` > `.wall-tile` (`b` name, `small` kind, `--tier` bar) | – |
 
+### Added in Kante 1.21
+
+| Element | Web | QML |
+|---|---|---|
+| Card key label | In `table.cards-sm`, the `td[data-card="key"]` shows its `data-label` small above the value (mono, `--fg3`), so the figure top right of a card says what it is | – |
+
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
