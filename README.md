@@ -650,6 +650,20 @@ Fields show keyboard focus like every other control.
 |---|---|---|
 | Field focus | `.input` and `.select` get the `--focus` ring (2px, offset 2px) on `:focus-visible`, on top of the cyan tint of `:focus`. The board search (`.search > .input`) had no visible focus on a light ground | – |
 
+### Added in Kante 1.19
+
+Phone layouts: below 640px a page starts with its content. Filters and navigation fold behind a button, table rows become cards. Catalogue: [`proposals/2026-10-andon/mobile.html`](proposals/2026-10-andon/mobile.html).
+
+| Element | Web | QML |
+|---|---|---|
+| Filter side | `.filter-layout` > `aside.filter-side#id` (an optional `.search`, `.h-label` per axis, `ul.filter-list`) + `.filter-main` (`.filter-head`, then the list). Entries `a` or `button` with the count in `small`; the chosen one `aria-current="true"` (or `aria-pressed`): cyan tint, cyan text, inset bar. More values in `li > details > summary` ("show all 12") + a nested `ul.filter-list`; the summary hides once open | – |
+| Filter button | `.filter-toggle[aria-controls][aria-expanded]` in the `.filter-head`, e.g. `btn btn-outline btn-sm` with "Filter (n)". Hidden above 640px; below, the side is hidden until the button is expanded and then opens as a panel under the head. shrippen.js flips `aria-expanded`, moves focus into the panel, Esc closes it | – |
+| Segmented toggle | the existing `.seg` with `button[aria-pressed]`: the active segment is the primary fill (e.g. "Grouped / Single" above a list). A `form` around it keeps the choice on the server | – |
+| Compact hint row | `.hint-card.is-row`: `.tier` with the word in `.sr-only` (the shape stays), `.row-main` > `.title` + `.meta` (source · age), `.actions` with one primary action. A `details` in `.actions` takes the full row while open | – |
+| Nav drawer | `button.nav-burger[aria-controls][aria-expanded]` (three-line `svg`) + `dialog.nav-drawer#id` > `.nav-drawer-head` (brand, `[data-drawer-close]` button) and `nav.nav-drawer-list` (`.h-label` per section, `a` or `form > button` entries, `.count` right, `aria-current="page"` cyan tint and inset bar). A modal from the left with the scrim behind; shrippen.js opens it, closes it on Esc, scrim click or `[data-drawer-close]` and returns focus to the button. `.nav-wide` marks what it replaces: hidden below 640px, where the burger shows; `.nav-narrow` is the counterpart, shown only below 640px (e.g. a hint counter beside the brand) | – |
+| Table as cards | `table.table.cards-sm` with `td[data-label]` (the column header). Below 640px each row is a card: the first cell (or `td[data-card="title"]`) the title, `td[data-card="key"]` (an amount) top right in mono, the other cells a label/value list; cells without `data-label` (actions) span the card, empty cells drop out. The header row stays for screen readers; `tr` with `th` in a `tbody` works too | – |
+| Long buttons on phones | below 640px a `.btn` wraps its label and never gets wider than its column, so a long label ("Create draft for <client>") does not scroll the page sideways | – |
+
 ### Added in Kante 1.20
 
 A wall display that shows a board one screen at a time: the tiles are packed into sets that fill the screen, and a transition switches from one set to the next. Catalogue: [`proposals/2026-10-andon/wall.html`](proposals/2026-10-andon/wall.html).
