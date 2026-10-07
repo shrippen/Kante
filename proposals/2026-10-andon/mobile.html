@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de" data-own-lang>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.19 Phone layouts</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<script src="../../docs/v1/shrippen.js"></script>
+<style>main{max-width:var(--max-w-wide);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2rem 0}h2{margin-bottom:.8rem}.demo{background:var(--bg-void);padding:1rem;display:flex;flex-direction:column;gap:.8rem;border:1px dashed var(--bg2)}.bar{display:flex;align-items:center;gap:.8rem}.bar>b{font-family:var(--font-heading);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}.bar>.grow{flex:1}.hints{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.35rem}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.19</h1>
+<p>Phone layouts, from Andon's hint page and its phone review. The parts react to the window, not to the demo box: narrow the window below 640px to see the phone form.</p>
+
+<section><h2 class="block-title">Nav drawer</h2><div class="demo">
+<div class="bar">
+  <b>Andon</b><span class="count" data-kind="error">14</span>
+  <nav class="nav-wide" style="display:flex;gap:1rem"><a href="#">Hinweise</a><a href="#">Kunden</a><a href="#">Abrechnung</a></nav>
+  <span class="grow"></span>
+  <button class="nav-burger" type="button" aria-controls="drawer" aria-expanded="false" aria-label="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+<dialog class="nav-drawer" id="drawer" aria-label="Menü">
+  <div class="nav-drawer-head"><b>Andon</b><button type="button" class="btn btn-quiet btn-icon btn-sm" data-drawer-close aria-label="Schließen">×</button></div>
+  <nav class="nav-drawer-list">
+    <span class="h-label">Boards</span><a href="#">Start</a><a href="#">Homelab</a>
+    <span class="h-label">Seiten</span><a href="#" aria-current="page">Hinweise <span class="count" data-kind="error">14</span></a><a href="#">Kunden</a><a href="#">Abrechnung</a><a href="#">Belege zuordnen</a><a href="#">Zeitleiste</a><a href="#">Hosts</a>
+    <span class="h-label">Mara Weber</span><a href="#">Einstellungen</a><form><button type="button">Abmelden</button></form>
+  </nav>
+</dialog>
+</div></section>
+
+<section><h2 class="block-title">Filter side, segmented toggle, compact hint rows</h2><div class="demo">
+<div class="filter-layout">
+  <aside class="filter-side" id="filters" aria-label="Filter">
+    <div class="search"><input class="input" type="search" placeholder="Suchen" aria-label="Suchen"></div>
+    <span class="h-label">Stufe</span>
+    <ul class="filter-list">
+      <li><a href="#" aria-current="true">Alle <small>165</small></a></li>
+      <li><a href="#">Kritisch <small>14</small></a></li>
+      <li><a href="#">Warnung <small>75</small></a></li>
+      <li><a href="#">Info <small>76</small></a></li>
+    </ul>
+    <span class="h-label">Dienst</span>
+    <ul class="filter-list">
+      <li><a href="#">Kimai <small>48</small></a></li>
+      <li><a href="#">Invoice Ninja <small>31</small></a></li>
+      <li><a href="#">Docker <small>22</small></a></li>
+      <li><details><summary>alle 9 zeigen</summary><ul class="filter-list"><li><a href="#">Borg <small>4</small></a></li><li><a href="#">Uptime Kuma <small>2</small></a></li></ul></details></li>
+    </ul>
+  </aside>
+  <div class="filter-main">
+    <div class="filter-head">
+      <button type="button" class="btn btn-outline btn-sm filter-toggle" aria-controls="filters" aria-expanded="false">Filter (0)</button>
+      <span class="grow"></span>
+      <div class="seg" role="group" aria-label="Ansicht"><button type="button" aria-pressed="true">Gruppiert</button><button type="button" aria-pressed="false">Einzeln</button></div>
+    </div>
+    <div class="bulk-bar"><span class="n">7 <small>Rechnung fehlt</small></span><span class="grow"></span><button class="btn btn-outline btn-sm" type="button">Alle 7 erledigt</button><button class="btn btn-outline btn-sm" type="button">7 Tage pausieren</button></div>
+    <ul class="hints">
+      <li class="hint-card is-row" data-tier="red"><span class="tier"><span class="sr-only">Kritisch</span></span><div class="row-main"><span class="title">Backup „nas“ seit 3 Tagen nicht gelaufen</span><span class="meta">Borg · 3 T</span></div><div class="actions"><button class="btn btn-outline btn-sm" type="button">Erledigt</button><details><summary>⋯</summary><p>Grund, Pausieren, Notiz, Verlauf.</p></details></div></li>
+      <li class="hint-card is-row" data-tier="yellow"><span class="tier"><span class="sr-only">Warnung</span></span><div class="row-main"><span class="title">12,5 h nicht abgerechnet bei Nivre</span><span class="meta">Kimai · 9 T</span></div><div class="actions"><button class="btn btn-outline btn-sm" type="button">Erledigt</button></div></li>
+      <li class="hint-card is-row" data-tier="blue"><span class="tier"><span class="sr-only">Info</span></span><div class="row-main"><span class="title">Neue Version von Immich</span><span class="meta">Docker · 1 T</span></div><div class="actions"><button class="btn btn-outline btn-sm" type="button">Erledigt</button></div></li>
+    </ul>
+  </div>
+</div>
+</div></section>
+
+<section><h2 class="block-title">Table as cards</h2><div class="demo">
+<div class="table-wrap"><table class="table cards-sm">
+  <thead><tr><th>Kunde</th><th class="num">Stunden</th><th class="num">Offen</th><th class="num">Umsatz</th><th class="num">Zahlt in</th></tr></thead>
+  <tbody>
+    <tr><td data-label="Kunde"><a href="#">Nivre GmbH</a> <small class="muted">Studio</small></td><td class="num" data-label="Stunden">182,5</td><td class="num" data-label="Offen">1.840,00 €</td><td class="num" data-label="Umsatz" data-card="key">21.400,00 €</td><td class="num" data-label="Zahlt in">14</td></tr>
+    <tr><td data-label="Kunde"><a href="#">Hofmann &amp; Söhne</a></td><td class="num" data-label="Stunden">40,0</td><td class="num" data-label="Offen"></td><td class="num" data-label="Umsatz" data-card="key">4.800,00 €</td><td class="num" data-label="Zahlt in">31</td></tr>
+  </tbody>
+  <tfoot><tr><td>Summe</td><td class="num" data-label="Stunden">222,5</td><td class="num" data-label="Offen">1.840,00 €</td><td class="num" data-card="key">26.200,00 €</td><td></td></tr></tfoot>
+</table></div>
+</div></section>
+</main>
+</body>
+</html>
