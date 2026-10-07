@@ -687,7 +687,7 @@ A wall display that shows a board one screen at a time: the tiles are packed int
 
 | Element | Web | QML |
 |---|---|---|
-| Update check | – (Kimai: `kit.update_hint`, kit 0.8) | `KanteUpdateCheck` (non-visual): asks `https://shrippen.github.io/versions.json?p=<project>&v=<version>` at most once per `interval` (a day), offers `available`, `latestVersion`, `latestUrl`, `dismiss()`; `memory` (JSON) to persist, so a restart does not ask again. Shows nothing itself: pair it with `KanteCallout`. Only in builds nothing else updates, off in demo mode. Format: `shrippen.github.io/overview/VERSIONS.md` |
+| Update check | – (Kimai: `kit.update_hint`, kit 0.8) | `KanteUpdateCheck` (non-visual): asks `https://shrippen.github.io/versions.json` (no parameters) at most once per `interval` (a day), offers `available`, `latestVersion`, `latestUrl`, `dismiss()`; `memory` (JSON) to persist, so a restart does not ask again. Shows nothing itself: pair it with `KanteCallout`. Only in builds nothing else updates, off in demo mode. Format: `shrippen.github.io/overview/VERSIONS.md` |
 
 ### Kante Gold
 

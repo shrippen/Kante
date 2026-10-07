@@ -478,7 +478,7 @@ Grundform aus dem Kit.
   Kartenrouten nehmen `--knust-map-route` (Knust gelb), Marker `kpu-map-pin` bzw. `--knust-map-marker` (cyan).
   `update_hint` steht nur auf der Einstellungs- oder Übersichtsseite des Plugins, ist im Demo-Modus aus (`enabled: false`)
   und lässt sich in den Plugin-Einstellungen abschalten; die README des Plugins nennt, was gesendet wird
-  (`?p=<projekt>&v=<version>` an `shrippen.github.io/versions.json`, ohne Cookies, höchstens einmal am Tag).
+  (ein Abruf von `shrippen.github.io/versions.json` ohne Parameter und Cookies, höchstens einmal am Tag).
   `modebar` ist für Arten/Modi, `period_nav` bleibt für Zeiträume; `hint_card` für Befunde, `result_callout` für
   Rückmeldungen nach einer Aktion.
 - Eigenes Plugin-CSS DARF Theme-Variablen nur mit Rückfallwert nutzen: `border-radius: var(--knust-mark-radius, 50%)`.

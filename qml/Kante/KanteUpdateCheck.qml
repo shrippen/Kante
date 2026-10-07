@@ -4,8 +4,8 @@ import QtQuick
  * Update check (Kante 1.22, non-visual): asks versions.json whether a newer release of
  * `project` exists and offers it as `available`, `latestVersion`, `latestUrl`. It never
  * downloads or installs anything; showing the hint (KanteCallout, a menu entry) is up to
- * the app. At most one request per `interval`, without cookies; the request carries only
- * `?p=<project>&v=<version>`. Failures stay silent. Format and rules:
+ * the app. At most one request per `interval`, a plain GET without parameters or
+ * cookies. Failures stay silent. Format and rules:
  * shrippen.github.io/overview/VERSIONS.md.
  *
  * Only for builds nothing else updates (tarball, AppImage, own release); leave it out of
@@ -88,8 +88,7 @@ QtObject {
             if (xhr.status === 200)
                 receive(xhr.responseText)
         }
-        xhr.open("GET", url + (url.indexOf("?") === -1 ? "?" : "&")
-                 + "p=" + encodeURIComponent(project) + "&v=" + encodeURIComponent(version))
+        xhr.open("GET", url)
         xhr.send()
     }
 

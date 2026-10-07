@@ -118,7 +118,7 @@ function testUpdates() {
     const old = updateBox('0.9.3');
     run(old).then(() => {
         assert.strictEqual(requests.length, 1);
-        assert.strictEqual(requests[0].url, 'https://shrippen.github.io/versions.json?p=kimai-anfahrten&v=0.9.3', 'Anfrage nur mit p und v');
+        assert.strictEqual(requests[0].url, 'https://shrippen.github.io/versions.json', 'Anfrage ohne Parameter');
         assert.strictEqual(requests[0].init.credentials, 'omit', 'Anfrage ohne Cookies');
         assert.strictEqual(old.hidden, false, 'Hinweis bei neuerer Version nicht sichtbar');
         assert.strictEqual(old.parts.link.href, file.projects['kimai-anfahrten'].url);

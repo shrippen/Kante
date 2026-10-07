@@ -31,7 +31,7 @@
  *          Fehler -> Kimai-Alert. data-kpu-question nur für Endgültiges (Kimai-Bestätigungsmodal vorher; reiner Text).
  *   [data-kpu-update="<projekt>"][data-kpu-version="<installiert>"][data-kpu-update-url] (kit.update_hint, seit 0.8)
  *        – fragt höchstens einmal am Tag versions.json (Standard https://shrippen.github.io/versions.json) mit
- *          ?p=<projekt>&v=<installiert>, ohne Cookies und Referrer; ist dort eine höhere Version, wird der Hinweis
+ *          ohne Parameter, Cookies und Referrer; ist dort eine höhere Version, wird der Hinweis
  *          sichtbar (Link, Version, "Ausblenden" bis zur nächsten Version). Fehler bleiben still.
  *   Event "kpu.reload" auf document (z. B. data-form-event eines Modal-Formulars) -> Seite neu laden
  *
@@ -605,8 +605,7 @@
         if (typeof window.fetch !== 'function') {
             return Promise.resolve(null);
         }
-        var request = url + (url.indexOf('?') === -1 ? '?' : '&') + 'p=' + encodeURIComponent(project) + '&v=' + encodeURIComponent(current);
-        return window.fetch(request, { credentials: 'omit', referrerPolicy: 'no-referrer' }).then(function (response) {
+        return window.fetch(url, { credentials: 'omit', referrerPolicy: 'no-referrer' }).then(function (response) {
             return response.ok ? response.json() : null;
         }).then(function (data) {
             var entry = data && data.format === 1 && data.projects ? data.projects[project] : null;
