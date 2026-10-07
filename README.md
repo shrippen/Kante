@@ -149,6 +149,8 @@ Every project landing page follows the same vertical rhythm:
 │   Prerequisites / How it     │
 │   works (prose list)         │
 ├──────────────────────────────┤
+│   Changelog (#changes, 1.17) │
+├──────────────────────────────┤
 │         Footer               │
 │  license · author · issues   │
 └──────────────────────────────┘
@@ -223,6 +225,7 @@ Every landing page imports these variables (or copies them):
 - **OG image**: dark card on `--bg-hard`, project icon centered, name below in `--fg0`, tagline in `--fg2`.
 - **Max content width**: `--max-w` (`860px`). Centered with `margin: 0 auto`.
 - **No light mode** for landing pages (matches the dark-first palette). Apps may opt in to the Light theme below; Plasma widgets use whatever the user's Plasma theme provides.
+- **Changelog**: every release adds an entry at the top of `#changes` (`.changelog`, 1.17), in every language of the page: a lead, the changes grouped as new, improved, fixed (and breaking), and a screenshot or diagram per visible change. Older entries go into `details.changelog-more`.
 - **Mobile**: Install command box font shrinks to `0.75rem`, hero padding reduces. Feature grid collapses to 1 col.
 
 ---
@@ -628,6 +631,17 @@ The read-out is delegated: charts added after load (a dialog fetched by htmx) re
 | Element | Web | QML |
 |---|---|---|
 | Sub-links of a launch tile | `ul.launch-items` right after the `.launch` (not inside the link), `li` > `a` (optional `img` icon, then the title); indented to the tile title, mono, wraps | – |
+
+### Added in Kante 1.17
+
+A changelog on the landing page: every release with what it brought and pictures of it. Catalogue: [`proposals/2026-10-andon/changelog.html`](proposals/2026-10-andon/changelog.html).
+
+| Element | Web | QML |
+|---|---|---|
+| Changelog | `ol.changelog` (in `section.section#changes`) > `li.release` (`id` = the version): a rail with one square per release, the newest yellow | – |
+| Release head | `.release-head` > `b.release-version` + `time[datetime]`; left of the body, above it below 40rem | – |
+| Release body | `.release-body` > `p.release-lead` (one or two sentences: what the release is about), `.release-group[data-kind]` (`new` aqua, `improved` cyan, `fixed` orange, `breaking` red) > `h3` + `ul`, `.release-shots` > `figure` (`img` or an inline `svg` diagram, `figcaption`), `a.release-notes` (the full notes on the forge) | – |
+| Older releases | `details.changelog-more` > `summary` + `ol.changelog`: collapsed below the newest entries | – |
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.
