@@ -459,6 +459,7 @@ Grundform aus dem Kit.
 | `kpu-fold` (seit 0.6, `kit.fold`) | aufklappbarer Abschnitt mit Anzahl (`<details>`) | Dreieck dreht beim Öffnen |
 | `kpu-modebar` (seit 0.6, `kit.modebar`) | Auswahl einer Art/eines Modus mit Anzahl, als Links | Leiste, scrollt seitlich |
 | `kpu-hint-card` + `data-kpu-hint="info\|warning\|danger\|success"` (seit 0.6, `kit.hint_card`) | Befund mit Art, Quelle, „Warum?“, Aktionen | Balken oben; Art als Form + Text + Farbe |
+| `kpu-update` + `data-kpu-update="<projekt>"`, `data-kpu-version` (seit 0.8, `kit.update_hint`) | Hinweis auf eine neue Version des Plugins, unsichtbar bis kit.js eine findet | Hinweiskarte (`info`) mit Link und „Ausblenden“ |
 | `kpu-day` + `data-kpu-day="holiday absence weekend entity"`, `aria-current="date"`, `aria-selected` (seit 0.7, `kit.calendar_day`) | Tag im Monats-/Wochenraster (`kpu-days`); `entity` = der Tag gehört einem Plugin-Objekt (Drehtag) | heute gelber Rahmen, Feiertag oranger, Abwesenheit cyan Balken, Wochenende abgesenkt, ausgewählt getönt mit Rahmen, Entität lila getönt |
 | `kpu-field-group` (+ `kpu-field-group-label`) (seit 0.7, `kit.field_group`) | Formularzeilen eines Plugin-Objekts (z. B. Drehzettel-Felder im Zeiteintrag) | lila Balken links, leichte lila Tönung |
 | `kpu-map-pin` (seit 0.7, `kit.map_pin`, Leaflet `divIcon({className: 'kpu-map-pin'})`) | Marker auf einer Karte | Quadrat in `--knust-map-marker`, Rand im Seitengrund |
@@ -475,6 +476,9 @@ Grundform aus dem Kit.
   Was einem Plugin-Objekt gehört (Drehtag, Drehzettel-Felder), ist lila (Kantes Farbe für Tags und Entitäten):
   `entity` am Kalendertag, `field_group` im Formular; nicht Gelb, das ist Kantes Farbe für „läuft“ und Wertung.
   Kartenrouten nehmen `--knust-map-route` (Knust gelb), Marker `kpu-map-pin` bzw. `--knust-map-marker` (cyan).
+  `update_hint` steht nur auf der Einstellungs- oder Übersichtsseite des Plugins, ist im Demo-Modus aus (`enabled: false`)
+  und lässt sich in den Plugin-Einstellungen abschalten; die README des Plugins nennt, was gesendet wird
+  (`?p=<projekt>&v=<version>` an `shrippen.github.io/versions.json`, ohne Cookies, höchstens einmal am Tag).
   `modebar` ist für Arten/Modi, `period_nav` bleibt für Zeiträume; `hint_card` für Befunde, `result_callout` für
   Rückmeldungen nach einer Aktion.
 - Eigenes Plugin-CSS DARF Theme-Variablen nur mit Rückfallwert nutzen: `border-radius: var(--knust-mark-radius, 50%)`.
@@ -542,3 +546,4 @@ Grundform aus dem Kit.
 | Einstellungszeile, aufklappbarer Abschnitt | FormTypes | `setting(label, control, options)`, `fold(title, body, options)` (8.1) |
 | Mehrfachfilter, Art/Modus mit Anzahl | Toolbar-Formular | `chip_pick(name, value, label, options)`, `modebar(items, label)` (8.1) |
 | Hinweis/Befund | `alert` | `hint_card(title, options)` (8.1) |
+| Neue Plugin-Version | – | `update_hint(project, version, options)` |

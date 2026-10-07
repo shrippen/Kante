@@ -11,6 +11,8 @@
  *   KimaiPluginUi.reloadWithToast(message, undo?)  – Seite neu laden und danach den Hinweis zeigen
  *   KimaiPluginUi.post(url, token, ids, params?)   – POST (FormData: _token, ids[], params) und JSON-Antwort
  *   KimaiPluginUi.setTranslations({...})           – Texte (setzt assets.html.twig aus der Domain "kpu")
+ *   KimaiPluginUi.compareVersions(a, b)            – (seit 0.8) Versionen vergleichen: -1, 0, 1
+ *   KimaiPluginUi.checkUpdates()                   – (seit 0.8) neue [data-kpu-update] prüfen (läuft beim Start)
  *   KimaiPluginUi.escapeHtml(text)                 – (seit 0.3) Text für HTML maskieren, z. B. vor eigenen Aufrufen von
  *                                                    kimai.getPlugin('alert').question()/error()/…, die HTML einsetzen
  *
@@ -27,6 +29,10 @@
  *        – Sofort-Aktion per Klick (z. B. Eintrag im "…"-Menü): POST mit _token, ids[], params; Accept: application/json.
  *          JSON {message, undo?} -> Seite neu laden + Hinweis (mit "Rückgängig"); andere Antwort -> Seite neu laden;
  *          Fehler -> Kimai-Alert. data-kpu-question nur für Endgültiges (Kimai-Bestätigungsmodal vorher; reiner Text).
+ *   [data-kpu-update="<projekt>"][data-kpu-version="<installiert>"][data-kpu-update-url] (kit.update_hint, seit 0.8)
+ *        – fragt höchstens einmal am Tag versions.json (Standard https://shrippen.github.io/versions.json) mit
+ *          ?p=<projekt>&v=<installiert>, ohne Cookies und Referrer; ist dort eine höhere Version, wird der Hinweis
+ *          sichtbar (Link, Version, "Ausblenden" bis zur nächsten Version). Fehler bleiben still.
  *   Event "kpu.reload" auf document (z. B. data-form-event eines Modal-Formulars) -> Seite neu laden
  *
  * Events (bubbles):
@@ -43,12 +49,15 @@
 (function (window, document) {
     'use strict';
 
-    var VERSION = '0.7.1';
+    var VERSION = '0.8.0';
     if (window.KimaiPluginUi && window.KimaiPluginUi.version) {
         return; // bereits von einem anderen Plugin auf dieser Seite geladen
     }
 
     var STORAGE_KEY = 'kpu.pendingToast';
+    var UPDATE_URL = 'https://shrippen.github.io/versions.json';
+    var UPDATE_STORAGE = 'kpu.update.';
+    var UPDATE_INTERVAL = 24 * 60 * 60 * 1000;
     var TOAST_DELAY = 10000;
     var bound = false;
     var kimai = null;
@@ -553,6 +562,89 @@
         }
     }
 
+    /* ---------- Update-Hinweis (seit 0.8) ---------- */
+
+    /** Versionen vergleichen: Teile an "." als Zahlen, fehlende = 0, alles ab "-" oder "+" ignoriert. -1, 0, 1 */
+    function compareVersions(a, b) {
+        function parts(v) {
+            return String(v).replace(/^v/, '').split(/[-+]/)[0].split('.').map(function (p) { return parseInt(p, 10) || 0; });
+        }
+        var x = parts(a);
+        var y = parts(b);
+        for (var i = 0; i < Math.max(x.length, y.length); i++) {
+            var d = (x[i] || 0) - (y[i] || 0);
+            if (d !== 0) { return d < 0 ? -1 : 1; }
+        }
+        return 0;
+    }
+
+    function storageGet(key) {
+        try {
+            var raw = window.localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function storageSet(key, value) {
+        try {
+            window.localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {
+            // privates Fenster, Speicher gesperrt: dann eben ohne Zwischenspeicher
+        }
+    }
+
+    /** neueste Version {version, date, url} oder null; höchstens eine Anfrage pro Projekt und Tag */
+    function latestVersion(project, current, url) {
+        var key = UPDATE_STORAGE + project;
+        var cached = storageGet(key);
+        if (cached && cached.from === current && Date.now() - cached.at < UPDATE_INTERVAL) {
+            return Promise.resolve(cached.latest);
+        }
+        if (typeof window.fetch !== 'function') {
+            return Promise.resolve(null);
+        }
+        var request = url + (url.indexOf('?') === -1 ? '?' : '&') + 'p=' + encodeURIComponent(project) + '&v=' + encodeURIComponent(current);
+        return window.fetch(request, { credentials: 'omit', referrerPolicy: 'no-referrer' }).then(function (response) {
+            return response.ok ? response.json() : null;
+        }).then(function (data) {
+            var entry = data && data.format === 1 && data.projects ? data.projects[project] : null;
+            var latest = entry && entry.version && /^https:\/\//.test(entry.url || '') ? { version: String(entry.version), date: String(entry.date || ''), url: entry.url } : null;
+            storageSet(key, { at: Date.now(), from: current, latest: latest });
+            return latest;
+        }).catch(function () {
+            return null; // offline, gesperrt, kaputte Datei: kein Hinweis, kein Fehler
+        });
+    }
+
+    function checkUpdate(box) {
+        box.setAttribute('data-kpu-update-done', '');
+        var project = box.getAttribute('data-kpu-update');
+        var current = box.getAttribute('data-kpu-version');
+        if (!project || !current) { return Promise.resolve(); }
+        return latestVersion(project, current, box.getAttribute('data-kpu-update-url') || UPDATE_URL).then(function (latest) {
+            if (!latest || compareVersions(latest.version, current) <= 0) { return; }
+            if (storageGet(UPDATE_STORAGE + project + '.dismissed') === latest.version) { return; }
+            var link = box.querySelector('[data-kpu-update-link]');
+            var label = box.querySelector('[data-kpu-update-latest]');
+            var dismiss = box.querySelector('[data-kpu-update-dismiss]');
+            if (link) { link.href = latest.url; }
+            if (label) { label.textContent = latest.version + (latest.date ? ' · ' + latest.date : ''); }
+            if (dismiss) {
+                dismiss.addEventListener('click', function () {
+                    storageSet(UPDATE_STORAGE + project + '.dismissed', latest.version);
+                    box.hidden = true;
+                });
+            }
+            box.hidden = false;
+        });
+    }
+
+    function checkUpdates() {
+        toArray(document.querySelectorAll('[data-kpu-update]:not([data-kpu-update-done])')).forEach(checkUpdate);
+    }
+
     /* ---------- Start ---------- */
 
     function init() {
@@ -565,6 +657,7 @@
             showPending();
         }
         updateAll();
+        checkUpdates();
     }
 
     function setTranslations(map) {
@@ -586,6 +679,8 @@
         undoToast: undoToast,
         reloadWithToast: reloadWithToast,
         escapeHtml: escapeHtml,
+        compareVersions: compareVersions,
+        checkUpdates: checkUpdates,
         setTranslations: setTranslations
     };
 

@@ -84,4 +84,74 @@ setTimeout(() => {
     assert.strictEqual(calls.error[0][1], '&lt;img src=x onerror=alert(2)&gt;', 'Server-Meldung muss maskiert an alert.error gehen');
     assert.ok(!/</.test(calls.error[0][0]), 'Fehlertitel unmaskiert');
     console.log('ok   kit.js Tests (Version, escapeHtml, Frage/Fehler maskiert)');
+    testUpdates();
 }, 20);
+
+function testUpdates() {
+    assert.strictEqual(ui.compareVersions('0.10.0', '0.9.3'), 1);
+    assert.strictEqual(ui.compareVersions('v1.2', '1.2.0'), 0);
+    assert.strictEqual(ui.compareVersions('1.2.0-beta1', '1.2.0'), 0);
+    assert.strictEqual(ui.compareVersions('2.5.2', '2.5.10'), -1);
+
+    const store = {};
+    window.localStorage = { getItem: (k) => (k in store ? store[k] : null), setItem(k, v) { store[k] = String(v); } };
+    const requests = [];
+    let file = { format: 1, projects: { 'kimai-anfahrten': { version: '0.10.0', date: '2026-10-05', url: 'https://github.com/shrippen/kimai-anfahrten/releases/tag/v0.10.0' } } };
+    window.fetch = (url, init) => {
+        requests.push({ url, init });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(file) });
+    };
+    function updateBox(version) {
+        const parts = { link: { href: '#' }, latest: { textContent: '' }, dismiss: { click: null, addEventListener(n, fn) { this.click = fn; } } };
+        const box = element({ 'data-kpu-update': 'kimai-anfahrten', 'data-kpu-version': version });
+        box.hidden = true;
+        box.parts = parts;
+        box.querySelector = (sel) => ({ '[data-kpu-update-link]': parts.link, '[data-kpu-update-latest]': parts.latest, '[data-kpu-update-dismiss]': parts.dismiss })[sel];
+        return box;
+    }
+    function run(box) {
+        document.querySelectorAll = (sel) => (sel.indexOf('data-kpu-update') !== -1 && box.getAttribute('data-kpu-update-done') === null ? [box] : []);
+        ui.checkUpdates();
+        return new Promise((resolve) => setTimeout(resolve, 20));
+    }
+
+    const old = updateBox('0.9.3');
+    run(old).then(() => {
+        assert.strictEqual(requests.length, 1);
+        assert.strictEqual(requests[0].url, 'https://shrippen.github.io/versions.json?p=kimai-anfahrten&v=0.9.3', 'Anfrage nur mit p und v');
+        assert.strictEqual(requests[0].init.credentials, 'omit', 'Anfrage ohne Cookies');
+        assert.strictEqual(old.hidden, false, 'Hinweis bei neuerer Version nicht sichtbar');
+        assert.strictEqual(old.parts.link.href, file.projects['kimai-anfahrten'].url);
+        assert.strictEqual(old.parts.latest.textContent, '0.10.0 · 2026-10-05');
+        old.parts.dismiss.click();
+        assert.strictEqual(old.hidden, true, 'Ausblenden wirkt nicht');
+        return run(updateBox('0.9.3'));
+    }).then(() => {
+        assert.strictEqual(requests.length, 1, 'zweite Anfrage am selben Tag');
+        const again = updateBox('0.9.3');
+        return run(again).then(() => assert.strictEqual(again.hidden, true, 'ausgeblendete Version erscheint wieder'));
+    }).then(() => {
+        const current = updateBox('0.10.0');
+        return run(current).then(() => {
+            assert.strictEqual(requests.length, 2, 'neue installierte Version fragt neu');
+            assert.strictEqual(current.hidden, true, 'Hinweis ohne neuere Version');
+        });
+    }).then(() => {
+        file = { format: 1, projects: { 'kimai-anfahrten': { version: '9.0.0', url: 'javascript:alert(1)' } } };
+        delete store['kpu.update.kimai-anfahrten'];
+        const bad = updateBox('0.9.3');
+        return run(bad).then(() => assert.strictEqual(bad.hidden, true, 'Link ohne https darf nicht erscheinen'));
+    }).then(() => {
+        file = { format: 2, projects: {} };
+        delete store['kpu.update.kimai-anfahrten'];
+        const unknown = updateBox('0.9.3');
+        return run(unknown).then(() => assert.strictEqual(unknown.hidden, true, 'unbekanntes Format'));
+    }).then(() => {
+        window.fetch = () => Promise.reject(new Error('offline'));
+        delete store['kpu.update.kimai-anfahrten'];
+        const offline = updateBox('0.9.3');
+        return run(offline).then(() => assert.strictEqual(offline.hidden, true));
+    }).then(() => {
+        console.log('ok   kit.js Tests (Update-Hinweis: Vergleich, Anfrage, einmal am Tag, Ausblenden, nur https, still bei Fehlern)');
+    }).catch((err) => { console.error(err); process.exitCode = 1; });
+}
