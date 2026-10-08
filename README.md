@@ -818,4 +818,4 @@ https://img.shields.io/badge/<label>-<value>-<valueColor>?labelColor=1c1c20
 
 ## License
 
-All rights reserved. This design system is public for reference only and is not intended for public use. See [LICENSE](../LICENSE).
+MIT, see [LICENSE](LICENSE). Exceptions: `kimai/knust` and `kimai/kit` are GPL-3.0-or-later, the fonts are under the SIL Open Font License 1.1.
