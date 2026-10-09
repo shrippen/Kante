@@ -1952,3 +1952,75 @@ details.help.is-right>.help-text{left:auto;right:-.5rem}
 .wall-tile{background:var(--bg-panel);border-top:.35cqw solid var(--tier,var(--bg2));padding:1cqw 1.2cqw;display:flex;flex-direction:column;gap:.5cqw;min-width:0;overflow:hidden}
 .wall-tile>b{font-family:var(--font-heading);font-size:2.2cqw;line-height:1.05;color:var(--fg0);text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .wall-tile>small{font-family:var(--font-mono);font-size:1cqw;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── Kante 1.25: spoken conversation (Kaiwa). QML twins: KanteRubyText, KanteHeardLine,
+   KanteTalkButton, KanteDiffText, KanteHintCard, KantePitchCurve, KantePath, KanteGoalMeter.
+   Catalogue: proposals/2026-10-kaiwa/. ── */
+/* Ruby text: <p class="ruby" data-ruby="all|new|none"><ruby>駅<rt>えき</rt></ruby>…</p>; ruby.is-new marks
+   a new word for data-ruby="new". The room for the readings stays, so switching never moves the lines.
+   Readings stay muted, new words too (D-1). */
+.ruby{line-height:2.3}
+.ruby rt{font-family:var(--font-sans);font-size:.5em;letter-spacing:.04em;color:var(--fg3)}
+.ruby[data-ruby="none"] rt,.ruby[data-ruby="new"] ruby:not(.is-new) rt{visibility:hidden}
+/* Heard as: under your own .msg, what the recogniser heard; data-state="unsure" warns with the word, and a link
+   "misheard" keeps the turn out. <div class="heard" data-state="unsure"><b>unsicher</b> · … <a href="#">falsch erkannt</a></div> */
+.heard{font-family:var(--font-mono);font-size:.7rem;color:var(--fg3);margin-top:.35rem;overflow-wrap:anywhere}
+.heard b{font-weight:500}
+.heard[data-state="unsure"]{color:var(--warn)}
+.heard[data-state="unsure"] b::before{content:"! "}
+.heard a{color:var(--link);margin-left:.5rem}
+/* Talk button: <button class="talk" data-state="ready|listening|thinking|speaking|error"><span class="talk-mark"></span>
+   <span>Sprechen<small>Leertaste halten</small></span></button>; listening adds .progress-segs as the live level,
+   thinking a .runner. Each state has its own mark shape: square, square, diamond, square, triangle. Height --h-l (D-3). */
+.talk{position:relative;display:inline-flex;align-items:center;gap:.8rem;min-width:15rem;height:var(--h-l);padding:0 1.2rem;
+  background:var(--bg1);border:0;color:var(--fg0);font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);
+  letter-spacing:var(--title-track);text-transform:uppercase;text-align:left;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,var(--cut-m) 100%,0 calc(100% - var(--cut-m)))}
+.talk:focus-visible{outline:2px solid var(--focus);outline-offset:-4px}
+.talk small{display:block;font-family:var(--font-mono);font-weight:400;font-size:.6rem;letter-spacing:.12em;opacity:.8}
+.talk .talk-mark{width:14px;height:14px;flex:none;background:var(--fg3)}
+.talk[data-state="listening"]{background:var(--primary);color:var(--on-primary)}
+.talk[data-state="listening"] .talk-mark{background:var(--on-primary)}
+.talk[data-state="thinking"]{cursor:default}
+.talk[data-state="thinking"] .talk-mark{background:var(--info);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.talk[data-state="speaking"] .talk-mark{background:var(--aqua)}
+.talk[data-state="error"]{box-shadow:inset 0 -4px 0 var(--danger)}
+.talk[data-state="error"] .talk-mark{background:var(--danger);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.talk .progress-segs{width:5rem}.talk .progress-segs>i{height:14px}
+.talk[data-state="listening"] .progress-segs>i{background:var(--tint-2)}
+.talk[data-state="listening"] .progress-segs>i.on{background:var(--on-primary)}
+/* Diff: a correction as the title of a .hint-card. <span class="diff">コーヒー<del>を</del><ins>が</ins>好きです</span> */
+.diff{line-height:1.9;color:var(--fg1)}
+.diff del{text-decoration:line-through 2px var(--danger-text);color:var(--fg3)}
+.diff ins{text-decoration:none;background:var(--cyan-tint);box-shadow:inset 0 -2px 0 var(--cyan);color:var(--fg0)}
+/* Pitch curve: svg.pitch with .grid rules, .target (dashed step line), .actual (the learner, cyan, D-5),
+   rect.kernel (accent) and rect.miss (danger); markers are square. */
+.pitch{width:100%;max-width:26rem;height:auto;display:block}
+.pitch .grid{stroke:var(--bg2);stroke-width:1}
+.pitch .target{fill:none;stroke:var(--fg3);stroke-width:2;stroke-dasharray:6 4}
+.pitch .actual{fill:none;stroke:var(--cyan);stroke-width:2}
+.pitch .kernel{fill:var(--primary)}
+.pitch .miss{fill:var(--danger)}
+.pitch text{font-family:var(--font-mono);font-size:13px;fill:var(--fg2)}
+/* Learning path (D-6): <div class="path"><a class="node" data-state="done|current|review|locked"><span class="mk"></span>
+   <span><b>Title</b><small>N5-03 · 2 von 4</small></span></a>…</div>. Review nodes are indented as a side branch;
+   a locked node says so in its small line. */
+.path{display:flex;flex-direction:column;gap:.5rem;max-width:22rem}
+.path .node{display:flex;align-items:center;gap:.8rem;padding:.55rem .8rem;background:var(--bg1);box-shadow:inset 4px 0 0 var(--bg2);color:inherit;text-decoration:none;
+  clip-path:polygon(0 0,calc(100% - var(--cut-s)) 0,100% var(--cut-s),100% 100%,0 100%)}
+.path .node:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.path .node b{display:block;font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;color:var(--fg0)}
+.path .node small{display:block;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;color:var(--fg3)}
+.path .node .mk{width:12px;height:12px;flex:none;background:var(--bg2)}
+.path .node[data-state="done"]{box-shadow:inset 4px 0 0 var(--aqua)}
+.path .node[data-state="done"] .mk{background:var(--aqua);clip-path:polygon(0 55%,20% 35%,40% 55%,85% 5%,100% 25%,40% 95%)}
+.path .node[data-state="current"]{box-shadow:inset 4px 0 0 var(--primary);background:var(--tint-1)}
+.path .node[data-state="current"] .mk{background:var(--primary)}
+.path .node[data-state="review"]{box-shadow:inset 4px 0 0 var(--info);margin-left:1.6rem}
+.path .node[data-state="review"] .mk{background:var(--info);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.path .node[data-state="locked"]{opacity:.55;pointer-events:none}
+.path .node[data-state="locked"] .mk{visibility:hidden}
+/* Goal meter (D-7): <span class="goalbar" role="progressbar" aria-valuenow="60"><i class="on"></i>…</span>, bottom to top. */
+.goalbar{display:inline-flex;flex-direction:column-reverse;gap:2px;width:22px;vertical-align:middle}
+.goalbar>i{height:4px;background:var(--bg2)}
+.goalbar>i.on{background:var(--primary)}

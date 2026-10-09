@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.25 for Kaiwa</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<style>main{max-width:var(--max-w);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2.2rem 0}h2{margin-bottom:.6rem}.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(22rem,1fr));gap:1rem}.shots figure{margin:0}.shots img{max-width:100%;display:block}.shots figcaption{font-family:var(--font-mono);font-size:.68rem;color:var(--fg3);margin-top:.3rem}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.25</h1>
+<p>The conversation components for Kaiwa as built in QML, in Kante (dark) and Kante Light (Leinen), rendered offscreen with Qt 6.8 and Kirigami 6.10. The sketches and decisions D-1 to D-7 are in <a href="index.html">index.html</a>; the web classes are in <code>components.css</code> under "Kante 1.25".</p>
+
+<section><h2 class="block-title">Talk button and goal meter</h2><div class="shots">
+<figure><img src="talk-kante.png" alt="Five talk button states: ready, listening with level, thinking, speaking, no microphone; goal meter with 12 days"><figcaption>KanteTalkButton, KanteGoalMeter · Kante</figcaption></figure>
+<figure><img src="talk-light.png" alt="The same in Kante Light"><figcaption>Kante Light</figcaption></figure>
+</div></section>
+
+<section><h2 class="block-title">Conversation with furigana and heard line</h2><div class="shots">
+<figure><img src="thread-kante.png" alt="Messages with readings over new words and the heard-as line, one unsure"><figcaption>KanteMessage + KanteRubyText + KanteHeardLine · Kante</figcaption></figure>
+<figure><img src="thread-light.png" alt="The same in Kante Light"><figcaption>Kante Light</figcaption></figure>
+</div></section>
+
+<section><h2 class="block-title">Corrections</h2><div class="shots">
+<figure><img src="hints-kante.png" alt="Hint cards with diff titles: wrong particle, unnatural register, compact row blocking understanding"><figcaption>KanteHintCard + KanteDiffText · Kante</figcaption></figure>
+<figure><img src="hints-light.png" alt="The same in Kante Light"><figcaption>Kante Light</figcaption></figure>
+</div></section>
+
+<section><h2 class="block-title">Pitch curve and learning path</h2><div class="shots">
+<figure><img src="pitch-path-kante.png" alt="Pitch of hashi with target, learner line, kernel and miss; learning path with done, review, current and locked nodes"><figcaption>KantePitchCurve, KantePath · Kante</figcaption></figure>
+<figure><img src="pitch-path-light.png" alt="The same in Kante Light"><figcaption>Kante Light</figcaption></figure>
+</div></section>
+</main>
+</body>
+</html>
