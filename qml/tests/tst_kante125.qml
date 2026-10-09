@@ -157,6 +157,22 @@ TestCase {
         compare(p.Accessible.description, "flach, ohne Abfall")
     }
 
+    function test_pathOpenNodeIsUnlockedAndSaysSo() {
+        var p = createTemporaryObject(pathComponent, stage(), { model: [
+            { title: "Konbini", meta: "N5-03", state: "current" },
+            { title: "Café", meta: "N5-04", state: "open" }] })
+        waitForRendering(p)
+        spy.clear(); spy.signalName = ""; spy.target = p; spy.signalName = "activated"
+        var nodes = []
+        for (var i = 0; i < p.children.length; i++) if (p.children[i].st !== undefined) nodes.push(p.children[i])
+        verify(nodes[1].Accessible.name.indexOf("offen") > 0, nodes[1].Accessible.name)
+        verify(nodes[1].Accessible.name.indexOf("gesperrt") < 0)
+        compare(nodes[1].opacity, 1)
+        mouseClick(nodes[1])
+        compare(spy.count, 1)
+        compare(spy.signalArguments[0][0], 1)
+    }
+
     function test_pathActivatesUnlockedOnly() {
         var p = createTemporaryObject(pathComponent, stage(), { model: [
             { title: "Begrüßung", meta: "N5-01", state: "done" },
