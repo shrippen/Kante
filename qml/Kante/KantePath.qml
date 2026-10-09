@@ -117,14 +117,15 @@ Column {
                     elide: Text.ElideRight
                 }
             }
-            Rectangle {
+            KantePolygon {
+                // Focus along the cut shape.
                 visible: node.activeFocus
                 x: node.indent
                 width: parent.width - node.indent
                 height: parent.height
-                color: "transparent"
-                border.color: KanteStyle.focusColor
-                border.width: 2
+                strokeColor: KanteStyle.focusColor
+                strokeWidth: 2
+                cutTopRight: KanteStyle.active ? KanteStyle.unit(6) : 0
             }
             TapHandler {
                 enabled: !node.locked
