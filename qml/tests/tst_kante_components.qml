@@ -814,4 +814,19 @@ TestCase {
         compare(m.valueText, "6.0 dBFS")
         compare(m.fraction(m.warnAt), 0.7)
     }
+
+    Component {
+        id: scaleComponent
+        KanteLevelMeter { scale: true }
+    }
+
+    function test_levelMeterScaleDropsCrowdedMarks() {
+        var wide = createTemporaryObject(scaleComponent, tc, { width: 1000 })
+        compare(wide.scaleStarts.filter(s => s >= 0).length, 4)
+        var narrow = createTemporaryObject(scaleComponent, tc, { width: 90 })
+        var starts = narrow.scaleStarts
+        verify(starts[0] >= 0, "floor stays")
+        verify(starts[3] >= 0, "0 stays")
+        verify(starts[2] < 0, "-6 is dropped next to 0")
+    }
 }

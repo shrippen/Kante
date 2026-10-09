@@ -696,7 +696,7 @@ Colour labels in apps, and a level meter. Seven labels, the same on the web and 
 | Element | Web | QML |
 |---|---|---|
 | Colour label | `data-label` also takes `orange` and `cyan` | `KanteStyle.labelColor(name)`, names in `KanteStyle.labels`; palette roles `labelRed` … `labelPurple`. A label is data, so it keeps its colour in System and Kante Light too (light or dark by the theme). Name the label beside the colour |
-| Level meter | – | `KanteLevelMeter`: `level` in dBFS (undefined: no signal), zones positive up to `warnAt` (−18), warning up to `dangerAt` (−6), negative above, from `floor` (−60); peak-hold mark (`holdMs`, 1500), `scale` labels the floor, both limits and 0, `vertical` fills bottom up; tooltip and accessible name give the value |
+| Level meter | – | `KanteLevelMeter`: `level` in dBFS (undefined: no signal), zones positive up to `warnAt` (−18), warning up to `dangerAt` (−6), negative above, from `floor` (−60); peak-hold mark (`holdMs`, 1500), `scale` labels the floor, both limits and 0 (crowded labels drop out, floor and 0 stay), `vertical` fills bottom up; tooltip and accessible name give the value |
 
 ### Kante Gold
 
