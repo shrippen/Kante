@@ -112,7 +112,7 @@ Item {
                 var f = meter.vertical ? 1 - meter.fraction(db) : meter.fraction(db)
                 return Math.max(0, Math.min(length - box, f * length - box / 2))
             })
-            var gap = KanteStyle.unit(4)
+            var gap = box / 2
             var placed = []
             var out = [-1, -1, -1, -1]
             for (var i of [0, 3, 1, 2]) {
