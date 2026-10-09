@@ -135,14 +135,15 @@ Item {
         color: KanteStyle.infoColor
         cut: talk.cut
     }
-    Rectangle {
-        // Focus: cyan, 2 px, inside the cut shape.
+    KantePolygon {
+        // Focus: cyan, 2 px, inside and along the cut shape.
         visible: talk.activeFocus
         anchors.fill: parent
-        anchors.margins: KanteStyle.unit(4)
-        color: "transparent"
-        border.color: KanteStyle.focusColor
-        border.width: 2
+        anchors.margins: KanteStyle.unit(3)
+        strokeColor: KanteStyle.focusColor
+        strokeWidth: 2
+        cutTopRight: Math.max(0, talk.cut - KanteStyle.unit(1))
+        cutBottomLeft: cutTopRight
     }
 
     Row {
