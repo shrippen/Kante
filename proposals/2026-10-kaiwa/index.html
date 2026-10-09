@@ -20,7 +20,6 @@ section{margin:2.4rem 0}h2{margin-bottom:.6rem}
 .ruby rt{font-family:var(--font-sans);font-size:.5em;letter-spacing:.04em;color:var(--fg3)}
 .ruby[data-ruby="none"] rt{visibility:hidden}
 .ruby[data-ruby="unknown"] ruby:not(.is-new) rt{visibility:hidden}
-.ruby ruby.is-new rt{color:var(--cyan)}
 
 /* ── Sketch 2: turn tools under a .msg ── */
 .msg-tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.45rem}
@@ -28,7 +27,7 @@ section{margin:2.4rem 0}h2{margin-bottom:.6rem}
 .msg .heard[data-state="unsure"]{color:var(--warn)}
 
 /* ── Sketch 3: talk button. Proposed as .talk ── */
-.talk{position:relative;display:inline-flex;align-items:center;gap:.8rem;min-width:15rem;height:calc(var(--h-l) + 16px);padding:0 1.2rem;
+.talk{position:relative;display:inline-flex;align-items:center;gap:.8rem;min-width:15rem;height:var(--h-l);padding:0 1.2rem;
   background:var(--bg1);border:0;color:var(--fg0);font-family:var(--font-heading);font-weight:700;font-size:var(--title-s);letter-spacing:var(--title-track);text-transform:uppercase;cursor:pointer;
   clip-path:polygon(0 0,calc(100% - var(--cut-m)) 0,100% var(--cut-m),100% 100%,var(--cut-m) 100%,0 calc(100% - var(--cut-m)))}
 .talk:focus-visible{outline:2px solid var(--focus);outline-offset:-4px}
@@ -87,7 +86,7 @@ section{margin:2.4rem 0}h2{margin-bottom:.6rem}
 <body>
 <main>
 <h1 class="page-title">Kante for Kaiwa</h1>
-<p>Kaiwa is a Japanese conversation trainer (Rust, Qt 6 / Kirigami, Plasma widget). This page lists what its GUI needs, what Kante already has and the seven elements that are missing. Each comes with a sketch in Kante's roles, a proposed CSS and QML API and a decision. Nothing here is in the stylesheet yet. Requirements in brackets are from <code>Kaiwa/spec/LASTENHEFT.md</code>.</p>
+<p>Kaiwa is a Japanese conversation trainer (Rust, Qt 6 / Kirigami, Plasma widget). This page lists what its GUI needs, what Kante already has and the seven elements that are missing. Each comes with a sketch in Kante's roles, a proposed CSS and QML API and a decision. Decisions D-1 to D-7 were made on 2026-10-09 and are marked below; the elements follow in their own PR. Requirements in brackets are from <code>Kaiwa/spec/LASTENHEFT.md</code>.</p>
 <p><button class="btn btn-outline btn-sm" type="button" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'':'light'">Dark / Leinen</button></p>
 
 <section>
@@ -113,9 +112,9 @@ section{margin:2.4rem 0}h2{margin-bottom:.6rem}
 <p class="ruby" data-ruby="unknown"><ruby>駅<rt>えき</rt></ruby>までは<ruby class="is-new">歩<rt>ある</rt></ruby>いて<ruby>五分<rt>ごふん</rt></ruby>です。</p>
 <p class="ruby" data-ruby="none"><ruby>駅<rt>えき</rt></ruby>までは<ruby>歩<rt>ある</rt></ruby>いて<ruby>五分<rt>ごふん</rt></ruby>です。</p>
 </div>
-<p class="spec">Readings over kanji in three densities: all, only new words (cyan, the "marked" colour), none. The space for the readings stays reserved, so switching does not move the lines. [/LF110/, /LF211/, /LL202/]<br>
+<p class="spec">Readings over kanji in three densities: all, only new words, none. Every reading takes the muted text colour (D-1). The space for the readings stays reserved, so switching does not move the lines. [/LF110/, /LF211/, /LL202/]<br>
 CSS <code>.ruby[data-ruby="all|unknown|none"]</code>, <code>ruby.is-new</code>. QML <code>KanteRubyText { segments: [{text, reading, isNew}]; density: KanteRubyText.All }</code>: Qt Text has no ruby, so a <code>Flow</code> of base/reading pairs that wraps at segment borders, scales with the font.</p>
-<p class="decide"><b>D-1</b> Should new words take cyan readings (marked), or stay muted like the rest? Proposal: cyan.</p>
+<p class="decide"><b>D-1</b> Should new words take cyan readings (marked), or stay muted like the rest? <b>Decided: muted.</b></p>
 </div>
 </section>
 
@@ -131,7 +130,7 @@ CSS <code>.ruby[data-ruby="all|unknown|none"]</code>, <code>ruby.is-new</code>. 
 </div>
 <p class="spec">Under a character's turn: replay, slow, translate as quiet buttons (one primary per view stays the talk button). Under the learner's turn: what the recogniser heard, and an "unsure" state in warn with a "misheard" link that keeps the turn out of the learner model. [/LF111/, /LF113/]<br>
 QML <code>KanteMessage</code> gets nothing new: tools and the heard line are children under the text. Proposed: <code>KanteHeardLine { text; unsure }</code> as a small part, so both projects and tests draw it the same way.</p>
-<p class="decide"><b>D-2</b> Separate <code>KanteHeardLine</code>, or plain children in Kaiwa? Proposal: separate (it has a state and an action).</p>
+<p class="decide"><b>D-2</b> Separate <code>KanteHeardLine</code>, or plain children in Kaiwa? <b>Decided: separate.</b></p>
 </div>
 </section>
 
@@ -145,9 +144,9 @@ QML <code>KanteMessage</code> gets nothing new: tools and the heard line are chi
 <button class="talk" data-state="speaking"><span class="talk-mark"></span><span>Speaking<small>tap to interrupt</small></span></button>
 <button class="talk" data-state="error"><span class="talk-mark"></span><span>No microphone<small>open settings</small></span></button>
 </div>
-<p class="spec">The one big control of a conversation. Five states, each with its own text and mark shape, never colour alone: ready (square), listening (primary fill and a live level as segment display, A10), thinking (diamond and running light, A21), speaking (aqua square, tap interrupts), error (triangle, red bottom bar, the action in the second line). Height <code>--h-l</code> + 16 px for shaky hands; both cuts like a primary button. [/LF100/, /LF103/, /LF505/, /LL202/]<br>
+<p class="spec">The one big control of a conversation. Five states, each with its own text and mark shape, never colour alone: ready (square), listening (primary fill and a live level as segment display, A10), thinking (diamond and running light, A21), speaking (aqua square, tap interrupts), error (triangle, red bottom bar, the action in the second line). Height <code>--h-l</code> (48 px, D-3), wider than a button; both cuts like a primary button. [/LF100/, /LF103/, /LF505/, /LL202/]<br>
 CSS <code>.talk[data-state]</code>. QML <code>KanteTalkButton { state: KanteTalkButton.Listening; level: 0..1; hint: "hold space"; mode: Hold | Toggle }</code> and <code>KantePlasmaTalkButton</code> for the widget.</p>
-<p class="decide"><b>D-3</b> Is a 64 px control within the height scale acceptable (rule: 32/40/48), or should it stay at <code>--h-l</code> 48 px? Proposal: a new step <code>--h-xl</code> 64 px, only for this control.</p>
+<p class="decide"><b>D-3</b> Is a 64 px control within the height scale acceptable (rule: 32/40/48), or should it stay at <code>--h-l</code> 48 px? <b>Decided: stays at <code>--h-l</code>.</b></p>
 </div>
 </section>
 
@@ -167,7 +166,7 @@ CSS <code>.talk[data-state]</code>. QML <code>KanteTalkButton { state: KanteTalk
 </div>
 <p class="spec">The hint card as it is, with the diff as its title: removed text struck through in red ink, inserted text with the cyan tint and underline (marked), never colour alone (strike and underline carry it). The row form is the plasmoid's one-line feedback. [/LF301/, /LF302/, /LF307/, /LF503/]<br>
 CSS <code>.diff del</code>, <code>.diff ins</code>. QML <code>KanteDiffText { parts: [{text, kind: Same | Removed | Added}] }</code>, placed in the existing hint card (QML has no hint card yet: <code>KanteHintCard</code> joins as the QML twin of <code>.hint-card</code>).</p>
-<p class="decide"><b>D-4</b> Mapping of the four severities: blocks understanding = red, wrong = yellow (warn), unnatural = blue, style = no tier. Proposal as shown.</p>
+<p class="decide"><b>D-4</b> Mapping of the four severities: blocks understanding = red, wrong = yellow (warn), unnatural = blue, style = no tier. <b>Decided: as shown.</b></p>
 </div>
 </section>
 
@@ -186,7 +185,7 @@ CSS <code>.diff del</code>, <code>.diff ins</code>. QML <code>KanteDiffText { pa
 <div class="legend-row"><span><i></i>target 箸 (は↘し)</span><span><i class="a"></i>you</span><span><i class="k"></i>accent kernel</span></div>
 <p class="spec">Morae on the x axis, two levels H/L as the target (dashed, muted), the learner's F0 normalised to their own range (cyan line, data). The kernel is a square in the primary colour, a missed kernel a red square, as Kante markers are square. Also used for shadowing: the model's curve and the learner's on top of each other. [/LF321/, /LF330/]<br>
 CSS <code>svg.pitch</code> with <code>.target</code>, <code>.actual</code>, <code>.kernel</code>, <code>.miss</code>. QML <code>KantePitchCurve { morae: ["は","し"]; target: [1,0]; kernel: 1; actual: [..]; missAt: -1 }</code>, built on the drawing of <code>KanteLineChart</code>.</p>
-<p class="decide"><b>D-5</b> Should the learner's line take cyan (data) or the series colour 0 of the charts? Proposal: cyan, the target is not a series.</p>
+<p class="decide"><b>D-5</b> Should the learner's line take cyan (data) or the series colour 0 of the charts? <b>Decided: cyan.</b></p>
 </div>
 </section>
 
@@ -205,7 +204,7 @@ CSS <code>svg.pitch</code> with <code>.target</code>, <code>.actual</code>, <cod
 </div>
 <p class="spec">Duolingo's path as a column of nodes: done (aqua bar, tick), current (primary bar and tint, the chosen one), review (info bar, diamond, indented as a side branch), locked (dimmed, with the word "locked"). Right: the same with the existing <code>.steps</code> for comparison, which has no review branch and no second line. [/LF600/]<br>
 CSS <code>.path > .node[data-state]</code>. QML <code>KantePath { model: [{title, meta, state}] }</code>.</p>
-<p class="decide"><b>D-6</b> New <code>KantePath</code>, or extend <code>KanteSteps</code> with a second line and branches? Proposal: new, steps stay for wizards.</p>
+<p class="decide"><b>D-6</b> New <code>KantePath</code>, or extend <code>KanteSteps</code> with a second line and branches? <b>Decided: new <code>KantePath</code>.</b></p>
 </div>
 </section>
 
@@ -217,7 +216,7 @@ CSS <code>.path > .node[data-state]</code>. QML <code>KantePath { model: [{title
 <span class="panel"><span class="goalbar" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span>12 d</span>
 </div>
 <p class="spec">The compact form of the widget shows the day's goal and the streak. Left: a ring around the streak count (round, like an icon, since it sits in the icon slot). Right: a vertical segment display (A10), square like the rest of Kante. With System style both use <code>Kirigami.Theme.highlightColor</code>. [/LF500/, /LF601/, /LF602/]</p>
-<p class="decide"><b>D-7</b> Ring or segments? Proposal: segments; they read at 22 px and follow the square marker rule.</p>
+<p class="decide"><b>D-7</b> Ring or segments? <b>Decided: segments.</b></p>
 </div>
 </section>
 
