@@ -182,7 +182,8 @@ main,.foot{position:relative;z-index:1}
 .showcase figcaption{padding:.55rem .9rem;border-top:1px solid var(--bg1);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
 
 /* ── Changelog (1.17): one entry per release on a rail, newest first; version and date left,
-      lead, change groups (new, improved, fixed) and pictures right; older ones in a details ── */
+      lead, change groups (new, improved, fixed, note; breaking) and pictures right; older ones
+      in a details. note (1.26) is purple: info and links are cyan, which "improved" already has ── */
 .changelog{list-style:none;padding:0;margin:1.5rem 0 0;display:flex;flex-direction:column;gap:2.6rem;border-left:2px solid var(--bg2)}
 .section .changelog{max-width:var(--max-w-wide)}
 .release{position:relative;display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1.6rem;padding-left:1.4rem}
@@ -199,6 +200,7 @@ main,.foot{position:relative;z-index:1}
 .release-group[data-kind="new"]{--kind:var(--aqua)}
 .release-group[data-kind="improved"]{--kind:var(--cyan)}
 .release-group[data-kind="fixed"]{--kind:var(--orange)}
+.release-group[data-kind="note"]{--kind:var(--purple)}
 .release-group[data-kind="breaking"]{--kind:var(--red)}
 .section .release-group ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem}
 .section .release-group li{position:relative;margin:0;padding-left:1.1rem;color:var(--fg2);font-size:.92rem}

@@ -225,7 +225,7 @@ Every landing page imports these variables (or copies them):
 - **OG image**: dark card on `--bg-hard`, project icon centered, name below in `--fg0`, tagline in `--fg2`.
 - **Max content width**: `--max-w` (`860px`). Centered with `margin: 0 auto`.
 - **No light mode** for landing pages (matches the dark-first palette). Apps may opt in to the Light theme below; Plasma widgets use whatever the user's Plasma theme provides.
-- **Changelog**: every release adds an entry at the top of `#changes` (`.changelog`, 1.17), in every language of the page: a lead, the changes grouped as new, improved, fixed (and breaking), and a screenshot or diagram per visible change. Older entries go into `details.changelog-more`.
+- **Changelog**: every release adds an entry at the top of `#changes` (`.changelog`, 1.17), in every language of the page: a lead, the changes grouped as new, improved, fixed and note (and breaking), and a screenshot or diagram per visible change. Older entries go into `details.changelog-more`.
 - **Mobile**: Install command box font shrinks to `0.75rem`, hero padding reduces. Feature grid collapses to 1 col.
 
 ---
@@ -640,7 +640,7 @@ A changelog on the landing page: every release with what it brought and pictures
 |---|---|---|
 | Changelog | `ol.changelog` (in `section.section#changes`) > `li.release` (`id` = the version): a rail with one square per release, the newest yellow | – |
 | Release head | `.release-head` > `b.release-version` + `time[datetime]`; left of the body, above it below 40rem | – |
-| Release body | `.release-body` > `p.release-lead` (one or two sentences: what the release is about), `.release-group[data-kind]` (`new` aqua, `improved` cyan, `fixed` orange, `breaking` red) > `h3` + `ul`, `.release-shots` > `figure` (`img` or an inline `svg` diagram, `figcaption`), `a.release-notes` (the full notes on the forge) | – |
+| Release body | `.release-body` > `p.release-lead` (one or two sentences: what the release is about), `.release-group[data-kind]` (`new` aqua, `improved` cyan, `fixed` orange, `note` purple (1.26), `breaking` red) > `h3` + `ul`, `.release-shots` > `figure` (`img` or an inline `svg` diagram, `figcaption`), `a.release-notes` (the full notes on the forge) | – |
 | Older releases | `details.changelog-more` > `summary` + `ol.changelog`: collapsed below the newest entries | – |
 ### Added in Kante 1.18
 
@@ -731,6 +731,14 @@ The conversation components for Kaiwa, the Japanese conversation trainer: you ta
 | Pitch curve | `svg.pitch` (`.grid`, `.target`, `.actual`, `.kernel`, `.miss`) | `KantePitchCurve`: `morae`, `target` (1 high, 0 low per mora), `kernel` (−1 flat), `actual` (the learner's pitch 0..1, any sample count; info colour, D-5), `missAt`; square markers; `summary` names the fall in words ("Abfall nach は, abweichend bei し") for the legend and screen readers |
 | Learning path | `.path > .node[data-state]` | `KantePath` (D-6): `model` [{title, meta, state: done\|current\|review\|locked}]: bar and sign per state (check, filled square, diamond indented as a side branch, none and "gesperrt"); unlocked nodes fire `activated(index)` by click, Enter or Space. `KanteSteps` stays for wizards |
 | Goal meter | `.goalbar > i.on` | `KanteGoalMeter` (D-7): `value` 0..1 as `segments` (5) stacked bottom to top, `label` beside (the streak), sized for a panel (`stackHeight`) |
+
+### Added in Kante 1.26
+
+The fourth regular group of a release log: every shrippen release log groups its changes as New, Improved, Fixed and Note. Catalogue: [`proposals/2026-10-andon/changelog.html`](proposals/2026-10-andon/changelog.html), shots in Kante, Leinen, Kante Light and Gold: `proposals/2026-10-andon/changelog-note-*.png`.
+
+| Element | Web | QML |
+|---|---|---|
+| Note group | `.release-group[data-kind="note"]` > `h3` + `ul`: what users should know without it being a change of its own (a changed default, a step after updating, a dropped platform). Its squares are `--purple`: Kante `#d3869b`, Leinen `#8f3f71`, Kante Light `#8e44ad` (dark `#b56fd0`), Kante Gold `#c497a8` (ume). Not `--info`: info is cyan in every theme, the colour of `improved`; not orange or red, which stay with `fixed` and `breaking`. The colour is only on the squares (at least 4.5:1 on ground and cards, 4.1:1 on Kante Light dark cards, as `breaking`), the text stays `--fg2`; the heading word carries the meaning | – |
 
 ### Kante Gold
 
