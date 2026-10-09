@@ -1,0 +1,29 @@
+# QML and token checks on every pull request (decision G-06 from Kaiwa's question bundle 2).
+# Runs in an Arch Linux container: current Qt 6, Kirigami and libplasma from the packages,
+# so tst_kanteplasma runs too.
+#
+# This same file lives in .gitea/workflows and .github/workflows: Gitea reads the copy in
+# .gitea/workflows, GitHub only ever reads .github/workflows. Kept as two files, so a change
+# here is a reminder to update the other one too.
+name: QML
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  qml:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    env:
+      QT_QPA_PLATFORM: offscreen
+      LANG: C.UTF-8
+    steps:
+      - name: Tools
+        run: pacman -Syu --noconfirm --needed git nodejs python qt6-base qt6-declarative qt6-shadertools qt6-svg kirigami libplasma
+      - uses: actions/checkout@v4
+      - name: Tokens
+        run: python3 tools/check-tokens.py
+      - name: QML tests
+        run: tools/check-qml.sh
