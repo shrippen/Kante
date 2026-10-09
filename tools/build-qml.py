@@ -7,7 +7,7 @@
   qml/KantePlasma/KantePlasmaButton.qml   the Plasma widget button, generated from
                                qml/Kante/KanteButton.qml (PlasmaComponents3 base)
   tokens/palette.qml           flat brand palette for Plasma widgets (reference)
-  qml/Kante/fonts/             the bundled fonts from fonts/ plus OFL.txt
+  qml/Kante/fonts/             the bundled fonts from fonts/ plus OFL.txt and OFL-Bravura.txt
 
 Both .qml files are generated: edit tokens/palette.json and run ./build.sh.
 Usage: python3 tools/build-qml.py   (build.sh runs it)
@@ -162,7 +162,7 @@ def write_qmldir():
 def copy_fonts():
     dest = MODULE / "fonts"
     dest.mkdir(parents=True, exist_ok=True)
-    for name in PALETTE["typography"]["bundled"] + ["OFL.txt"]:
+    for name in PALETTE["typography"]["bundled"] + ["OFL.txt", "OFL-Bravura.txt"]:
         shutil.copy2(KANTE / "fonts" / name, dest / name)
 
 

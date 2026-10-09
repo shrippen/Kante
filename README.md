@@ -326,7 +326,7 @@ QQC2.RadioButton { KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape
 | `KanteCheckSkin`, `KanteFieldSkin`, `KanteSliderSkin`, `KantePopupSkin`, `KanteMessageSkin`, `KanteDialogSkin`, `KantePageTitle` | Skins placed *inside* an existing control (check box, radio button, switch, combo/spin box, text area, slider, menu, `Kirigami.InlineMessage`, Kirigami dialog, page header) |
 | `KantePullToRefresh` | Pull to refresh for a `Kirigami.Page` with a `QQC2.ScrollView` |
 | `../KantePlasma` | `KantePlasmaButton`, `KantePlasmaToolButton`, `KantePlasmaHeading`: the same wrappers on PlasmaComponents3 / PlasmaExtras for Plasma widgets |
-| `fonts/` | Rajdhani 600/700, JetBrains Mono 400/500 (SIL OFL), loaded by `KanteStyle`, never installed |
+| `fonts/` | Rajdhani 600/700, JetBrains Mono 400/500 (SIL OFL), loaded by `KanteStyle`, never installed; Bravura (SIL OFL, `OFL-Bravura.txt`), loaded only by the notation components (1.23) |
 
 ### Components added in Kante 1.4
 
@@ -688,6 +688,34 @@ A wall display that shows a board one screen at a time: the tiles are packed int
 | Element | Web | QML |
 |---|---|---|
 | Update check | – (Kimai: `kit.update_hint`, kit 0.8) | `KanteUpdateCheck` (non-visual): asks `https://shrippen.github.io/versions.json` (no parameters) at most once per `interval` (a day), offers `available`, `latestVersion`, `latestUrl`, `dismiss()`; `memory` (JSON) to persist, so a restart does not ask again. Shows nothing itself: pair it with `KanteCallout`. Only in builds nothing else updates, off in demo mode. Format: `shrippen.github.io/overview/VERSIONS.md` |
+
+### Added in Kante 1.23
+
+The practice components for Kontra, the bass trainer: purely presentational, the data comes in through properties, every action goes out as a signal. Colour is never the only sign of a state (Kontra's persona Sam reads them with deuteranopia, at 200 %, by keyboard and screen reader): every note state has a shape, every toggle a lamp, every zone a word. All sizes come from `KanteStyle.unit` and the font, so they scale; all of them work in System, Kante and Kante Light. Catalogue with screenshots: [`proposals/2026-10-kontra/bauteile.html`](proposals/2026-10-kontra/bauteile.html).
+
+| Element | Web | QML |
+|---|---|---|
+| Note states | – | `KanteStyle.noteStateColor(state)`, `noteStateName(state)` (words in `noteStateNames`, an app sets its translations once), `inkOn(fill)`; `KanteNoteMark` draws the sign: `hit` check, `wrong` cross, `missed` hollow dashed square, `early` arrow left, `late` arrow right (`badge` on a framed square). Also the key of a legend |
+| Tab lane | – | `KanteTabLane`: one lane per string (`strings`, `stringNames`, `lowStringOnTop`, `stringColors`), `notes` [{time, duration, string, fret, state, label}] run from the right onto the play line (`position`, `pixelsPerSecond`, `playLine`), `bars`, loop range (`loopStart`, `loopEnd`) with bracket edges; `nextIndex`. The notes sit on one strip that moves with `position` (one binding per frame); their visuals are made asynchronously near the view. 3000 notes, about 300 in view: under 2 ms binding work per frame |
+| Tablature | – | `KanteTabStaff`: tab lines with fret numbers, bar lines, repeat signs (`bars` as {time, repeatStart, repeatEnd}), rhythm below (stems, flags, beams within a beat, dots; `beats` per note), chords; pages line by line (`barsPerSystem`, `systems`), the current note on a selection band, `cursor` at `position` |
+| Bass staff | – | `KanteBassStaff`: bass clef, one voice: `notes` [{time, beats, midi, state, tied}], `rests`, `bars` [{time, numerator, denominator}], `keyFifths`. Spelling in the key, accidentals that hold to the bar line, ledger lines, stems by staff position, beams within a beat (dotted quarter in compound time), flags, dots, ties, triplet 3. Glyphs from Bravura (below); `staffSpace` sizes it |
+| Fretboard | – | `KanteFretboard`: `strings`, `frets`, `firstFret`, `stringNames`, `lowStringOnTop`, `leftHanded`, `evenFrets` (else the real 2^(−n/12) spacing), `inlays`; `markers` [{string, fret, role, label}] with a shape per role: `current` filled square, `next` hollow square, `root` diamond, `scale` round dot |
+| Tuner | – | `KanteTunerGauge`: needle on −50..+50 cents, `noteName`, `octave`, `cents` ("−12 ct"), `active`, `inTuneCents` (3), `hint`; in tune shows as band, check mark, brackets and `inTuneText`, off-tune fills the triangle on its side |
+| Level meter | – | `KanteLevelMeter`: `peakDb` (tick), `rmsDb` (bar), `clipped` (box with word and cross), `rangeDb` (60), zones `quietDb` / `loudDb` named below the track, the zone of the peak bold and underlined |
+| Timing histogram | – | `KanteTimingHistogram` (`counts`, `firstBinMs`, `binMs`, `meanMs`): a configured `KanteBarChart` with the ms edges, a zero line, a dashed mean line and the key "◂ early / late ▸". `KanteBarChart` gained `edgeLabels`, `edgeUnit`, `markers` [{at, label, dashed}], `barFill` and `wholeSteps` for it |
+| Transport | – | `KanteTransportBar`: rewind, play/pause, loop, speed (25..150 % in 5 % steps), metronome, count-in, position. State in (`playing`, `looping`, `speed`, `metronome`, `countIn`, `position`, `duration`), signals out (`playToggled`, `loopToggled`, `speedChangeRequested(real)`, `metronomeToggled`, `countInToggled`, `rewind`); a toggle shows only what the app sets. Keys K, L, M, C, Home, + / −; wraps when narrow |
+
+**Bravura.** `fonts/Bravura.otf` (Steinberg, SMuFL, SIL OFL 1.1 with the reserved name "Bravura", licence in `fonts/OFL-Bravura.txt`) is vendored unchanged, so it keeps its name; `tools/build-qml.py` copies it with its licence into `qml/Kante/fonts/`. The music components load it themselves (an app that does not use them never loads it); it is not part of `fonts.css` and the web build.
+
+### Added in Kante 1.24
+
+Follow-up for Kontra: note states change one at a time, a quiet way to show them for a play mode without judgement (Kontra LH-MOD-01), and a font fix.
+
+| Element | Web | QML |
+|---|---|---|
+| One note's state | – | `setNoteState(index, state)`, `resetStates()`, `stateOf(index)`, `stateRevision` on `KanteTabLane`, `KanteTabStaff` and `KanteBassStaff`: changes one note without reassigning `notes` (a new list resets them). Lane: about 0.03 ms per call for the bookkeeping and below 1 ms with the sign drawn in a running view, against 40–400 ms for a new list of 3000 notes. Staff: about 0.3 ms per call (it re-colours its page, the layout stays) |
+| Quiet marks | – | `marks`: `Full` (default), `Quiet`, `Off` (`KanteTabLane.Marks`, `KanteTabStaff.Marks`, `KanteBassStaff.Marks`). Quiet: notes keep their string or text colour, no state fills, a small muted KanteNoteMark tells the state by shape (check, cross, dashed square, arrows). Off: no states |
+| Small font | – | `KanteStyle.smallFont` is never larger than `defaultFont`: Kirigami's basic theme (no platform theme, e.g. Fusion) reports a small font larger than the default font, so `KanteSettingRow` hints and every label came out bigger than their titles. Then 85 % of the default font is used; `fontPixels(font)` compares sizes. `KanteSectionLabel` in System reads it too |
 
 ### Kante Gold
 
