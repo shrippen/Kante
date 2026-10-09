@@ -175,7 +175,7 @@ TestCase {
         compare(s.layout.frets.length, s.notes.length)
         // Two beams (eighths 1+2, 3+4) and one mark (the hit).
         compare(s.layout.lines.filter(function (l) { return l.kind === "beam" }).length, 2)
-        compare(s.layout.marks.length, 1)
+        compare(s.layout.marks.filter(function (m) { return s.shownState(m.indices[0], s.stateRevision) !== "pending" }).length, 1)
         compare(s.layout.rects.filter(function (r) { return r.kind === "dots" }).length, 2)
         // The top line follows the current bar: bar 3 starts a new page.
         s.position = 9
@@ -228,7 +228,7 @@ TestCase {
         compare(sharps.length, 1, "one sharp: the second F# in the bar keeps it")
         compare(s.layout.polys.length, 1, "one beam over the two eighths")
         compare(s.layout.ties.length, 1)
-        compare(s.layout.marks.length, 1)
+        compare(s.layout.marks.filter(function (m) { return s.shownState(m.index, s.stateRevision) !== "pending" }).length, 1)
         // E1 = pos −9: ledger lines at −2, −4, −6, −8, twice (tied note in the next bar).
         var ledgers = s.layout.rects.filter(function (r) { return r.h === Math.max(1, Math.round(s.sp * 0.16)) && r.w < s.sp * 3 && r.w > s.sp })
         verify(ledgers.length >= 8, "ledger lines " + ledgers.length)

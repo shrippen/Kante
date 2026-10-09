@@ -477,6 +477,8 @@ Rectangle {
                 property bool metronome: false
                 property bool countIn: false
                 property real speed: 1.0
+                // 1.24: how states show (0 Full, 1 Quiet for a play mode, 2 Off)
+                property int marks: 0
                 readonly property var riff: {
                     var n = [], t = 0
                     var beats = [1, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0.5, 2, 1.5, 0.5, 1, 1, 4]
@@ -511,18 +513,27 @@ Rectangle {
                     onSpeedChangeRequested: function (s) { practice.speed = s }
                     onRewind: practice.position = 0
                 }
+                KanteSegmented {
+                    model: ["Voll", "Leise", "Aus"]
+                    tooltips: ["Zustände voll", "Zustände leise (Spielen)", "Keine Zustände"]
+                    currentIndex: practice.marks
+                    onActivated: function (i) { practice.marks = i }
+                }
                 KanteTabLane {
                     Layout.fillWidth: true; Layout.preferredHeight: KanteStyle.unit(180)
                     notes: practice.riff; bars: practice.riffBars; position: practice.position
                     loopStart: practice.looping ? 2.4 : -1; loopEnd: practice.looping ? 4.8 : -1
+                    marks: practice.marks
                 }
                 KanteTabStaff {
                     Layout.fillWidth: true
                     notes: practice.riff; bars: practice.riffBars; position: practice.position; barsPerSystem: 4
+                    marks: practice.marks
                 }
                 KanteBassStaff {
                     Layout.fillWidth: true
                     notes: practice.riff; rests: []; keyFifths: 1; position: practice.position; barsPerSystem: 4
+                    marks: practice.marks
                     bars: [{ time: 0, numerator: 4, denominator: 4 }, 2.4, 4.8, 7.2, 9.6]
                 }
                 KanteFretboard {
