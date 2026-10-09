@@ -707,6 +707,16 @@ The practice components for Kontra, the bass trainer: purely presentational, the
 
 **Bravura.** `fonts/Bravura.otf` (Steinberg, SMuFL, SIL OFL 1.1 with the reserved name "Bravura", licence in `fonts/OFL-Bravura.txt`) is vendored unchanged, so it keeps its name; `tools/build-qml.py` copies it with its licence into `qml/Kante/fonts/`. The music components load it themselves (an app that does not use them never loads it); it is not part of `fonts.css` and the web build.
 
+### Added in Kante 1.24
+
+Follow-up for Kontra: note states change one at a time, a quiet way to show them for a play mode without judgement (Kontra LH-MOD-01), and a font fix.
+
+| Element | Web | QML |
+|---|---|---|
+| One note's state | – | `setNoteState(index, state)`, `resetStates()`, `stateOf(index)`, `stateRevision` on `KanteTabLane`, `KanteTabStaff` and `KanteBassStaff`: changes one note without reassigning `notes` (a new list resets them). Lane: about 0.03 ms per call for the bookkeeping and below 1 ms with the sign drawn in a running view, against 40–400 ms for a new list of 3000 notes. Staff: about 0.3 ms per call (it re-colours its page, the layout stays) |
+| Quiet marks | – | `marks`: `Full` (default), `Quiet`, `Off` (`KanteTabLane.Marks`, `KanteTabStaff.Marks`, `KanteBassStaff.Marks`). Quiet: notes keep their string or text colour, no state fills, a small muted KanteNoteMark tells the state by shape (check, cross, dashed square, arrows). Off: no states |
+| Small font | – | `KanteStyle.smallFont` is never larger than `defaultFont`: Kirigami's basic theme (no platform theme, e.g. Fusion) reports a small font larger than the default font, so `KanteSettingRow` hints and every label came out bigger than their titles. Then 85 % of the default font is used; `fontPixels(font)` compares sizes. `KanteSectionLabel` in System reads it too |
+
 ### Kante Gold
 
 The noble variant, opt-in via `<html data-kante="gold">`, **only for Kintsugi** (see [`AGENT-RULE.md`](AGENT-RULE.md)). Kante is the workshop; Kante Gold is the lacquer and the gold leaf on it: the same components, classes, sizes and roles, finer executed. Kintsugi mends breaks with gold, Kante is named after its break, the cut corner: in Gold **the cut is gilded**. Dark only.

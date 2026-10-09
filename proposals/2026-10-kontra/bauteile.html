@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kante 1.23 practice components</title>
+<title>Kante practice components</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="../../docs/v1/shrippen.css">
 <style>main{max-width:var(--max-w);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2.5rem 0}h2{margin-bottom:.6rem}.pair{display:grid;gap:1rem}figure{margin:0}img{max-width:100%;height:auto;display:block}figcaption{font-family:var(--font-mono);font-size:.8rem;color:var(--fg3);margin-top:.3rem}</style>
@@ -20,6 +20,8 @@
 <section><h2 class="block-title">KanteLevelMeter</h2><p>Too quiet, good, clipped: the zone is named and underlined, the clip box keeps its word.</p><div class="pair"><figure><img src="level-kante.png" alt="KanteLevelMeter in Kante"><figcaption>Kante</figcaption></figure><figure><img src="level-light.png" alt="KanteLevelMeter in Kante Light"><figcaption>Kante Light (platform colours)</figcaption></figure></div></section>
 <section><h2 class="block-title">KanteTimingHistogram</h2><p>Counts on whole steps, bin edges in ms, zero line, dashed mean line, the key early / late.</p><div class="pair"><figure><img src="histogram-kante.png" alt="KanteTimingHistogram in Kante"><figcaption>Kante</figcaption></figure><figure><img src="histogram-light.png" alt="KanteTimingHistogram in Kante Light"><figcaption>Kante Light (platform colours)</figcaption></figure></div></section>
 <section><h2 class="block-title">KanteTransportBar</h2><p>Toggles carry a lamp (filled = on). Narrow: the bar wraps.</p><div class="pair"><figure><img src="transport-kante.png" alt="KanteTransportBar in Kante"><figcaption>Kante</figcaption></figure><figure><img src="transport-light.png" alt="KanteTransportBar in Kante Light"><figcaption>Kante Light (platform colours)</figcaption></figure></div></section>
+<section><h2 class="block-title">1.24 · marks: Full, Quiet, Off</h2><p>For a play mode without judgement (Kontra LH-MOD-01). Quiet: notes keep their string or text colour, a small muted sign still tells the state by shape. Off: no states. States can now change one note at a time (<code>setNoteState</code>).</p><div class="pair"><figure><img src="marks-kante.png" alt="Lane, tab and bass staff with marks Full, Quiet and Off in Kante"><figcaption>Kante</figcaption></figure><figure><img src="marks-light.png" alt="The same in Kante Light"><figcaption>Kante Light</figcaption></figure></div></section>
+<section><h2 class="block-title">1.24 · KanteSettingRow at doubled font size</h2><p>The hint is smaller than the title again: <code>KanteStyle.smallFont</code> is never larger than the default font (Kirigami's basic theme reports a larger one).</p><figure><img src="settingrow-200-kante.png" alt="Two setting rows, hint below and smaller than the title"></figure></section>
 <section><h2 class="block-title">Large fonts</h2><p>Font DPI doubled (<code>QT_FONT_DPI=192</code>): grid unit and every size follow, nothing is cut off. Halved for this page.</p><figure><img src="large-fonts-kante.png" alt="Transport, tuner, level, fretboard and bass staff with doubled font size"></figure></section>
 </main>
 </body>
