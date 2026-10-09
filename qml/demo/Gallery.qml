@@ -17,7 +17,7 @@ Rectangle {
     property int kind: 1
     property bool dark: true
     width: 1100
-    height: 6000
+    height: 7000
     color: KanteStyle.backgroundColor
 
     Binding { target: KanteStyle; property: "kind"; value: root.kind }
@@ -574,6 +574,77 @@ Rectangle {
                             KanteNoteMark { noteState: modelData }
                             Text { text: KanteStyle.noteStateName(modelData); color: KanteStyle.textColor; font: KanteStyle.labelFont() }
                         }
+                    }
+                }
+            }
+
+            Section {
+                title: "1.25 · gespräch (kaiwa)"
+                // The talk button walks through its states on click, as an app would drive it.
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    KanteTalkButton {
+                        id: galleryTalk
+                        level: 0.6
+                        onTalkStarted: talkState = KanteTalkButton.State.Listening
+                        onTalkEnded: talkState = KanteTalkButton.State.Thinking
+                        onInterruptRequested: talkState = KanteTalkButton.State.Ready
+                        onErrorActionRequested: talkState = KanteTalkButton.State.Ready
+                    }
+                    KanteTalkButton { talkState: KanteTalkButton.State.Speaking }
+                    KanteTalkButton { talkState: KanteTalkButton.State.Error }
+                    KanteGoalMeter { value: 0.6; label: "12 T" }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    Layout.fillWidth: true
+                    ColumnLayout {
+                        Layout.preferredWidth: KanteStyle.unit(460)
+                        spacing: KanteStyle.unit(10)
+                        KanteMessage {
+                            Layout.fillWidth: true
+                            author: "店員 · Kassiererin"; time: "12:04"
+                            KanteRubyText { Layout.fillWidth: true; markup: "いらっしゃいませ。{温|あたた|new}めますか。"; density: KanteRubyText.Density.New }
+                        }
+                        KanteMessage {
+                            Layout.fillWidth: true
+                            from: KanteMessage.From.Own; time: "12:05"; text: "ふくろ、いりません。"
+                            KanteHeardLine { Layout.fillWidth: true; text: "ふくろ(?)いりません"; unsure: true }
+                        }
+                        KanteRubyText { Layout.fillWidth: true; markup: "{駅|えき}までは{歩|ある|new}いて{五分|ごふん}です。" }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: KanteStyle.unit(10)
+                        KanteHintCard {
+                            Layout.fillWidth: true
+                            tier: KanteHintCard.Tier.Yellow; tierText: "Falsch"; meta: "Partikel"
+                            titleItem: KanteDiffText { parts: [{ text: "コーヒー" }, { text: "を", kind: "removed" }, { text: "が", kind: "added" }, { text: "好きです" }] }
+                            text: "好き verlangt が für das, was man mag."
+                            KanteButton { text: "Anhören"; size: KanteButton.Size.Small }
+                        }
+                        KanteHintCard {
+                            Layout.fillWidth: true; compact: true
+                            tier: KanteHintCard.Tier.Red; tierText: "Verhindert Verständnis"; meta: "Wortwahl"
+                            titleItem: KanteDiffText { parts: [{ text: "Leuchtturm", kind: "removed" }, { text: "とうだいもり", kind: "added" }] }
+                        }
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    KantePitchCurve {
+                        Layout.preferredWidth: KanteStyle.unit(420); Layout.preferredHeight: KanteStyle.unit(170)
+                        morae: ["は", "し", "(が)"]; target: [1, 0, 0]; kernel: 0; missAt: 1
+                        actual: [0.15, 0.2, 0.3, 0.45, 0.6, 0.75, 0.85, 0.9, 0.92]
+                    }
+                    KantePath {
+                        model: [
+                            { title: "Begrüßung", meta: "N5-01", state: "done" },
+                            { title: "Sich vorstellen", meta: "N5-02", state: "done" },
+                            { title: "Wiederholung", meta: "8 fällig", state: "review" },
+                            { title: "An der Konbini", meta: "N5-03 · 2 von 4 Szenarien", state: "current" },
+                            { title: "Nach dem Weg fragen", meta: "N5-04", state: "locked" }
+                        ]
                     }
                 }
             }
