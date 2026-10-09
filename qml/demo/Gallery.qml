@@ -87,6 +87,14 @@ Rectangle {
                     QQC2.Switch { text: "Rahmen"; checked: true; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Switch } }
                     QQC2.Switch { text: "Staub"; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Switch } }
                 }
+                // 1.27: the wrappers, so an app does not leave a light platform control on a dark page
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    KanteSwitch { text: "Bundlos"; checked: true }
+                    KanteSwitch { text: "Tiefe Saite oben" }
+                    KanteComboBox { model: ["Standard-Eingang", "Scarlett 2i2", "USB-Bass"]; currentIndex: 1; Layout.preferredWidth: KanteStyle.unit(220) }
+                    KanteComboBox { model: ["Kein Gerät"]; invalid: true; Layout.preferredWidth: KanteStyle.unit(160) }
+                }
             }
 
             Section {
@@ -469,7 +477,7 @@ Rectangle {
 
             Section {
                 id: practice
-                title: "1.23 · üben (kontra)"
+                title: "1.23 · üben (kontra), 1.27 unsauber, akkorde, tonartwechsel"
                 // Demo data: a riff at 100 bpm (a quarter is 0.6 s); the transport drives it.
                 property real position: 2.1
                 property bool playing: false
@@ -485,10 +493,10 @@ Rectangle {
                     var midi = [40, 43, 45, 47, 45, 43, 40, 43, 45, 50, 52, 50, 47, 45, 40]
                     var str = [0, 0, 1, 1, 1, 0, 0, 0, 1, 2, 2, 2, 1, 1, 0]
                     var fret = [0, 3, 0, 2, 0, 3, 0, 3, 0, 0, 2, 0, 2, 0, 0]
-                    var st = ["hit", "hit", "early", "hit", "wrong", "late", "missed"]
+                    var st = ["hit", "offpitch", "early", "hit", "wrong", "late", "missed"]
                     for (var i = 0; i < beats.length; i++) {
                         n.push({ time: t, duration: beats[i] * 0.6, beats: beats[i], midi: midi[i], string: str[i], fret: fret[i],
-                                 state: i < st.length ? st[i] : "pending", tied: false })
+                                 state: i < st.length ? st[i] : "pending", tied: false, cents: i === 1 ? 32 : undefined })
                         t += beats[i] * 0.6
                     }
                     return n
@@ -534,7 +542,9 @@ Rectangle {
                     Layout.fillWidth: true
                     notes: practice.riff; rests: []; keyFifths: 1; position: practice.position; barsPerSystem: 4
                     marks: practice.marks
-                    bars: [{ time: 0, numerator: 4, denominator: 4 }, 2.4, 4.8, 7.2, 9.6]
+                    // 1.27: chord symbols per bar and at a time, a key change in bar 3 (G to F major)
+                    bars: [{ time: 0, numerator: 4, denominator: 4, chord: "Em" }, { time: 2.4, chord: "G" }, { time: 4.8, keyFifths: -1, chord: "Dm7" }, 7.2, 9.6]
+                    chords: [{ time: 1.2, text: "Am7" }, { time: 3.6, text: "D/F#" }]
                 }
                 KanteFretboard {
                     Layout.fillWidth: true
@@ -567,11 +577,11 @@ Rectangle {
                 RowLayout {
                     spacing: KanteStyle.unit(14)
                     Repeater {
-                        model: ["pending", "hit", "wrong", "missed", "early", "late"]
+                        model: ["pending", "hit", "offpitch", "wrong", "missed", "early", "late"]
                         delegate: RowLayout {
                             required property string modelData
                             spacing: KanteStyle.unit(4)
-                            KanteNoteMark { noteState: modelData }
+                            KanteNoteMark { noteState: modelData; cents: modelData === "offpitch" ? 32 : NaN; Layout.rightMargin: centsWidth }
                             Text { text: KanteStyle.noteStateName(modelData); color: KanteStyle.textColor; font: KanteStyle.labelFont() }
                         }
                     }
