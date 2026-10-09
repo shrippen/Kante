@@ -17,7 +17,7 @@ Rectangle {
     property int kind: 1
     property bool dark: true
     width: 1100
-    height: 4400
+    height: 6000
     color: KanteStyle.backgroundColor
 
     Binding { target: KanteStyle; property: "kind"; value: root.kind }
@@ -464,6 +464,106 @@ Rectangle {
                     KanteProgressBar { Layout.fillWidth: true; parts: [{ value: 0.3, color: KanteStyle.positiveTextColor }, { value: 0.12, color: KanteStyle.negativeTextColor }] }
                     KanteChip { text: "nur Anzeige"; interactive: false }
                 }
+                }
+            }
+
+            Section {
+                id: practice
+                title: "1.23 · üben (kontra)"
+                // Demo data: a riff at 100 bpm (a quarter is 0.6 s); the transport drives it.
+                property real position: 2.1
+                property bool playing: false
+                property bool looping: true
+                property bool metronome: false
+                property bool countIn: false
+                property real speed: 1.0
+                readonly property var riff: {
+                    var n = [], t = 0
+                    var beats = [1, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0.5, 2, 1.5, 0.5, 1, 1, 4]
+                    var midi = [40, 43, 45, 47, 45, 43, 40, 43, 45, 50, 52, 50, 47, 45, 40]
+                    var str = [0, 0, 1, 1, 1, 0, 0, 0, 1, 2, 2, 2, 1, 1, 0]
+                    var fret = [0, 3, 0, 2, 0, 3, 0, 3, 0, 0, 2, 0, 2, 0, 0]
+                    var st = ["hit", "hit", "early", "hit", "wrong", "late", "missed"]
+                    for (var i = 0; i < beats.length; i++) {
+                        n.push({ time: t, duration: beats[i] * 0.6, beats: beats[i], midi: midi[i], string: str[i], fret: fret[i],
+                                 state: i < st.length ? st[i] : "pending", tied: false })
+                        t += beats[i] * 0.6
+                    }
+                    return n
+                }
+                readonly property var riffBars: [0, 2.4, 4.8, 7.2, 9.6, 12.0]
+                Timer {
+                    interval: 16; repeat: true; running: practice.playing
+                    onTriggered: {
+                        var p = practice.position + interval / 1000 * practice.speed
+                        practice.position = practice.looping && p > 4.8 ? 2.4 : (p > 12 ? 0 : p)
+                    }
+                }
+
+                KanteTransportBar {
+                    Layout.fillWidth: true
+                    playing: practice.playing; looping: practice.looping; metronome: practice.metronome
+                    countIn: practice.countIn; speed: practice.speed; position: practice.position; duration: 12
+                    onPlayToggled: practice.playing = !practice.playing
+                    onLoopToggled: practice.looping = !practice.looping
+                    onMetronomeToggled: practice.metronome = !practice.metronome
+                    onCountInToggled: practice.countIn = !practice.countIn
+                    onSpeedChangeRequested: function (s) { practice.speed = s }
+                    onRewind: practice.position = 0
+                }
+                KanteTabLane {
+                    Layout.fillWidth: true; Layout.preferredHeight: KanteStyle.unit(180)
+                    notes: practice.riff; bars: practice.riffBars; position: practice.position
+                    loopStart: practice.looping ? 2.4 : -1; loopEnd: practice.looping ? 4.8 : -1
+                }
+                KanteTabStaff {
+                    Layout.fillWidth: true
+                    notes: practice.riff; bars: practice.riffBars; position: practice.position; barsPerSystem: 4
+                }
+                KanteBassStaff {
+                    Layout.fillWidth: true
+                    notes: practice.riff; rests: []; keyFifths: 1; position: practice.position; barsPerSystem: 4
+                    bars: [{ time: 0, numerator: 4, denominator: 4 }, 2.4, 4.8, 7.2, 9.6]
+                }
+                KanteFretboard {
+                    Layout.fillWidth: true
+                    markers: {
+                        var lane = practice.riff, out = [{ string: 0, fret: 5, role: "root", label: "A" }, { string: 1, fret: 7, role: "scale" }, { string: 2, fret: 5, role: "scale" }]
+                        for (var i = 0; i < lane.length; i++) {
+                            if (lane[i].time > practice.position) {
+                                out.push({ string: lane[i].string, fret: lane[i].fret, role: "next" })
+                                if (i > 0) out.push({ string: lane[i - 1].string, fret: lane[i - 1].fret, role: "current", label: "1" })
+                                break
+                            }
+                        }
+                        return out
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    KanteTunerGauge { Layout.preferredWidth: KanteStyle.unit(270); noteName: "E"; octave: 1; cents: -12; active: true; hint: "Höher stimmen" }
+                    KanteTunerGauge { Layout.preferredWidth: KanteStyle.unit(270); noteName: "A"; octave: 1; cents: 2; active: true }
+                    ColumnLayout {
+                        spacing: KanteStyle.unit(14)
+                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -14; rmsDb: -22 }
+                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -0.4; rmsDb: -5; clipped: true }
+                        KanteTimingHistogram {
+                            Layout.preferredWidth: KanteStyle.unit(380); Layout.preferredHeight: KanteStyle.unit(170)
+                            counts: [0, 1, 3, 6, 11, 15, 9, 5, 2, 1]; firstBinMs: -50; binMs: 10; meanMs: 4.2
+                        }
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    Repeater {
+                        model: ["pending", "hit", "wrong", "missed", "early", "late"]
+                        delegate: RowLayout {
+                            required property string modelData
+                            spacing: KanteStyle.unit(4)
+                            KanteNoteMark { noteState: modelData }
+                            Text { text: KanteStyle.noteStateName(modelData); color: KanteStyle.textColor; font: KanteStyle.labelFont() }
+                        }
+                    }
                 }
             }
         }

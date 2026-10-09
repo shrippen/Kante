@@ -121,6 +121,36 @@ QtObject {
     readonly property color sunColor: accentColor
     readonly property color moonColor: mutedTextColor
     readonly property color workBandColor: mutedTextColor
+    // Practice roles (Kante 1.23: KanteTabLane, KanteTabStaff, KanteBassStaff, KanteNoteMark).
+    // The state of a played note. Colour is never the only sign: KanteNoteMark draws
+    // a shape for each (check, cross, hollow dashed square, arrow left / right).
+    /** Colour of a note state: "hit", "wrong", "missed", "early", "late"; anything else (pending) the text colour. */
+    function noteStateColor(state) {
+        switch (state) {
+        case "hit": return positiveTextColor
+        case "wrong": return negativeTextColor
+        case "missed": return mutedTextColor
+        case "early":
+        case "late": return warningColor
+        default: return textColor
+        }
+    }
+    /** Words for the note states (screen readers, legends); an app sets its translations once. */
+    property var noteStateNames: ({
+        pending: "Offen", hit: "Getroffen", wrong: "Falscher Ton",
+        missed: "Verpasst", early: "Zu früh", late: "Zu spät"
+    })
+    function noteStateName(state) {
+        var n = noteStateNames && noteStateNames[state]
+        return n !== undefined ? String(n) : String(noteStateNames && noteStateNames.pending || "")
+    }
+    /** Text colour for a label on a filled `fill`: the ground or the strong text, whichever reads better. */
+    function inkOn(fill) {
+        var a = Qt.rgba(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1)
+        var b = Qt.rgba(strongTextColor.r, strongTextColor.g, strongTextColor.b, 1)
+        var f = Qt.rgba(fill.r, fill.g, fill.b, 1)
+        return contrastOf(a, f) >= contrastOf(b, f) ? a : b
+    }
     /** Text on a filled state color (danger button, counter). */
     readonly property color onStateColor: themed ? palette.onState : Kirigami.Theme.highlightedTextColor
     readonly property color cardColor: themed ? palette.card : tint(Kirigami.Theme.textColor, 0.04)
