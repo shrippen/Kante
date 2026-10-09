@@ -765,6 +765,8 @@ TestCase {
             KanteToast { title: "Toast"; width: 200 }
             KanteTick { width: 20; height: 20; checked: true }
             KantePolygon { width: 40; height: 40; fillColor: "red"; cutBottomLeft: 8 }
+            KanteLevelMeter { level: -12; scale: true }
+            KanteLevelMeter { level: -3; vertical: true; scale: true }
         }
     }
 
@@ -777,5 +779,39 @@ TestCase {
             wait(30)
             verify(g.children.length >= 46)
         }
+    }
+
+    Component {
+        id: meterComponent
+        KanteLevelMeter { width: 200; holdMs: 100000 }
+    }
+
+    function test_labelColors() {
+        compare(KanteStyle.labels.length, 7)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        compare(String(KanteStyle.labelColor("yellow")), "#fabd2f")
+        compare(String(KanteStyle.labelColor("green")), String(KantePalette.dark.positive))
+        // Labels are data: the same colour in System, not the platform's.
+        KanteStyle.kind = KanteStyle.Kind.System
+        compare(String(KanteStyle.labelColor("yellow")), "#fabd2f")
+        compare(String(KanteStyle.labelColor("nope")), "transparent")
+        KanteStyle.preferDark = false
+    }
+
+    function test_levelMeter() {
+        var m = createTemporaryObject(meterComponent, tc)
+        compare(m.value, 0)
+        compare(m.valueText, "No signal")
+        m.level = -30
+        compare(m.value, 0.5)
+        compare(m.held, 0.5)
+        m.level = -60
+        compare(m.value, 0)
+        compare(m.held, 0.5)
+        m.level = 6
+        compare(m.value, 1)
+        compare(m.valueText, "6.0 dBFS")
+        compare(m.fraction(m.warnAt), 0.7)
     }
 }
