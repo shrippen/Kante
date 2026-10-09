@@ -26,6 +26,7 @@
     <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a>
     <a href="#variants"><span lang="en">Variants</span><span lang="de">Varianten</span></a>
     <a href="#use"><span lang="en">Use it</span><span lang="de">Einbinden</span></a>
+    <a href="#changes"><span lang="en">Changes</span><span lang="de">Änderungen</span></a>
     <a href="knust/">Knust</a>
     <a class="nav-hl" href="https://github.com/shrippen/Kante">GitHub</a>
     <div class="lang" role="group" aria-label="Language">
@@ -65,7 +66,7 @@
 <main>
 <div class="facts">
   <div class="fact"><b>1</b><span lang="en">palette.json for web and apps</span><span lang="de">palette.json für Web und Apps</span></div>
-  <div class="fact"><b>77</b><span lang="en">QML components</span><span lang="de">QML-Komponenten</span></div>
+  <div class="fact"><b>92</b><span lang="en">QML components</span><span lang="de">QML-Komponenten</span></div>
   <div class="fact"><b>3</b><span lang="en">variants: Kante, Light, Gold</span><span lang="de">Varianten: Kante, Light, Gold</span></div>
   <div class="fact"><b>0</b><span lang="en">raw colours outside the tokens</span><span lang="de">feste Farben außerhalb der Tokens</span></div>
 </div>
@@ -126,6 +127,65 @@
   <p lang="de"><a href="knust/">Knust</a> ist Kantes Ableger für Kimai, ein Theme-Plugin auf Tabler, dessen Palette aus Kante erzeugt wird. Das Plugin-Kit (<code>kpu-*</code>-Makros, CSS und JS) sagt, was ein Element ist; Knust entscheidet, wie es aussieht. Beide liegen in diesem Repository.</p>
   <p><a class="btn btn-outline" href="knust/">Knust</a></p>
 </section>
+
+<section class="section" id="changes">
+  <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
+  <ol class="changelog">
+    <li class="release" id="v1.27.0">
+      <div class="release-head"><b class="release-version">1.27</b><time datetime="2026-10-09">9 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Wishes from a QA round of Kontra, the bass trainer: Kante controls instead of light platform ones, a primary action that stands out in Kante Light, steps that differ by shape, and more for the bass staff.</p>
+        <p class="release-lead" lang="de">Wünsche aus einer QA-Runde von Kontra, dem Basstrainer: Kante-Bedienelemente statt heller Plattform-Elemente, eine Hauptaktion, die in Kante Light heraussticht, Schritte, die sich in der Form unterscheiden, und mehr für das Bass-Notensystem.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteSwitch</code> and <code>KanteComboBox</code>: a switch and a combo box in Kante, the combo box's open list included.</li>
+            <li>Note state <code>offpitch</code>: the right note, its pitch off by more than the app's limit. A wave as its sign, the deviation beside it (“+32 ct”).</li>
+            <li><code>KanteBassStaff</code>: chord symbols per bar or at a time, and a key per bar with naturals for what a new key cancels.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteSwitch</code> und <code>KanteComboBox</code>: Schalter und Auswahlfeld in Kante, die offene Liste des Auswahlfelds eingeschlossen.</li>
+            <li>Notenzustand <code>offpitch</code> („unsauber“): der richtige Ton, aber mehr als die Grenze der App verstimmt. Eine Welle als Zeichen, die Abweichung daneben („+32 ct“).</li>
+            <li><code>KanteBassStaff</code>: Akkordsymbole pro Takt oder an einer Zeit und eine Tonart pro Takt, mit Auflösungszeichen für das, was die neue Tonart aufhebt.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li><code>KanteSteps</code>: done shows a check, the current step a filled number and an outline, upcoming steps a hollow number, so colour is never the only difference (WCAG 1.4.1).</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteSteps</code>: erledigt zeigt einen Haken, der aktuelle Schritt eine gefüllte Nummer und einen Rahmen, kommende eine hohle Nummer; die Farbe ist nie der einzige Unterschied (WCAG 1.4.1).</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>Kante Light: the primary button looked like any other. It is now filled in the platform highlight, darkened until its label reads at 4.5:1.</li>
+            <li><code>KanteFieldSkin</code>: the combo box arrow is drawn, so it shows without an icon theme.</li>
+          </ul>
+          <ul lang="de">
+            <li>Kante Light: der Hauptknopf sah aus wie jeder andere. Er ist jetzt in der Hervorhebungsfarbe der Plattform gefüllt, abgedunkelt, bis seine Beschriftung 4,5:1 erreicht.</li>
+            <li><code>KanteFieldSkin</code>: der Pfeil des Auswahlfelds wird gezeichnet und erscheint so auch ohne Symbolthema.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Additions only: existing calls keep working. A plain combo box with <code>KanteFieldSkin</code> keeps the style's list; use <code>KanteComboBox</code> for a Kante list.</li>
+          </ul>
+          <ul lang="de">
+            <li>Nur Ergänzungen: bestehende Aufrufe funktionieren weiter. Ein einfaches Auswahlfeld mit <code>KanteFieldSkin</code> behält die Liste des Stils; für eine Kante-Liste <code>KanteComboBox</code> nehmen.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.27-wishes-controls.png" alt="Primary button, steps with check, filled and hollow signs, switches and an open combo box in Kante" loading="lazy"><figcaption><span lang="en">Primary action, steps, switch and combo box (demo data)</span><span lang="de">Hauptaktion, Schritte, Schalter und Auswahlfeld (Demodaten)</span></figcaption></figure>
+          <figure><img src="shots/release-1.27-offpitch.png" alt="Legend of note states, lane, tablature and bass staff with offpitch notes and their cents" loading="lazy"><figcaption><span lang="en">The offpitch state with cents (demo data)</span><span lang="de">Der Zustand „unsauber“ mit Cent (Demodaten)</span></figcaption></figure>
+          <figure><img src="shots/release-1.27-chords-keys.png" alt="Bass staff with chord symbols and key changes with naturals" loading="lazy"><figcaption><span lang="en">Chord symbols and key changes (demo data)</span><span lang="de">Akkordsymbole und Tonartwechsel (Demodaten)</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-127"><span lang="en">All changes in 1.27 →</span><span lang="de">Alle Änderungen in 1.27 →</span></a>
+      </div>
+    </li>
+  </ol>
+  <p lang="en">Earlier releases are listed in the <a href="https://github.com/shrippen/Kante/blob/main/README.md#kante-in-apps-qt-quick--kirigami">README</a>, one section per version.</p>
+  <p lang="de">Frühere Versionen stehen im <a href="https://github.com/shrippen/Kante/blob/main/README.md#kante-in-apps-qt-quick--kirigami">README</a>, ein Abschnitt pro Version.</p>
+</section>
 </main>
 
 <footer class="foot">
@@ -137,12 +197,12 @@
     </div>
     <nav class="foot-cols" aria-label="Footer">
       <div><h4><span lang="en">Project</span><span lang="de">Projekt</span></h4>
-        <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a><a href="#variants"><span lang="en">Variants</span><span lang="de">Varianten</span></a><a href="knust/">Knust</a><a href="https://shrippen.github.io/">shrippen</a></div>
+        <a href="#features"><span lang="en">Features</span><span lang="de">Funktionen</span></a><a href="#changes"><span lang="en">Changes</span><span lang="de">Änderungen</span></a><a href="#variants"><span lang="en">Variants</span><span lang="de">Varianten</span></a><a href="knust/">Knust</a><a href="https://shrippen.github.io/">shrippen</a></div>
       <div><h4><span lang="en">Source</span><span lang="de">Quelltext</span></h4>
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.10.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.27.0</p></div>
 </footer>
 
 <script>
