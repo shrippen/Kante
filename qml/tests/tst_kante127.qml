@@ -253,10 +253,10 @@ TestCase {
     function test_keySigns() {
         var s = createTemporaryObject(bassComponent, stage())
         function signs(a, b) { return s.keySigns(a, b).map(function (x) { return x.pos + ":" + x.sign }).join(" ") }
-        // D major to F major: naturals for F and C, then B flat.
-        compare(signs(2, -1), "6:0 3:0 2:-1")
-        // A major to G major: naturals for the dropped C and G, then F sharp.
-        compare(signs(3, 1), "3:0 7:0 6:1")
+        // Naturals stand only alone: D major to F major shows just B flat.
+        compare(signs(2, -1), "2:-1")
+        // A major to G major: just F sharp, no naturals for the dropped C and G.
+        compare(signs(3, 1), "6:1")
         // More of the same kind: only the new key.
         compare(signs(1, 3), "6:1 3:1 7:1")
         // To C: naturals for all.
@@ -282,17 +282,17 @@ TestCase {
         verify(!s.barList[3].keyChanged)
         compare(s.barList[3].key, -1)
         var L = s.layout
-        // Naturals: two in the change to F major; no note needs one.
-        compare(countGlyph(L, ""), 2)
+        // No naturals: the change to F major shows only its flat; no note needs one.
+        compare(countGlyph(L, ""), 0)
         // Sharps: 1 (header) + 2 (bar 2); flats: 1 (bar 3); F#3 (54) and C#4 (61) in D major need none.
         compare(countGlyph(L, ""), 3)
         compare(countGlyph(L, ""), 1)
         // Spelling follows the bar's key: B flat (46) in F major has no accidental.
         compare(s.spell(46, s.barList[2].key).alter, -1)
-        // A change makes room in its bar, and a thin double bar line before it.
-        verify(s.padLeft(2) > s.padLeft(3) + s.sp * 3)
+        // A change makes room in its bar (one flat), and a thin double bar line before it.
+        verify(s.padLeft(2) > s.padLeft(3) + s.sp * 1.5)
         // The header is wide enough for the widest key a line can start with.
-        compare(s.maxHeaderKey(s.barList), 3)
+        compare(s.maxHeaderKey(s.barList), 2)
         // Screen readers name the pitch in the bar's key.
         s.position = 4.1
         verify(s.Accessible.description.indexOf("F2") > 0, s.Accessible.description)

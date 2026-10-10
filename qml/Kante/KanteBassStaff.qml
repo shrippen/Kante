@@ -18,10 +18,11 @@ import "."
  *              signature keep the previous one; 4/4 at first); the time signature shows
  *              on the first bar of the page and where it changes.
  *              keyFifths (1.27, also read as key_fifths): the key from this bar on; a
- *              new key signature shows where it changes (after a thin double bar line),
- *              with naturals for what it cancels: all of the old one towards C or to
- *              the other kind (sharps to flats), the dropped ones when fewer of the same
- *              kind. A change at the start of a line shows at the start of that line.
+ *              new key signature shows where it changes (after a thin double bar line).
+ *              Naturals stand only alone: a change to C shows naturals for the old key;
+ *              any other change shows just the new key, read as a new section without
+ *              cancelling the old one. A change at the start of a line shows at the
+ *              start of that line.
  *              chord (1.27): a chord symbol at the start of the bar
  *   chords     (1.27) [{time, text}]: chord symbols at a time in seconds, above the staff
  *              over the note at that time; with the chords of `bars`, sorted by time.
@@ -310,19 +311,16 @@ Item {
         return Math.max(-7, Math.min(7, Math.round(Number(k) || 0)))
     }
     /**
-     * The signs of a key signature going from key `from` to `to`, left to right: naturals
-     * for what the new key cancels, then the new key. [{pos, sign: 1 sharp, -1 flat, 0 natural}],
-     * pos as in spell() (0 = bottom line). from === to: only the key.
-     *   to C, or sharps <-> flats   naturals for all of the old key
-     *   fewer of the same kind      naturals for the dropped ones (3 sharps to 1: C and G)
-     *   more of the same kind       only the new key
+     * The signs of a key signature going from key `from` to `to`, left to right.
+     * [{pos, sign: 1 sharp, -1 flat, 0 natural}], pos as in spell() (0 = bottom line).
+     * Naturals never mix with new signs (owner's rule, 1.27): only a change to C shows
+     * naturals, for all of the old key; every other change shows just the new key.
      */
     function keySigns(from, to) {
         var sharpPos = [6, 3, 7, 4, 1, 5, 2], flatPos = [2, 5, 1, 4, 0, 3, -1]
         var out = []
-        if (from !== to && from !== 0) {
-            var cancelFrom = (to === 0 || (from > 0) !== (to > 0)) ? 0 : Math.min(Math.abs(to), Math.abs(from))
-            for (var c = cancelFrom; c < Math.abs(from); c++) {
+        if (from !== to && from !== 0 && to === 0) {
+            for (var c = 0; c < Math.abs(from); c++) {
                 out.push({ pos: (from > 0 ? sharpPos : flatPos)[c], sign: 0 })
             }
         }
