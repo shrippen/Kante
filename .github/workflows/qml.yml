@@ -12,6 +12,12 @@ on:
     branches: [main]
   pull_request:
 
+# One runner works the queue in order. A newer push to the same branch or PR replaces the
+# older run instead of queueing behind it.
+concurrency:
+  group: qml-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   qml:
     runs-on: ubuntu-latest
