@@ -643,7 +643,8 @@ Rectangle {
                             { title: "Sich vorstellen", meta: "N5-02", state: "done" },
                             { title: "Wiederholung", meta: "8 fällig", state: "review" },
                             { title: "An der Konbini", meta: "N5-03 · 2 von 4 Szenarien", state: "current" },
-                            { title: "Nach dem Weg fragen", meta: "N5-04", state: "locked" }
+                            { title: "Im Café", meta: "N5-04", state: "open" },
+                            { title: "Nach dem Weg fragen", meta: "N5-05", state: "locked" }
                         ]
                     }
                 }
