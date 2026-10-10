@@ -33,3 +33,10 @@ jobs:
         run: python3 tools/check-tokens.py
       - name: QML tests
         run: tools/check-qml.sh
+      - name: qmllint (reports, does not block)
+        # Reports without blocking: the container is the latest Arch, so a Qt update can bring
+        # new warning categories at any time (Qt 6.12, October 2026). Tests block, lint reports;
+        # a finding is fixed here, then taken over by the apps. What is off and why:
+        # tools/qmllint.sh.
+        continue-on-error: true
+        run: tools/qmllint.sh || { echo "::warning::qmllint has findings (see this step); fix them in Kante"; exit 1; }
