@@ -24,6 +24,8 @@ Kante holds the shrippen design system and its Kimai parts:
 - Tokens live in `tokens/palette.json` and `variables.css`; they must match (`check-tokens.py`).
 - New motion goes into the `prefers-reduced-motion: no-preference` block at the end of `components.css` and follows `KanteStyle.motion` in QML.
 - Every new QML component gets a test in `qml/tests` and an entry in `qml/demo/Gallery.qml`.
+- QML lint: `tools/qmllint.sh` (also in CI, reports without blocking). Fix a finding here first, then the apps take Kante over.
+- **`var` in blocks (review when you touch a file):** Qt 6.12's qmllint reports every `var` inside a block (`block-scope-var-declaration`, about 260 in Kante, October 2026); the rule is off in `tools/qmllint.sh`. The code works as written, so there was no blind switch. When you change a file anyway, switch its `var`s to `let`/`const` there, but check each one first: if the variable is read after its block (or in a closure that relies on the function scope), `let` breaks it at runtime only. Run the QML tests and look at the component in the gallery afterwards. To list a file's cases: `/usr/lib/qt6/bin/qmllint -I qml --json - <file>`.
 - Kit changes: `kimai/kit/bin/sync.sh <plugin>` copies the kit into a plugin; `tools/check-kit.sh` lists the plugins next to this repo that are not on the current kit.
 - Releases: Knust with a tag `knust-v<version>` (equal to `kimai/knust/composer.json`); the workflow attaches the zip. The demo (`kimai/knust/demo/`) never goes into the zip; `tools/knust-zip.sh` aborts if it would.
 
