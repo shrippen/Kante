@@ -154,6 +154,39 @@ TestCase {
         verify(t.implicitHeight > 7 * t.rowHeight)
     }
 
+    function timelineTexts(item) {
+        var out = []
+        if (!item.visible) {
+            return out
+        }
+        if (typeof item.text === "string" && item.text.length > 0 && item.font !== undefined) {
+            out.push(item.text)
+        }
+        for (var i = 0; i < item.children.length; i++) {
+            out = out.concat(timelineTexts(item.children[i]))
+        }
+        return out
+    }
+
+    function test_weekTimelineReadout() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var t = createTemporaryObject(timelineComponent, stage(), { x: 0, y: 0, height: 200 })
+        compare(t.hoverIndex, -1)
+        // Hover over entry "c" (day 1, 9:00–10:15).
+        mouseMove(t, (t.xOf(9) + t.xOf(10.25)) / 2, t.rowY(1) + t.rowHeight / 2)
+        tryCompare(t, "hoverIndex", 2)
+        var shown = timelineTexts(t).join("|")
+        verify(shown.indexOf("c") >= 0, shown)
+        verify(shown.indexOf("9:00–10:15  1:15") >= 0, shown)
+        mouseMove(t, t.xOf(20), t.rowY(1) + t.rowHeight / 2)
+        tryCompare(t, "hoverIndex", -1)
+        verify(timelineTexts(t).join("|").indexOf("9:00–10:15") < 0, "read-out gone off the block")
+        t.hoverIndex = 0
+        verify(timelineTexts(t).join("|").indexOf("8:00–12:30  4:30") >= 0, "set by the caller")
+        t.readout = false
+        verify(timelineTexts(t).join("|").indexOf("8:00–12:30") < 0, "readout off")
+    }
+
     // ── Date field ──────────────────────────────────────────────────────
     Component {
         id: dateComponent

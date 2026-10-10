@@ -298,6 +298,22 @@ TestCase {
         return out
     }
 
+    function visibleTextItem(item, prefix) {
+        if (!item.visible) {
+            return null
+        }
+        if (typeof item.text === "string" && item.text.indexOf(prefix) === 0 && item.font !== undefined) {
+            return item
+        }
+        for (var i = 0; i < item.children.length; i++) {
+            var hit = visibleTextItem(item.children[i], prefix)
+            if (hit !== null) {
+                return hit
+            }
+        }
+        return null
+    }
+
     function test_barChartReadout() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         var c = createTemporaryObject(barComponent, stage(), { x: 0, y: 0 })
@@ -323,6 +339,13 @@ TestCase {
         mouseMove(c, 50, c.plotHeight - 5)
         tryCompare(c, "hoverIndex", 0)
         verify(visibleTexts(c).join("|").indexOf("Σ 5:00") >= 0, "two parts: total")
+        // Part names stay in the text colour (a part colour can be unreadable on the box).
+        var kader = visibleTextItem(c, "Kader")
+        verify(kader !== null)
+        verify(Qt.colorEqual(kader.color, KanteStyle.strongTextColor), "hovered part: strong text colour")
+        var andon = visibleTextItem(c, "Andon")
+        verify(Qt.colorEqual(andon.color, KanteStyle.textColor), "other part: text colour")
+        verify(!Qt.colorEqual(andon.color, c.partColor(1)))
         c.readout = false
         c.hoverIndex = -1
         mouseMove(c, 50, 50)
