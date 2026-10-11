@@ -633,6 +633,74 @@ Rectangle {
             }
 
             Section {
+                id: techDemo
+                title: "1.31 · technik-zeichen (kontra)"
+                // A slap line in E at 100 bpm (an eighth is 0.3 s): slap, pop, ghost, slide,
+                // hammer-on and pull-off; the first half played, each technique judged.
+                property real position: 1.3
+                readonly property var line: {
+                    var spec = [[0, 0, "slap", "played"], [2, 7, "pop", "played"], [0, 0, "ghost", "other"],
+                                [0, 3, "", ""], [0, 5, "slide", "played"], [1, 2, "", ""], [1, 4, "hammer", "unheard"],
+                                [1, 2, "pull", ""], [0, 0, "slap", ""], [2, 9, "pop", ""], [0, 0, "ghost", ""], [1, 0, "", ""]]
+                    var tuning = [28, 33, 38, 43]
+                    var n = []
+                    for (var i = 0; i < spec.length; i++) {
+                        var played = i * 0.3 < techDemo.position
+                        n.push({ time: i * 0.3, duration: 0.27, beats: 0.5, string: spec[i][0], fret: spec[i][1],
+                                 midi: tuning[spec[i][0]] + spec[i][1], technique: spec[i][2],
+                                 techniqueResult: played ? spec[i][3] : "", state: played ? "hit" : "pending" })
+                    }
+                    return n
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    Repeater {
+                        model: ["slap", "pop", "ghost", "slide", "hammer", "pull"]
+                        delegate: RowLayout {
+                            required property string modelData
+                            spacing: KanteStyle.unit(4)
+                            KanteTechniqueMark { technique: modelData; height: KanteStyle.unit(16); width: implicitWidth }
+                            Text { text: KanteStyle.techniqueName(modelData); color: KanteStyle.textColor; font: KanteStyle.labelFont() }
+                        }
+                    }
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    Repeater {
+                        model: ["played", "other", "unheard"]
+                        delegate: RowLayout {
+                            required property string modelData
+                            spacing: KanteStyle.unit(4)
+                            KanteTechniqueMark { technique: "slap"; result: modelData; height: KanteStyle.unit(16); width: implicitWidth }
+                            Text { text: KanteStyle.techniqueResultName(modelData); color: KanteStyle.textColor; font: KanteStyle.labelFont() }
+                        }
+                    }
+                }
+                KanteTabLane {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: KanteStyle.unit(200)
+                    notes: techDemo.line
+                    bars: [0, 2.4]
+                    position: techDemo.position
+                    pixelsPerSecond: KanteStyle.unit(260)
+                }
+                KanteTabStaff {
+                    Layout.fillWidth: true
+                    barsPerSystem: 2
+                    notes: techDemo.line
+                    bars: [0, 2.4]
+                    position: techDemo.position
+                }
+                KanteBassStaff {
+                    Layout.fillWidth: true
+                    barsPerSystem: 2
+                    notes: techDemo.line
+                    bars: [{ time: 0 }, { time: 2.4 }]
+                    position: techDemo.position
+                }
+            }
+
+            Section {
                 id: keysDemo
                 title: "1.30 · klaviatur (kontra, bass über midi)"
                 // A funk line in E at 120 bpm (an eighth is 0.25 s), the first bars played.
