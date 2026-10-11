@@ -633,6 +633,49 @@ Rectangle {
             }
 
             Section {
+                id: keysDemo
+                title: "1.29 · klaviatur (kontra, bass über midi)"
+                // A funk line in E at 120 bpm (an eighth is 0.25 s), the first bars played.
+                property real position: 1.6
+                readonly property var line: {
+                    var midi = [28, 28, 40, 31, 33, 34, 35, 28, 38, 40, 43, 45, 47, 40, 28, 31]
+                    var st = ["hit", "hit", "early", "hit", "wrong", "offpitch", "late"]
+                    var n = []
+                    for (var i = 0; i < midi.length; i++) {
+                        n.push({ time: i * 0.25, duration: 0.22, midi: midi[i], state: i < st.length ? st[i] : "pending",
+                                 cents: i === 5 ? 28 : undefined })
+                    }
+                    return n
+                }
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    spacing: 0
+                    KanteKeyLane {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: KanteStyle.unit(220)
+                        low: 28; high: 60
+                        notes: keysDemo.line
+                        bars: [0, 2]
+                        position: keysDemo.position
+                    }
+                    KanteKeyboard {
+                        Layout.fillWidth: true
+                        low: 28; high: 60
+                        markers: [{ midi: 35, role: "current", label: "1" }, { midi: 28, role: "next" },
+                                  { midi: 34, role: "wrong" }, { midi: 40, role: "root" }]
+                    }
+                }
+                KanteKeyboard {
+                    Layout.preferredWidth: KanteStyle.unit(420)
+                    Layout.preferredHeight: KanteStyle.unit(70)
+                    low: 28; high: 52
+                    keyNames: KanteKeyboard.KeyNames.WhiteKeys
+                    interactive: true
+                    onActivated: function (midi) { focusKey = midi }
+                }
+            }
+
+            Section {
                 title: "1.25 · gespräch (kaiwa)"
                 // The talk button walks through its states on click, as an app would drive it.
                 RowLayout {
