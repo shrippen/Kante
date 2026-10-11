@@ -131,6 +131,48 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.28.0">
+      <div class="release-head"><b class="release-version">1.28</b><time datetime="2026-10-11">11 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">More wishes from Kontra, the bass trainer: choices that are not available yet, help next to a term, a Kante number field and alternate endings in the tablature.</p>
+        <p class="release-lead" lang="de">Weitere Wünsche aus Kontra, dem Basstrainer: Auswahlen, die es noch nicht gibt, Hilfe neben einem Begriff, ein Zahlenfeld in Kante und Wiederholungsklammern in der Tabulatur.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteInfoTip</code>: a “?” next to a term that explains it on hover, focus or click; its name for screen readers is plain text the app sets.</li>
+            <li><code>KanteSpinBox</code>: a spin box in Kante, with the same API as the Qt one (units via <code>textFromValue</code>, typing, keys).</li>
+            <li><code>KanteTabStaff</code>: volta brackets over the bars of an ending (“1.”, “2.”), from <code>endings</code> in the bar data; also across a line break.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteInfoTip</code>: ein „?“ neben einem Begriff, das ihn bei Zeigen, Fokus oder Klick erklärt; seinen Namen für Screenreader setzt die App als einfachen Text.</li>
+            <li><code>KanteSpinBox</code>: ein Zahlenfeld in Kante, mit derselben API wie das von Qt (Einheiten über <code>textFromValue</code>, Eintippen, Tasten).</li>
+            <li><code>KanteTabStaff</code>: Wiederholungsklammern (Volta) über den Takten eines Schlusses („1.“, „2.“), aus <code>endings</code> in den Taktdaten; auch über einen Zeilenumbruch.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li><code>KanteSegmented</code> and <code>.seg</code>: single segments can be disabled. They are faded and struck through, take no click, arrow keys skip them, and their tooltip can say why.</li>
+            <li><code>KanteFieldSkin</code>: on a spin box, + or − fades when the value is at its limit.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteSegmented</code> und <code>.seg</code>: einzelne Segmente lassen sich abschalten. Sie sind blass und durchgestrichen, nehmen keinen Klick an, die Pfeiltasten überspringen sie, und ihr Tooltip kann sagen, warum.</li>
+            <li><code>KanteFieldSkin</code>: an einem Zahlenfeld wird + oder − blass, wenn der Wert an seiner Grenze ist.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Additions only: existing calls keep working. A tablature without <code>endings</code> keeps its layout.</li>
+          </ul>
+          <ul lang="de">
+            <li>Nur Ergänzungen: bestehende Aufrufe funktionieren weiter. Eine Tabulatur ohne <code>endings</code> behält ihr Layout.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.28-wishes2-controls.png" alt="Segmented controls with struck-through disabled segments, an open info tip and five spin boxes in Kante" loading="lazy"><figcaption><span lang="en">Disabled segments, info tip and spin boxes (demo data)</span><span lang="de">Abgeschaltete Segmente, Info-Tipp und Zahlenfelder (Demodaten)</span></figcaption></figure>
+          <figure><img src="shots/release-1.28-volta.png" alt="Tablature with a first ending across a line break, closed after the repeat sign, and an open second ending" loading="lazy"><figcaption><span lang="en">Volta brackets in the tablature (demo data)</span><span lang="de">Wiederholungsklammern in der Tabulatur (Demodaten)</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-128"><span lang="en">All changes in 1.28 →</span><span lang="de">Alle Änderungen in 1.28 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.27.0">
       <div class="release-head"><b class="release-version">1.27</b><time datetime="2026-10-09">9 Oct 2026</time></div>
       <div class="release-body">
@@ -202,7 +244,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.27.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.28.0</p></div>
 </footer>
 
 <script>
