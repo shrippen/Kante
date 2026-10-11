@@ -131,8 +131,8 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
-    <li class="release" id="v1.29.0">
-      <div class="release-head"><b class="release-version">1.29</b><time datetime="2026-10-11">11 Oct 2026</time></div>
+    <li class="release" id="v1.30.0">
+      <div class="release-head"><b class="release-version">1.30</b><time datetime="2026-10-11">11 Oct 2026</time></div>
       <div class="release-body">
         <p class="release-lead" lang="en">A keyboard for Kontra's bass over MIDI: players who play bass lines on keys see the notes fall onto the keys they play.</p>
         <p class="release-lead" lang="de">Eine Klaviatur für Kontras Bass über MIDI: wer Basslinien auf Tasten spielt, sieht die Noten auf die Tasten fallen, die zu spielen sind.</p>
@@ -157,7 +157,33 @@
           </ul>
         </div>
         <div class="release-shots">
-          <figure><img src="shots/release-1.29-keyboard.png" alt="Falling notes over a piano keyboard with note state signs and markers" loading="lazy"><figcaption><span lang="en">Key lane over the keyboard (demo data)</span><span lang="de">Notenspur über der Klaviatur (Demodaten)</span></figcaption></figure>
+          <figure><img src="shots/release-1.30-keyboard.png" alt="Falling notes over a piano keyboard with note state signs and markers" loading="lazy"><figcaption><span lang="en">Key lane over the keyboard (demo data)</span><span lang="de">Notenspur über der Klaviatur (Demodaten)</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-130"><span lang="en">All changes in 1.30 →</span><span lang="de">Alle Änderungen in 1.30 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.29.0">
+      <div class="release-head"><b class="release-version">1.29</b><time datetime="2026-10-11">11 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Colour labels in apps and an audio meter for mixers, for lmix's Qt Console.</p>
+        <p class="release-lead" lang="de">Farblabels in Apps und ein Audio-Meter für Mischpulte, für die Qt-Konsole von lmix.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li>Seven colour labels, the same on the web and in apps: red, orange, yellow, green, cyan, blue, purple. A label keeps its colour in every theme; its name stands beside it.</li>
+            <li><code>KanteAudioMeter</code>: a level in dBFS with three zones, peak hold and a scale, also vertical.</li>
+          </ul>
+          <ul lang="de">
+            <li>Sieben Farblabels, im Web und in Apps gleich: Rot, Orange, Gelb, Grün, Cyan, Blau, Lila. Ein Label behält seine Farbe in jedem Theme; sein Name steht daneben.</li>
+            <li><code>KanteAudioMeter</code>: ein Pegel in dBFS mit drei Zonen, Spitzenwert-Halten und Skala, auch senkrecht.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Web: <code>data-label</code> also takes <code>orange</code> and <code>cyan</code>. <code>KanteLevelMeter</code> stays the input check with zones in words.</li>
+          </ul>
+          <ul lang="de">
+            <li>Web: <code>data-label</code> kennt auch <code>orange</code> und <code>cyan</code>. <code>KanteLevelMeter</code> bleibt die Eingangsprüfung mit Zonen in Worten.</li>
+          </ul>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-129"><span lang="en">All changes in 1.29 →</span><span lang="de">Alle Änderungen in 1.29 →</span></a>
       </div>
@@ -280,7 +306,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.29.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.30.0</p></div>
 </footer>
 
 <script>

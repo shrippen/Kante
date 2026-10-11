@@ -3,7 +3,7 @@ import QtQuick.Shapes
 import "."
 
 /**
- * Falling notes for a keyboard (Kante 1.29, for Kontra's bass over MIDI): one column per
+ * Falling notes for a keyboard (Kante 1.30, for Kontra's bass over MIDI): one column per
  * key, the notes fall from the top onto the play line. Placed above a KanteKeyboard of the
  * same width, `low` and `high`, its columns stand over the keys (both use KanteKeyLayout).
  * The KanteTabLane of keys: same notes (with `midi` instead of string and fret), same

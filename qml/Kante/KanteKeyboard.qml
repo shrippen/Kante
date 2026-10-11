@@ -2,7 +2,7 @@ import QtQuick
 import "."
 
 /**
- * Piano keyboard (Kante 1.29, for Kontra's bass over MIDI): the keys of a range with
+ * Piano keyboard (Kante 1.30, for Kontra's bass over MIDI): the keys of a range with
  * markers for notes, as KanteFretboard does for strings. Presentational: the app sets the
  * markers; nothing moves on its own (no animation, so reduced motion has nothing to stop).
  *

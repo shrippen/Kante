@@ -1,7 +1,7 @@
 import QtQuick
 
 /**
- * Key geometry and note names for a piano range (Kante 1.29), shared by KanteKeyboard and
+ * Key geometry and note names for a piano range (Kante 1.30), shared by KanteKeyboard and
  * KanteKeyLane, so a lane above a keyboard of the same width and range has its columns
  * over the keys. Non-visual; an app can use it to align its own items.
  *

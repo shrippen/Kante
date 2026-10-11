@@ -3,13 +3,13 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.29, the keyboard view for Kontra's bass over MIDI: KanteKeyLayout (geometry and
+ * Kante 1.30, the keyboard view for Kontra's bass over MIDI: KanteKeyLayout (geometry and
  * names), KanteKeyboard (keys and markers, optional keyboard use) and KanteKeyLane
  * (falling notes over the keys). Run: kante/tools/check-qml.sh.
  */
 TestCase {
     id: tc
-    name: "Kante129"
+    name: "Kante130"
     width: 900
     height: 700
     when: windowShown

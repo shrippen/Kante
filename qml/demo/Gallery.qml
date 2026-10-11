@@ -634,7 +634,7 @@ Rectangle {
 
             Section {
                 id: keysDemo
-                title: "1.29 · klaviatur (kontra, bass über midi)"
+                title: "1.30 · klaviatur (kontra, bass über midi)"
                 // A funk line in E at 120 bpm (an eighth is 0.25 s), the first bars played.
                 property real position: 1.6
                 readonly property var line: {
