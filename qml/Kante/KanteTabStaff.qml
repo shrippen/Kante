@@ -11,6 +11,9 @@ import "."
  *
  *   strings, stringNames, lowStringOnTop   as KanteTabLane (string 0 = lowest; the
  *                                          highest string on top by default)
+ *   stringColors as KanteTabLane (1.28): colours the string lines and the fret numbers of
+ *                pending notes (and of all notes in Quiet marks; in Full the state colour
+ *                wins); where missing KanteStyle.stringColor (the app's `stringPalette`)
  *   notes        [{time, duration, beats, string, fret, state, label, cents}], sorted by time;
  *                time and duration in seconds, beats = duration in quarter notes (1 a
  *                quarter, 0.5 an eighth, 1.5 a dotted quarter). Notes with the same time
@@ -52,6 +55,8 @@ Item {
     property int strings: 4
     property var stringNames: ["E", "A", "D", "G"]
     property bool lowStringOnTop: false
+    /** Colour per string, 0 = lowest (1.28); where missing KanteStyle.stringColor. */
+    property var stringColors: []
     property var notes: []
     property var bars: []
     property real position: 0
@@ -185,6 +190,12 @@ Item {
         }
     }
 
+    function stringColor(s) {
+        if (stringColors && s < stringColors.length && stringColors[s] !== undefined) {
+            return stringColors[s]
+        }
+        return KanteStyle.stringColor(s)
+    }
     function nameOf(s) {
         return stringNames && s < stringNames.length ? String(stringNames[s]) : String(s + 1)
     }
@@ -302,7 +313,8 @@ Item {
                 continue
             }
             for (var l = 0; l < nstr; l++) {
-                L.lines.push({ x: headerWidth - ls * 0.4, y: top + l * ls, w: right - headerWidth + ls * 0.4, h: 1, kind: "line" })
+                L.lines.push({ x: headerWidth - ls * 0.4, y: top + l * ls, w: right - headerWidth + ls * 0.4, h: 1, kind: "line",
+                               str: lowTop ? l : nstr - 1 - l })
             }
             L.heads.push({ y: top, sys: s })
             L.lines.push({ x: headerWidth - ls * 0.4, y: top, w: 1, h: staffHeight + 1, kind: "bar" })
@@ -360,8 +372,9 @@ Item {
             var b = barAt(t)
             var x = xOf(t, b)
             var sys = sysOf(b)
-            var y = sys * systemHeight + staffTop + rowOf(Math.max(0, Math.min(nstr - 1, Number(n.string) || 0))) * ls
-            L.frets.push({ x: x, y: y, text: n.fret !== undefined ? String(n.fret) : "", index: i, label: n.label || "" })
+            var str = Math.max(0, Math.min(nstr - 1, Number(n.string) || 0))
+            var y = sys * systemHeight + staffTop + rowOf(str) * ls
+            L.frets.push({ x: x, y: y, text: n.fret !== undefined ? String(n.fret) : "", index: i, label: n.label || "", str: str })
             L.boxes[i] = { x: x, sys: sys }
             var prev = onsets.length ? onsets[onsets.length - 1] : null
             if (prev && Math.abs(prev.t - t) < 1e-3) {
@@ -457,7 +470,7 @@ Item {
             y: modelData.y
             width: modelData.w
             height: modelData.h
-            color: modelData.kind === "line" ? KanteStyle.mutedTextColor
+            color: modelData.kind === "line" ? staff.stringColor(modelData.str)
                  : modelData.kind === "bar" ? KanteStyle.textColor : KanteStyle.textColor
             opacity: modelData.kind === "line" ? 0.7 : 1
         }
@@ -578,7 +591,7 @@ Item {
                 text: parent.modelData.text
                 readonly property string st: staff.shownState(parent.modelData.index, staff.stateRevision)
                 color: st === "pending" || staff.marks !== KanteTabStaff.Marks.Full
-                     ? (parent.current ? KanteStyle.strongTextColor : KanteStyle.textColor)
+                     ? (parent.current ? KanteStyle.strongTextColor : staff.stringColor(parent.modelData.str))
                      : KanteStyle.noteStateColor(st)
                 font.family: nameMetrics.font.family
                 font.weight: parent.current ? Font.Bold : Font.Medium

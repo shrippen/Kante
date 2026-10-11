@@ -153,23 +153,26 @@
             <li><code>KanteSegmented</code> and <code>.seg</code>: single segments can be disabled. They are faded and struck through, take no click, arrow keys skip them, and their tooltip can say why.</li>
             <li><code>KanteFieldSkin</code>: on a spin box, + or − fades when the value is at its limit.</li>
             <li><code>KanteTabStaff</code>, <code>KanteBassStaff</code>, <code>KanteTabLane</code>: bars show the number the app sends (<code>bars[i].number</code>), so repeats played out read 5, 6, 5, 6 as in the score.</li>
+            <li>String colours: the palette moves into <code>KanteStyle</code> with the presets “kante”, “mono” and “bright”; lane, tablature and fretboard share it (<code>stringColors</code>). Strings keep their names, so colour is never the only sign.</li>
           </ul>
           <ul lang="de">
             <li><code>KanteSegmented</code> und <code>.seg</code>: einzelne Segmente lassen sich abschalten. Sie sind blass und durchgestrichen, nehmen keinen Klick an, die Pfeiltasten überspringen sie, und ihr Tooltip kann sagen, warum.</li>
             <li><code>KanteFieldSkin</code>: an einem Zahlenfeld wird + oder − blass, wenn der Wert an seiner Grenze ist.</li>
             <li><code>KanteTabStaff</code>, <code>KanteBassStaff</code>, <code>KanteTabLane</code>: Takte zeigen die Nummer, die die App schickt (<code>bars[i].number</code>), ausgespielte Wiederholungen lesen sich so wie in den Noten: 5, 6, 5, 6.</li>
+            <li>Saitenfarben: die Palette zieht nach <code>KanteStyle</code>, mit den Vorgaben „kante“, „mono“ (einfarbig) und „bright“ (kräftig); Spur, Tabulatur und Griffbrett teilen sie (<code>stringColors</code>). Saiten behalten ihre Namen, die Farbe ist nie das einzige Zeichen.</li>
           </ul>
         </div>
         <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
           <ul lang="en">
-            <li>Additions only: existing calls keep working. A tablature without <code>endings</code> keeps its layout.</li>
+            <li>Additions only: existing calls keep working. A tablature without <code>endings</code> keeps its layout. Tablature and fretboard now draw their strings in the string palette instead of muted; <code>stringPalette: "mono"</code> comes closest to the old look.</li>
           </ul>
           <ul lang="de">
-            <li>Nur Ergänzungen: bestehende Aufrufe funktionieren weiter. Eine Tabulatur ohne <code>endings</code> behält ihr Layout.</li>
+            <li>Nur Ergänzungen: bestehende Aufrufe funktionieren weiter. Eine Tabulatur ohne <code>endings</code> behält ihr Layout. Tabulatur und Griffbrett zeichnen ihre Saiten jetzt in der Saitenpalette statt gedämpft; <code>stringPalette: "mono"</code> kommt dem alten Bild am nächsten.</li>
           </ul>
         </div>
         <div class="release-shots">
           <figure><img src="shots/release-1.28-wishes2-controls.png" alt="Segmented controls with struck-through disabled segments, an open info tip and five spin boxes in Kante" loading="lazy"><figcaption><span lang="en">Disabled segments, info tip and spin boxes (demo data)</span><span lang="de">Abgeschaltete Segmente, Info-Tipp und Zahlenfelder (Demodaten)</span></figcaption></figure>
+          <figure><img src="shots/release-1.28-strings.png" alt="Lane, tablature and fretboard in the string palettes kante, mono and bright" loading="lazy"><figcaption><span lang="en">String palettes kante, mono, bright (demo data)</span><span lang="de">Saitenpaletten kante, mono, bright (Demodaten)</span></figcaption></figure>
           <figure><img src="shots/release-1.28-volta.png" alt="Tablature with a first ending across a line break, closed after the repeat sign, and an open second ending" loading="lazy"><figcaption><span lang="en">Volta brackets in the tablature (demo data)</span><span lang="de">Wiederholungsklammern in der Tabulatur (Demodaten)</span></figcaption></figure>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-128"><span lang="en">All changes in 1.28 →</span><span lang="de">Alle Änderungen in 1.28 →</span></a>

@@ -21,6 +21,7 @@ TestCase {
 
     function cleanup() {
         KanteStyle.kind = KanteStyle.Kind.System
+        KanteStyle.stringPalette = "kante"
     }
 
     readonly property var kinds: [KanteStyle.Kind.System, KanteStyle.Kind.Kante, KanteStyle.Kind.KanteLight]
@@ -334,5 +335,54 @@ TestCase {
         waitForRendering(l)
         var shown = texts(l, function (t) { return t.text === "5" || t.text === "6" })
         verify(shown.length >= 2, "written numbers drawn: " + shown.length)
+    }
+
+    // ── String colours in KanteStyle ─────────────────────────────────
+    Component { id: fretComponent; KanteFretboard { width: 600; height: 160 } }
+
+    function test_stringPalettes() {
+        for (var k = 0; k < kinds.length; k++) {
+            KanteStyle.kind = kinds[k]
+            compare(KanteStyle.stringPalettes.join(","), "kante,mono,bright")
+            compare(String(KanteStyle.stringColor(0)), String(KanteStyle.tagColor), "kante: string 0 purple, as the lane had it")
+            compare(String(KanteStyle.stringColor(1)), String(KanteStyle.focusColor))
+            compare(String(KanteStyle.stringColor(6)), String(KanteStyle.stringColor(0)), "repeats after six")
+            compare(String(KanteStyle.stringColor(3, "mono")), String(KanteStyle.strongTextColor))
+            compare(String(KanteStyle.stringColor(0, "bright")), String(KanteStyle.warningColor))
+            compare(KanteStyle.stringColors(5).length, 5)
+            compare(KanteStyle.stringColors().length, 6)
+            KanteStyle.stringPalette = "bright"
+            compare(String(KanteStyle.stringColor(0)), String(KanteStyle.warningColor), "the app's preset")
+            KanteStyle.stringPalette = "kante"
+        }
+    }
+
+    function test_stringColorsInAllThree() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var lane = createTemporaryObject(laneComponent, stage())
+        var tab = createTemporaryObject(staffComponent, stage(), { notes: notes8().slice(0, 8), bars: [0, 2, 4, 6] })
+        var board = createTemporaryObject(fretComponent, stage())
+        var all = [lane, tab, board]
+        for (var i = 0; i < all.length; i++) {
+            compare(String(all[i].stringColor(2)), String(KanteStyle.stringColor(2)), "default: the KanteStyle palette")
+        }
+        // The tab staff colours its string lines (G on top: the highest string, 3, in row 0).
+        var line = tab.layout.lines.filter(function (l) { return l.kind === "line" })[0]
+        compare(line.str, 3)
+        // The app's preset reaches all three.
+        KanteStyle.stringPalette = "mono"
+        for (i = 0; i < all.length; i++) {
+            compare(String(all[i].stringColor(0)), String(KanteStyle.strongTextColor))
+        }
+        // One list for all three; a string it leaves out takes the palette.
+        var one = [KanteStyle.negativeTextColor, KanteStyle.positiveTextColor]
+        for (i = 0; i < all.length; i++) {
+            all[i].stringColors = one
+            compare(String(all[i].stringColor(1)), String(KanteStyle.positiveTextColor))
+            compare(String(all[i].stringColor(2)), String(KanteStyle.strongTextColor))
+        }
+        // Colour is not the only sign: the strings keep their names.
+        waitForRendering(board)
+        verify(texts(board, function (t) { return t.text === "G" }).length >= 1)
     }
 }
