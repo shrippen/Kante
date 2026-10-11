@@ -16,7 +16,10 @@ import "."
  *                quarter, 0.5 an eighth, 1.5 a dotted quarter). Notes with the same time
  *                form a chord (one stem). state as KanteTabLane, "offpitch" (1.27) with
  *                its `cents` beside the sign (`showCents`, Full marks)
- *   bars         bar start times in seconds, numbers or {time, repeatStart, repeatEnd, endings};
+ *   bars         bar start times in seconds, numbers or {time, number, repeatStart, repeatEnd,
+ *                endings}; number (Kante 1.28): the bar's label, e.g. the written bar number,
+ *                so unrolled repeats read "5, 6, 5, 6" (a number or a string; left out:
+ *                index + 1);
  *                endings (Kante 1.28): the alternate endings (volta) the bar belongs to, as
  *                written, e.g. [1] or [1, 2] (a single number n reads as [n]); left out or
  *                [] for none. Bars in a row with the same endings share one bracket, numbered
@@ -155,7 +158,7 @@ Item {
     Accessible.role: Accessible.Chart
     Accessible.name: accessibleName
     Accessible.description: {
-        var d = barText.arg(currentBar + 1).arg(barList.length)
+        var d = barText.arg(barList.length ? barList[currentBar].number : 1).arg(barList.length)
         var cb = barList[currentBar]
         if (cb && cb.endings.length > 0) {
             d += ", " + endingText.arg(cb.endings.join(", "))
@@ -204,7 +207,7 @@ Item {
             var b = list[i]
             var o = typeof b === "object" && b !== null ? b : { time: b }
             out.push({ time: Number(o.time) || 0, repeatStart: !!o.repeatStart, repeatEnd: !!o.repeatEnd,
-                       endings: endingsOf(o.endings) })
+                       endings: endingsOf(o.endings), number: barLabel(o, i) })
         }
         var lastEnd = 0
         for (var k = 0; ns && k < ns.length; k++) {
@@ -212,7 +215,7 @@ Item {
         }
         if (out.length === 0) {
             out.push({ time: ns && ns.length ? Math.min(0, Number(ns[0].time)) : 0, repeatStart: false, repeatEnd: false,
-                       endings: [] })
+                       endings: [], number: "1" })
         }
         for (var j = 0; j < out.length; j++) {
             if (j + 1 < out.length) {
@@ -223,6 +226,11 @@ Item {
             }
         }
         return out
+    }
+    /** Label of a bar (1.28): its `number` as sent (written bar number), else index + 1. */
+    function barLabel(o, i) {
+        var n = typeof o === "object" && o !== null ? o.number : undefined
+        return n === undefined || n === null || String(n) === "" ? String(i + 1) : String(n)
     }
     /** Endings of a bar as a sorted list of numbers ≥ 1: [1, 2] stays, 2 becomes [2], none []. */
     function endingsOf(e) {
@@ -303,7 +311,7 @@ Item {
                 var bx = headerWidth + c * barWidth
                 var bar = bl[bi]
                 L.lines.push({ x: bx + barWidth - 1, y: top, w: 1, h: staffHeight + 1, kind: "bar" })
-                L.heads.push({ y: sy + endingRow, x: bx, number: bi + 1 })
+                L.heads.push({ y: sy + endingRow, x: bx, number: bar.number })
                 if (bar.repeatStart) {
                     L.lines.push({ x: bx, y: top, w: Math.max(2, ls * 0.25), h: staffHeight + 1, kind: "bar" })
                     L.rects.push({ x: bx + ls * 0.5, y: 0, sys: s, kind: "dots" })

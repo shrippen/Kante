@@ -283,4 +283,56 @@ TestCase {
             verify(label !== null, "the number is drawn")
         }
     }
+
+    // ── Written bar numbers ──────────────────────────────────────────
+    Component { id: bassComponent; KanteBassStaff { width: 900; barsPerSystem: 4; systems: 1 } }
+    Component { id: laneComponent; KanteTabLane { width: 900; height: 200; pixelsPerSecond: 100 } }
+
+    // Unrolled repeat: the score's bars 5 and 6 play twice.
+    readonly property var unrolled: [{ time: 0, number: 5 }, { time: 2, number: 6 }, { time: 4, number: 5 }, { time: 6, number: "6" }]
+
+    function texts(item, pred) {
+        var out = []
+        for (var i = 0; i < item.children.length; i++) {
+            var c = item.children[i]
+            if (c.text !== undefined && c.visible && pred(c)) {
+                out.push(c)
+            }
+            out = out.concat(texts(c, pred))
+        }
+        return out
+    }
+
+    function test_barNumbersTabStaff() {
+        var s = createTemporaryObject(staffComponent, stage(), { notes: notes8().slice(0, 8), bars: unrolled })
+        var heads = s.layout.heads.filter(function (h) { return h.number !== undefined })
+        compare(heads.map(function (h) { return h.number }).join(","), "5,6,5,6")
+        s.position = 4.5
+        verify(s.Accessible.description.indexOf("Takt 5 von 4") === 0, s.Accessible.description)
+        s.bars = [0, 2, { time: 4 }, 6]
+        heads = s.layout.heads.filter(function (h) { return h.number !== undefined })
+        compare(heads.map(function (h) { return h.number }).join(","), "1,2,3,4", "without number: index + 1")
+    }
+
+    function test_barNumbersBassStaff() {
+        var notes = []
+        for (var i = 0; i < 8; i++) {
+            notes.push({ time: i, beats: 1, midi: 40 + i })
+        }
+        var s = createTemporaryObject(bassComponent, stage(), { notes: notes, bars: unrolled })
+        var nums = s.layout.glyphs.filter(function (g) { return g.ink === "muted" && g.text !== undefined && g.text !== "" })
+        compare(nums.map(function (g) { return g.text }).join(","), "5,6,5,6")
+        s.bars = [0, 2, 4, 6]
+        nums = s.layout.glyphs.filter(function (g) { return g.ink === "muted" && g.text !== undefined && g.text !== "" })
+        compare(nums.map(function (g) { return g.text }).join(","), "1,2,3,4")
+    }
+
+    function test_barNumbersTabLane() {
+        var l = createTemporaryObject(laneComponent, stage(), { bars: unrolled, position: 2 })
+        compare(l.barLabel(l.bars[2], 2), "5")
+        compare(l.barLabel(3, 3), "4", "a plain time: index + 1")
+        waitForRendering(l)
+        var shown = texts(l, function (t) { return t.text === "5" || t.text === "6" })
+        verify(shown.length >= 2, "written numbers drawn: " + shown.length)
+    }
 }
