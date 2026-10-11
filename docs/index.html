@@ -131,6 +131,35 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.31.0">
+      <div class="release-head"><b class="release-version">1.31</b><time datetime="2026-10-11">11 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Technique marks for Kontra: tab, lane and staff show how a note is to be played, and whether it was.</p>
+        <p class="release-lead" lang="de">Technik-Zeichen für Kontra: Tab, Lane und Noten zeigen, wie eine Note zu spielen ist und ob sie so gespielt wurde.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteTechniqueMark</code>: the tab signs for slide, hammer-on, pull-off, slap, pop and ghost note; played, another technique or not heard show by frame and strike, not by colour alone.</li>
+            <li>Tab lane, tablature and bass staff take a technique and its result per note; a ghost note's fret reads in parentheses.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTechniqueMark</code>: die Tab-Zeichen für Slide, Hammer-on, Pull-off, Slap, Pop und Ghost Note; gespielt, andere Technik oder nicht gehört zeigen Rahmen und Durchstreichung, nicht nur die Farbe.</li>
+            <li>Tab-Lane, Tabulatur und Bassnoten nehmen je Note eine Technik und ihr Ergebnis; der Bund einer Ghost Note steht in Klammern.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Additions only: existing calls keep working.</li>
+          </ul>
+          <ul lang="de">
+            <li>Nur Ergänzungen: bestehende Aufrufe funktionieren weiter.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.31-techniques.png" alt="Technique signs in a tab lane, a tablature and a bass staff, with played, other and unheard results" loading="lazy"><figcaption><span lang="en">Technique signs in lane, tab and staff (demo data)</span><span lang="de">Technik-Zeichen in Lane, Tab und Noten (Demodaten)</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-131"><span lang="en">All changes in 1.31 →</span><span lang="de">Alle Änderungen in 1.31 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.30.0">
       <div class="release-head"><b class="release-version">1.30</b><time datetime="2026-10-11">11 Oct 2026</time></div>
       <div class="release-body">
@@ -306,7 +335,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.30.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.31.0</p></div>
 </footer>
 
 <script>
