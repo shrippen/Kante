@@ -37,3 +37,4 @@ Kante holds the shrippen design system and its Kimai parts:
 - Never force-push a branch that someone else's PR depends on.
 - PR-Agent (`.gitea/workflows/pr-agent.yml`) reviews every PR before it is merged. Wait for its comment on the PR's latest commit; after further pushes, ask for a new one with a `/review` comment. Fix or answer each finding in the PR, then merge. Without a review (the run skipped for lack of `PR_AGENT_LLM_KEY` or `PR_AGENT_MODEL`, or it failed), do not merge: ask the owner.
 - Claude may merge its own PRs on Gitea once CI is green (the QML workflow) and `./build.sh` ran clean locally (decision G-07 in Kaiwa).
+- PR-Agent (where set up): If the review fails (an error, no result, e.g. a key or cost limit), ask for it once more with `/review`; if that fails too, green CI is enough to merge (owner, 11.10.2026).
