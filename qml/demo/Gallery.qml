@@ -589,6 +589,50 @@ Rectangle {
             }
 
             Section {
+                id: wishes2
+                title: "1.28 · kontra-wünsche 2: segmente aus, hilfe, zahlenfeld, volta"
+                // Eight bars of quarter notes at 100 bpm: |: 1 2 3 [1. 4 :| ] [2. 5 6 ] 7 8
+                readonly property var quarters: {
+                    var n = []
+                    for (var i = 0; i < 32; i++) {
+                        n.push({ time: i * 0.6, duration: 0.6, beats: 1, string: i % 4, fret: (i * 3) % 5 })
+                    }
+                    return n
+                }
+                RowLayout {
+                    spacing: KanteStyle.unit(14)
+                    KanteSegmented {
+                        model: ["Klinke", "Mikrofon", "MIDI", "Datei"]
+                        disabledIndexes: [1, 2]
+                        tooltips: ["", "Kommt in Phase 4", "Kommt in Phase 4", ""]
+                    }
+                    QQC2.Label { text: "Latenz"; color: KanteStyle.textColor }
+                    KanteInfoTip { term: "Latenz"; info: "Zeit vom Anschlag bis zum Ton, in Millisekunden." }
+                    KanteSpinBox {
+                        from: 40; to: 200; stepSize: 5; value: 90; editable: true
+                        textFromValue: function (v) { return v + " BPM" }
+                        valueFromText: function (t) { return parseInt(t) }
+                        Accessible.name: "Tempo"
+                    }
+                    KanteSpinBox {
+                        from: -12; to: 12; value: -2
+                        textFromValue: function (v) { return (v > 0 ? "+" : "") + v + " HT" }
+                        Accessible.name: "Transponieren"
+                    }
+                    KanteSpinBox { from: 1; to: 8; value: 8; Accessible.name: "Bis Takt" }
+                }
+                KanteTabStaff {
+                    Layout.fillWidth: true
+                    barsPerSystem: 4
+                    systems: 2
+                    notes: wishes2.quarters
+                    bars: [{ time: 0, repeatStart: true }, 2.4, 4.8, { time: 7.2, endings: [1], repeatEnd: true },
+                           { time: 9.6, endings: [2] }, { time: 12.0, endings: [2] }, 14.4, 16.8]
+                    position: 7.5
+                }
+            }
+
+            Section {
                 title: "1.25 · gespräch (kaiwa)"
                 // The talk button walks through its states on click, as an app would drive it.
                 RowLayout {

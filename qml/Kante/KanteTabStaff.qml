@@ -16,7 +16,15 @@ import "."
  *                quarter, 0.5 an eighth, 1.5 a dotted quarter). Notes with the same time
  *                form a chord (one stem). state as KanteTabLane, "offpitch" (1.27) with
  *                its `cents` beside the sign (`showCents`, Full marks)
- *   bars         bar start times in seconds, numbers or {time, repeatStart, repeatEnd}
+ *   bars         bar start times in seconds, numbers or {time, repeatStart, repeatEnd, endings};
+ *                endings (Kante 1.28): the alternate endings (volta) the bar belongs to, as
+ *                written, e.g. [1] or [1, 2] (a single number n reads as [n]); left out or
+ *                [] for none. Bars in a row with the same endings share one bracket, numbered
+ *                "1." or "1., 2." at its start; it is closed on the right when its last bar
+ *                ends with a repeat sign (repeatEnd), else open (the last ending). A bracket
+ *                that runs on to the next line goes on there without number and hook. With
+ *                endings the staff moves down by the bracket row, without them the layout is
+ *                the old one
  *   position     the current time in seconds
  *   barsPerSystem  bars per line, 0 = as many as fit (`minBarWidth` each)
  *   systems      lines shown
@@ -55,6 +63,8 @@ Item {
     property string accessibleName: "Tabulatur"
     /** Text of the bar in the screen-reader description; %1 bar, %2 of. */
     property string barText: "Takt %1 von %2"
+    /** Text of a bar's endings in the screen-reader description (1.28); %1 e.g. "1, 2". */
+    property string endingText: "Volta %1"
     /**
      * How note states show (Kante 1.24): Full (state colour and sign), Quiet (notes in the
      * text colour, small muted signs that tell the state by shape: Kontra's play mode),
@@ -127,7 +137,10 @@ Item {
     readonly property int firstBar: Math.max(0, Math.floor(currentBar / perSystem) * perSystem)
 
     readonly property real markRow: ls * 1.3
-    readonly property real staffTop: markRow + ls * 0.5
+    /** Any bar with endings: then a row for the volta brackets above the bar numbers. */
+    readonly property bool hasEndings: barList.some(function (b) { return b.endings.length > 0 })
+    readonly property real endingRow: hasEndings ? ls * 1.6 : 0
+    readonly property real staffTop: endingRow + markRow + ls * 0.5
     readonly property real staffHeight: (Math.max(1, strings) - 1) * ls
     readonly property real systemHeight: staffTop + staffHeight + (rhythm ? ls * 3.2 : ls * 0.8) + ls * 0.4
     readonly property real headerWidth: Math.round(nameMetrics.width + ls * 2.6)
@@ -143,6 +156,10 @@ Item {
     Accessible.name: accessibleName
     Accessible.description: {
         var d = barText.arg(currentBar + 1).arg(barList.length)
+        var cb = barList[currentBar]
+        if (cb && cb.endings.length > 0) {
+            d += ", " + endingText.arg(cb.endings.join(", "))
+        }
         if (currentIndex >= 0) {
             var n = notes[currentIndex]
             d += ", " + nameOf(Number(n.string) || 0) + " " + n.fret + " (" + KanteStyle.noteStateName(shownState(currentIndex, stateRevision)) + centsSuffix(currentIndex, stateRevision) + ")"
@@ -180,20 +197,22 @@ Item {
         }
         return a - 1
     }
-    /** Bars as [{time, end, repeatStart, repeatEnd}]; one bar over all notes when none are given. */
+    /** Bars as [{time, end, repeatStart, repeatEnd, endings}]; one bar over all notes when none are given. */
     function normalizeBars(list, ns) {
         var out = []
         for (var i = 0; list && i < list.length; i++) {
             var b = list[i]
             var o = typeof b === "object" && b !== null ? b : { time: b }
-            out.push({ time: Number(o.time) || 0, repeatStart: !!o.repeatStart, repeatEnd: !!o.repeatEnd })
+            out.push({ time: Number(o.time) || 0, repeatStart: !!o.repeatStart, repeatEnd: !!o.repeatEnd,
+                       endings: endingsOf(o.endings) })
         }
         var lastEnd = 0
         for (var k = 0; ns && k < ns.length; k++) {
             lastEnd = Math.max(lastEnd, Number(ns[k].time) + Math.max(0, Number(ns[k].duration) || 0))
         }
         if (out.length === 0) {
-            out.push({ time: ns && ns.length ? Math.min(0, Number(ns[0].time)) : 0, repeatStart: false, repeatEnd: false })
+            out.push({ time: ns && ns.length ? Math.min(0, Number(ns[0].time)) : 0, repeatStart: false, repeatEnd: false,
+                       endings: [] })
         }
         for (var j = 0; j < out.length; j++) {
             if (j + 1 < out.length) {
@@ -204,6 +223,19 @@ Item {
             }
         }
         return out
+    }
+    /** Endings of a bar as a sorted list of numbers ≥ 1: [1, 2] stays, 2 becomes [2], none []. */
+    function endingsOf(e) {
+        // A list from QML or C++ is not always a JS Array: test for a length.
+        var list = e === undefined || e === null ? [] : (typeof e === "object" && e.length !== undefined ? e : [e])
+        var out = []
+        for (var i = 0; i < list.length; i++) {
+            var n = Math.round(Number(list[i]))
+            if (n >= 1 && out.indexOf(n) < 0) {
+                out.push(n)
+            }
+        }
+        return out.sort(function (a, b) { return a - b })
     }
     function barAt(t) {
         var a = 0, b = barList.length
@@ -248,7 +280,7 @@ Item {
     }
 
     function computeLayout(first, per, nsys, w, ls, ns, bl, nstr, lowTop, withRhythm) {
-        var L = { lines: [], frets: [], marks: [], rects: [], flags: [], heads: [], boxes: {} }
+        var L = { lines: [], frets: [], marks: [], rects: [], flags: [], heads: [], endings: [], boxes: {} }
         if (w <= 0 || bl.length === 0) {
             return L
         }
@@ -271,7 +303,7 @@ Item {
                 var bx = headerWidth + c * barWidth
                 var bar = bl[bi]
                 L.lines.push({ x: bx + barWidth - 1, y: top, w: 1, h: staffHeight + 1, kind: "bar" })
-                L.heads.push({ y: sy, x: bx, number: bi + 1 })
+                L.heads.push({ y: sy + endingRow, x: bx, number: bi + 1 })
                 if (bar.repeatStart) {
                     L.lines.push({ x: bx, y: top, w: Math.max(2, ls * 0.25), h: staffHeight + 1, kind: "bar" })
                     L.rects.push({ x: bx + ls * 0.5, y: 0, sys: s, kind: "dots" })
@@ -280,6 +312,32 @@ Item {
                     L.lines.push({ x: bx + barWidth - Math.max(2, ls * 0.25), y: top, w: Math.max(2, ls * 0.25), h: staffHeight + 1, kind: "bar" })
                     L.rects.push({ x: bx + barWidth - ls * 0.75, y: 0, sys: s, kind: "dots" })
                 }
+            }
+        }
+        // Volta brackets: one per run of bars with the same endings, cut at the end of a line.
+        for (var es = 0; es < nsys; es++) {
+            var eFirst = first + es * per
+            var eLast = Math.min(last, eFirst + per - 1)
+            for (var eb = eFirst; eb <= eLast; eb++) {
+                var key = bl[eb].endings.join(",")
+                if (key === "") {
+                    continue
+                }
+                var runEnd = eb
+                while (runEnd + 1 <= eLast && bl[runEnd + 1].endings.join(",") === key) {
+                    runEnd++
+                }
+                var starts = eb === 0 || bl[eb - 1].endings.join(",") !== key
+                var ends = runEnd + 1 >= bl.length || bl[runEnd + 1].endings.join(",") !== key
+                var ex0 = headerWidth + (eb - eFirst) * barWidth
+                var ex1 = headerWidth + (runEnd - eFirst + 1) * barWidth
+                L.endings.push({
+                    x: ex0 + (starts ? ls * 0.25 : 0), w: ex1 - ex0 - (starts ? ls * 0.25 : 0) - (ends ? ls * 0.5 : 0),
+                    y: es * systemHeight + ls * 0.3, sys: es,
+                    text: starts ? bl[eb].endings.map(function (n) { return n + "." }).join(", ") : "",
+                    left: starts, right: ends && bl[runEnd].repeatEnd
+                })
+                eb = runEnd
             }
         }
         // Notes of the page.
@@ -311,7 +369,7 @@ Item {
         for (var o = 0; o < onsets.length; o++) {
             var on = onsets[o]
             // One sign per onset (a chord shows its first non-pending state); hidden while pending.
-            L.marks.push({ x: on.x, y: on.sys * systemHeight + markRow / 2, indices: on.indices })
+            L.marks.push({ x: on.x, y: on.sys * systemHeight + endingRow + markRow / 2, indices: on.indices })
         }
         if (!withRhythm) {
             return L
@@ -417,6 +475,35 @@ Item {
                     y: (index === 0 ? parent.mid - parent.d : parent.mid + parent.d) - height / 2
                     color: KanteStyle.textColor
                 }
+            }
+        }
+    }
+
+    // Volta brackets: a line over the bars of an ending, a hook down at its start (with the
+    // number) and, when the ending closes with a repeat sign, at its end.
+    Repeater {
+        model: staff.layout.endings
+        delegate: Item {
+            id: volta
+            required property var modelData
+            readonly property real stroke: Math.max(1, Math.round(staff.ls * 0.1))
+            readonly property real hook: staff.endingRow - staff.ls * 0.5
+            x: modelData.x
+            y: modelData.y
+            width: modelData.w
+            height: hook
+            Rectangle { width: parent.width; height: volta.stroke; color: KanteStyle.textColor }
+            Rectangle { visible: volta.modelData.left; width: volta.stroke; height: volta.hook; color: KanteStyle.textColor }
+            Rectangle { visible: volta.modelData.right; x: parent.width - width; width: volta.stroke; height: volta.hook; color: KanteStyle.textColor }
+            Text {
+                visible: text !== ""
+                x: staff.ls * 0.35
+                y: volta.stroke + staff.ls * 0.05
+                text: volta.modelData.text
+                color: KanteStyle.strongTextColor
+                font.family: nameMetrics.font.family
+                font.weight: Font.Bold
+                font.pixelSize: Math.round(staff.ls * 0.8)
             }
         }
     }
