@@ -66,7 +66,7 @@ Opt-in for apps (not landing pages) via `<html data-theme="light">`, defined in 
 | `fg2` | `#d5c4a1` | `#665c54` | Secondary text |
 | `cyan` | `#5ccfc4` | `#0f6b66` | Focus, links, data |
 | `primary` | `#fabd2f` | `#fabd2f` | Primary fill (ink `#141312` on both) |
-| `aqua` | `#8ec07c` | `#427b58` | Success, bars |
+| `aqua` | `#8ec07c` | `#3a6e4e` | Success, bars |
 | `yellow` | `#fabd2f` | `#8a5a00` | Score, warnings |
 | `orange` | `#fe8019` | `#af3a03` | Active / highlight |
 | `red` | `#fb4934` | `#9d0006` | Error |
@@ -795,6 +795,12 @@ Technique marks for Kontra (LH-BEW-06, personas P3 and P4): the score says how a
 | Technique mark | – | `KanteTechniqueMark`: `technique` "slide" (sl), "hammer" (h), "pull" (p), "slap" (S), "pop" (P), "ghost" (( )); unknown keys draw nothing (`drawn`). `result` "" (the sign alone, muted), "played" (solid frame), "other" (solid frame, sign struck through), "unheard" (dashed frame, struck through); `color` defaults to `resultColor` (played as a hit, other as a wrong note, unheard as a missed one). Set the height, `implicitWidth` follows the sign. Accessible name: technique and result |
 | Technique names | – | `KanteStyle.techniqueNames` {slide, hammer, pull, slap, pop, ghost} and `techniqueResultNames` {played, other, unheard}, German by default; an app sets its translations once, like `noteStateNames`. `techniqueName(key)`, `techniqueResultName(r)` ("" for unknown), `techniqueCountsText(counts)` ("Technik gespielt 3, Andere Technik 1") |
 | Techniques in tab, lane and staff | – | `KanteTabLane`, `KanteTabStaff`, `KanteBassStaff`: notes take `technique` and `techniqueResult`; `setTechniqueResult(index, result)` changes one without reassigning `notes` (as `setNoteState`), `techniqueResultOf(i)`, `resetStates()` clears them too. Lane: the sign above the head, left of the state badge; tab staff: above right of the fret number; bass staff: above the staff under the state sign. A ghost note's fret reads "(5)" in lane and tab. Marks Off: signs without results; Quiet: muted, the result still told by the frame. The screen-reader description adds the counts by result |
+
+### Changed in Kante 1.32
+
+| Element | Web | QML |
+|---|---|---|
+| Positive on Leinen | `--aqua` under `data-theme="light"`: `#3a6e4e` (was `#427b58`, 4.12:1 on the ground) | `KantePalette.light.positive` and `labelGreen` the same; text and ticks in green now reach 4.92:1 on the ground, 5.42:1 on cards, 4.62:1 on sunken areas, white on a green fill 5.61:1 (Kaiwa L-07, /LL202/). Kante Light colour scheme and Knust's light palette follow from `palette.json` |
 
 ### Kante Gold
 
