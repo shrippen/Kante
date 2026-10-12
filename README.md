@@ -66,7 +66,7 @@ Opt-in for apps (not landing pages) via `<html data-theme="light">`, defined in 
 | `fg2` | `#d5c4a1` | `#665c54` | Secondary text |
 | `cyan` | `#5ccfc4` | `#0f6b66` | Focus, links, data |
 | `primary` | `#fabd2f` | `#fabd2f` | Primary fill (ink `#141312` on both) |
-| `aqua` | `#8ec07c` | `#427b58` | Success, bars |
+| `aqua` | `#8ec07c` | `#3a6e4e` | Success, bars (Leinen until 2026-10-12 `#427b58`, 4.12:1; now 4.92:1 on the ground, 4.62:1 on sunken areas) |
 | `yellow` | `#fabd2f` | `#8a5a00` | Score, warnings |
 | `orange` | `#fe8019` | `#af3a03` | Active / highlight |
 | `red` | `#fb4934` | `#9d0006` | Error |
