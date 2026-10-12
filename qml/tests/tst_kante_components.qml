@@ -829,4 +829,35 @@ TestCase {
         verify(starts[3] >= 0, "0 stays")
         verify(starts[2] < 0, "-6 is dropped next to 0")
     }
+
+    Component {
+        id: kanteDialogComponent
+        KanteDialog {
+            title: "Dialog"
+            width: 300
+            standardButtons: QQC2.Dialog.Close
+            QQC2.Label { text: "content" }
+        }
+    }
+
+    // Kante -> Kante Light or System while a dialog exists (also the saved style applied
+    // after start): the platform's background, header and footer come back visible and at
+    // the dialog's size, not hidden as Qt left them when Kante replaced them.
+    function test_dialog_gets_its_platform_ground_back() {
+        const kinds = [KanteStyle.Kind.KanteLight, KanteStyle.Kind.System]
+        for (let i = 0; i < kinds.length; i++) {
+            KanteStyle.kind = KanteStyle.Kind.Kante
+            const d = createTemporaryObject(kanteDialogComponent, tc)
+            d.open()
+            tryVerify(() => d.opened)
+            verify(d.background === d.kanteBackground)
+            KanteStyle.kind = kinds[i]
+            verify(d.background !== d.kanteBackground)
+            verify(d.background.visible, "background shown again, kind " + kinds[i])
+            tryCompare(d.background, "height", d.height)
+            compare(d.background.width, d.width)
+            verify(!d.footer || d.footer.visible, "footer shown again")
+            d.close()
+        }
+    }
 }
