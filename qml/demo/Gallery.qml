@@ -634,7 +634,7 @@ Rectangle {
 
             Section {
                 id: techDemo
-                title: "1.31 · technik-zeichen (kontra)"
+                title: "1.31, 1.32 · technik-zeichen (kontra)"
                 // A slap line in E at 100 bpm (an eighth is 0.3 s): slap, pop, ghost, slide,
                 // hammer-on and pull-off; the first half played, each technique judged.
                 property real position: 1.3
@@ -655,7 +655,7 @@ Rectangle {
                 RowLayout {
                     spacing: KanteStyle.unit(14)
                     Repeater {
-                        model: ["slap", "pop", "ghost", "slide", "hammer", "pull"]
+                        model: ["slap", "pop", "ghost", "dead", "slide", "hammer", "pull"]
                         delegate: RowLayout {
                             required property string modelData
                             spacing: KanteStyle.unit(4)
