@@ -95,7 +95,8 @@ TestCase {
     function test_laneTechniques() {
         var l = createTemporaryObject(laneComponent, stage(), { notes: tabNotes(), position: 0.5 })
         waitForRendering(l)
-        tryVerify(function () { return marksIn(l).filter(function (m) { return m.drawn }).length >= 4 }, 3000)
+        // 1.37: the ghost note's parentheses are its sign; without a result it draws no mark.
+        tryVerify(function () { return marksIn(l).filter(function (m) { return m.drawn }).length >= 3 }, 3000)
         compare(l.techniqueResultOf(3), "played", "from notes")
         compare(l.techniqueResultOf(1), "")
         verify(l.Accessible.description.indexOf("Technik gespielt 1") >= 0, l.Accessible.description)
@@ -122,7 +123,7 @@ TestCase {
         var s = createTemporaryObject(staffComponent, stage(), { notes: tabNotes(), bars: [0, 2] })
         waitForRendering(s)
         var ms = marksIn(s).filter(function (m) { return m.drawn })
-        compare(ms.length, 4)
+        compare(ms.length, 3, "1.37: no mark for the ghost note without a result")
         compare(s.layout.frets.filter(function (f) { return f.text === "(5)" }).length, 1, "ghost in parentheses")
         s.setTechniqueResult(2, "other")
         compare(marksIn(s).filter(function (m) { return m.technique === "hammer" })[0].result, "other")

@@ -20,7 +20,8 @@ import "."
  *                form a chord (one stem). state as KanteTabLane, "offpitch" (1.27) with
  *                its `cents` beside the sign (`showCents`, Full marks)
  *                technique, techniqueResult (1.31) as KanteTabLane: the tab sign beside the
- *                fret number (KanteTechniqueMark), a ghost note's fret in parentheses,
+ *                fret number (KanteTechniqueMark), a ghost note's fret in parentheses (its
+ *                only sign, 1.37),
  *                a dead note's (1.32, "dead") as x;
  *                setTechniqueResult(index, result) changes a result without a new layout
  *   bars         bar start times in seconds, numbers or {time, number, repeatStart, repeatEnd,
@@ -733,15 +734,18 @@ Item {
                 font.weight: parent.current ? Font.Bold : Font.Medium
                 font.pixelSize: Math.round(staff.ls * 0.9)
             }
-            // Technique sign above right of the fret number (1.31).
+            // Technique sign above right of the fret number (1.31); a ghost note's parentheses
+            // are its sign, its result frames them (1.37).
             KanteTechniqueMark {
+                readonly property bool ghost: technique === "ghost"
                 technique: parent.modelData.technique || ""
+                signVisible: !ghost
                 result: staff.shownTechniqueResult(parent.modelData.index, staff.stateRevision)
                 color: staff.marks === KanteTabStaff.Marks.Quiet ? KanteStyle.mutedTextColor : resultColor
-                height: Math.round(staff.ls * 0.7)
-                width: implicitWidth
-                anchors.left: parent.right
-                anchors.bottom: parent.verticalCenter
+                height: ghost ? parent.height : Math.round(staff.ls * 0.7)
+                width: ghost ? parent.width : implicitWidth
+                x: ghost ? 0 : parent.width
+                y: ghost ? 0 : parent.height / 2 - height
             }
             Text {
                 visible: parent.modelData.label !== ""

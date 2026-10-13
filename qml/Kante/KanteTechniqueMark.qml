@@ -21,6 +21,10 @@ import "."
  *
  * Set the height; `implicitWidth` follows it (wider for "sl" and "( )").
  *
+ *   signVisible  (1.37) false: no sign, only the result's frame and stroke, drawn only with
+ *                a result. For a sign the note already carries, a ghost note's fret in
+ *                parentheses in tab: the mark then frames that fret.
+ *
  * Names for screen readers: KanteStyle.techniqueName and techniqueResultName (an app sets
  * their translations once). Used by KanteTabLane, KanteTabStaff and KanteBassStaff.
  */
@@ -49,8 +53,9 @@ Item {
         }
     }
     readonly property string sign: signOf(technique)
-    readonly property bool drawn: sign !== ""
+    property bool signVisible: true
     readonly property bool framed: result === "played" || result === "other" || result === "unheard"
+    readonly property bool drawn: sign !== "" && (signVisible || framed)
     readonly property bool struck: result === "other" || result === "unheard"
 
     visible: drawn
@@ -68,6 +73,7 @@ Item {
         id: label
         anchors.centerIn: parent
         text: mark.sign
+        visible: mark.signVisible
         color: mark.color
         font.family: KanteStyle.monoFont(10, true).family
         font.weight: Font.Bold

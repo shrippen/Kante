@@ -72,7 +72,7 @@ TestCase {
         waitForRendering(s)
         compare(s.layout.frets.filter(function (f) { return f.text === "x" }).length, 1)
         compare(s.layout.frets.filter(function (f) { return f.text === "7" }).length, 0)
-        compare(marksIn(s).filter(function (m) { return m.drawn }).length, 2)
+        compare(marksIn(s).filter(function (m) { return m.drawn }).length, 1, "1.37: the ghost's parentheses are its sign")
     }
 
     function test_bassStaffDeadSign() {
