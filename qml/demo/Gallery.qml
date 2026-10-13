@@ -477,7 +477,7 @@ Rectangle {
 
             Section {
                 id: practice
-                title: "1.23 · üben (kontra), 1.27 unsauber, akkorde, tonartwechsel"
+                title: "1.23 · üben (kontra), 1.27 unsauber, akkorde, tonartwechsel, 1.34 loop in tab und noten"
                 // Demo data: a riff at 100 bpm (a quarter is 0.6 s); the transport drives it.
                 property real position: 2.1
                 property bool playing: false
@@ -536,11 +536,13 @@ Rectangle {
                 KanteTabStaff {
                     Layout.fillWidth: true
                     notes: practice.riff; bars: practice.riffBars; position: practice.position; barsPerSystem: 4
+                    loopStart: practice.looping ? 2.4 : -1; loopEnd: practice.looping ? 4.8 : -1
                     marks: practice.marks
                 }
                 KanteBassStaff {
                     Layout.fillWidth: true
                     notes: practice.riff; rests: []; keyFifths: 1; position: practice.position; barsPerSystem: 4
+                    loopStart: practice.looping ? 2.4 : -1; loopEnd: practice.looping ? 4.8 : -1
                     marks: practice.marks
                     // 1.27: chord symbols per bar and at a time, a key change in bar 3 (G to F major)
                     bars: [{ time: 0, numerator: 4, denominator: 4, chord: "Em" }, { time: 2.4, chord: "G" }, { time: 4.8, keyFifths: -1, chord: "Dm7" }, 7.2, 9.6]
