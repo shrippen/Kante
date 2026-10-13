@@ -41,7 +41,7 @@ import "."
  *   marks        Full, Quiet (fret numbers in the text colour, small muted signs) or Off;
  *                setNoteState(index, state[, cents]) / resetStates() change states without a new
  *                layout (the layout is computed once per page, the states are read live)
- *   loopStart, loopEnd  loop range in seconds, -1 for none (1.34): a tint with bracket edges
+ *   loopStart, loopEnd  loop range in seconds, -1 for none (1.35): a tint with bracket edges
  *                as on KanteTabLane, one part per line; a loop that runs on to the next
  *                line is open at the line end and goes on there without bracket. An edge
  *                on a bar start or end sits on the bar line
@@ -68,7 +68,7 @@ Item {
     property var notes: []
     property var bars: []
     property real position: 0
-    /** Loop range in seconds, -1 for none (1.34). */
+    /** Loop range in seconds, -1 for none (1.35). */
     property real loopStart: -1
     property real loopEnd: -1
     property int barsPerSystem: 0
@@ -199,7 +199,7 @@ Item {
 
     readonly property var layout: computeLayout(firstBar, perSystem, Math.max(1, systems), width, ls, notes, barList,
                                                 strings, lowStringOnTop, rhythm)
-    /** Loop parts of the page, one per line: [{x, w, sys, left, right}] (1.34). */
+    /** Loop parts of the page, one per line: [{x, w, sys, left, right}] (1.35). */
     readonly property var loopParts: loopLayout(firstBar, perSystem, Math.max(1, systems), width, barList,
                                                 loopStart, loopEnd)
 
@@ -332,7 +332,7 @@ Item {
     function sysOf(b) {
         return Math.floor((b - firstBar) / perSystem)
     }
-    /** True when time t lies in the loop range (1.34). */
+    /** True when time t lies in the loop range (1.35). */
     function inLoop(t) {
         return loopStart >= 0 && loopEnd > loopStart && t >= loopStart - 1e-6 && t < loopEnd - 1e-6
     }
@@ -555,7 +555,7 @@ Item {
         return L
     }
 
-    // Loop range (1.34): a tint with bracket edges ([ and ]) as on KanteTabLane, not colour
+    // Loop range (1.35): a tint with bracket edges ([ and ]) as on KanteTabLane, not colour
     // alone; as high as the cursor, behind the staff so frets stay readable.
     Repeater {
         model: staff.loopParts
@@ -718,7 +718,7 @@ Item {
             y: modelData.y - height / 2
             width: fret.implicitWidth + staff.ls * 0.3
             height: Math.round(staff.ls * 0.95)
-            // In the loop the ground carries the loop tint (1.34).
+            // In the loop the ground carries the loop tint (1.35).
             color: current ? "transparent"
                  : staff.inLoop(modelData.time) ? Qt.tint(staff.groundColor, KanteStyle.tintHighlightColor) : staff.groundColor
             Text {

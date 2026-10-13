@@ -41,7 +41,7 @@ import "."
  *              setNoteState(index, state[, cents]) / resetStates() change states
  *              without a new layout
  *   showCents  the cents beside offpitch signs (Full marks only; default true)
- *   loopStart, loopEnd  loop range in seconds, -1 for none (1.34): a tint with bracket
+ *   loopStart, loopEnd  loop range in seconds, -1 for none (1.35): a tint with bracket
  *              edges as on KanteTabLane, one part per line; a loop that runs on to the
  *              next line is open at the line end and goes on there without bracket. An
  *              edge on a bar start or end sits on the bar line
@@ -69,7 +69,7 @@ Item {
     /** Chord symbols [{time, text}] (Kante 1.27); bars can carry one each as `chord`. */
     property var chords: []
     property real position: 0
-    /** Loop range in seconds, -1 for none (1.34). */
+    /** Loop range in seconds, -1 for none (1.35). */
     property real loopStart: -1
     property real loopEnd: -1
     property int barsPerSystem: 0
@@ -196,7 +196,7 @@ Item {
     readonly property real staffTop: sp * (hasChords ? 7.5 : 5.5)
     readonly property real systemHeight: staffTop + sp * 4 + sp * 5
     readonly property var layout: computeLayout(firstBar, perSystem, Math.max(1, systems), width, sp, notes, rests, barList, chordList)
-    /** Loop parts of the page, one per line: [{x, w, sys, left, right}] (1.34). */
+    /** Loop parts of the page, one per line: [{x, w, sys, left, right}] (1.35). */
     readonly property var loopParts: loopLayout(firstBar, perSystem, Math.max(1, systems), width, barList,
                                                 loopStart, loopEnd)
 
@@ -439,7 +439,7 @@ Item {
         return xOf(t, b)
     }
     /**
-     * The loop cut into lines (1.34): per line the part of [from, to] it shows. left / right:
+     * The loop cut into lines (1.35): per line the part of [from, to] it shows. left / right:
      * the loop starts / ends on this line (bracket edge), else it runs on (open edge).
      */
     function loopLayout(first, per, nsys, w, bl, from, to) {
@@ -747,7 +747,7 @@ Item {
         return KanteStyle.noteStateColor(ink)
     }
 
-    // Loop range (1.34): a tint with bracket edges ([ and ]) as on KanteTabLane, not colour
+    // Loop range (1.35): a tint with bracket edges ([ and ]) as on KanteTabLane, not colour
     // alone; as high as the cursor, behind the staff.
     Repeater {
         model: staff.loopParts

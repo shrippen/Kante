@@ -723,7 +723,7 @@ The conversation components for Kaiwa, the Japanese conversation trainer: you ta
 
 | Element | Web | QML |
 |---|---|---|
-| Ruby text | `.ruby[data-ruby="all\|new\|none"]` with `<ruby>`/`<rt>`, `ruby.is-new` | `KanteRubyText`: `segments` [{text, reading, isNew}] or `markup` "{駅\|えき}までは{歩\|ある\|new}いて"; `density` All, New, None keeps the room for the readings, so lines never move; plain runs split per character, so Japanese wraps anywhere; a long reading reaches half a character over free neighbours instead of opening a gap; readings muted, new words too (D-1); `text` is the plain base |
+| Ruby text | `.ruby[data-ruby="all\|new\|none"]` with `<ruby>`/`<rt>`, `ruby.is-new` | `KanteRubyText`: `segments` [{text, reading, isNew, word (1.33)}] or `markup` "{駅\|えき}までは{歩\|ある\|new}いて"; `density` All, New, None keeps the room for the readings, so lines never move; plain runs split per character, so Japanese wraps anywhere; a long reading reaches half a character over free neighbours instead of opening a gap; readings muted, new words too (D-1); `text` is the plain base |
 | Heard as | `.heard`, `[data-state="unsure"]` | `KanteHeardLine` (D-2): `text`, `unsure` ("! unsicher" in the warning colour), the action "falsch erkannt" fires `misheard()` (keyboard and screen reader too); a child of your own `KanteMessage` |
 | Talk button | `.talk[data-state]` | `KanteTalkButton`: `talkState` Ready (square), Listening (accent fill, `level` 0..1 as six segments), Thinking (diamond, running light), Speaking (breathing lamp, a click interrupts), Error (triangle, negative bar, the remedy as second line); `mode` Hold (press and release, Space held) or Toggle; signals `talkStarted`, `talkEnded`, `interruptRequested`, `errorActionRequested`; words in `titles` / `hints`, `hint` overrides; height `heightLarge` (D-3) |
 | Diff | `.diff del`, `.diff ins` | `KanteDiffText`: `parts` [{text, kind: same\|removed\|added}]; removed struck through with a 2 px negative line, added on the focus tint with a 2 px underline; read out as "gestrichen を, neu が" |
@@ -786,13 +786,29 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
-### Added in Kante 1.34
+### Added in Kante 1.35
 
 The loop range in tablature and bass staff for Kontra (QA 13.10., persona P2): the workshop mode loops bars 3 and 4, the tab lane showed it, tab and notes did not. Same properties, roles and shape as on `KanteTabLane`. Catalogue with shots in Kante and Kante Light: [`proposals/2026-10-kontra/bauteile.html`](proposals/2026-10-kontra/bauteile.html) (`loop-*`).
 
 | Element | Web | QML |
 |---|---|---|
 | Loop in tab and staff | – | `KanteTabStaff` and `KanteBassStaff`: `loopStart`, `loopEnd` (seconds, -1 for none, as on the lane): a `tintHighlightColor` tint with `focusColor` bracket edges ([ and ]), as high as the cursor, behind the staff. One part per line (`loopParts` [{x, w, sys, left, right}]); a loop that runs on to the next line is open at the line end and goes on there without bracket. An edge on a bar start or end sits on the bar line, else at the time's x. In tablature the fret grounds inside the loop carry the tint |
+
+### Added in Kante 1.34
+
+A Japanese face for Japanese text in pieces (found in Kaiwa): `KanteRubyText` lays out one `Text` per character, `KantePitchCurve` one per mora, `KanteDiffText` one per part. A lone 来 or 。 gives Qt no context, so under a non-Japanese locale (de_DE) its font fallback took a Chinese face: other glyph forms (Han unification), kanji on a lower baseline than the kana around them, 。 centred instead of in the corner. Whole lines in one `Text` were not affected.
+
+| Element | Web | QML |
+|---|---|---|
+| Japanese family | – (the page sets `lang="ja"`) | `KanteStyle.japaneseFamilies` (preference list: Noto Sans CJK JP, Source Han Sans JP, Hiragino Sans, Yu Gothic, Meiryo, BIZ UDPGothic, IPAexGothic, …), `japaneseFamily` (the first installed, else the default font's family), `japaneseFont(base)` (`base` or the default font in that family, same size and weight). Default `font` of `KanteRubyText` and `KanteDiffText`, and the morae of `KantePitchCurve`. An app with its own Japanese `Text` pieces takes `KanteStyle.japaneseFont()` too |
+
+### Added in Kante 1.33
+
+Words to look up in the ruby text, for Kaiwa's word lookup (/LF112/): a click on a word in the character's line shows its reading, meaning and accent. The text stays one `KanteRubyText`; the app groups its segments into words and opens its own popup (`KantePopupSkin`) at `wordRect`.
+
+| Element | Web | QML |
+|---|---|---|
+| Words in ruby text | – | `KanteRubyText`: a segment may carry `word` (a number ≥ 0; segments with the same number are one word, 歩 + いて). `interactive` (default false): a word underlines on hover (muted line) and fires `wordActivated(word)` on a click; Tab focuses the text, Left / Right, Home / End move the focused word (`focusWord`, a 2 px line in the focus colour), Enter / Space activate it. `words` (the numbers in order), `wordText(word)`, `wordRect(word)` (the box in the item, to anchor a popup), `wordAt(x, y)`. Screen readers hear the text, then the focused word and `wordHint` ("Eingabe: nachschlagen"). Without `interactive` nothing changes |
 
 ### Added in Kante 1.32
 

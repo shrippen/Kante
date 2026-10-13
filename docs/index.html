@@ -131,8 +131,8 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
-    <li class="release" id="v1.34.0">
-      <div class="release-head"><b class="release-version">1.34</b><time datetime="2026-10-13">13 Oct 2026</time></div>
+    <li class="release" id="v1.35.0">
+      <div class="release-head"><b class="release-version">1.35</b><time datetime="2026-10-13">13 Oct 2026</time></div>
       <div class="release-body">
         <p class="release-lead" lang="en">Loops in tab and notes: tablature and bass staff show the loop range the tab lane already showed.</p>
         <p class="release-lead" lang="de">Schleifen in Tab und Noten: Tabulatur und Bassnoten zeigen den Loop-Bereich, den bisher nur die Tab-Lane zeigte.</p>
@@ -155,9 +155,57 @@
           </ul>
         </div>
         <div class="release-shots">
-          <figure><img src="shots/release-1.34-loop.png" alt="Tab lane, tablature and bass staff with bars 3 and 4 as a loop across the line break" loading="lazy"><figcaption><span lang="en">Bars 3 and 4 looped in lane, tab and staff (demo data)</span><span lang="de">Takte 3 und 4 als Schleife in Lane, Tab und Noten (Demodaten)</span></figcaption></figure>
+          <figure><img src="shots/release-1.35-loop.png" alt="Tab lane, tablature and bass staff with bars 3 and 4 as a loop across the line break" loading="lazy"><figcaption><span lang="en">Bars 3 and 4 looped in lane, tab and staff (demo data)</span><span lang="de">Takte 3 und 4 als Schleife in Lane, Tab und Noten (Demodaten)</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-135"><span lang="en">All changes in 1.35 →</span><span lang="de">Alle Änderungen in 1.35 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.34.0">
+      <div class="release-head"><b class="release-version">1.34</b><time datetime="2026-10-13">13 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Japanese in pieces gets a Japanese face, not a Chinese one.</p>
+        <p class="release-lead" lang="de">Japanisch in Stücken bekommt eine japanische Schrift statt einer chinesischen.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteStyle.japaneseFamily</code> and <code>japaneseFont()</code>: the first installed Japanese face of a preference list.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteStyle.japaneseFamily</code> und <code>japaneseFont()</code>: die erste installierte japanische Schrift einer Vorzugsliste.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>Ruby text, pitch curve and correction diff draw Japanese in a Japanese face. Under a German or English locale single kanji fell back to a Chinese face: other glyph forms, a lower baseline, a centred 。.</li>
+          </ul>
+          <ul lang="de">
+            <li>Ruby-Text, Pitch-Kurve und Korrektur-Diff zeigen Japanisch in einer japanischen Schrift. Unter deutscher oder englischer Locale fielen einzelne Kanji auf eine chinesische Schrift zurück: andere Zeichenformen, tiefere Grundlinie, mittiges 。.</li>
+          </ul>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-134"><span lang="en">All changes in 1.34 →</span><span lang="de">Alle Änderungen in 1.34 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.33.0">
+      <div class="release-head"><b class="release-version">1.33</b><time datetime="2026-10-13">13 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Words to look up in Japanese text: a click on a word, for Kaiwa's dictionary.</p>
+        <p class="release-lead" lang="de">Wörter zum Nachschlagen in japanischem Text: ein Klick auf ein Wort, für Kaiwas Wörterbuch.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteRubyText</code>: segments form words; with <code>interactive</code> a word underlines on hover and opens with a click, or with Tab, the arrow keys and Enter. Screen readers hear the focused word.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteRubyText</code>: Segmente bilden Wörter; mit <code>interactive</code> unterstreicht sich ein Wort beim Darüberfahren und öffnet sich per Klick oder mit Tab, Pfeiltasten und Eingabe. Screenreader lesen das gewählte Wort vor.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Additions only: existing calls keep working.</li>
+          </ul>
+          <ul lang="de">
+            <li>Nur Ergänzungen: bestehende Aufrufe funktionieren weiter.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-133"><span lang="en">All changes in 1.33 →</span><span lang="de">Alle Änderungen in 1.33 →</span></a>
       </div>
     </li>
     <li class="release" id="v1.32.0">
@@ -390,7 +438,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.34.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.35.0</p></div>
 </footer>
 
 <script>

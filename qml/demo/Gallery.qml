@@ -477,7 +477,7 @@ Rectangle {
 
             Section {
                 id: practice
-                title: "1.23 · üben (kontra), 1.27 unsauber, akkorde, tonartwechsel, 1.34 loop in tab und noten"
+                title: "1.23 · üben (kontra), 1.27 unsauber, akkorde, tonartwechsel, 1.35 loop in tab und noten"
                 // Demo data: a riff at 100 bpm (a quarter is 0.6 s); the transport drives it.
                 property real position: 2.1
                 property bool playing: false
@@ -746,7 +746,7 @@ Rectangle {
             }
 
             Section {
-                title: "1.25 · gespräch (kaiwa)"
+                title: "1.25, 1.33 · gespräch (kaiwa)"
                 // The talk button walks through its states on click, as an app would drive it.
                 RowLayout {
                     spacing: KanteStyle.unit(14)
@@ -778,7 +778,17 @@ Rectangle {
                             from: KanteMessage.From.Own; time: "12:05"; text: "ふくろ、いりません。"
                             KanteHeardLine { Layout.fillWidth: true; text: "ふくろ(?)いりません"; unsure: true }
                         }
-                        KanteRubyText { Layout.fillWidth: true; markup: "{駅|えき}までは{歩|ある|new}いて{五分|ごふん}です。" }
+                        // 1.33: words to look up; click, or Tab then Left / Right and Enter.
+                        KanteRubyText {
+                            id: lookupDemo
+                            Layout.fillWidth: true
+                            interactive: true
+                            segments: [{ text: "駅", reading: "えき", word: 0 }, { text: "まで", word: 1 }, { text: "は", word: 2 },
+                                       { text: "歩", reading: "ある", isNew: true, word: 3 }, { text: "いて", word: 3 },
+                                       { text: "五分", reading: "ごふん", word: 4 }, { text: "です", word: 5 }, { text: "。" }]
+                            onWordActivated: function (word) { lookupLabel.text = "→ " + wordText(word) }
+                        }
+                        Text { id: lookupLabel; text: "1.33: Wort anklicken"; color: KanteStyle.mutedTextColor; font: KanteStyle.defaultFont }
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
