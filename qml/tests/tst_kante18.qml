@@ -208,6 +208,25 @@ TestCase {
         compare(f.parse("morgen"), undefined)
     }
 
+    // Short formats show a two-digit year ("13.10.26"). Reading it back must give
+    // 2026: Qt makes 1926 of it, and an app saved an entry 100 years back.
+    function test_dateFieldTwoDigitYearFormat() {
+        var f = createTemporaryObject(dateComponent, tc, { format: "dd.MM.yy" })
+        compare(f.parse("13.10.26").getFullYear(), 2026)
+        compare(f.parse("13.10.99").getFullYear(), 1999)
+        compare(f.parse(f.textOf(new Date(2026, 9, 13))).getFullYear(), 2026)
+        var us = createTemporaryObject(dateComponent, tc, { format: "M/d/yy" })
+        compare(us.parse("10/13/26").getFullYear(), 2026)
+
+        // Entering and leaving the field keeps the date.
+        f.date = new Date(2026, 9, 13)
+        dateSpy.target = f
+        dateSpy.clear()
+        f.commit()
+        compare(f.date.getFullYear(), 2026)
+        compare(dateSpy.count, 0)
+    }
+
     function test_dateFieldTypedAndPicked() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         var f = createTemporaryObject(dateComponent, tc)
