@@ -393,7 +393,7 @@ TestCase {
     function findToggle(item, label) {
         for (var i = 0; i < item.children.length; i++) {
             var c = item.children[i]
-            if (c.checkable === true && c.text === label) return c
+            if (c.on !== undefined && c.text === label) return c
             var r = findToggle(c, label)
             if (r) return r
         }
@@ -406,12 +406,14 @@ TestCase {
         loopSpy.target = bar
         var loop = findToggle(bar, "Schleife")
         verify(loop !== null)
-        verify(!loop.checked)
+        verify(!loop.Accessible.checked)
         loop.click()
         compare(loopSpy.count, 1)
-        verify(!loop.checked, "stays off until the app turns looping on")
+        verify(!loop.Accessible.checked, "stays off until the app turns looping on")
         bar.looping = true
-        verify(loop.checked)
+        verify(loop.Accessible.checked)
+        // 1.38: the lamp shows the state, the button is never filled.
+        verify(!loop.checked)
         compare(loop.Accessible.name, "Schleife")
     }
 
