@@ -12,6 +12,13 @@ import "."
  *
  * Screen readers hear each step as "Schritt 2 von 4: Erkennen, aktuell"; the words come
  * from `stepText` and `stateNames`, an app sets its translations once.
+ *
+ * Narrower than all labels need (a width set by a layout, e.g. half a laptop screen): only
+ * the current step keeps its label, the others show their sign (Kante 1.39, `compact`).
+ *
+ *   ┌──────────────┬────┬────┬────┐
+ *   │ ■01          │ □02│ □03│ □04│     compact: the current step named, the rest by number
+ *   │ INSTRUMENT   │    │    │    │
  */
 Row {
     id: steps
@@ -23,6 +30,25 @@ Row {
     property var stateNames: ({ done: "erledigt", current: "aktuell", upcoming: "offen" })
 
     spacing: 2
+
+    /** Width all steps need with their labels. */
+    readonly property real fullWidth: {
+        var w = 0
+        var n = model ? model.length : 0
+        for (var i = 0; i < n; i++) {
+            w += Math.max(KanteStyle.unit(110), labelMetrics.advanceWidth(model[i]) + KanteStyle.unit(24))
+        }
+        return w + spacing * Math.max(0, n - 1)
+    }
+    /** Too narrow for every label: only the current step keeps its label. A Row left to size
+     *  itself is as wide as its labels (a few units of rounding aside), so only a width set
+     *  from outside (a layout) makes it compact. */
+    readonly property bool compact: width > 0 && width < fullWidth - KanteStyle.unit(4)
+
+    FontMetrics {
+        id: labelMetrics
+        font: KanteStyle.headingFont(KanteStyle.defaultFont.pointSize)
+    }
 
     Accessible.role: Accessible.List
 
@@ -36,7 +62,9 @@ Row {
             readonly property bool now: index === steps.current
             readonly property string stateKey: done ? "done" : (now ? "current" : "upcoming")
             readonly property real signSize: Math.max(KanteStyle.unit(20), number.implicitHeight + KanteStyle.unit(4))
-            width: Math.max(KanteStyle.unit(110), label.implicitWidth + KanteStyle.unit(24))
+            readonly property bool named: !steps.compact || now
+            width: named ? Math.max(KanteStyle.unit(110), label.implicitWidth + KanteStyle.unit(24))
+                         : signSize + KanteStyle.unit(20)
             height: Math.max(KanteStyle.unit(60), label.y + label.implicitHeight + KanteStyle.unit(8))
 
             Accessible.role: Accessible.ListItem
@@ -88,6 +116,7 @@ Row {
             }
             Text {
                 id: label
+                visible: step.named
                 x: KanteStyle.unit(10)
                 y: sign.y + sign.height + KanteStyle.unit(2)
                 text: step.modelData

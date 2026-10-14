@@ -154,6 +154,24 @@ TestCase {
         }
     }
 
+    // Kante 1.39: narrower than its labels, only the current step keeps its label.
+    function test_stepsCompact() {
+        var s = createTemporaryObject(stepsComponent, stage())
+        verify(!s.compact, "a Row left to size itself shows every label")
+        var full = s.width
+        s.width = full * 0.7
+        verify(s.compact)
+        var items = stepItems(s)
+        var labels = items.map(function (it) { return it.children[it.children.length - 1] })
+        verify(labels[2].visible, "the current step keeps its label")
+        verify(!labels[0].visible && !labels[3].visible)
+        // A Row lays out on the next polish.
+        tryVerify(function () { return s.implicitWidth <= full * 0.7 }, 1000, "the steps fit")
+        compare(items[0].Accessible.name, "Schritt 1 von 4: Instrument, erledigt")
+        s.width = full
+        verify(!s.compact)
+    }
+
     function findChild(item, pred) {
         for (var i = 0; i < item.children.length; i++) {
             var c = item.children[i]
