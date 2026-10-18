@@ -29,13 +29,26 @@ plugins take Knust and the kit. A bug here shows up in every project:
 ## What to check in particular
 
 - No raw colours or fonts in `css/` (`tools/check-tokens.py`).
-- Generated files are committed with their source: `./build.sh` output in
-  `docs/v1/`, `qml/Kante/KantePalette.qml`, `qmldir`, `tokens/palette.qml`,
-  `knust-palette.css`. A source change without them is a bug.
+- Generated files are committed with their source (`./build.sh`):
+  `docs/v1/`, `qml/Kante/KantePalette.qml`, `qml/Kante/qmldir`,
+  `qml/KantePlasma/KantePlasmaButton.qml` (from `KanteButton.qml`),
+  `tokens/palette.qml`, `kimai/knust/Resources/public/css/knust-palette.css`
+  and `kimai/kit/kit/templates/_kit/assets.html.twig` (from kit.css/kit.js).
+  A source change without them is a bug.
 - New QML component: test in `qml/tests`, `qml/demo/Gallery.qml`, README.
-- Release: version in `docs/index.html`, README section, changelog entry
-  with lead, groups and a screenshot or diagram per visible change.
+- Release: Kante's version in `docs/index.html`, README section,
+  changelog entry with lead, groups and a screenshot or diagram per
+  visible change. Knust: tag `knust-v<version>` equal to
+  `kimai/knust/composer.json`, `kimai/knust/CHANGELOG.md`, the changelog on
+  `docs/knust/index.html`. Kit: `kimai/kit/VERSION`, `kimai/kit/CHANGELOG.md`.
 - Bug fixes: does the fix remove the cause, with a test that failed before?
+
+## What the owner confirms here
+
+"What is published" (rule in `agent.md`) means here: a release (Kante
+version, a `knust-v*` tag, a kit version), a change to the release
+workflows, a new public page under `docs/`. A `docs/v1/` rebuilt from the
+sources does not count: it is checked as code like any other change.
 
 ## Skip
 
