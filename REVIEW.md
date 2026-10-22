@@ -69,5 +69,7 @@ sources does not count: it is checked as code like any other change.
   one still open, also from an earlier round, e.g. "1 Wichtig (offen aus
   Runde 1)". Only when none is open it says plainly: "Nichts zu beheben."
 - In a later round: say for each open **Wichtig** of the last round whether
-  it is fixed, or whether its answer is accepted, with the reason.
+  it is fixed, or whether its answer is accepted, with the reason. PR-Agent
+  sees no earlier round: it reports only its own findings with their labels,
+  and a new Claude agent closes the open ones (`agent.md`).
 - Findings in German, code names as they are.
