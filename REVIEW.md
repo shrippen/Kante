@@ -1,9 +1,9 @@
 # Review guide
 
-Every PR is reviewed by a new Claude agent before it is merged (rule in
-`agent.md`, owner 18.10.2026). The agent knows nothing of the session that
-wrote the change: it gets the PR's intent, its diff and the repository, and
-this file. The owner does not read code; this review is the second reader.
+Every PR is reviewed before it is merged (rule in `agent.md`): by PR-Agent
+(owner, 22.10.2026), and by a new Claude agent when PR-Agent fails. The
+reviewer knows nothing of the session that wrote the change: it gets the
+PR's intent, its diff and the repository, and this file. The owner does not read code; this review is the second reader.
 
 ## What failure looks like here
 
