@@ -131,6 +131,25 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.37.0">
+      <div class="release-head"><b class="release-version">1.37</b><time datetime="2026-10-23">23 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Ghost notes in tab as printed: the fret in parentheses, nothing more.</p>
+        <p class="release-lead" lang="de">Ghost Notes in der Tabulatur wie gedruckt: der Bund in Klammern, sonst nichts.</p>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li><code>KanteTabLane</code> and <code>KanteTabStaff</code> no longer draw "( )" above a ghost note's parenthesized fret; in sixteenths the two ran together. A technique result frames the fret instead.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTabLane</code> und <code>KanteTabStaff</code> zeichnen über dem geklammerten Bund einer Ghost Note kein „( )“ mehr; bei Sechzehnteln lief beides ineinander. Ein Technik-Ergebnis rahmt stattdessen den Bund.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.37-ghost.png" alt="Tab lane and tablature with ghost notes as a fret in parentheses and no sign above; one ghost note framed as played, one framed dashed and struck as unheard" loading="lazy"><figcaption><span lang="en">Ghost notes in lane and tab: the fret in parentheses; a result frames it (demo data)</span><span lang="de">Ghost Notes in Lane und Tab: der Bund in Klammern; ein Ergebnis rahmt ihn (Demodaten)</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-137"><span lang="en">All changes in 1.37 →</span><span lang="de">Alle Änderungen in 1.37 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.36.0">
       <div class="release-head"><b class="release-version">1.36</b><time datetime="2026-10-23">23 Oct 2026</time></div>
       <div class="release-body">
@@ -488,7 +507,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.36.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.37.0</p></div>
 </footer>
 
 <script>
