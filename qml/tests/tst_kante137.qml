@@ -46,11 +46,24 @@ TestCase {
         return marksIn(item).filter(function (m) { return m.drawn }).map(function (m) { return m.technique })
     }
 
+    // Without a result the ghost's mark draws nothing, but it stays visible (in the
+    // accessibility tree) and named, so screen readers still hear "ghost note".
+    function checkGhostNamed(item) {
+        var ghost = marksIn(item).filter(function (m) { return m.technique === "ghost" })[0]
+        verify(ghost, "a mark for the ghost note")
+        verify(!ghost.drawn)
+        verify(ghost.visible, "the ghost's mark stays in the accessibility tree")
+        compare(ghost.Accessible.name, KanteStyle.techniqueName("ghost"))
+        var painted = findAll(ghost, function (c) { return c.visible })
+        compare(painted.length, 0, "nothing painted")
+    }
+
     function test_staff() {
         var s = createTemporaryObject(staffComponent, stage(), { notes: notes(), bars: [0] })
         waitForRendering(s)
         compare(drawnTechniques(s), ["hammer"])
         compare(s.layout.frets.filter(function (f) { return f.text === "(3)" }).length, 1)
+        checkGhostNamed(s)
 
         // With a result the ghost's mark frames the parenthesized fret, without a sign of its own.
         s.setTechniqueResult(0, "played")
@@ -66,6 +79,7 @@ TestCase {
         tryVerify(function () { return drawnTechniques(l).length === 1 }, 3000)
         compare(drawnTechniques(l), ["hammer"])
         compare(findAll(l, function (c) { return c.text === "(3)" }).length, 1)
+        checkGhostNamed(l)
         l.setTechniqueResult(0, "unheard")
         tryVerify(function () { return drawnTechniques(l).indexOf("ghost") >= 0 }, 3000)
     }
