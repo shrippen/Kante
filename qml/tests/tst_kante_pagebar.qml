@@ -174,6 +174,42 @@ TestCase {
         return tabs(b)[0].parent
     }
 
+    Component {
+        id: crowdedComponent
+        KantePageBar {
+            model: ["Inputs", "Audio", "Outputs", "Setup"]
+            Text { text: "PROGRAMM" }
+            Rectangle { implicitWidth: 120; implicitHeight: 24; color: KanteStyle.stageColor }
+            Rectangle { implicitWidth: 90; implicitHeight: 24; color: KanteStyle.stageColor }
+        }
+    }
+
+    // Created narrower than its trailing items (a layout not yet sized, as in lmix) with a later
+    // page, then widened while the scroll still runs, so every tab fits: the tabs start at the
+    // left edge again, none scrolled away. Kind Kante: the scroll animates there.
+    function test_narrow_start_then_wide_data() {
+        return [
+            { tag: "tab area below zero", narrow: 193, after: 30 },
+            { tag: "tab area below zero, at once", narrow: 193, after: 0 },
+            { tag: "tab area small", narrow: 360, after: 30 },
+            { tag: "tab area small, at once", narrow: 360, after: 0 }
+        ]
+    }
+    function test_narrow_start_then_wide(data) {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        let b = createTemporaryObject(crowdedComponent, tc.Window.contentItem, { width: data.narrow, currentIndex: 2 })
+        wait(data.after)
+        b.width = 780
+        wait(400)
+        let t = tabs(b)
+        let flick = t[0].parent.parent.parent
+        verify(flick.width >= row(b).width, "all tabs fit")
+        compare(flick.contentX, 0)
+        for (let i = 0; i < t.length; i++) {
+            verify(t[i].inView, "tab " + i + " in view")
+        }
+    }
+
     function test_builds_in_every_kind() {
         let kinds = [KanteStyle.Kind.System, KanteStyle.Kind.Kante, KanteStyle.Kind.KanteLight]
         let b = createTemporaryObject(barComponent, tc.Window.contentItem)
