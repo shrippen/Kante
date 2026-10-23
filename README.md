@@ -792,7 +792,8 @@ The transport's toggles in Kontra (owner, 14.10.): metronome and count-in, both 
 
 | Element | Web | QML |
 |---|---|---|
-| Transport toggles | – | `KanteTransportBar`: loop, metronome and count-in show their state by the lamp alone (filled square on, hollow off), never as a filled button; screen readers get them as check boxes (`Accessible.checked`) |
+| Transport toggles | – | `KanteTransportBar`: loop, metronome and count-in show their state by the lamp alone (filled square on, hollow off), never as a filled button; screen readers get them as check boxes (`Accessible.checked`). They stay checkable and checked with the app's state, so Qt reports it when a screen reader starts after the app |
+| Tool button without fill | – | `KanteToolButton.fillChecked` (default true): false keeps a checked button unfilled in Kante, for a toggle that shows its state itself; `filled` (read only) is `checked && fillChecked`. The platform style in System draws checked as it does |
 
 ### Changed in Kante 1.37
 

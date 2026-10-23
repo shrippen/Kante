@@ -99,8 +99,17 @@ FocusScope {
         rightPadding: KanteStyle.unit(10)
         implicitWidth: Math.ceil(leftPadding + words.advanceWidth + rightPadding + KanteStyle.unit(2))
         TextMetrics { id: words; font: toggle.font; text: toggle.text }
-        // The app owns the state: the click goes to the app, the lamp shows its answer.
-        onClicked: requested()
+        // Checkable and checked as the app says, so Qt reports the state to screen readers
+        // (it sets Accessible.checked from `checked` when a screen reader starts); not filled,
+        // the lamp shows it.
+        checkable: true
+        checked: on
+        fillChecked: false
+        // The app owns the state: give the click to the app and show its answer.
+        onToggled: {
+            checked = Qt.binding(function () { return toggle.on })
+            requested()
+        }
         Accessible.role: Accessible.CheckBox
         Accessible.checkable: true
         Accessible.checked: on

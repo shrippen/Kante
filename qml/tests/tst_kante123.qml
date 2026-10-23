@@ -412,8 +412,17 @@ TestCase {
         verify(!loop.Accessible.checked, "stays off until the app turns looping on")
         bar.looping = true
         verify(loop.Accessible.checked)
-        // 1.38: the lamp shows the state, the button is never filled.
-        verify(!loop.checked)
+        // 1.38: the lamp shows the state, the button is not filled. It stays checkable and
+        // checked with the app's state: Qt copies `checked` and `checkable` into the
+        // accessible state when a screen reader starts.
+        verify(loop.checkable)
+        verify(loop.checked)
+        verify(!loop.filled)
+        loop.click()
+        compare(loopSpy.count, 2)
+        verify(loop.checked, "stays on until the app turns looping off")
+        bar.looping = false
+        verify(!loop.checked && !loop.Accessible.checked)
         compare(loop.Accessible.name, "Schleife")
     }
 
