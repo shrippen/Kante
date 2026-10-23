@@ -840,6 +840,70 @@ TestCase {
         }
     }
 
+    Component {
+        id: sliderComponent
+        QQC2.Slider {
+            id: sl
+            property alias skin: sk
+            width: 200
+            height: 200
+            from: 0
+            to: 1
+            KanteSliderSkin { id: sk; control: sl }
+        }
+    }
+
+    function sliderPart(slider, name) {
+        for (let i = 0; i < slider.skin.children.length; i++) {
+            const c = slider.skin.children[i]
+            if (c.objectName === name)
+                return c
+        }
+        return null
+    }
+
+    // A vertical fader: track along the height, handle moves in y, fill from the bottom.
+    function test_sliderSkinVertical() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const s = createTemporaryObject(sliderComponent, tc, { orientation: Qt.Vertical, value: 0.25 })
+        verify(s !== null)
+        verify(s.skin.vertical)
+        const track = sliderPart(s, "kanteSliderTrackVertical")
+        const handle = sliderPart(s, "kanteSliderHandleVertical")
+        verify(track !== null && handle !== null, "vertical parts exist")
+        compare(track.y, s.topPadding)
+        compare(track.height, s.availableHeight)
+        compare(s.visualPosition, 0.75)
+        const fill = track.children[0]
+        fuzzyCompare(fill.height, 0.25 * track.height, 0.001)
+        fuzzyCompare(fill.y + fill.height, track.height, 0.001)
+        const span = s.availableHeight - handle.height
+        fuzzyCompare(handle.y, s.topPadding + 0.75 * span, 0.001)
+        s.value = 1
+        fuzzyCompare(handle.y, s.topPadding, 0.001)
+        fuzzyCompare(fill.height, track.height, 0.001)
+        s.value = 0
+        fuzzyCompare(handle.y, s.topPadding + span, 0.001)
+        compare(fill.height, 0)
+        // the handle stays centred across the track
+        fuzzyCompare(handle.x + handle.width / 2, s.width / 2, 1)
+    }
+
+    // Horizontal stays as it was: handle in x, fill from the left.
+    function test_sliderSkinHorizontal() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const s = createTemporaryObject(sliderComponent, tc, { value: 0.25 })
+        verify(!s.skin.vertical)
+        const track = sliderPart(s, "kanteSliderTrack")
+        const handle = sliderPart(s, "kanteSliderHandle")
+        compare(track.x, s.leftPadding)
+        compare(track.width, s.availableWidth)
+        compare(track.height, 4)
+        fuzzyCompare(track.children[0].width, 0.25 * track.width, 0.001)
+        fuzzyCompare(handle.x, s.leftPadding + 0.25 * (s.availableWidth - handle.width), 0.001)
+        fuzzyCompare(handle.y + handle.height / 2, s.height / 2, 1)
+    }
+
     // Kante -> Kante Light or System while a dialog exists (also the saved style applied
     // after start): the platform's background, header and footer come back visible and at
     // the dialog's size, not hidden as Qt left them when Kante replaced them.

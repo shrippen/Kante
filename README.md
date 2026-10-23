@@ -75,7 +75,7 @@ The ground sits between Gruvbox `light0` (`#fbf1c7`, too yellow) and `#f5f1e8` (
 
 ### App components (`.tile`, `.stage`, `.band`, `.field`, `.pill`, `.dialog`, …)
 
-Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags and `KanteStyle.warningColor` for mild warnings), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading). Tiers (`data-tier`): green `--aqua`, yellow `--warn` (orange, since 1.13), red `--red`. Colour labels (`data-label="green|yellow|red|blue|purple"` on `.tile`, `.band`, `.strip button`, `.fact`, `.progress-bar > i`) show a named colour that is the data itself, e.g. Kader's groups, which become darktable / Lightroom colour labels: yellow stays yellow. Status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
+Landing pages do not need them; apps do (used by the Kader companion UI). They follow the theme roles (`--field`, `--score`, `--hl`, `--scrim`; in QML also `KanteStyle.tagColor` for topics and tags and `KanteStyle.warningColor` for mild warnings), so they work in the dark default and in the light theme. Image stages stay dark in both themes on purpose (judging colour on a beige ground is misleading); in QML `KanteStyle.stageColor`. Tiers (`data-tier`): green `--aqua`, yellow `--warn` (orange, since 1.13), red `--red`. Colour labels (`data-label="green|yellow|red|blue|purple"` on `.tile`, `.band`, `.strip button`, `.fact`, `.progress-bar > i`) show a named colour that is the data itself, e.g. Kader's groups, which become darktable / Lightroom colour labels: yellow stays yellow. Status is never colour alone. Reference cards live in `ds-bundle/components/App/`. Behaviour (dragging, handles, locking) is the app's job.
 
 ### Local theme override rule
 
@@ -323,7 +323,7 @@ QQC2.RadioButton { KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape
 | `KanteScope` | Hands the Kante colours to an item's `Kirigami.Theme`, so plain controls below follow. Popups need their own |
 | `KanteCard` | Card with the cut corner and an optional accent bar (`chamfer`, `barColor`) |
 | `KanteButton`, `KanteToolButton`, `KanteTextField`, `KanteHeading`, `KanteDialog` | Wrappers: the platform control in System; in Kante square, uppercase Rajdhani, sunken fields, accent-filled primary (`emphasis`) |
-| `KanteCheckSkin`, `KanteFieldSkin`, `KanteSliderSkin`, `KantePopupSkin`, `KanteMessageSkin`, `KanteDialogSkin`, `KantePageTitle` | Skins placed *inside* an existing control (check box, radio button, switch, combo/spin box, text area, slider, menu, `Kirigami.InlineMessage`, Kirigami dialog, page header) |
+| `KanteCheckSkin`, `KanteFieldSkin`, `KanteSliderSkin`, `KantePopupSkin`, `KanteMessageSkin`, `KanteDialogSkin`, `KantePageTitle` | Skins placed *inside* an existing control (check box, radio button, switch, combo/spin box, text area, slider, menu, `Kirigami.InlineMessage`, Kirigami dialog, page header). `KanteSliderSkin` follows the slider's `orientation`: with `Qt.Vertical` (a fader) the track runs along the height, filled from the bottom |
 | `KantePullToRefresh` | Pull to refresh for a `Kirigami.Page` with a `QQC2.ScrollView` |
 | `../KantePlasma` | `KantePlasmaButton`, `KantePlasmaToolButton`, `KantePlasmaHeading`: the same wrappers on PlasmaComponents3 / PlasmaExtras for Plasma widgets |
 | `fonts/` | Rajdhani 600/700, JetBrains Mono 400/500 (SIL OFL), loaded by `KanteStyle`, never installed; Bravura (SIL OFL, `OFL-Bravura.txt`), loaded only by the notation components (1.23) |
@@ -798,9 +798,22 @@ KanteKpi for screen readers (Kontra's start page, persona P7): Orca read the fig
 
 The loop range in tablature and bass staff for Kontra (QA 13.10., persona P2): the workshop mode loops bars 3 and 4, the tab lane showed it, tab and notes did not. Same properties, roles and shape as on `KanteTabLane`. Catalogue with shots in Kante and Kante Light: [`proposals/2026-10-kontra/bauteile.html`](proposals/2026-10-kontra/bauteile.html) (`loop-*`).
 
+From lmix (a broadcast and show app on Kante), which had kept them locally until its review sent them here: a page bar for apps with a few large pages (Inputs, Audio, Outputs, Setup), a ground for picture areas that stays dark in Leinen too, and vertical sliders for its faders.
+
 | Element | Web | QML |
 |---|---|---|
 | Loop in tab and staff | – | `KanteTabStaff` and `KanteBassStaff`: `loopStart`, `loopEnd` (seconds, -1 for none, as on the lane): a `tintHighlightColor` tint with `focusColor` bracket edges ([ and ]), as high as the cursor, behind the staff. One part per line (`loopParts` [{x, w, sys, left, right}]); a loop that runs on to the next line is open at the line end and goes on there without bracket. An edge on a bar start or end sits on the bar line, else at the time's x. In tablature the fret grounds inside the loop carry the tint |
+| Page bar | – | `KantePageBar`: the bar at the foot of an app window that switches pages (as DaVinci Resolve's page bar). `model` (labels, mono uppercase as Kante labels), `currentIndex`, `activated(index)` (fires on every change made in the bar, not for the current page again), `tooltips` (optional hints). The current tab is raised on `cardColor` (cut top right) with a marker line in `focusColor` along its top edge; hover is `tint1Color`; the ground is `sunkenColor` with a `ruleColor` line on top. `busy` (list of bools) puts a dot on a tab, something runs on that page; `busyKinds` (`KantePageBar.Kind` Normal, Info, Warning, Error) colours it (accent text, info, warning, negative), Warning and Error draw a diamond instead of a round dot, so the kind is not colour alone; screen readers hear `kindNames` (German by default, the app sets its translations) as the tab's description. Items declared inside the bar sit at its right end (`trailing`, the default property: a program picture, a panic button), `leading` takes items for the left end. Tabs scroll sideways when they do not fit and keep the current one in view. Tab focus, Left / Right, Home / End; a focus frame around the current tab. Each tab is an `Accessible.PageTab` (name, selected), the bar a `PageTabList`. System: no cuts, no motion, platform colours |
+| Picture areas | `.stage` (dark in both themes) | `KanteStyle.stageColor` (`#282828`, Gruvbox bg0) and `stageTextColor` (`#ebdbb2`, for a "No signal" label or a safe-area frame): the ground of monitors, video previews and image stages, dark in every kind and scheme, Leinen, Kante Light and a light platform theme in System included, because colour is judged there. Opaque; roles `stage` and `stageText` in `palette.json` (`app.dark` and `app.light`) |
+| Vertical slider | – | `KanteSliderSkin` follows `control.orientation`: with `Qt.Vertical` (a fader) the sunken track runs along `availableHeight`, the accent fill grows from the bottom to the value and the square handle moves in y. Horizontal sliders are unchanged; `vertical` (read only) on the skin |
+
+### Fixed in Kante 1.34.1
+
+Two-digit years in `KanteDateField` (found in Plasmai): with a short format such as "dd.MM.yy" or "M/d/yy" the field shows "26", and leaving it read its own text back as 1926 (`Date.fromLocaleString`). Plasmai saved a running entry's start 100 years back, and Kimai refused a stopped one as too long.
+
+| Change | Web | QML |
+|---|---|---|
+| Two-digit years in this century | – | `KanteDateField`: a two-digit year is the year in the century around today, at most `twoDigitYearsAhead` (20) ahead: "26" is 2026, "99" is 1999. `fullYear(twoDigits)`. Applies to the field's `format` and the typed fallback ("1.10.26") |
 
 ### Added in Kante 1.34
 
@@ -888,6 +901,7 @@ Both sides use the same palette values (`tools/check-tokens.py` fails if `palett
 | Accent (primary, active) | `--yellow` | `accentColor` / `accentTextColor` | `#fabd2f` | fill `#d79921`, text `#8a5a00` |
 | Success / warning / error | `--aqua` / `--orange` / `--red` | `positive…` / `neutral…` / `negativeTextColor` | bright | darkened |
 | Links, info | `--cyan` (`--link`, `--info`) | `infoColor` | `#5ccfc4` | `#0f6b66` |
+| Picture areas (monitors, previews) | `.stage` | `stageColor` / `stageTextColor` (every kind) | `#282828` / `#ebdbb2` | the same: stays dark |
 | Cut corner | `--chamfer` (16px) | `chamfer`, `chamferSmall` | 16 / 10 px at a grid unit of 18 | same |
 | Headings font | `--font-heading`, uppercase | `headingFont(size)` | Rajdhani 700, +0.08em | same |
 | Labels | small uppercase mono | `labelFont()` | JetBrains Mono, +0.14em | same |
