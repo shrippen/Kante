@@ -131,6 +131,42 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.35.0">
+      <div class="release-head"><b class="release-version">1.35</b><time datetime="2026-10-23">23 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Loops in tab and notes: tablature and bass staff show the loop range the tab lane already showed. From lmix: a page bar, dark picture areas and vertical sliders.</p>
+        <p class="release-lead" lang="de">Schleifen in Tab und Noten: Tabulatur und Bassnoten zeigen den Loop-Bereich, den bisher nur die Tab-Lane zeigte. Aus lmix: eine Seitenleiste, dunkle Bildflächen und senkrechte Schieberegler.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteTabStaff</code> and <code>KanteBassStaff</code>: <code>loopStart</code> and <code>loopEnd</code> as on the tab lane, a tint with bracket edges, so a looped passage is visible in every view, not only by colour.</li>
+            <li>A loop across a line break continues on the next line; brackets only where it really starts and ends.</li>
+            <li><code>KantePageBar</code>: the bar at the foot of an app window that switches between a few large pages. The current page is raised with a marker line; a dot on a tab says something runs there, Warning and Error as a diamond, so the kind is not colour alone. Keyboard and screen readers included.</li>
+            <li><code>KanteStyle.stageColor</code> and <code>stageTextColor</code>: the ground of monitors and video previews, dark in every kind and in Leinen too, as the web <code>.stage</code>.</li>
+            <li><code>KanteSliderSkin</code> draws vertical sliders (faders): the track runs along the height, filled from the bottom.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTabStaff</code> und <code>KanteBassStaff</code>: <code>loopStart</code> und <code>loopEnd</code> wie in der Tab-Lane, eine Tönung mit Klammerkanten, damit eine Schleife in jeder Ansicht zu sehen ist, nicht nur an der Farbe.</li>
+            <li>Eine Schleife über einen Zeilenumbruch geht in der nächsten Zeile weiter; Klammern nur, wo sie wirklich beginnt und endet.</li>
+            <li><code>KantePageBar</code>: die Leiste am Fuß eines App-Fensters, die zwischen wenigen großen Seiten umschaltet. Die aktuelle Seite ist hervorgehoben und hat eine Markierungslinie; ein Punkt auf einem Reiter zeigt, dass dort etwas läuft, Warnung und Fehler als Raute, damit die Art nicht nur an der Farbe hängt. Mit Tastatur und Screenreader.</li>
+            <li><code>KanteStyle.stageColor</code> und <code>stageTextColor</code>: der Grund von Monitoren und Videovorschauen, dunkel in jeder Art und auch in Leinen, wie <code>.stage</code> im Web.</li>
+            <li><code>KanteSliderSkin</code> zeichnet senkrechte Schieberegler (Fader): Die Spur läuft entlang der Höhe und füllt sich von unten.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Additions only: existing calls keep working; without a loop nothing changes, horizontal sliders look as before.</li>
+          </ul>
+          <ul lang="de">
+            <li>Nur Ergänzungen: bestehende Aufrufe funktionieren weiter; ohne Schleife ändert sich nichts, waagerechte Schieberegler sehen aus wie bisher.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.35-loop.png" alt="Tab lane, tablature and bass staff with bars 3 and 4 as a loop across the line break" loading="lazy"><figcaption><span lang="en">Bars 3 and 4 looped in lane, tab and staff (demo data)</span><span lang="de">Takte 3 und 4 als Schleife in Lane, Tab und Noten (Demodaten)</span></figcaption></figure>
+          <figure><img src="shots/release-1.35-pagebar.png" alt="A dark picture area with two vertical faders beside it, and below a page bar with the pages Mix, Audio, Outputs and Setup; Audio is current, Outputs carries a warning diamond" loading="lazy"><figcaption><span lang="en">Page bar, picture area and vertical sliders, in Kante and Leinen</span><span lang="de">Seitenleiste, Bildfläche und senkrechte Schieberegler, in Kante und Leinen</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-135"><span lang="en">All changes in 1.35 →</span><span lang="de">Alle Änderungen in 1.35 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.34.1">
       <div class="release-head"><b class="release-version">1.34.1</b><time datetime="2026-10-13">13 Oct 2026</time></div>
       <div class="release-body">
@@ -436,7 +472,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.34.1</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.35.0</p></div>
 </footer>
 
 <script>

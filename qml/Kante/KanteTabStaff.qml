@@ -41,6 +41,10 @@ import "."
  *   marks        Full, Quiet (fret numbers in the text colour, small muted signs) or Off;
  *                setNoteState(index, state[, cents]) / resetStates() change states without a new
  *                layout (the layout is computed once per page, the states are read live)
+ *   loopStart, loopEnd  loop range in seconds, -1 for none (1.35): a tint with bracket edges
+ *                as on KanteTabLane, one part per line; a loop that runs on to the next
+ *                line is open at the line end and goes on there without bracket. An edge
+ *                on a bar start or end sits on the bar line
  *
  * The state of a note shows above the staff as a KanteNoteMark and in the colour of
  * its fret number. The layout is computed once per page (not per frame): only the
@@ -64,6 +68,9 @@ Item {
     property var notes: []
     property var bars: []
     property real position: 0
+    /** Loop range in seconds, -1 for none (1.35). */
+    property real loopStart: -1
+    property real loopEnd: -1
     property int barsPerSystem: 0
     property int systems: 1
     property bool rhythm: true
@@ -192,6 +199,9 @@ Item {
 
     readonly property var layout: computeLayout(firstBar, perSystem, Math.max(1, systems), width, ls, notes, barList,
                                                 strings, lowStringOnTop, rhythm)
+    /** Loop parts of the page, one per line: [{x, w, sys, left, right}] (1.35). */
+    readonly property var loopParts: loopLayout(firstBar, perSystem, Math.max(1, systems), width, barList,
+                                                loopStart, loopEnd)
 
     implicitWidth: KanteStyle.unit(720)
     implicitHeight: Math.ceil(systemHeight * Math.max(1, systems))
@@ -322,6 +332,51 @@ Item {
     function sysOf(b) {
         return Math.floor((b - firstBar) / perSystem)
     }
+    /** True when time t lies in the loop range (1.35). */
+    function inLoop(t) {
+        return loopStart >= 0 && loopEnd > loopStart && t >= loopStart - 1e-6 && t < loopEnd - 1e-6
+    }
+    /** x of a loop edge at time t in bar b: on the bar line at a bar start or end, else xOf. */
+    function loopX(t, b) {
+        var bar = barList[b]
+        var left = headerWidth + ((b - firstBar) % perSystem) * barWidth
+        if (Math.abs(t - bar.time) < 1e-3) {
+            return left
+        }
+        if (Math.abs(t - bar.end) < 1e-3) {
+            return left + barWidth
+        }
+        return xOf(t, b)
+    }
+    /**
+     * The loop cut into lines: per line the part of [from, to] it shows. left / right: the
+     * loop starts / ends on this line (bracket edge), else it runs on (open edge).
+     */
+    function loopLayout(first, per, nsys, w, bl, from, to) {
+        var out = []
+        if (w <= 0 || bl.length === 0 || from < 0 || to <= from) {
+            return out
+        }
+        var last = Math.min(bl.length - 1, first + per * nsys - 1)
+        for (var s = 0; s < nsys; s++) {
+            let b0 = first + s * per
+            let b1 = Math.min(last, b0 + per - 1)
+            if (b1 < b0) {
+                break
+            }
+            let t0 = Math.max(from, bl[b0].time)
+            let t1 = Math.min(to, bl[b1].end)
+            if (t1 <= t0 + 1e-6) {
+                continue
+            }
+            // The bar of each edge, kept on this line; the end belongs to the bar before it.
+            let x0 = loopX(t0, Math.max(b0, Math.min(b1, barAt(t0))))
+            let x1 = loopX(t1, Math.max(b0, Math.min(b1, barAt(t1 - 1e-3))))
+            out.push({ x: x0, w: Math.max(1, x1 - x0), sys: s, left: from >= bl[b0].time - 1e-6,
+                       right: to <= bl[b1].end + 1e-6 })
+        }
+        return out
+    }
     /** Rhythm of a duration in quarters: {level: beams/flags (0 none), stem: 0 none / 1 short / 2 full, dot}. */
     function rhythmOf(beats) {
         var b = Number(beats) || 0
@@ -424,7 +479,7 @@ Item {
             if (technique === "dead") {
                 fretText = "x"
             }
-            L.frets.push({ x: x, y: y, text: fretText, index: i, label: n.label || "", str: str, technique: technique })
+            L.frets.push({ x: x, y: y, text: fretText, index: i, label: n.label || "", str: str, technique: technique, time: t })
             L.boxes[i] = { x: x, sys: sys }
             var prev = onsets.length ? onsets[onsets.length - 1] : null
             if (prev && Math.abs(prev.t - t) < 1e-3) {
@@ -498,6 +553,35 @@ Item {
             g = h + 1
         }
         return L
+    }
+
+    // Loop range (1.35): a tint with bracket edges ([ and ]) as on KanteTabLane, not colour
+    // alone; as high as the cursor, behind the staff so frets stay readable.
+    Repeater {
+        model: staff.loopParts
+        delegate: Item {
+            id: loopPart
+            required property var modelData
+            x: modelData.x
+            y: modelData.sys * staff.systemHeight + staff.staffTop - staff.ls * 0.8
+            width: modelData.w
+            height: staff.staffHeight + staff.ls * 1.6
+            Rectangle { anchors.fill: parent; color: KanteStyle.tintHighlightColor }
+            Repeater {
+                model: [loopPart.modelData.left, loopPart.modelData.right]
+                delegate: Item {
+                    required property int index
+                    required property var modelData
+                    visible: modelData === true
+                    x: index === 0 ? 0 : loopPart.width - width
+                    width: KanteStyle.unit(8)
+                    height: loopPart.height
+                    Rectangle { x: parent.index === 0 ? 0 : parent.width - width; width: 2; height: parent.height; color: KanteStyle.focusColor }
+                    Rectangle { width: parent.width; height: 2; color: KanteStyle.focusColor }
+                    Rectangle { y: parent.height - 2; width: parent.width; height: 2; color: KanteStyle.focusColor }
+                }
+            }
+        }
     }
 
     // Selection band behind the current note.
@@ -634,7 +718,9 @@ Item {
             y: modelData.y - height / 2
             width: fret.implicitWidth + staff.ls * 0.3
             height: Math.round(staff.ls * 0.95)
-            color: current ? "transparent" : staff.groundColor
+            // In the loop the ground carries the loop tint (1.35).
+            color: current ? "transparent"
+                 : staff.inLoop(modelData.time) ? Qt.tint(staff.groundColor, KanteStyle.tintHighlightColor) : staff.groundColor
             Text {
                 id: fret
                 anchors.centerIn: parent
