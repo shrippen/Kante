@@ -17,6 +17,17 @@ TestCase {
     function stage() {
         return tc.Window.contentItem
     }
+    function findAll(item, pred) {
+        var out = []
+        for (var i = 0; i < item.children.length; i++) {
+            var c = item.children[i]
+            if (pred(c)) {
+                out.push(c)
+            }
+            out = out.concat(findAll(c, pred))
+        }
+        return out
+    }
 
     // Three bars per line, two lines: bars 3 and 4 (2.4 s to 4.8 s) cross the line break.
     Component { id: tabComponent; KanteTabStaff { width: 900; barsPerSystem: 3; systems: 2 } }
@@ -94,5 +105,21 @@ TestCase {
         var s = createTemporaryObject(tabComponent, stage(), { notes: notes(), bars: bars(), loopStart: 2.4, loopEnd: 4.8, position: 0.6 })
         waitForRendering(s)
         verify(s.inLoop(2.4) && s.inLoop(4.5) && !s.inLoop(4.8) && !s.inLoop(2.1))
+        // The fret grounds themselves: tinted inside the loop, plain ground outside.
+        var grounds = findAll(s, function (c) {
+            return c.modelData !== undefined && c.modelData !== null && c.modelData.str !== undefined
+                && c.modelData.time !== undefined && c.current === false
+        })
+        var inside = grounds.filter(function (g) { return s.inLoop(g.modelData.time) })
+        var outside = grounds.filter(function (g) { return !s.inLoop(g.modelData.time) })
+        verify(inside.length > 0 && outside.length > 0)
+        var tinted = Qt.tint(s.groundColor, KanteStyle.tintHighlightColor)
+        verify(!Qt.colorEqual(tinted, s.groundColor))
+        for (var i = 0; i < inside.length; i++) {
+            verify(Qt.colorEqual(inside[i].color, tinted), "fret at " + inside[i].modelData.time + " s carries the loop tint")
+        }
+        for (var j = 0; j < outside.length; j++) {
+            verify(Qt.colorEqual(outside[j].color, s.groundColor), "fret at " + outside[j].modelData.time + " s keeps the ground")
+        }
     }
 }
