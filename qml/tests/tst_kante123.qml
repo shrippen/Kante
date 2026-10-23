@@ -393,7 +393,7 @@ TestCase {
     function findToggle(item, label) {
         for (var i = 0; i < item.children.length; i++) {
             var c = item.children[i]
-            if (c.checkable === true && c.text === label) return c
+            if (c.on !== undefined && c.text === label) return c
             var r = findToggle(c, label)
             if (r) return r
         }
@@ -406,12 +406,23 @@ TestCase {
         loopSpy.target = bar
         var loop = findToggle(bar, "Schleife")
         verify(loop !== null)
-        verify(!loop.checked)
+        verify(!loop.Accessible.checked)
         loop.click()
         compare(loopSpy.count, 1)
-        verify(!loop.checked, "stays off until the app turns looping on")
+        verify(!loop.Accessible.checked, "stays off until the app turns looping on")
         bar.looping = true
+        verify(loop.Accessible.checked)
+        // 1.38: the lamp shows the state, the button is not filled. It stays checkable and
+        // checked with the app's state: Qt copies `checked` and `checkable` into the
+        // accessible state when a screen reader starts.
+        verify(loop.checkable)
         verify(loop.checked)
+        verify(!loop.filled)
+        loop.click()
+        compare(loopSpy.count, 2)
+        verify(loop.checked, "stays on until the app turns looping off")
+        bar.looping = false
+        verify(!loop.checked && !loop.Accessible.checked)
         compare(loop.Accessible.name, "Schleife")
     }
 
