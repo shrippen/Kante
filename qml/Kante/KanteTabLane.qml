@@ -500,7 +500,7 @@ Item {
                                 KanteTechniqueMark {
                                     id: techniqueMark
                                     readonly property bool ghost: note.technique === "ghost"
-                                    visible: drawn
+                                    visible: sign !== ""
                                     signVisible: !ghost
                                     technique: note.technique
                                     result: note.techniqueResult

@@ -23,7 +23,8 @@ import "."
  *
  *   signVisible  (1.37) false: no sign, only the result's frame and stroke, drawn only with
  *                a result. For a sign the note already carries, a ghost note's fret in
- *                parentheses in tab: the mark then frames that fret.
+ *                parentheses in tab: the mark then frames that fret. Without a result it
+ *                paints nothing but stays visible, so screen readers still name the technique.
  *
  * Names for screen readers: KanteStyle.techniqueName and techniqueResultName (an app sets
  * their translations once). Used by KanteTabLane, KanteTabStaff and KanteBassStaff.
@@ -58,7 +59,9 @@ Item {
     readonly property bool drawn: sign !== "" && (signVisible || framed)
     readonly property bool struck: result === "other" || result === "unheard"
 
-    visible: drawn
+    // Stays in the accessibility tree while it draws nothing (a ghost note without a result,
+    // signVisible false): screen readers still hear the technique (1.37).
+    visible: sign !== ""
     implicitHeight: KanteStyle.unit(14)
     // As wide as the sign needs at the height it is given.
     implicitWidth: Math.max(height, label.implicitWidth + height * 0.5)
