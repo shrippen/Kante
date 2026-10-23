@@ -77,6 +77,9 @@ Rectangle {
                     KanteTextField { text: "kader plasmoid"; invalid: true; Layout.preferredWidth: KanteStyle.unit(160) }
                     QQC2.ComboBox { model: ["Negativ, Farbe", "Dia"]; Layout.preferredWidth: KanteStyle.unit(160); KanteFieldSkin { control: parent } }
                     QQC2.Slider { value: 0.6; Layout.preferredWidth: KanteStyle.unit(160); KanteSliderSkin { control: parent } }
+                    // vertical: a fader, filled from the bottom
+                    QQC2.Slider { orientation: Qt.Vertical; value: 0.7; Layout.preferredHeight: KanteStyle.unit(120); KanteSliderSkin { control: parent } }
+                    QQC2.Slider { orientation: Qt.Vertical; value: 0.3; Layout.preferredHeight: KanteStyle.unit(120); KanteSliderSkin { control: parent } }
                 }
                 RowLayout {
                     spacing: KanteStyle.unit(24)
