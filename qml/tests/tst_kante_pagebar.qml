@@ -148,6 +148,32 @@ TestCase {
         verify(t.x >= flick.contentX - 1)
     }
 
+    // Restored at start-up (currentIndex set at creation, narrow bar): the tab is in view once laid out.
+    function test_initial_page_in_view() {
+        let b = createTemporaryObject(barComponent, tc.Window.contentItem, { width: 260, currentIndex: 3 })
+        wait(300)
+        let t = tabs(b)[3]
+        let flick = t.parent.parent.parent
+        verify(flick.contentX > 0, "scrolled to the last tab")
+        verify(t.x + t.width <= flick.contentX + flick.width + 1)
+        verify(t.x >= flick.contentX - 1)
+    }
+
+    // The trailing items grow: the tab area shrinks and the current tab stays in view.
+    function test_trailing_growth_keeps_current_in_view() {
+        let b = createTemporaryObject(barComponent, tc.Window.contentItem, { width: 520, currentIndex: 3 })
+        wait(300)
+        named(b, "program")[0].implicitWidth = 300
+        wait(300)
+        let t = tabs(b)[3]
+        let flick = t.parent.parent.parent
+        verify(flick.width < row(b).width)
+        verify(t.x + t.width <= flick.contentX + flick.width + 1)
+    }
+    function row(b) {
+        return tabs(b)[0].parent
+    }
+
     function test_builds_in_every_kind() {
         let kinds = [KanteStyle.Kind.System, KanteStyle.Kind.Kante, KanteStyle.Kind.KanteLight]
         let b = createTemporaryObject(barComponent, tc.Window.contentItem)

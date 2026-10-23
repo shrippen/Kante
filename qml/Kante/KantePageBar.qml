@@ -11,8 +11,9 @@ import "."
  *
  * `busy` (optional list of bools) puts a dot on a tab: something runs on that page while
  * another one is shown. `busyKinds` (optional, KantePageBar.Kind per tab) colours it: Normal
- * the accent (its text-safe shade, so the dot reads on Leinen too), Info, Warning, Error; Warning and Error draw a diamond instead of a round dot,
- * so the kind is not colour alone, and screen readers hear `kindNames` as the tab's description.
+ * the accent (its text-safe shade, so the dot reads on Leinen too), Info, Warning, Error;
+ * Warning and Error draw a diamond instead of a round dot, so the kind is not colour alone,
+ * and screen readers hear `kindNames` as the tab's description.
  *
  * Items declared inside the bar go to its right end (`trailing`, e.g. a small program picture
  * and a "Panic" button); `leading` takes items for the left end. The tabs scroll sideways when
@@ -100,8 +101,11 @@ FocusScope {
             flick.contentX = t.x + t.width - flick.width
         }
     }
-    onCurrentIndexChanged: ensureVisible()
-    onWidthChanged: ensureVisible()
+    // After the layout: the Row places its tabs in the polish step, so x is only right later.
+    function queueEnsureVisible() {
+        Qt.callLater(ensureVisible)
+    }
+    onCurrentIndexChanged: queueEnsureVisible()
 
     // Ground: sunken, with a rule along the top edge towards the page above.
     Rectangle {
@@ -136,10 +140,14 @@ FocusScope {
         interactive: contentWidth > width
         clip: true
         Behavior on contentX { NumberAnimation { duration: KanteStyle.duration; easing.type: Easing.OutCubic } }
+        // The tab area changes with the bar and with the leading and trailing items.
+        onWidthChanged: bar.queueEnsureVisible()
 
         Row {
             id: row
             height: parent.height
+            // Tabs placed or resized (model, font).
+            onWidthChanged: bar.queueEnsureVisible()
 
             Repeater {
                 id: rep
