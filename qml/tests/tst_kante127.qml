@@ -203,6 +203,24 @@ TestCase {
         verify(labels.every(function (l) { return l.visible }))
     }
 
+    // 1.39: fullWidth is what the steps take with every label shown, in every kind, and it
+    // follows a font change at run time (here the kind's heading font).
+    function test_stepsFullWidthMeasured() {
+        // Labels longer than the step's minimum width, so the font decides.
+        var s = createTemporaryObject(stepsComponent, stage(), {
+            model: ["Instrument und Anschluss wählen", "Eingangspegel einstellen", "Fertig"] })
+        var row = stepItems(s)[0].parent
+        verify(stepItems(s)[0].width > KanteStyle.unit(110))
+        for (var k = 0; k < kinds.length; k++) {
+            KanteStyle.kind = kinds[k]
+            wait(50)
+            fuzzyCompare(row.implicitWidth, s.fullWidth, 0.5, "kind " + kinds[k])
+            verify(!s.compact)
+            compare(s.width, s.fullWidth)
+        }
+        KanteStyle.kind = KanteStyle.Kind.Kante
+    }
+
     // 1.39: a layout that shrinks the steps and grows again gives the labels back (the
     // preferred width stays the full width, not the compact Row's implicit width).
     function test_stepsCompactInLayout() {

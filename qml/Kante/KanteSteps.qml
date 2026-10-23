@@ -31,27 +31,25 @@ Item {
 
     property alias spacing: row.spacing
 
-    /** Width all steps need with their labels. */
+    /** Width all steps need with their labels: the sum of each step's named width, taken
+     *  from its label (laid out whether shown or not), so it follows font changes. */
     readonly property real fullWidth: {
         let w = 0
-        const n = model ? model.length : 0
+        const n = steps.count
         for (let i = 0; i < n; i++) {
-            w += Math.max(KanteStyle.unit(110), labelMetrics.advanceWidth(model[i]) + KanteStyle.unit(24))
+            const it = repeater.itemAt(i)
+            w += it ? it.namedWidth : 0
         }
         return w + spacing * Math.max(0, n - 1)
     }
     /** Too narrow for every label: only the current step keeps its label. The steps' own
      *  size is fullWidth, whatever they show (1.39), so only a width set from outside (a
      *  layout) makes them compact, and they leave it again when that width grows. */
-    readonly property bool compact: width > 0 && width < fullWidth - KanteStyle.unit(4)
+    readonly property bool compact: width > 0 && width < fullWidth - 0.5
+    readonly property alias count: repeater.count
 
     implicitWidth: fullWidth
     implicitHeight: row.implicitHeight
-
-    FontMetrics {
-        id: labelMetrics
-        font: KanteStyle.headingFont(KanteStyle.defaultFont.pointSize)
-    }
 
     Accessible.role: Accessible.List
 
@@ -60,6 +58,7 @@ Item {
         spacing: 2
 
         Repeater {
+            id: repeater
             model: steps.model
             delegate: Item {
                 id: step
@@ -70,8 +69,9 @@ Item {
                 readonly property string stateKey: done ? "done" : (now ? "current" : "upcoming")
                 readonly property real signSize: Math.max(KanteStyle.unit(20), number.implicitHeight + KanteStyle.unit(4))
                 readonly property bool named: !steps.compact || now
-                width: named ? Math.max(KanteStyle.unit(110), label.implicitWidth + KanteStyle.unit(24))
-                             : signSize + KanteStyle.unit(20)
+                /** Width with the label shown. */
+                readonly property real namedWidth: Math.max(KanteStyle.unit(110), label.implicitWidth + KanteStyle.unit(24))
+                width: named ? namedWidth : signSize + KanteStyle.unit(20)
                 height: Math.max(KanteStyle.unit(60), label.y + label.implicitHeight + KanteStyle.unit(8))
 
                 Accessible.role: Accessible.ListItem
