@@ -90,16 +90,21 @@ FocusScope {
         return KanteStyle.accentTextColor
     }
 
+    // Scrolls the current tab into view, within the content: a tab area not yet laid out (width
+    // 0 or below) scrolls nothing, and once the tabs fit the scroll goes back to 0. It also runs
+    // when the tab area grows, so a scroll aimed at the narrow area (still animating) is replaced.
     function ensureVisible() {
         let t = rep.count > 0 ? rep.itemAt(currentIndex) : null
-        if (!t) {
+        if (!t || flick.width <= 0) {
             return
         }
-        if (t.x < flick.contentX) {
-            flick.contentX = t.x
-        } else if (t.x + t.width > flick.contentX + flick.width) {
-            flick.contentX = t.x + t.width - flick.width
+        let x = flick.contentX
+        if (t.x < x) {
+            x = t.x
+        } else if (t.x + t.width > x + flick.width) {
+            x = t.x + t.width - flick.width
         }
+        flick.contentX = Math.max(0, Math.min(x, flick.contentWidth - flick.width))
     }
     // After the layout: the Row places its tabs in the polish step, so x is only right later.
     function queueEnsureVisible() {
