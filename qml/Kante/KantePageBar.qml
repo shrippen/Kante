@@ -139,7 +139,11 @@ FocusScope {
         boundsBehavior: Flickable.StopAtBounds
         interactive: contentWidth > width
         clip: true
-        Behavior on contentX { NumberAnimation { duration: KanteStyle.duration; easing.type: Easing.OutCubic } }
+        // Animate only the scrolls of ensureVisible(); a drag or flick follows the pointer directly.
+        Behavior on contentX {
+            enabled: !flick.dragging && !flick.flicking
+            NumberAnimation { duration: KanteStyle.duration; easing.type: Easing.OutCubic }
+        }
         // The tab area changes with the bar and with the leading and trailing items.
         onWidthChanged: bar.queueEnsureVisible()
 
