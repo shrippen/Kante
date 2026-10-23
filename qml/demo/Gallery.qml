@@ -105,6 +105,21 @@ Rectangle {
                 KanteTabBar { model: ["Alle", "Prüfen", "Fertig"]; counts: [42, 7, 35] }
                 KanteSegmented { model: ["Raster", "Liste", "Bühne"] }
                 KanteSteps { model: ["Einlesen", "Erkennen", "Prüfen", "Übergeben"]; current: 2 }
+                // Page bar at the window's foot: busy dots by kind, a picture area (stage) and an action at the right end.
+                KantePageBar {
+                    Layout.fillWidth: true
+                    model: ["Eingänge", "Audio", "Ausgänge", "Einstellungen"]
+                    tooltips: ["Quellen und Monitore", "Mischpult", "Aufnahme und Stream", ""]
+                    busy: [false, true, true, false]
+                    busyKinds: [0, KantePageBar.Kind.Normal, KantePageBar.Kind.Warning, 0]
+                    Rectangle {
+                        implicitWidth: KanteStyle.unit(56)
+                        implicitHeight: KanteStyle.unit(32)
+                        color: KanteStyle.stageColor
+                        Text { anchors.centerIn: parent; text: "PGM"; font: KanteStyle.labelFont(); color: KanteStyle.stageTextColor }
+                    }
+                    KanteButton { text: "Alles aus"; emphasis: KanteButton.Emphasis.Destructive; size: KanteButton.Size.Small }
+                }
             }
 
             Section {
