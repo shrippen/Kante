@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import "."
 
 /**
@@ -33,13 +34,18 @@ Row {
 
     /** Width all steps need with their labels. */
     readonly property real fullWidth: {
-        var w = 0
-        var n = model ? model.length : 0
-        for (var i = 0; i < n; i++) {
+        let w = 0
+        const n = model ? model.length : 0
+        for (let i = 0; i < n; i++) {
             w += Math.max(KanteStyle.unit(110), labelMetrics.advanceWidth(model[i]) + KanteStyle.unit(24))
         }
         return w + spacing * Math.max(0, n - 1)
     }
+    // In a layout the preferred width stays the width with every label: the Row's own
+    // implicit width shrinks when compact, and a layout that went by it would keep the
+    // steps compact after the window grows again.
+    Layout.preferredWidth: fullWidth
+
     /** Too narrow for every label: only the current step keeps its label. A Row left to size
      *  itself is as wide as its labels (a few units of rounding aside), so only a width set
      *  from outside (a layout) makes it compact. */

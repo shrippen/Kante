@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtTest
+import QtQuick.Layouts
 import Kante
 
 /**
@@ -124,6 +125,17 @@ TestCase {
 
     // ── Steps ────────────────────────────────────────────────────────
     Component { id: stepsComponent; KanteSteps { model: ["Instrument", "Anschluss", "Pegel", "Fertig"]; current: 2 } }
+    // In a row layout beside another filling item: the layout shares the width by the
+    // preferred widths, so the steps' preferred width decides whether they get their labels.
+    Component {
+        id: stepsInLayout
+        RowLayout {
+            property alias steps: inner
+            spacing: 0
+            KanteSteps { id: inner; Layout.fillWidth: true; Layout.minimumWidth: 0; model: ["Instrument", "Anschluss", "Pegel", "Fertig"]; current: 2 }
+            Item { Layout.fillWidth: true; Layout.preferredWidth: 100 }
+        }
+    }
 
     function stepItems(s) {
         return s.children.filter(function (c) { return c.stateKey !== undefined })
@@ -170,6 +182,25 @@ TestCase {
         compare(items[0].Accessible.name, "Schritt 1 von 4: Instrument, erledigt")
         s.width = full
         verify(!s.compact)
+    }
+
+    // 1.39: a layout that shrinks the steps and grows again gives the labels back (the
+    // preferred width stays the full width, not the compact Row's implicit width).
+    function test_stepsCompactInLayout() {
+        var row = createTemporaryObject(stepsInLayout, stage())
+        var s = row.steps
+        var full = s.fullWidth
+        row.width = full + 100
+        tryVerify(function () { return s.width > 0 && !s.compact }, 1000, "room for every label")
+        row.width = full * 0.6
+        tryVerify(function () { return s.compact }, 1000, "narrow: compact")
+        // Let the layout settle on the compact steps before the window grows again.
+        wait(50)
+        row.width = full + 100
+        // Let the layout settle: a stuck preferred width shows only after the relayout.
+        wait(50)
+        tryVerify(function () { return !s.compact && s.width >= full - KanteStyle.unit(4) }, 1000,
+                  "wide again: every label back")
     }
 
     function findChild(item, pred) {

@@ -792,7 +792,7 @@ Kontra's setup at half a laptop screen (700 px, QA 14.10.): five steps did not f
 
 | Element | Web | QML |
 |---|---|---|
-| Steps | – | `KanteSteps`: narrower than its labels need (a width set by a layout), only the current step keeps its label, the others show their sign alone (`compact`, `fullWidth`); screen readers still hear every step with its name |
+| Steps | – | `KanteSteps`: narrower than its labels need (a width set by a layout), only the current step keeps its label, the others show their sign alone (`compact`, `fullWidth`); screen readers still hear every step with its name. In a layout its preferred width (`Layout.preferredWidth`) stays `fullWidth`, so the labels come back when the window grows again |
 
 ### Changed in Kante 1.38
 
