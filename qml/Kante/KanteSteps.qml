@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import "."
 
 /**
@@ -21,7 +20,7 @@ import "."
  *   │ ■01          │ □02│ □03│ □04│     compact: the current step named, the rest by number
  *   │ INSTRUMENT   │    │    │    │
  */
-Row {
+Item {
     id: steps
 
     property var model: []
@@ -30,7 +29,7 @@ Row {
     property string stepText: "Schritt %1 von %2"
     property var stateNames: ({ done: "erledigt", current: "aktuell", upcoming: "offen" })
 
-    spacing: 2
+    property alias spacing: row.spacing
 
     /** Width all steps need with their labels. */
     readonly property real fullWidth: {
@@ -41,15 +40,13 @@ Row {
         }
         return w + spacing * Math.max(0, n - 1)
     }
-    // In a layout the preferred width stays the width with every label: the Row's own
-    // implicit width shrinks when compact, and a layout that went by it would keep the
-    // steps compact after the window grows again.
-    Layout.preferredWidth: fullWidth
-
-    /** Too narrow for every label: only the current step keeps its label. A Row left to size
-     *  itself is as wide as its labels (a few units of rounding aside), so only a width set
-     *  from outside (a layout) makes it compact. */
+    /** Too narrow for every label: only the current step keeps its label. The steps' own
+     *  size is fullWidth, whatever they show (1.39), so only a width set from outside (a
+     *  layout) makes them compact, and they leave it again when that width grows. */
     readonly property bool compact: width > 0 && width < fullWidth - KanteStyle.unit(4)
+
+    implicitWidth: fullWidth
+    implicitHeight: row.implicitHeight
 
     FontMetrics {
         id: labelMetrics
@@ -58,76 +55,81 @@ Row {
 
     Accessible.role: Accessible.List
 
-    Repeater {
-        model: steps.model
-        delegate: Item {
-            id: step
-            required property int index
-            required property var modelData
-            readonly property bool done: index < steps.current
-            readonly property bool now: index === steps.current
-            readonly property string stateKey: done ? "done" : (now ? "current" : "upcoming")
-            readonly property real signSize: Math.max(KanteStyle.unit(20), number.implicitHeight + KanteStyle.unit(4))
-            readonly property bool named: !steps.compact || now
-            width: named ? Math.max(KanteStyle.unit(110), label.implicitWidth + KanteStyle.unit(24))
-                         : signSize + KanteStyle.unit(20)
-            height: Math.max(KanteStyle.unit(60), label.y + label.implicitHeight + KanteStyle.unit(8))
+    Row {
+        id: row
+        spacing: 2
 
-            Accessible.role: Accessible.ListItem
-            Accessible.name: steps.stepText.arg(index + 1).arg(steps.model ? steps.model.length : 0) + ": " + modelData
-                             + ", " + (steps.stateNames && steps.stateNames[stateKey] !== undefined ? steps.stateNames[stateKey] : stateKey)
+        Repeater {
+            model: steps.model
+            delegate: Item {
+                id: step
+                required property int index
+                required property var modelData
+                readonly property bool done: index < steps.current
+                readonly property bool now: index === steps.current
+                readonly property string stateKey: done ? "done" : (now ? "current" : "upcoming")
+                readonly property real signSize: Math.max(KanteStyle.unit(20), number.implicitHeight + KanteStyle.unit(4))
+                readonly property bool named: !steps.compact || now
+                width: named ? Math.max(KanteStyle.unit(110), label.implicitWidth + KanteStyle.unit(24))
+                             : signSize + KanteStyle.unit(20)
+                height: Math.max(KanteStyle.unit(60), label.y + label.implicitHeight + KanteStyle.unit(8))
 
-            Rectangle { anchors.fill: parent; color: KanteStyle.cardColor }
-            // The current step: a 2 px outline around the whole step.
-            Rectangle {
-                anchors.fill: parent
-                visible: step.now
-                color: "transparent"
-                border.width: 2
-                border.color: KanteStyle.accentTextColor
-            }
-            // Bar: 4 px done, 6 px current, 2 px upcoming.
-            Rectangle {
-                width: parent.width
-                height: KanteStyle.unit(step.now ? 6 : (step.done ? 4 : 2))
-                color: step.done ? KanteStyle.positiveTextColor : (step.now ? KanteStyle.accentColor : KanteStyle.frameColor)
-            }
-            // Sign: check on a filled square (done), number on a filled square (current),
-            // number in a hollow square (upcoming).
-            Rectangle {
-                id: sign
-                x: KanteStyle.unit(10)
-                y: KanteStyle.unit(12)
-                width: step.signSize
-                height: step.signSize
-                color: step.done ? KanteStyle.positiveTextColor : (step.now ? KanteStyle.primaryColor : "transparent")
-                border.width: step.done || step.now ? 0 : 1
-                border.color: KanteStyle.mutedTextColor
-                KanteTick {
-                    visible: step.done
-                    anchors.centerIn: parent
-                    width: parent.width - KanteStyle.unit(6)
-                    height: width
-                    checked: true
-                    color: KanteStyle.inkOn(KanteStyle.positiveTextColor)
+                Accessible.role: Accessible.ListItem
+                Accessible.name: steps.stepText.arg(index + 1).arg(steps.model ? steps.model.length : 0) + ": " + modelData
+                                 + ", " + (steps.stateNames && steps.stateNames[stateKey] !== undefined ? steps.stateNames[stateKey] : stateKey)
+
+                Rectangle { anchors.fill: parent; color: KanteStyle.cardColor }
+                // The current step: a 2 px outline around the whole step.
+                Rectangle {
+                    anchors.fill: parent
+                    visible: step.now
+                    color: "transparent"
+                    border.width: 2
+                    border.color: KanteStyle.accentTextColor
+                }
+                // Bar: 4 px done, 6 px current, 2 px upcoming.
+                Rectangle {
+                    width: parent.width
+                    height: KanteStyle.unit(step.now ? 6 : (step.done ? 4 : 2))
+                    color: step.done ? KanteStyle.positiveTextColor : (step.now ? KanteStyle.accentColor : KanteStyle.frameColor)
+                }
+                // Sign: check on a filled square (done), number on a filled square (current),
+                // number in a hollow square (upcoming).
+                Rectangle {
+                    id: sign
+                    x: KanteStyle.unit(10)
+                    y: KanteStyle.unit(12)
+                    width: step.signSize
+                    height: step.signSize
+                    color: step.done ? KanteStyle.positiveTextColor : (step.now ? KanteStyle.primaryColor : "transparent")
+                    border.width: step.done || step.now ? 0 : 1
+                    border.color: KanteStyle.mutedTextColor
+                    KanteTick {
+                        visible: step.done
+                        anchors.centerIn: parent
+                        width: parent.width - KanteStyle.unit(6)
+                        height: width
+                        checked: true
+                        color: KanteStyle.inkOn(KanteStyle.positiveTextColor)
+                    }
+                    Text {
+                        id: number
+                        visible: !step.done
+                        anchors.centerIn: parent
+                        text: (step.index + 1 < 10 ? "0" : "") + (step.index + 1)
+                        color: step.now ? KanteStyle.primaryTextColor : KanteStyle.mutedTextColor
+                        font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize, step.now)
+                    }
                 }
                 Text {
-                    id: number
-                    visible: !step.done
-                    anchors.centerIn: parent
-                    text: (step.index + 1 < 10 ? "0" : "") + (step.index + 1)
-                    color: step.now ? KanteStyle.primaryTextColor : KanteStyle.mutedTextColor
-                    font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize, step.now)
+                    id: label
+                    visible: step.named
+                    x: KanteStyle.unit(10)
+                    y: sign.y + sign.height + KanteStyle.unit(2)
+                    text: step.modelData
+                    color: step.now ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
+                    font: KanteStyle.headingFont(KanteStyle.defaultFont.pointSize)
                 }
-            }
-            Text {
-                id: label
-                visible: step.named
-                x: KanteStyle.unit(10)
-                y: sign.y + sign.height + KanteStyle.unit(2)
-                text: step.modelData
-                color: step.now ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
-                font: KanteStyle.headingFont(KanteStyle.defaultFont.pointSize)
             }
         }
     }

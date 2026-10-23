@@ -138,7 +138,12 @@ TestCase {
     }
 
     function stepItems(s) {
-        return s.children.filter(function (c) { return c.stateKey !== undefined })
+        var out = []
+        for (var i = 0; i < s.children.length; i++) {
+            var c = s.children[i]
+            out = out.concat(c.stateKey !== undefined ? [c] : stepItems(c))
+        }
+        return out
     }
 
     function test_stepsHaveShapes() {
@@ -178,10 +183,24 @@ TestCase {
         verify(labels[2].visible, "the current step keeps its label")
         verify(!labels[0].visible && !labels[3].visible)
         // A Row lays out on the next polish.
-        tryVerify(function () { return s.implicitWidth <= full * 0.7 }, 1000, "the steps fit")
+        tryVerify(function () { return items[0].parent.width <= full * 0.7 }, 1000, "the steps fit")
         compare(items[0].Accessible.name, "Schritt 1 von 4: Instrument, erledigt")
         s.width = full
         verify(!s.compact)
+    }
+
+    // 1.39: left to size itself, the steps stay named when the labels grow (a language
+    // change, a fifth step): their own width is fullWidth, not what they show.
+    function test_stepsSelfSizedGrow() {
+        var s = createTemporaryObject(stepsComponent, stage())
+        verify(!s.compact)
+        s.model = ["Instrument wählen", "Anschluss prüfen", "Pegel einstellen", "Fertig", "Los geht's"]
+        wait(50)
+        verify(!s.compact, "no width set from outside: never compact")
+        compare(s.width, s.fullWidth)
+        var labels = stepItems(s).map(function (it) { return it.children[it.children.length - 1] })
+        compare(labels.length, 5)
+        verify(labels.every(function (l) { return l.visible }))
     }
 
     // 1.39: a layout that shrinks the steps and grows again gives the labels back (the
