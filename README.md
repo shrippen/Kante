@@ -792,7 +792,7 @@ Kontra's setup at half a laptop screen (700 px, QA 14.10.): five steps did not f
 
 | Element | Web | QML |
 |---|---|---|
-| Steps | – | `KanteSteps`: narrower than its labels need (a width set by a layout), only the current step keeps its label, the others show their sign alone (`compact`; `fullWidth`, measured from the labels themselves, so it follows a font change; `count`); screen readers still hear every step with its name. Its own size (`implicitWidth`) is always `fullWidth`, whatever it shows, so it is compact only under a width set from outside and gets its labels back when that width grows (a Row sizing itself could stay compact after a longer model or a layout that shrank it). `KanteSteps` is an `Item` with the steps in a `Row` now; `spacing` stays |
+| Steps | – | `KanteSteps`: narrower than its labels need (a width set by a layout), only the current step keeps its label, the others show their sign alone (`compact`; `fullWidth`, measured from the labels themselves, so it follows a font change, also when the steps are created asynchronously, as in a `Loader`; `count`); screen readers still hear every step with its name. Its own size (`implicitWidth`) is always `fullWidth`, whatever it shows, so it is compact only under a width set from outside and gets its labels back when that width grows (a Row sizing itself could stay compact after a longer model or a layout that shrank it). `KanteSteps` is an `Item` with the steps in a `Row` now; `spacing` stays |
 
 ### Changed in Kante 1.38
 

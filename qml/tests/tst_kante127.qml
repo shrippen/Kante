@@ -137,10 +137,20 @@ TestCase {
         }
     }
 
+    // Steps created asynchronously (a Loader or a view's cache): the delegates come after
+    // the Repeater's count.
+    Component {
+        id: stepsAsync
+        Loader {
+            asynchronous: true
+            sourceComponent: KanteSteps { model: ["Instrument wählen", "Anschluss prüfen", "Pegel", "Fertig"]; current: 2 }
+        }
+    }
+
     function stepItems(s) {
-        var out = []
-        for (var i = 0; i < s.children.length; i++) {
-            var c = s.children[i]
+        let out = []
+        for (let i = 0; i < s.children.length; i++) {
+            const c = s.children[i]
             out = out.concat(c.stateKey !== undefined ? [c] : stepItems(c))
         }
         return out
@@ -218,7 +228,21 @@ TestCase {
             verify(!s.compact)
             compare(s.width, s.fullWidth)
         }
-        KanteStyle.kind = KanteStyle.Kind.Kante
+    }
+
+    // 1.39: created asynchronously, fullWidth still counts every label once the delegates
+    // are there, so the steps neither overflow nor stay named when they are too narrow.
+    function test_stepsFullWidthAsync() {
+        const loader = createTemporaryObject(stepsAsync, stage())
+        tryCompare(loader, "status", Loader.Ready, 5000)
+        const s = loader.item
+        const row = stepItems(s)[0].parent
+        tryVerify(function () { return stepItems(s).length === 4 }, 2000, "all delegates there")
+        tryVerify(function () { return Math.abs(row.implicitWidth - s.fullWidth) < 0.5 }, 2000,
+                  "fullWidth counts every label")
+        compare(s.implicitWidth, s.fullWidth)
+        s.width = s.fullWidth * 0.7
+        verify(s.compact, "narrower than the labels: compact")
     }
 
     // 1.39: a layout that shrinks the steps and grows again gives the labels back (the

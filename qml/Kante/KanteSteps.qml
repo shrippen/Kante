@@ -32,15 +32,17 @@ Item {
     property alias spacing: row.spacing
 
     /** Width all steps need with their labels: the sum of each step's named width, taken
-     *  from its label (laid out whether shown or not), so it follows font changes. */
+     *  from its label (laid out whether shown or not), so it follows font changes. It sums
+     *  the delegates made so far (the Repeater's `built`): created asynchronously (a Loader,
+     *  a view's cache), they come after the count, and itemAt() alone does not notify. */
     readonly property real fullWidth: {
         let w = 0
-        const n = steps.count
-        for (let i = 0; i < n; i++) {
+        const made = Math.min(steps.count, repeater.built)
+        for (let i = 0; i < made; i++) {
             const it = repeater.itemAt(i)
             w += it ? it.namedWidth : 0
         }
-        return w + spacing * Math.max(0, n - 1)
+        return w + spacing * Math.max(0, steps.count - 1)
     }
     /** Too narrow for every label: only the current step keeps its label. The steps' own
      *  size is fullWidth, whatever they show (1.39), so only a width set from outside (a
@@ -60,6 +62,10 @@ Item {
         Repeater {
             id: repeater
             model: steps.model
+            /** Delegates made so far, for fullWidth. */
+            property int built: 0
+            onItemAdded: built++
+            onItemRemoved: built--
             delegate: Item {
                 id: step
                 required property int index
