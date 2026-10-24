@@ -66,6 +66,11 @@ TestCase {
         compare(shown.length, 0)
     }
 
+    function test_swappedBoundsLabelInOrder() {
+        var h = createTemporaryObject(histComponent, tc, { counts: [1, 2, 1], firstBinMs: -15, binMs: 10, bandMinMs: 30, bandMaxMs: 10 })
+        compare(h.bandLabel(), "Ziel +10…+30 ms")
+    }
+
     function test_noBand() {
         var h = createTemporaryObject(histComponent, tc, { counts: [1, 2, 1], firstBinMs: -15, binMs: 10 })
         compare(h.rangeList().length, 0)

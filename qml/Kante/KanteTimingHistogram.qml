@@ -75,7 +75,7 @@ Item {
     }
 
     function bandLabel() {
-        return bandText + " " + ms(bandMinMs) + "…" + ms(bandMaxMs) + " " + unit
+        return bandText + " " + ms(Math.min(bandMinMs, bandMaxMs)) + "…" + ms(Math.max(bandMinMs, bandMaxMs)) + " " + unit
     }
     function rangeList() {
         var n = counts ? counts.length : 0
