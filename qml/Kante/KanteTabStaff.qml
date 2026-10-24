@@ -215,8 +215,9 @@ Item {
         if (cb && cb.endings.length > 0) {
             d += ", " + endingText.arg(cb.endings.join(", "))
         }
-        if (currentIndex >= 0) {
-            var n = notes[currentIndex]
+        // notes can change before currentIndex follows (e.g. emptied while playing)
+        var n = currentIndex >= 0 ? notes[currentIndex] : undefined
+        if (n) {
             d += ", " + nameOf(Number(n.string) || 0) + " " + n.fret + " (" + KanteStyle.noteStateName(shownState(currentIndex, stateRevision)) + centsSuffix(currentIndex, stateRevision) + ")"
         }
         var t = techniqueSummary(stateRevision)

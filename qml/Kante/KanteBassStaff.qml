@@ -211,8 +211,9 @@ Item {
         if (ch !== "") {
             d += ", " + chordText.arg(ch)
         }
-        if (currentIndex >= 0) {
-            var n = notes[currentIndex]
+        // notes can change before currentIndex follows (e.g. emptied while playing)
+        var n = currentIndex >= 0 ? notes[currentIndex] : undefined
+        if (n) {
             d += ", " + pitchName(Number(n.midi), barList.length ? barList[currentBar].key : keyFifths)
                 + " (" + KanteStyle.noteStateName(shownState(currentIndex, stateRevision)) + centsSuffix(currentIndex, stateRevision) + ")"
         }

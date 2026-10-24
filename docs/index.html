@@ -131,6 +131,22 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.40.0">
+      <div class="release-head"><b class="release-version">1.40</b><time datetime="2026-10-24">24 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Staves without notes stay quiet.</p>
+        <p class="release-lead" lang="de">Notenzeilen ohne Noten bleiben still.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteTabStaff</code>, <code>KanteBassStaff</code>: emptying the notes during playback logged a <code>TypeError</code>; the description for screen readers now waits for the current note.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTabStaff</code>, <code>KanteBassStaff</code>: Wurden die Noten während der Wiedergabe geleert, meldete die Konsole einen <code>TypeError</code>; die Beschreibung für Screenreader wartet jetzt auf den aktuellen Ton.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-140"><span lang="en">All changes in 1.40 →</span><span lang="de">Alle Änderungen in 1.40 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.39.0">
       <div class="release-head"><b class="release-version">1.39</b><time datetime="2026-10-23">23 Oct 2026</time></div>
       <div class="release-body">
@@ -553,7 +569,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.39.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.40.0</p></div>
 </footer>
 
 <script>
