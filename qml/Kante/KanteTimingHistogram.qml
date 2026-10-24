@@ -78,9 +78,9 @@ Item {
         return bandText + " " + ms(Math.min(bandMinMs, bandMaxMs)) + "…" + ms(Math.max(bandMinMs, bandMaxMs)) + " " + unit
     }
     function rangeList() {
-        var n = counts ? counts.length : 0
+        const n = counts ? counts.length : 0
         if (isNaN(bandMinMs) || isNaN(bandMaxMs) || n === 0) return []
-        var at = function (v) { return Math.max(0, Math.min(n, (v - firstBinMs) / binMs)) }
+        const at = function (v) { return Math.max(0, Math.min(n, (v - firstBinMs) / binMs)) }
         return [{ from: at(Math.min(bandMinMs, bandMaxMs)), to: at(Math.max(bandMinMs, bandMaxMs)), label: bandLabel() }]
     }
 

@@ -18,9 +18,9 @@ TestCase {
     Component { id: histComponent; KanteTimingHistogram { width: 500; height: 220 } }
 
     function findAll(item, pred) {
-        var out = []
-        for (var i = 0; i < item.children.length; i++) {
-            var c = item.children[i]
+        let out = []
+        for (let i = 0; i < item.children.length; i++) {
+            const c = item.children[i]
             if (pred(c)) {
                 out.push(c)
             }
