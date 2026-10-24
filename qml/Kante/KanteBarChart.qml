@@ -398,7 +398,10 @@ Item {
             required property var modelData
             required property int index
             readonly property real from: Math.max(0, Math.min(chart.values.length, Number(modelData.from)))
-            visible: !!modelData.label && !isNaN(from)
+            readonly property real to: Math.max(0, Math.min(chart.values.length, Number(modelData.to)))
+            // Only with its band: a range clipped to nothing has no label either.
+            objectName: "kanteRangeLabel"
+            visible: !!modelData.label && !isNaN(from) && !isNaN(to) && to > from
             x: Math.min(chart.padLeft + from * chart.columnWidth + KanteStyle.unit(3), chart.width - width)
             y: (chart.markers.length + index) * (height + KanteStyle.unit(2))
             z: 1

@@ -56,6 +56,16 @@ TestCase {
         verify(Math.abs(r[0].to - 0.5) < 1e-9)
     }
 
+    function test_bandBeyondTheBinsHidesItsLabel() {
+        var h = createTemporaryObject(histComponent, tc.Window.contentItem, {
+            counts: [1, 2, 1], firstBinMs: -15, binMs: 10, bandMinMs: 40, bandMaxMs: 60
+        })
+        var shown = findAll(h.chart, function (c) {
+            return (c.objectName === "kanteRange" || c.objectName === "kanteRangeLabel") && c.visible
+        })
+        compare(shown.length, 0)
+    }
+
     function test_noBand() {
         var h = createTemporaryObject(histComponent, tc, { counts: [1, 2, 1], firstBinMs: -15, binMs: 10 })
         compare(h.rangeList().length, 0)
