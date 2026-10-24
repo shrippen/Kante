@@ -334,6 +334,51 @@ TestCase {
         verify(o.menu.implicitWidth >= o.menu.itemAt(1).implicitWidth, o.menu.implicitWidth + " < " + o.menu.itemAt(1).implicitWidth)
     }
 
+    // Leaving Kante gives the menu its platform background back, shown
+    // and sized: a replaced background stayed hidden (see-through menu).
+    function test_popupSkinRestoresPlatformBackground() {
+        KanteStyle.kind = KanteStyle.Kind.System
+        var o = createTemporaryObject(menuComponent, tc)
+        var platform = o.menu.background
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        compare(o.menu.background, platform)
+        compare(platform.opacity, 0)
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        compare(o.menu.background, platform)
+        compare(platform.opacity, 1)
+        o.menu.open()
+        tryVerify(function() { return o.menu.opened })
+        verify(platform.visible)
+        verify(platform.height >= o.menu.itemAt(1).height * 2, platform.height + " for two items")
+    }
+
+    Component {
+        id: barePopupComponent
+        Item {
+            property alias popup: barePopup
+            QQC2.Popup {
+                id: barePopup
+                background: null
+                contentItem: Text { text: "Ohne Hintergrund" }
+            }
+            KantePopupSkin { id: bareSkin; popup: barePopup }
+            property alias skin: bareSkin
+        }
+    }
+
+    // A popup without a background (own popup, bare style) still gets the
+    // card in Kante, so it is not see-through.
+    function test_popupSkinWithoutBackground() {
+        var o = createTemporaryObject(barePopupComponent, tc)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        o.popup.open()
+        tryVerify(function() { return o.popup.opened })
+        verify(o.skin.kanteCard.visible)
+        compare(o.skin.kanteCard.parent, o.popup.contentItem.parent)
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        verify(!o.skin.kanteCard.visible)
+    }
+
     function test_fontsLoad() {
         tryVerify(function() { return KanteStyle.headingFace.status === FontLoader.Ready }, 3000)
         tryVerify(function() { return KanteStyle.monoFace.status === FontLoader.Ready }, 3000)
