@@ -792,7 +792,7 @@ lmix in Kante Light (QA 25.10.): the File menu opened see-through, its items str
 
 | Element | Web | QML |
 |---|---|---|
-| Popup skin | – | `KantePopupSkin` no longer replaces `background`: in Kante it draws its card (`kanteCard`) behind the content and hides the platform background (opacity 0, at least as wide as the widest item); leaving Kante shows the platform background again, sized as before. A menu or combo list keeps the platform's size in every style |
+| Popup skin | – | `KantePopupSkin` no longer replaces `background`: in Kante it draws its card (`kanteCard`) behind the content and hides the platform background (opacity 0, at least as wide as the widest item); leaving Kante shows the platform background again, sized as before. A menu or combo list keeps the platform's size in every style. A popup without a background gets the card behind its content. Removed: the property `kanteBackground`; a project that read it or the card through `popup.background` uses `kanteCard` |
 
 ### Changed in Kante 1.40
 

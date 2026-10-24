@@ -131,6 +131,33 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.42.0">
+      <div class="release-head"><b class="release-version">1.42</b><time datetime="2026-10-25">25 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Menus stay opaque after leaving Kante.</p>
+        <p class="release-lead" lang="de">Menüs bleiben deckend, nachdem Kante verlassen wurde.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KantePopupSkin</code>: switching from Kante to Kante Light or System left menus see-through, their items straight over what lay below. The skin now keeps the platform background and draws its card behind the content; a popup without a background gets the card too.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KantePopupSkin</code>: Nach dem Wechsel von Kante zu Kante Light oder System waren Menüs durchsichtig, die Einträge lagen direkt über dem Inhalt darunter. Der Skin behält jetzt den Plattform-Hintergrund und zeichnet seine Karte hinter den Inhalt; auch ein Popup ohne Hintergrund bekommt sie.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="breaking"><h3><span lang="en">Breaking</span><span lang="de">Inkompatibel</span></h3>
+          <ul lang="en">
+            <li><code>KantePopupSkin</code>: the property <code>kanteBackground</code> is gone, and in Kante <code>popup.background</code> is the hidden platform background; the card is <code>kanteCard</code>.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KantePopupSkin</code>: Die Property <code>kanteBackground</code> entfällt, und in Kante ist <code>popup.background</code> der ausgeblendete Plattform-Hintergrund; die Karte heißt <code>kanteCard</code>.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.42-menu.png" alt="A menu after switching from Kante: before, only one row of background with the other items over the colored content; after, the whole menu on an opaque background" loading="lazy"><figcaption><span lang="en">The same menu after leaving Kante, before and after</span><span lang="de">Dasselbe Menü nach dem Verlassen von Kante, vorher und nachher</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-142"><span lang="en">All changes in 1.42 →</span><span lang="de">Alle Änderungen in 1.42 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.40.0">
       <div class="release-head"><b class="release-version">1.40</b><time datetime="2026-10-24">24 Oct 2026</time></div>
       <div class="release-body">
@@ -569,7 +596,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.40.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.42.0</p></div>
 </footer>
 
 <script>

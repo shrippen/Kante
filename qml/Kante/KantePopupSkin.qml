@@ -36,8 +36,11 @@ Item {
     // Not a replacement of `background`: Qt hides a background it replaces,
     // so the platform one put back on leaving Kante stayed hidden and
     // unsized (a see-through menu in Kante Light, which starts from Kante).
+    // A popup without a background still gets the card, behind its content.
     readonly property Item kanteCard: KanteCard {
-        parent: KanteStyle.themed && skin.popup && skin.popup.background ? skin.popup.background.parent : null
+        parent: !KanteStyle.themed || !skin.popup ? null
+              : skin.popup.background ? skin.popup.background.parent
+              : skin.popup.contentItem ? skin.popup.contentItem.parent : null
         visible: parent !== null
         anchors.fill: parent
         z: -0.5
