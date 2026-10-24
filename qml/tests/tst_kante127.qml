@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtTest
+import QtQuick.Layouts
 import Kante
 
 /**
@@ -124,9 +125,35 @@ TestCase {
 
     // ── Steps ────────────────────────────────────────────────────────
     Component { id: stepsComponent; KanteSteps { model: ["Instrument", "Anschluss", "Pegel", "Fertig"]; current: 2 } }
+    // In a row layout beside another filling item: the layout shares the width by the
+    // preferred widths, so the steps' preferred width decides whether they get their labels.
+    Component {
+        id: stepsInLayout
+        RowLayout {
+            property alias steps: inner
+            spacing: 0
+            KanteSteps { id: inner; Layout.fillWidth: true; Layout.minimumWidth: 0; model: ["Instrument", "Anschluss", "Pegel", "Fertig"]; current: 2 }
+            Item { Layout.fillWidth: true; Layout.preferredWidth: 100 }
+        }
+    }
+
+    // Steps created asynchronously (a Loader or a view's cache): the delegates come after
+    // the Repeater's count.
+    Component {
+        id: stepsAsync
+        Loader {
+            asynchronous: true
+            sourceComponent: KanteSteps { model: ["Instrument wählen", "Anschluss prüfen", "Pegel", "Fertig"]; current: 2 }
+        }
+    }
 
     function stepItems(s) {
-        return s.children.filter(function (c) { return c.stateKey !== undefined })
+        let out = []
+        for (let i = 0; i < s.children.length; i++) {
+            const c = s.children[i]
+            out = out.concat(c.stateKey !== undefined ? [c] : stepItems(c))
+        }
+        return out
     }
 
     function test_stepsHaveShapes() {
@@ -152,6 +179,89 @@ TestCase {
             verify(items[2].children[2].height > items[0].children[2].height)
             verify(items[0].children[2].height > items[3].children[2].height)
         }
+    }
+
+    // Kante 1.39: narrower than its labels, only the current step keeps its label.
+    function test_stepsCompact() {
+        var s = createTemporaryObject(stepsComponent, stage())
+        verify(!s.compact, "a Row left to size itself shows every label")
+        var full = s.width
+        s.width = full * 0.7
+        verify(s.compact)
+        var items = stepItems(s)
+        var labels = items.map(function (it) { return it.children[it.children.length - 1] })
+        verify(labels[2].visible, "the current step keeps its label")
+        verify(!labels[0].visible && !labels[3].visible)
+        // A Row lays out on the next polish.
+        tryVerify(function () { return items[0].parent.width <= full * 0.7 }, 1000, "the steps fit")
+        compare(items[0].Accessible.name, "Schritt 1 von 4: Instrument, erledigt")
+        s.width = full
+        verify(!s.compact)
+    }
+
+    // 1.39: left to size itself, the steps stay named when the labels grow (a language
+    // change, a fifth step): their own width is fullWidth, not what they show.
+    function test_stepsSelfSizedGrow() {
+        var s = createTemporaryObject(stepsComponent, stage())
+        verify(!s.compact)
+        s.model = ["Instrument wählen", "Anschluss prüfen", "Pegel einstellen", "Fertig", "Los geht's"]
+        wait(50)
+        verify(!s.compact, "no width set from outside: never compact")
+        compare(s.width, s.fullWidth)
+        var labels = stepItems(s).map(function (it) { return it.children[it.children.length - 1] })
+        compare(labels.length, 5)
+        verify(labels.every(function (l) { return l.visible }))
+    }
+
+    // 1.39: fullWidth is what the steps take with every label shown, in every kind, and it
+    // follows a font change at run time (here the kind's heading font).
+    function test_stepsFullWidthMeasured() {
+        // Labels longer than the step's minimum width, so the font decides.
+        var s = createTemporaryObject(stepsComponent, stage(), {
+            model: ["Instrument und Anschluss wählen", "Eingangspegel einstellen", "Fertig"] })
+        var row = stepItems(s)[0].parent
+        verify(stepItems(s)[0].width > KanteStyle.unit(110))
+        for (var k = 0; k < kinds.length; k++) {
+            KanteStyle.kind = kinds[k]
+            wait(50)
+            fuzzyCompare(row.implicitWidth, s.fullWidth, 0.5, "kind " + kinds[k])
+            verify(!s.compact)
+            compare(s.width, s.fullWidth)
+        }
+    }
+
+    // 1.39: created asynchronously, fullWidth still counts every label once the delegates
+    // are there, so the steps neither overflow nor stay named when they are too narrow.
+    function test_stepsFullWidthAsync() {
+        const loader = createTemporaryObject(stepsAsync, stage())
+        tryCompare(loader, "status", Loader.Ready, 5000)
+        const s = loader.item
+        const row = stepItems(s)[0].parent
+        tryVerify(function () { return stepItems(s).length === 4 }, 2000, "all delegates there")
+        tryVerify(function () { return Math.abs(row.implicitWidth - s.fullWidth) < 0.5 }, 2000,
+                  "fullWidth counts every label")
+        compare(s.implicitWidth, s.fullWidth)
+        s.width = s.fullWidth * 0.7
+        verify(s.compact, "narrower than the labels: compact")
+    }
+
+    // 1.39: a layout that shrinks the steps and grows again gives the labels back (the
+    // preferred width stays the full width, not the compact Row's implicit width).
+    function test_stepsCompactInLayout() {
+        var row = createTemporaryObject(stepsInLayout, stage())
+        var s = row.steps
+        var full = s.fullWidth
+        row.width = full + 100
+        tryVerify(function () { return s.width > 0 && !s.compact }, 1000, "room for every label")
+        row.width = full * 0.6
+        tryVerify(function () { return s.compact }, 1000, "narrow: compact")
+        // Let the layout settle on the compact steps before the window grows again.
+        wait(50)
+        row.width = full + 100
+        // Let the layout settle: a stuck preferred width shows only after the relayout.
+        wait(50)
+        tryVerify(function () { return !s.compact && s.width >= full - KanteStyle.unit(4) }, 1000,
+                  "wide again: every label back")
     }
 
     function findChild(item, pred) {
