@@ -334,6 +334,24 @@ TestCase {
         verify(o.menu.implicitWidth >= o.menu.itemAt(1).implicitWidth, o.menu.implicitWidth + " < " + o.menu.itemAt(1).implicitWidth)
     }
 
+    // Leaving Kante gives the menu its platform background back, shown
+    // and sized: a replaced background stayed hidden (see-through menu).
+    function test_popupSkinRestoresPlatformBackground() {
+        KanteStyle.kind = KanteStyle.Kind.System
+        var o = createTemporaryObject(menuComponent, tc)
+        var platform = o.menu.background
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        compare(o.menu.background, platform)
+        compare(platform.opacity, 0)
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        compare(o.menu.background, platform)
+        compare(platform.opacity, 1)
+        o.menu.open()
+        tryVerify(function() { return o.menu.opened })
+        verify(platform.visible)
+        verify(platform.height >= o.menu.itemAt(1).height * 2, platform.height + " for two items")
+    }
+
     function test_fontsLoad() {
         tryVerify(function() { return KanteStyle.headingFace.status === FontLoader.Ready }, 3000)
         tryVerify(function() { return KanteStyle.monoFace.status === FontLoader.Ready }, 3000)
