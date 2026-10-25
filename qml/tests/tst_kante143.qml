@@ -505,6 +505,21 @@ TestCase {
         verify(d.acceptButton().enabled, "free again once unset")
     }
 
+    function test_dialogAcceptEnabledUnsetFreesEveryFooter() {
+        // locked in Kante, then System: unset there, back in Kante the button is free too
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const d = createTemporaryObject(dialogComponent, stage())
+        d.open()
+        tryVerify(() => d.opened)
+        tryVerify(() => !d.acceptButton().enabled, 1000, "locked in Kante")
+        KanteStyle.kind = KanteStyle.Kind.System
+        tryVerify(() => !d.acceptButton().enabled, 1000, "locked in System")
+        d.acceptEnabled = undefined
+        verify(d.acceptButton().enabled, "free in System")
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        tryVerify(() => d.acceptButton().enabled, 1000, "free again in Kante")
+    }
+
     function test_dialogAcceptButtonNamedAndLocked() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         const d = createTemporaryObject(dialogComponent, stage())
