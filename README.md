@@ -809,6 +809,7 @@ From lmix (QA of its Mix page, 25.10.2026): the page needs a size the operator d
 | Element | Web | QML |
 |---|---|---|
 | Sheet and message skin | – | `KanteSheetSkin`, `KanteMessageSkin`: `popup.background` / `message.background` stay the platform's; in Kante the card is a child of the popup item / the message at z -0.5. A sheet without a background gets the card too |
+| Toast | – | `KanteToast` stays while the pointer is over it or its action has keyboard focus, and then gets its full `life` again (every toast, with or without an action) |
 
 ### Changed in Kante 1.42
 

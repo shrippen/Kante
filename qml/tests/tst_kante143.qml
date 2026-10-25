@@ -244,6 +244,13 @@ TestCase {
         p.focusIndex = 3
         p.colors = ["#9d0006"]
         compare(p.focusIndex, 1)
+        // "none" taken away and back: the frame stays on the same colour
+        p.colors = ["#9d0006", "#3a6e4e", "#0f6b66"]
+        p.focusIndex = 3
+        p.noneText = ""
+        compare(p.focusIndex, 2)
+        p.noneText = "None"
+        compare(p.focusIndex, 3)
     }
 
     // --- Table header

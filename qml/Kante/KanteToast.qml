@@ -119,8 +119,12 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             text: toast.actionText
             onClicked: {
-                toast.actionTriggered()
-                toast.hide()
+                // Only while shown: a key on the focused button after the toast left does nothing.
+                if (toast.shown) {
+                    toast.actionTriggered()
+                    toast.hide()
+                }
+                actionButton.focus = false
             }
         }
         KanteKeycap {
