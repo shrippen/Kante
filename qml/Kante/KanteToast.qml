@@ -122,6 +122,8 @@ Item {
         KanteButton {
             id: actionButton
             visible: toast.actionText.length > 0
+            // Hidden, it is no tab stop (focus off screen).
+            enabled: toast.shown
             Layout.alignment: Qt.AlignVCenter
             text: toast.actionText
             onClicked: {

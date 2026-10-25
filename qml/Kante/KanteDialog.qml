@@ -10,7 +10,8 @@ import "."
  *           on top, an uppercase title, Kante colors inside and Kante
  *           buttons in the footer (the accept button filled).
  * Accept button (Kante 1.43, from lmix): `acceptText` names it after what it does ("Add
- * input" instead of OK), `acceptEnabled` locks it while the form is incomplete. Both hold
+ * input" instead of OK), `acceptEnabled` locks it while the form is incomplete (left unset,
+ * the button's own `enabled` stays as the app bound it). Both hold
  * for the footer of every style, also after a switch at run time (Kante has its own footer;
  * a text or lock set on the button itself was lost there).
  */
@@ -21,8 +22,11 @@ QQC2.Dialog {
     property color kanteBarColor: KanteStyle.accentColor
     /** Text of the accept button (Ok, Save, Apply, Yes); "": the standard one. */
     property string acceptText: ""
-    /** The accept button can be pressed. */
-    property bool acceptEnabled: true
+    /** The accept button can be pressed; undefined (default): Kante leaves `enabled` alone,
+     *  so a dialog that binds it itself keeps its binding. */
+    property var acceptEnabled: undefined
+    // The standard texts of the buttons renamed so far, to give them back: [[button, text]].
+    property var standardTexts: []
 
     /** The accept button of the footer shown now, or null. */
     function acceptButton() {
@@ -39,10 +43,18 @@ QQC2.Dialog {
         if (!button) {
             return
         }
+        let kept = standardTexts.find(pair => pair[0] === button)
         if (acceptText.length > 0) {
+            if (!kept) {
+                standardTexts.push([button, button.text])
+            }
             button.text = acceptText
+        } else if (kept) {
+            button.text = kept[1]
         }
-        button.enabled = acceptEnabled
+        if (acceptEnabled !== undefined) {
+            button.enabled = !!acceptEnabled
+        }
     }
     onAcceptTextChanged: applyAccept()
     onAcceptEnabledChanged: applyAccept()

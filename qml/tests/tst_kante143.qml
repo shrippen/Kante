@@ -234,6 +234,7 @@ TestCase {
     function test_swatchPickerClickAndKeys() {
         const p = createTemporaryObject(swatchComponent, stage())
         compare(p.count, 4)
+        compare(p.focusIndex, 2, "declared with none: the frame on the chosen colour")
         // click the third swatch (index 2 of the colours, cell 3 with "none" first)
         const cellW = p.width / 4
         mouseClick(p, cellW * 3.5, p.height / 2)
@@ -252,6 +253,9 @@ TestCase {
         p.focusIndex = 3
         p.colors = ["#9d0006"]
         compare(p.focusIndex, 1)
+        // "none" from the start: the frame starts on the chosen colour
+        const q = createTemporaryObject(swatchComponent, stage(), { noneText: "None", currentIndex: 2 })
+        compare(q.focusIndex, 3)
         // "none" taken away and back: the frame stays on the same colour
         p.colors = ["#9d0006", "#3a6e4e", "#0f6b66"]
         p.focusIndex = 3
@@ -403,6 +407,38 @@ TestCase {
             acceptText: "Add input"
             acceptEnabled: false
         }
+    }
+
+    Component {
+        id: ownBindingDialog
+        KanteDialog {
+            id: own
+            property bool complete: false
+            standardButtons: QQC2.Dialog.Ok | QQC2.Dialog.Cancel
+            Component.onCompleted: standardButton(QQC2.Dialog.Ok).enabled = Qt.binding(() => own.complete)
+        }
+    }
+
+    function test_dialogKeepsTheAppsOwnBinding() {
+        // lmix binds the button itself and never sets acceptEnabled: its binding stays
+        KanteStyle.kind = KanteStyle.Kind.System
+        const d = createTemporaryObject(ownBindingDialog, stage())
+        d.open()
+        tryVerify(() => d.opened)
+        wait(50)
+        verify(!d.standardButton(QQC2.Dialog.Ok).enabled, "still locked")
+        d.complete = true
+        verify(d.standardButton(QQC2.Dialog.Ok).enabled, "the binding follows")
+    }
+
+    function test_dialogAcceptTextBackToStandard() {
+        KanteStyle.kind = KanteStyle.Kind.System
+        const d = createTemporaryObject(dialogComponent, stage())
+        d.open()
+        tryVerify(() => d.opened)
+        tryCompare(d.acceptButton(), "text", "Add input")
+        d.acceptText = ""
+        verify(d.acceptButton().text !== "Add input", "the standard text again: " + d.acceptButton().text)
     }
 
     function test_dialogAcceptButtonNamedAndLocked() {

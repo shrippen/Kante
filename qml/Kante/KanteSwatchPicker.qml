@@ -32,12 +32,19 @@ FocusScope {
     readonly property int count: colors.length + offset
     property int focusIndex: Math.max(0, currentIndex + offset)
     // The app sets currentIndex (another input chosen): the keyboard frame goes with it.
-    onCurrentIndexChanged: focusIndex = Math.max(0, currentIndex + offset)
+    onCurrentIndexChanged: if (ready) focusIndex = Math.max(0, currentIndex + offset)
+    // The handlers only after creation: while the properties arrive they would see half of
+    // them; once complete the frame starts on the chosen cell.
+    property bool ready: false
+    Component.onCompleted: {
+        focusIndex = Math.max(0, Math.min(currentIndex + offset, count - 1))
+        ready = true
+    }
     // Fewer colours than before: the frame stays on a cell that is there.
-    onCountChanged: focusIndex = Math.max(0, Math.min(focusIndex, count - 1))
+    onCountChanged: if (ready) focusIndex = Math.max(0, Math.min(focusIndex, count - 1))
     // "None" added or taken away: the frame stays on the same colour.
     // (count may not have followed offset yet: the limit from colours and offset.)
-    onOffsetChanged: focusIndex = Math.max(0, Math.min(focusIndex + (offset > 0 ? 1 : -1), colors.length + offset - 1))
+    onOffsetChanged: if (ready) focusIndex = Math.max(0, Math.min(focusIndex + (offset > 0 ? 1 : -1), colors.length + offset - 1))
 
     implicitWidth: row.implicitWidth
     implicitHeight: row.implicitHeight
