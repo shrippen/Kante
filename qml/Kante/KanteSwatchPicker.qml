@@ -41,7 +41,9 @@ FocusScope {
         ready = true
     }
     // Fewer colours than before: the frame stays on a cell that is there.
-    onCountChanged: if (ready) focusIndex = Math.max(0, Math.min(focusIndex, count - 1))
+    // Colours that come later: the frame goes to the chosen one once it is there.
+    onCountChanged: if (ready) focusIndex = Math.max(0, Math.min(currentIndex >= 0 && currentIndex + offset < count
+        ? (focusIndex === 0 ? currentIndex + offset : focusIndex) : focusIndex, count - 1))
     // "None" added or taken away: the frame stays on the same colour.
     // (count may not have followed offset yet: the limit from colours and offset.)
     onOffsetChanged: if (ready) focusIndex = Math.max(0, Math.min(focusIndex + (offset > 0 ? 1 : -1), colors.length + offset - 1))

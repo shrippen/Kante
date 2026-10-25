@@ -369,6 +369,33 @@ TestCase {
         verify(!t.shown)
     }
 
+    function test_toastFocusedActionDoesNotHoldTheNextShow() {
+        const t = createTemporaryObject(toastComponent, stage(), { life: 1200 })
+        t.show()
+        wait(400)
+        let button = null
+        function walk(item) {
+            for (let i = 0; i < item.children.length; i++) {
+                const c = item.children[i]
+                if (c.text === "Undo" && c.clicked !== undefined) {
+                    button = c
+                    return
+                }
+                walk(c)
+            }
+        }
+        walk(t)
+        verify(button, "an Undo button")
+        button.forceActiveFocus(Qt.TabFocusReason)
+        tryVerify(() => t.held, 1000, "held with the action focused")
+        // the app hides it (its own Ctrl+Z), later a new message
+        t.hide()
+        wait(450)
+        t.show()
+        verify(!t.held, "the button did not take the focus back")
+        tryVerify(() => !t.shown, 3000)
+    }
+
     function test_toastStaysUnderThePointer() {
         const t = createTemporaryObject(toastComponent, stage(), { life: 800 })
         t.show()
