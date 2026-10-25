@@ -198,6 +198,18 @@ TestCase {
         tryVerify(() => !o.popover.visible)
     }
 
+    function test_popoverButtonClosesIt() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.button.clicked.connect(() => o.popover.openAt(o.button))
+        mouseClick(o.button)
+        tryVerify(() => o.popover.opened)
+        // a press on its button closes it; the click must not open it again
+        mouseClick(o.button)
+        tryVerify(() => !o.popover.visible)
+        wait(50)
+        verify(!o.popover.visible)
+    }
+
     // --- Swatch picker
 
     Component {
@@ -283,6 +295,25 @@ TestCase {
         compare(ring.inset, 4, "inside the selection frame")
     }
 
+    function test_optionTileOutlineSquareWithoutCut() {
+        // System: no cut corner, the ring is a plain rectangle (no loop in the corner)
+        KanteStyle.kind = KanteStyle.Kind.System
+        const r = createTemporaryObject(tilesComponent, stage())
+        let ring = null
+        for (let i = 0; i < r.a.background.children.length; i++) {
+            const c = r.a.background.children[i]
+            if (c.lineWidth === 1) {
+                ring = c
+            }
+        }
+        verify(ring)
+        compare(ring.c, 0)
+        compare(ring.e, 0)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(ring.c > 0, "the card's cut corner reaches the outline")
+        verify(ring.e > 0)
+    }
+
     // --- Toast action
 
     Component {
@@ -317,6 +348,17 @@ TestCase {
         mouseClick(found)
         compare(spy.count, 1)
         verify(!t.shown)
+    }
+
+    function test_toastStaysUnderThePointer() {
+        const t = createTemporaryObject(toastComponent, stage(), { life: 800 })
+        t.show()
+        wait(450) // slid in
+        mouseMove(t, 10, 10)
+        wait(900)
+        verify(t.shown, "held under the pointer")
+        mouseMove(stage(), stage().width - 2, stage().height - 2)
+        tryVerify(() => !t.shown, 2000)
     }
 
     Component { id: spyComponent; SignalSpy {} }

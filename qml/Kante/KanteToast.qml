@@ -8,7 +8,8 @@ import "."
  * ms (0: stays) and emits `closed`.
  * Action (Kante 1.43, from lmix): `actionText` ("Undo") puts a button at the right end;
  * a click emits `actionTriggered` and hides the toast. `actionShortcut` (e.g. "Ctrl+Z") is
- * shown as a `KanteKeycap` beside it; the app handles the shortcut itself.
+ * shown as a `KanteKeycap` beside it; the app handles the shortcut itself. Under the
+ * pointer or with the button focused the toast stays, then gets its full `life` again.
  */
 Item {
     id: toast
@@ -64,6 +65,21 @@ Item {
     }
 
     Timer { id: timer; interval: toast.life; onTriggered: toast.hide() }
+
+    // Under the pointer or with the action focused it stays; afterwards its full life again.
+    readonly property bool held: hold.hovered || actionButton.activeFocus
+    onHeldChanged: {
+        if (!shown || life <= 0) {
+            return
+        }
+        if (held) {
+            timer.stop()
+            lifeLine.stop()
+        } else {
+            show()
+        }
+    }
+    HoverHandler { id: hold }
 
     KanteCard {
         anchors.fill: parent

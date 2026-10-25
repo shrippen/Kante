@@ -62,7 +62,11 @@ QQC2.AbstractButton {
         property real inset: 0
         property real lineWidth: 1
         readonly property real d: inset + lineWidth / 2
-        readonly property real c: tile.background.chamfer
+        // The card is the parent (an inline component does not see the file's ids).
+        readonly property real c: parent ? parent.chamfer : 0
+        // How far the cut runs along each edge at this inset: the cut moved in by d along its
+        // normal (45°: d·√2), none when the card has no cut corner (System).
+        readonly property real e: Math.max(0, c - d * (2 - Math.SQRT2))
         anchors.fill: parent
         antialiasing: true
         ShapePath {
@@ -71,9 +75,8 @@ QQC2.AbstractButton {
             strokeWidth: outline.lineWidth
             joinStyle: ShapePath.MiterJoin
             startX: outline.d; startY: outline.d
-            // The cut moved in by d along its normal (45°: d·√2 along each edge).
-            PathLine { x: outline.width - outline.c - outline.d * Math.SQRT2 + outline.d; y: outline.d }
-            PathLine { x: outline.width - outline.d; y: outline.c + outline.d * Math.SQRT2 - outline.d }
+            PathLine { x: outline.width - outline.d - outline.e; y: outline.d }
+            PathLine { x: outline.width - outline.d; y: outline.d + outline.e }
             PathLine { x: outline.width - outline.d; y: outline.height - outline.d }
             PathLine { x: outline.d; y: outline.height - outline.d }
             PathLine { x: outline.d; y: outline.d }

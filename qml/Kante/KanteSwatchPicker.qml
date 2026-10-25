@@ -35,6 +35,8 @@ FocusScope {
     onCurrentIndexChanged: focusIndex = Math.max(0, currentIndex + offset)
     // Fewer colours than before: the frame stays on a cell that is there.
     onCountChanged: focusIndex = Math.max(0, Math.min(focusIndex, count - 1))
+    // "None" added or taken away: the frame stays on the same colour.
+    onOffsetChanged: focusIndex = Math.max(0, Math.min(currentIndex + offset, count - 1))
 
     implicitWidth: row.implicitWidth
     implicitHeight: row.implicitHeight
