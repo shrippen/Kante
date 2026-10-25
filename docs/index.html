@@ -131,6 +131,27 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.44.0">
+      <div class="release-head"><b class="release-version">1.44</b><time datetime="2026-10-25">25 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">The timing histogram shows the target band.</p>
+        <p class="release-lead" lang="de">Das Timing-Histogramm zeigt das Ziel-Band.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteTimingHistogram</code>: a target band (for example laid-back, +10 to +30 ms) as a shaded range with dashed edges and a label, so you see where your notes sit against the aim.</li>
+            <li><code>KanteBarChart</code>: <code>ranges</code> shade any span behind the bars.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTimingHistogram</code>: ein Ziel-Band (etwa laid-back, +10 bis +30 ms) als getönter Bereich mit gestrichelten Rändern und Beschriftung; so siehst du, wo deine Töne gegenüber dem Ziel liegen.</li>
+            <li><code>KanteBarChart</code>: <code>ranges</code> tönen beliebige Bereiche hinter den Balken.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.44-band.png" alt="Timing histogram with bars from −20 to +40 ms, a solid zero line, a dashed mean line at +14 ms and a shaded band with dashed edges from +10 to +30 ms labelled 'Ziel laid-back +10…+30 ms'" loading="lazy"><figcaption><span lang="en">Laid-back aim: the band from +10 to +30 ms (demo data)</span><span lang="de">Ziel laid-back: das Band von +10 bis +30 ms (Demodaten)</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-144"><span lang="en">All changes in 1.44 →</span><span lang="de">Alle Änderungen in 1.44 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.43.0">
       <div class="release-head"><b class="release-version">1.43</b><time datetime="2026-10-25">25 Oct 2026</time></div>
       <div class="release-body">
@@ -631,7 +652,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.43.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.44.0</p></div>
 </footer>
 
 <script>
