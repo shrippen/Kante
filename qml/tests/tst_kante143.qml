@@ -144,6 +144,11 @@ TestCase {
         keyClick(Qt.Key_Down)
         verify(o.keyed.highlighted)
         verify(Qt.colorEqual(o.keyed.ink, o.keyed.Kirigami.Theme.highlightedTextColor), "ink on the highlight")
+        // the value too
+        verify(Qt.colorEqual(o.valued.valueLabel.color, KanteStyle.mutedTextColor))
+        keyClick(Qt.Key_Down)
+        verify(o.valued.highlighted)
+        verify(Qt.colorEqual(o.valued.valueLabel.color, o.valued.ink), "the value in the highlight's ink")
     }
 
     function test_menuSectionIsSkipped() {
@@ -223,6 +228,10 @@ TestCase {
         p.currentIndex = 1
         keyClick(Qt.Key_Space)
         compare(p.currentIndex, 1)
+        // fewer colours: the frame stays on a cell that is there
+        p.focusIndex = 3
+        p.colors = ["#9d0006"]
+        compare(p.focusIndex, 1)
     }
 
     // --- Table header
@@ -266,11 +275,12 @@ TestCase {
         let ring = null
         for (let i = 0; i < r.a.background.children.length; i++) {
             const c = r.a.background.children[i]
-            if (c.border && c.border.width === 1 && c.visible) {
+            if (c.lineWidth === 1 && c.visible) {
                 ring = c
             }
         }
         verify(ring, "a focus ring on the chosen tile")
+        compare(ring.inset, 4, "inside the selection frame")
     }
 
     // --- Toast action

@@ -33,6 +33,8 @@ FocusScope {
     property int focusIndex: Math.max(0, currentIndex + offset)
     // The app sets currentIndex (another input chosen): the keyboard frame goes with it.
     onCurrentIndexChanged: focusIndex = Math.max(0, currentIndex + offset)
+    // Fewer colours than before: the frame stays on a cell that is there.
+    onCountChanged: focusIndex = Math.max(0, Math.min(focusIndex, count - 1))
 
     implicitWidth: row.implicitWidth
     implicitHeight: row.implicitHeight
@@ -42,9 +44,9 @@ FocusScope {
 
     Keys.onLeftPressed: focusIndex = Math.max(0, focusIndex - 1)
     Keys.onRightPressed: focusIndex = Math.min(count - 1, focusIndex + 1)
-    Keys.onSpacePressed: picked(focusIndex - offset)
-    Keys.onReturnPressed: picked(focusIndex - offset)
-    Keys.onEnterPressed: picked(focusIndex - offset)
+    Keys.onSpacePressed: if (count > 0) picked(focusIndex - offset)
+    Keys.onReturnPressed: if (count > 0) picked(focusIndex - offset)
+    Keys.onEnterPressed: if (count > 0) picked(focusIndex - offset)
 
     Row {
         id: row
