@@ -764,6 +764,113 @@ Rectangle {
             }
 
             Section {
+                title: "1.43 · mischpult (lmix): griff, menü, popover, farben, tabelle, kacheln"
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    ColumnLayout {
+                        spacing: KanteStyle.unit(8)
+                        Rectangle {
+                            Layout.preferredWidth: KanteStyle.unit(260)
+                            Layout.preferredHeight: galleryMonitorHeight.value
+                            color: KanteStyle.stageColor
+                            Text { anchors.centerIn: parent; text: Math.round(galleryMonitorHeight.value) + " px"; color: KanteStyle.stageTextColor; font: KanteStyle.monoFont(10) }
+                        }
+                        KanteSplitHandle {
+                            id: galleryMonitorHeight
+                            Layout.preferredWidth: KanteStyle.unit(260)
+                            value: KanteStyle.unit(90)
+                            from: KanteStyle.unit(40)
+                            to: KanteStyle.unit(180)
+                            defaultValue: KanteStyle.unit(90)
+                            accessibleName: "Höhe der Monitore"
+                            onMoved: function (v) { value = v }
+                        }
+                        RowLayout {
+                            spacing: KanteStyle.unit(6)
+                            Text { text: "Speichern"; color: KanteStyle.textColor; font: KanteStyle.defaultFont }
+                            KanteKeycap { text: "Strg+S" }
+                            Text { text: "Abbrechen"; color: KanteStyle.textColor; font: KanteStyle.defaultFont }
+                            KanteKeycap { text: "Esc" }
+                        }
+                        KanteSwatchPicker {
+                            colors: [KanteStyle.negativeTextColor, KanteStyle.neutralTextColor, KanteStyle.accentColor, KanteStyle.positiveTextColor, KanteStyle.focusColor]
+                            names: ["Rot", "Orange", "Gelb", "Grün", "Türkis"]
+                            noneText: "Keine"
+                            currentIndex: 4
+                            onPicked: function (i) { currentIndex = i }
+                        }
+                        KanteTableHeader {
+                            id: galleryTable
+                            Layout.preferredWidth: KanteStyle.unit(300)
+                            columns: [{ title: "", width: KanteStyle.unit(14) }, { title: "Ziel", width: 0 }, { title: "Format", width: KanteStyle.unit(70) }]
+                        }
+                        Repeater {
+                            model: [["Aufnahme", "1080p30"], ["Stream", "720p30"]]
+                            Item {
+                                Layout.preferredWidth: galleryTable.width
+                                Layout.preferredHeight: KanteStyle.unit(24)
+                                required property var modelData
+                                KanteLamp { x: galleryTable.columnX(0); anchors.verticalCenter: parent.verticalCenter }
+                                Text { x: galleryTable.columnX(1); width: galleryTable.columnWidth(1); anchors.verticalCenter: parent.verticalCenter; text: parent.modelData[0]; color: KanteStyle.textColor; font: KanteStyle.defaultFont }
+                                Text { x: galleryTable.columnX(2); anchors.verticalCenter: parent.verticalCenter; text: parent.modelData[1]; color: KanteStyle.textColor; font: KanteStyle.monoFont(9) }
+                            }
+                        }
+                    }
+                    ColumnLayout {
+                        spacing: KanteStyle.unit(8)
+                        RowLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteButton {
+                                text: "Datei"
+                                onClicked: galleryMenu.popup(this, 0, height)
+                                QQC2.Menu {
+                                    id: galleryMenu
+                                    KantePopupSkin { popup: galleryMenu }
+                                    KanteMenuSection { text: "Show"; rule: false }
+                                    KanteMenuItem { text: "Öffnen…"; icon.name: "document-open"; shortcutText: "Strg+O" }
+                                    KanteMenuItem { text: "Speichern"; icon.name: "document-save"; shortcutText: "Strg+S" }
+                                    KanteMenuSection { text: "Input" }
+                                    KanteMenuItem { text: "Bei Signalverlust"; iconRoom: true; valueText: "Standbild" }
+                                    KanteMenuItem { text: "Entfernen"; icon.name: "edit-delete"; destructive: true; shortcutText: "Entf" }
+                                }
+                            }
+                            KanteButton {
+                                id: galleryViewButton
+                                text: "Ansicht"
+                                onClicked: galleryPopover.openAt(galleryViewButton)
+                            }
+                            KantePopover {
+                                id: galleryPopover
+                                title: "Ansicht"
+                                KanteSwitch { text: "Ton am Rand"; checked: true }
+                                KanteSwitch { text: "Einfacher Modus" }
+                            }
+                            KanteButton {
+                                text: "Toast"
+                                onClicked: galleryToast.show()
+                            }
+                        }
+                        GridLayout {
+                            columns: 3
+                            columnSpacing: KanteStyle.unit(6)
+                            rowSpacing: KanteStyle.unit(6)
+                            KanteOptionTile { text: "Kamera"; hint: "Capture, Webcam"; icon.name: "camera-web"; checked: true }
+                            KanteOptionTile { text: "Video"; hint: "Datei"; icon.name: "video-x-generic" }
+                            KanteOptionTile { text: "Stream"; hint: "HLS, RTMP"; icon.name: "network-wired" }
+                        }
+                        KanteToast {
+                            id: galleryToast
+                            Layout.preferredWidth: KanteStyle.unit(340)
+                            text: "Input 3 „Schach“ entfernt"
+                            actionText: "Rückgängig"
+                            actionShortcut: "Strg+Z"
+                            life: 8000
+                        }
+                    }
+                }
+            }
+
+            Section {
                 title: "1.25, 1.33 · gespräch (kaiwa)"
                 // The talk button walks through its states on click, as an app would drive it.
                 RowLayout {
