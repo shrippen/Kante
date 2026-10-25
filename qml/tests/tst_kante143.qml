@@ -135,6 +135,17 @@ TestCase {
         verify(!cap.visible, "System shows plain text")
     }
 
+    function test_menuItemInkOnHighlight() {
+        const o = createTemporaryObject(menuComponent, stage())
+        o.menu.open()
+        tryVerify(() => o.menu.opened)
+        verify(!Qt.colorEqual(o.keyed.ink, o.keyed.Kirigami.Theme.highlightedTextColor))
+        // keyboard or hover highlight: the highlight's ink, not the plain text colour
+        keyClick(Qt.Key_Down)
+        verify(o.keyed.highlighted)
+        verify(Qt.colorEqual(o.keyed.ink, o.keyed.Kirigami.Theme.highlightedTextColor), "ink on the highlight")
+    }
+
     function test_menuSectionIsSkipped() {
         const o = createTemporaryObject(menuComponent, stage())
         o.menu.open()
@@ -208,6 +219,10 @@ TestCase {
         keyClick(Qt.Key_Left)
         keyClick(Qt.Key_Space)
         compare(p.currentIndex, -1, "none")
+        // the app chooses another colour: the keyboard frame follows, Space keeps it
+        p.currentIndex = 1
+        keyClick(Qt.Key_Space)
+        compare(p.currentIndex, 1)
     }
 
     // --- Table header
@@ -241,6 +256,21 @@ TestCase {
         verify(!r.a.checked)
         compare(r.b.Accessible.role, Accessible.RadioButton)
         compare(r.b.Accessible.description, "File")
+    }
+
+    function test_optionTileFocusRingWhenChosen() {
+        const r = createTemporaryObject(tilesComponent, stage())
+        r.a.forceActiveFocus(Qt.TabFocusReason)
+        verify(r.a.visualFocus)
+        verify(r.a.checked)
+        let ring = null
+        for (let i = 0; i < r.a.background.children.length; i++) {
+            const c = r.a.background.children[i]
+            if (c.border && c.border.width === 1 && c.visible) {
+                ring = c
+            }
+        }
+        verify(ring, "a focus ring on the chosen tile")
     }
 
     // --- Toast action

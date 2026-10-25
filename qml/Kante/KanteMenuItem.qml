@@ -28,9 +28,12 @@ QQC2.MenuItem {
 
     readonly property string shownShortcut: shortcutText.length > 0 ? shortcutText : (actionShortcut.nativeText || "")
     readonly property bool hasIcon: icon.name !== "" || icon.source.toString() !== ""
+    // On the platform's highlight (hover, keyboard, press) its ink, also for destructive items:
+    // dark text or red on Breeze's blue reads too faintly.
     readonly property color ink: !enabled ? Kirigami.Theme.disabledTextColor
+                                 : (highlighted || pressed) ? Kirigami.Theme.highlightedTextColor
                                  : destructive ? KanteStyle.negativeTextColor
-                                 : (pressed ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor)
+                                 : Kirigami.Theme.textColor
 
     Accessible.name: text
     Accessible.description: valueText

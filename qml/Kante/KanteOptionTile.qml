@@ -13,7 +13,7 @@ import "."
  *   hint      one short line under it ("Capture, webcam")
  *   checked   chosen; tiles of one group are `autoExclusive` (default true)
  * Chosen: the selection tint and a 2 px frame in the focus colour; hover: tint step 1;
- * keyboard focus: a 1 px ring inside. Screen readers hear a radio button with name and hint.
+ * keyboard focus: a 1 px ring inside, also on the chosen tile (further in). Screen readers hear a radio button with name and hint.
  * Kante and Kante Light cut the top right corner; System: square, platform colours.
  */
 QQC2.AbstractButton {
@@ -48,10 +48,12 @@ QQC2.AbstractButton {
             border.color: KanteStyle.focusColor
             border.width: 2
         }
+        // Keyboard focus, chosen or not: a 1 px ring inside (on a chosen tile further in,
+        // apart from its 2 px frame, so the two read as a double ring).
         Rectangle {
-            visible: tile.visualFocus && !tile.checked
+            visible: tile.visualFocus
             anchors.fill: parent
-            anchors.margins: 2
+            anchors.margins: tile.checked ? 4 : 2
             color: "transparent"
             border.color: KanteStyle.focusColor
             border.width: 1

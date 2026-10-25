@@ -31,6 +31,8 @@ FocusScope {
     readonly property int offset: noneText.length > 0 ? 1 : 0
     readonly property int count: colors.length + offset
     property int focusIndex: Math.max(0, currentIndex + offset)
+    // The app sets currentIndex (another input chosen): the keyboard frame goes with it.
+    onCurrentIndexChanged: focusIndex = Math.max(0, currentIndex + offset)
 
     implicitWidth: row.implicitWidth
     implicitHeight: row.implicitHeight
