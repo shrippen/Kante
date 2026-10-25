@@ -792,7 +792,7 @@ qmllint (property-override): `KanteAudioMeter` declared `scale` as a bool and so
 
 | Element | Web | QML |
 |---|---|---|
-| Audio meter | – | `KanteAudioMeter.showScale` switches the labels; `scale` is Item's size factor again. Removed: the bool `scale`; a project that set it sets `showScale`. Old code: a literal `scale: true` or `scale: false` no longer loads ("Invalid property assignment: number expected", the component is missing); a binding such as `scale: showLabels` loads and goes wrong silently, as the size factor 1 (no labels) or 0 (the meter shrinks to nothing). Search for `scale:` on every `KanteAudioMeter` |
+| Audio meter | – | `KanteAudioMeter.showScale` switches the labels; `scale` is Item's size factor again. Removed: the bool `scale`; a project that set it sets `showScale`. Old code: a literal `scale: true` or `scale: false` no longer loads ("Invalid property assignment: number expected": the file that holds it does not load); a binding such as `scale: showLabels` loads and goes wrong silently, as the size factor 1 (no labels) or 0 (the meter shrinks to nothing). Search for `scale:` on every `KanteAudioMeter` |
 
 ### Changed in Kante 1.44
 
