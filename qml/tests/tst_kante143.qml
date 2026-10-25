@@ -71,6 +71,14 @@ TestCase {
         compare(h.value, 250)
     }
 
+    function test_splitHandleTellsItsValue() {
+        const h = createTemporaryObject(splitComponent, stage())
+        compare(h.Accessible.description, "200 px")
+        h.forceActiveFocus()
+        keyClick(Qt.Key_Down)
+        compare(h.Accessible.description, "216 px")
+    }
+
     function test_splitHandleDoubleClickResets() {
         const h = createTemporaryObject(splitComponent, stage())
         mouseDoubleClickSequence(h, h.width / 2, h.height / 2)
@@ -368,7 +376,52 @@ TestCase {
         tryVerify(() => !t.shown, 2000)
     }
 
+    function test_toastShownUnderThePointerWaits() {
+        const t = createTemporaryObject(toastComponent, stage(), { life: 300 })
+        t.show()
+        wait(450)
+        mouseMove(t, 10, 10)
+        tryVerify(() => t.held)
+        // a new message while the pointer is on it: it stays until let go
+        t.text = "Input 4 removed"
+        t.show()
+        wait(700)
+        verify(t.shown, "waits under the pointer")
+        mouseMove(stage(), stage().width - 2, stage().height - 2)
+        tryVerify(() => !t.shown, 2000)
+    }
+
     Component { id: spyComponent; SignalSpy {} }
+
+    // --- Dialog accept button
+
+    Component {
+        id: dialogComponent
+        KanteDialog {
+            title: "Add input"
+            standardButtons: QQC2.Dialog.Ok | QQC2.Dialog.Cancel
+            acceptText: "Add input"
+            acceptEnabled: false
+        }
+    }
+
+    function test_dialogAcceptButtonNamedAndLocked() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const d = createTemporaryObject(dialogComponent, stage())
+        d.open()
+        tryVerify(() => d.opened)
+        tryCompare(d.acceptButton(), "text", "Add input")
+        verify(!d.acceptButton().enabled, "check 1")
+        // another style, another footer: the same name and lock
+        KanteStyle.kind = KanteStyle.Kind.System
+        tryCompare(d.acceptButton(), "text", "Add input")
+        tryVerify(() => !d.acceptButton().enabled, 1000, "check 2")
+        d.acceptEnabled = true
+        verify(d.acceptButton().enabled, "check 3")
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        tryCompare(d.acceptButton(), "text", "Add input")
+        tryVerify(() => d.acceptButton().enabled, 1000, "check 4")
+    }
 
     // --- Sheet and message skins keep the platform background
 

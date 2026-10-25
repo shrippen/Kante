@@ -801,6 +801,7 @@ From lmix (QA of its Mix page, 25.10.2026): the page needs a size the operator d
 | Table header | – | `KanteTableHeader`: column titles in label style over rows, with a rule. `columns` [{title, width (px, 0 = share the rest), align}], `spacing`; rows line up with `columnX(i)` and `columnWidth(i)`. Column headers for screen readers |
 | Option tile | – | `KanteOptionTile`: one of several kinds as a tile (`icon`, `text`, `hint`), checkable and `autoExclusive`. Chosen: selection tint with a 2 px focus-colour frame; hover tint 1; keyboard focus ring; cut corner in Kante and Kante Light. Radio button with name and hint for screen readers |
 | Toast action | `.toast` action (1.11) | `KanteToast.actionText` ("Undo") puts a button at the right; a click emits `actionTriggered()` and hides the toast. `actionShortcut` shows a `KanteKeycap` beside it (the app handles the key) |
+| Dialog accept button | – | `KanteDialog.acceptText` names the accept button after what it does ("Add input" instead of OK), `acceptEnabled` locks it while the form is incomplete; both hold for the footer of every style, also after a switch at run time. `acceptButton()` returns the button shown now |
 
 ### Changed in Kante 1.43
 

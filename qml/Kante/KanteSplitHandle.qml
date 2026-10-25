@@ -16,7 +16,8 @@ import "."
  *   moved(value)  every change by drag, key or double click, already within the limits
  * Kante and Kante Light: three short lines in the muted text colour on a 1 px rule; on
  * hover, while dragged and with keyboard focus they turn the focus colour. System: the same
- * in the platform's colours. Screen readers get a slider with the value in px.
+ * in the platform's colours. Screen readers get a slider named `accessibleName` with the
+ * value in px as its description (an Item has no value interface of its own).
  */
 Item {
     id: handle
@@ -47,6 +48,7 @@ Item {
 
     Accessible.role: Accessible.Slider
     Accessible.name: accessibleName
+    Accessible.description: Math.round(value) + " px"
     Accessible.focusable: true
     Accessible.onIncreaseAction: setValue(value + step)
     Accessible.onDecreaseAction: setValue(value - step)

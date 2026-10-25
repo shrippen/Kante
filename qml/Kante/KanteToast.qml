@@ -42,6 +42,12 @@ Item {
 
     function show() {
         shown = true
+        // Shown under the pointer (or with the action focused): it waits until let go.
+        if (held) {
+            timer.stop()
+            lifeLine.stop()
+            return
+        }
         lifeLine.restart()
         if (life > 0) {
             timer.restart()
