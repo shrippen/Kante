@@ -64,11 +64,16 @@ QQC2.Popup {
         popup: popover
     }
 
+    // As wide as the title too: the Column counts its width, which follows the Column.
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            Math.max(column.implicitWidth, titleLabel.visible ? titleLabel.implicitWidth : 0)
+                            + leftPadding + rightPadding)
     contentItem: Column {
         id: column
         spacing: KanteStyle.unit(10)
 
         KanteSectionLabel {
+            id: titleLabel
             visible: popover.title.length > 0
             text: popover.title
             width: parent.width

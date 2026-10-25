@@ -206,6 +206,18 @@ TestCase {
         tryVerify(() => !o.popover.visible)
     }
 
+    function test_popoverIsAsWideAsALongTitle() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.popover.title = "A title much longer than the switch below it"
+        o.popover.openAt(o.button)
+        tryVerify(() => o.popover.opened)
+        const label = o.popover.contentItem.children[0]
+        verify(o.popover.availableWidth >= label.implicitWidth - 1,
+               "room for the title: " + o.popover.availableWidth + " < " + label.implicitWidth)
+        keyClick(Qt.Key_Escape)
+        tryVerify(() => !o.popover.visible)
+    }
+
     function test_popoverButtonClosesIt() {
         const o = createTemporaryObject(popoverComponent, stage())
         o.button.clicked.connect(() => o.popover.openAt(o.button))
