@@ -396,6 +396,33 @@ TestCase {
         tryVerify(() => !t.shown, 3000)
     }
 
+    function test_toastHiddenByShownDropsTheFocus() {
+        // as above, but the app sets shown itself instead of calling hide()
+        const t = createTemporaryObject(toastComponent, stage(), { life: 1200 })
+        t.show()
+        wait(400)
+        let button = null
+        function walk(item) {
+            for (let i = 0; i < item.children.length; i++) {
+                const c = item.children[i]
+                if (c.text === "Undo" && c.clicked !== undefined) {
+                    button = c
+                    return
+                }
+                walk(c)
+            }
+        }
+        walk(t)
+        verify(button, "an Undo button")
+        button.forceActiveFocus(Qt.TabFocusReason)
+        tryVerify(() => t.held, 1000, "held with the action focused")
+        t.shown = false
+        wait(450)
+        t.show()
+        verify(!t.held, "the button did not take the focus back")
+        tryVerify(() => !t.shown, 3000)
+    }
+
     function test_toastStaysUnderThePointer() {
         const t = createTemporaryObject(toastComponent, stage(), { life: 800 })
         t.show()
@@ -466,6 +493,16 @@ TestCase {
         tryCompare(d.acceptButton(), "text", "Add input")
         d.acceptText = ""
         verify(d.acceptButton().text !== "Add input", "the standard text again: " + d.acceptButton().text)
+    }
+
+    function test_dialogAcceptEnabledUnsetFreesTheButton() {
+        KanteStyle.kind = KanteStyle.Kind.System
+        const d = createTemporaryObject(dialogComponent, stage())
+        d.open()
+        tryVerify(() => d.opened)
+        tryVerify(() => !d.acceptButton().enabled, 1000, "locked")
+        d.acceptEnabled = undefined
+        verify(d.acceptButton().enabled, "free again once unset")
     }
 
     function test_dialogAcceptButtonNamedAndLocked() {

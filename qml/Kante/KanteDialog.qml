@@ -27,6 +27,8 @@ QQC2.Dialog {
     property var acceptEnabled: undefined
     // The standard texts of the buttons renamed so far, to give them back: [[button, text]].
     property var standardTexts: []
+    // The button acceptEnabled has set, to free it when acceptEnabled is unset again.
+    property var lockedButton: null
 
     /** The accept button of the footer shown now, or null. */
     function acceptButton() {
@@ -54,6 +56,11 @@ QQC2.Dialog {
         }
         if (acceptEnabled !== undefined) {
             button.enabled = !!acceptEnabled
+            lockedButton = button
+        } else if (lockedButton === button) {
+            // Unset again: the button is free as before Kante touched it.
+            button.enabled = true
+            lockedButton = null
         }
     }
     onAcceptTextChanged: applyAccept()

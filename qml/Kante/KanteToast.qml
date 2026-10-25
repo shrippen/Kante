@@ -53,10 +53,10 @@ Item {
             timer.restart()
         }
     }
+    // Hidden (by hide() or by setting shown), its button gives up the focus: disabled it
+    // would keep `focus` and take the keys again with the next show (and hold the toast).
+    onShownChanged: if (!shown) actionButton.focus = false
     function hide() {
-        // Its button gives up the focus: disabled while hidden it would keep `focus` and take
-        // the keys again with the next show (and hold the toast for good).
-        actionButton.focus = false
         timer.stop()
         shown = false
         closed()
