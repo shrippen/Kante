@@ -3,14 +3,14 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.41, a target band in the timing histogram (Kontra, DIDAKTIK I5): an aim such as
+ * Kante 1.44, a target band in the timing histogram (Kontra, DIDAKTIK I5): an aim such as
  * laid-back (+10 to +30 ms) shows as a tinted range with dashed edges and a label, so the
  * player sees whether the bars sit inside it; not by colour alone. KanteBarChart draws any
  * `ranges` [{from, to, label}] in columns. Run: kante/tools/check-qml.sh.
  */
 TestCase {
     id: tc
-    name: "Kante141"
+    name: "Kante144"
     width: 600
     height: 300
     when: windowShown

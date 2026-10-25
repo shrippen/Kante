@@ -23,7 +23,7 @@ import "."
  * left edge (2.5 = the middle of the third bar), `barFill` is the share of a column the
  * bar fills (1 = bars touch), `wholeSteps` keeps the axis on whole numbers (counts).
  * KanteTimingHistogram is configured this way.
- * `ranges` (1.41) shade spans behind the bars [{from, to, label}], in columns as `markers`
+ * `ranges` (1.44) shade spans behind the bars [{from, to, label}], in columns as `markers`
  * (e.g. a target band): a tint, dashed edges and the label at the top, not colour alone.
  */
 Item {

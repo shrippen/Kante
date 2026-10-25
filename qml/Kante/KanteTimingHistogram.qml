@@ -11,7 +11,7 @@ import "."
  *   firstBinMs  lower edge of the first bin (e.g. −100)
  *   binMs       width of a bin (e.g. 10)
  *   meanMs      mean deviation; NaN for none
- *   bandMinMs, bandMaxMs  a target band (1.41, e.g. +10…+30 for laid-back), labelled with
+ *   bandMinMs, bandMaxMs  a target band (1.44, e.g. +10…+30 for laid-back), labelled with
  *               bandText; NaN for none
  */
 Item {

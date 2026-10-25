@@ -786,7 +786,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
-### Changed in Kante 1.41
+### Changed in Kante 1.44
 
 Kontra's aim against the beat (DIDAKTIK I5): the summary said whether a run held laid-back (+10 to +30 ms), but the histogram did not show the band, so the player could not see how far the notes sat from it.
 
@@ -794,6 +794,39 @@ Kontra's aim against the beat (DIDAKTIK I5): the summary said whether a run held
 |---|---|---|
 | Bar chart | – | `KanteBarChart`: `ranges` [{from, to, label}] shade spans behind the bars, in columns like `markers`: a tint (`tint1Color`), dashed edges and the label in a box above the bars, one row below the marker labels; clipped to the chart. Not colour alone: edges and label carry it |
 | Timing histogram | – | `KanteTimingHistogram`: `bandMinMs`, `bandMaxMs` (NaN: none) and `bandText` draw a target band, labelled "Ziel +10…+30 ms"; `rangeList()`; screen readers hear the band after the mean |
+### Added in Kante 1.43
+
+From lmix (QA of its Mix page, 25.10.2026): the page needs a size the operator drags (monitors over inputs, the audio column), menus with sections, icons, shortcuts and values instead of 18 flat entries, a "View" popover with segments and switches, colour tags as swatches in a menu row, a source chooser that shows every kind at once, and an undo in place of a confirmation. Catalogue with shots in Kante and Kante Light: [`proposals/2026-10-lmix/`](proposals/2026-10-lmix/).
+
+| Element | Web | QML |
+|---|---|---|
+| Split handle | – | `KanteSplitHandle`: the grip between two panes. `orientation` (Qt.Vertical: a bar dragged up and down, sets a height; Qt.Horizontal: sets a width), `value` (px, the app binds and stores it), `from`, `to`, `defaultValue` (double click or Delete resets; NaN: none), `inverted` (a pane on the right or below grows against the drag), `step`; `moved(value)` within the limits. Three short lines on a 1 px rule, focus colour on hover, drag and keyboard focus; arrows, Page Up / Down, Home / End. A slider for screen readers (`accessibleName`) |
+| Keycap | – | `KanteKeycap`: a key or shortcut as a cap (mono, sunken ground, frame with a 2 px bottom edge). `text` as given (the platform's native text) |
+| Menu item | – | `KanteMenuItem`: a `QQC2.MenuItem` with icon (`icon.name`/`icon.source`, text colour), `valueText` (the current value of what it opens, mono, muted; also its accessible description), `shortcutText` (default: the action's shortcut) as a `KanteKeycap` in Kante and Kante Light, plain text in System, `destructive` (negative text colour), `iconRoom` (keeps the icon's room, texts line up). Indicator, arrow, highlight and background stay the platform's |
+| Menu section | – | `KanteMenuSection`: a heading inside a `QQC2.Menu` (`text`, `rule` for the thin line above; off for the first). Keyboard and mouse pass over it; a heading for screen readers |
+| Popover | – | `KantePopover`: a card at a button for a few settings that apply at once (no title bar, no buttons). `openAt(item)` opens it below the item, above when there is no room below, inside the window; `title`; content as children (a column). Esc or a click outside closes it. Uses `KantePopupSkin` |
+| Swatch picker | – | `KanteSwatchPicker`: a row of `KanteSwatch`es to choose a colour. `colors`, `names` (screen readers, tooltips), `currentIndex` (-1 none), `noneText` (a struck-through "none" first), `size`; `picked(index)`. One tab stop, Left / Right, Space / Enter; radio buttons for screen readers |
+| Table header | – | `KanteTableHeader`: column titles in label style over rows, with a rule. `columns` [{title, width (px, 0 = share the rest), align}], `spacing`; rows line up with `columnX(i)` and `columnWidth(i)`. Column headers for screen readers |
+| Option tile | – | `KanteOptionTile`: one of several kinds as a tile (`icon`, `text`, `hint`), checkable and `autoExclusive`. Chosen: selection tint with a 2 px focus-colour frame; hover tint 1; keyboard focus ring; cut corner in Kante and Kante Light. Radio button with name and hint for screen readers |
+| Toast action | `.toast` action (1.11) | `KanteToast.actionText` ("Undo") puts a button at the right; a click emits `actionTriggered()` and hides the toast. `actionShortcut` shows a `KanteKeycap` beside it (the app handles the key) |
+| Dialog accept button | – | `KanteDialog.acceptText` names the accept button after what it does ("Add input" instead of OK), `acceptEnabled` locks it while the form is incomplete; both hold for the footer of every style, also after a switch at run time. `acceptButton()` returns the button shown now |
+
+### Changed in Kante 1.43
+
+`KanteSheetSkin` and `KanteMessageSkin` replaced `background` in Kante as the popup skin did before 1.42, so a sheet or an inline message lost its platform background after leaving Kante (hidden, unsized). Both now keep the platform background (opacity 0 while Kante is on) and draw their card (`kanteBackground`, the same property) behind the content.
+
+| Element | Web | QML |
+|---|---|---|
+| Sheet and message skin | – | `KanteSheetSkin`, `KanteMessageSkin`: `popup.background` / `message.background` stay the platform's; in Kante the card is a child of the popup item / the message at z -0.5. A sheet without a background gets the card too |
+| Toast | – | `KanteToast` stays while the pointer is over it or its action has keyboard focus, and then gets its full `life` again (every toast, with or without an action) |
+
+### Changed in Kante 1.42
+
+lmix in Kante Light (QA 25.10.): the File menu opened see-through, its items straight over the video. Kante Light starts from Kante for a moment (the saved style loads after the default); leaving Kante put the platform's menu background back, but Qt had hidden and unsized it when the Kante card replaced it.
+
+| Element | Web | QML |
+|---|---|---|
+| Popup skin | – | `KantePopupSkin` no longer replaces `background`: in Kante it draws its card (`kanteCard`) behind the content and hides the platform background (opacity 0, at least as wide as the widest item); leaving Kante shows the platform background again, sized as before. A menu or combo list keeps the platform's size in every style. A popup without a background gets the card behind its content. Removed: the property `kanteBackground`; a project that read it or the card through `popup.background` uses `kanteCard` |
 
 ### Changed in Kante 1.40
 

@@ -62,9 +62,11 @@ TestCase {
         verify(skin !== null)
         KanteStyle.kind = KanteStyle.Kind.Kante
         verify(c.implicitHeight >= KanteStyle.heightMedium)
-        verify(c.popup.background !== null && c.popup.background.barColor !== undefined, "the list opens on a Kante card")
+        var popupSkin = findChild(c, function (x) { return x.kanteCard !== undefined })
+        verify(popupSkin !== null, "the list has a Kante popup skin")
         c.popup.open()
         tryVerify(function () { return c.popup.opened })
+        verify(popupSkin.kanteCard.visible && c.popup.background.opacity === 0, "the list opens on a Kante card")
         var list = c.popup.contentItem
         tryVerify(function () { return list.count === 3 })
         tryVerify(function () { return list.itemAtIndex(1) !== null }, 2000, "rows " + list.count + ", list height " + list.height)

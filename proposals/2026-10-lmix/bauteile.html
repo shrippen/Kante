@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante mixing desk parts</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<style>main{max-width:var(--max-w);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2.5rem 0}h2{margin-bottom:.6rem}.pair{display:grid;gap:1rem}figure{margin:0}img{max-width:100%;height:auto;display:block}figcaption{font-family:var(--font-mono);font-size:.8rem;color:var(--fg3);margin-top:.3rem}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.43</h1>
+<p>What lmix (a broadcast and show app on Kante) was missing after the QA of its Mix page on 25.10.2026: the monitors could not be resized, the File menu listed 18 flat entries, the input menu 8 sub menus, "Add input" hid 13 source kinds in a combo box, and removing an input asked nothing and could not be undone. Added to Kante first. QML only. Screenshots from <code>qml</code> under Xvfb (Qt 6.12, Kirigami, Breeze icons); Kante Light shows the platform's colours. Menu and popover were open at the same time only for the shot.</p>
+<section><h2 class="block-title">All parts</h2><p><code>KanteSplitHandle</code> under a monitor (drag, arrows, double click to the default), <code>KanteKeycap</code>, <code>KanteSwatchPicker</code> with a struck-through "none", <code>KanteTableHeader</code> with rows that take their columns from it, <code>KanteOptionTile</code> (Camera chosen), <code>KanteToast</code> with an Undo action and its key, a File menu of <code>KanteMenuItem</code>s under <code>KanteMenuSection</code>s (icons, keycaps, a value, a destructive item) and a <code>KantePopover</code> with two switches.</p><div class="pair"><figure><img src="bausteine-kante.png" alt="The new parts in Kante"><figcaption>Kante</figcaption></figure><figure><img src="bausteine-light.png" alt="The new parts in Kante Light"><figcaption>Kante Light (platform colours)</figcaption></figure></div></section>
+</main>
+</body>
+</html>
