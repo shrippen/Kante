@@ -29,6 +29,9 @@ QQC2.Popup {
             return
         }
         anchorItem = item
+        // Content changed just before (another item's settings, rows shown or hidden): the
+        // column lays it out only on the next frame, measured now it has the size before.
+        column.forceLayout()
         // In scene coordinates, against the window: below the item, above when there is no
         // room below and more above, shifted to stay inside.
         const win = item.Window.window
