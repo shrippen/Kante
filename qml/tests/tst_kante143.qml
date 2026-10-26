@@ -230,6 +230,15 @@ TestCase {
         verify(!o.popover.visible)
     }
 
+    function test_popoverClosesOnTheFirstPressOutside() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.button.clicked.connect(() => o.popover.openAt(o.button))
+        mouseClick(o.button)
+        tryVerify(() => o.popover.opened)
+        mouseClick(o, 10, 10)
+        tryVerify(() => !o.popover.visible, 1000, "the first press outside closes it")
+    }
+
     // --- Swatch picker
 
     Component {
