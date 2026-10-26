@@ -765,8 +765,8 @@ TestCase {
             KanteToast { title: "Toast"; width: 200 }
             KanteTick { width: 20; height: 20; checked: true }
             KantePolygon { width: 40; height: 40; fillColor: "red"; cutBottomLeft: 8 }
-            KanteAudioMeter { level: -12; scale: true }
-            KanteAudioMeter { level: -3; vertical: true; scale: true }
+            KanteAudioMeter { level: -12; showScale: true }
+            KanteAudioMeter { level: -3; vertical: true; showScale: true }
         }
     }
 
@@ -817,7 +817,7 @@ TestCase {
 
     Component {
         id: scaleComponent
-        KanteAudioMeter { scale: true }
+        KanteAudioMeter { showScale: true }
     }
 
     function test_levelMeterScaleDropsCrowdedMarks() {
@@ -828,6 +828,15 @@ TestCase {
         verify(starts[0] >= 0, "floor stays")
         verify(starts[3] >= 0, "0 stays")
         verify(starts[2] < 0, "-6 is dropped next to 0")
+    }
+
+    // The labels' switch is showScale: Item's own scale stays the size (1.45).
+    function test_audioMeterKeepsItsSize() {
+        var m = createTemporaryObject(scaleComponent, tc, { width: 200 })
+        compare(m.scale, 1)
+        m.showScale = false
+        compare(m.scale, 1)
+        verify(m.implicitHeight < createTemporaryObject(scaleComponent, tc).implicitHeight)
     }
 
     Component {

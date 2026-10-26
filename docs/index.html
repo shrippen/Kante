@@ -131,6 +131,22 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.45.0">
+      <div class="release-head"><b class="release-version">1.45</b><time datetime="2026-10-25">25 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">The audio meter no longer hides its size factor.</p>
+        <p class="release-lead" lang="de">Der Pegelmesser verdeckt seinen Größenfaktor nicht mehr.</p>
+        <div class="release-group" data-kind="breaking"><h3><span lang="en">Breaking</span><span lang="de">Inkompatibel</span></h3>
+          <ul lang="en">
+            <li><code>KanteAudioMeter</code>: the labels' switch is <code>showScale</code>; <code>scale</code> is the item's size factor again, as on every <code>Item</code>. Old code: a literal <code>scale: true</code> or <code>scale: false</code> no longer loads (number expected), nor does the page that holds it; a binding loads and goes wrong silently, at 0 the meter shrinks to nothing. Search for <code>scale:</code> on every <code>KanteAudioMeter</code>.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteAudioMeter</code>: Die Beschriftung schaltet jetzt <code>showScale</code>; <code>scale</code> ist wieder der Größenfaktor, wie bei jedem <code>Item</code>. Alter Code: Ein Literal <code>scale: true</code> oder <code>scale: false</code> lädt nicht mehr (Zahl erwartet), und mit ihm die ganze Seite; eine Bindung lädt und läuft still falsch, bei 0 schrumpft der Messer auf nichts. Nach <code>scale:</code> an jedem <code>KanteAudioMeter</code> suchen.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-145"><span lang="en">All changes in 1.45 →</span><span lang="de">Alle Änderungen in 1.45 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.44.0">
       <div class="release-head"><b class="release-version">1.44</b><time datetime="2026-10-25">25 Oct 2026</time></div>
       <div class="release-body">
@@ -652,7 +668,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.44.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.45.0</p></div>
 </footer>
 
 <script>
