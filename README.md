@@ -794,7 +794,7 @@ Waiting feedback (Andon: every page change, form and fragment load). The page lo
 |---|---|---|
 | Page load | `<div class="page-load" aria-hidden="true">` once per page; `.is-on` while a page change loads: marching stripes in a 3 px bar on top | – |
 | Pending link | `.is-pending` on the clicked link, tab or card: a running light around it | – |
-| Busy region | `aria-busy="true"` on a region (not `html`, `body`, a `dialog`, `.dialog`, `[role="dialog"]` or a button): its children dim to 40 %, except `.runner`, `.loading`, `.loader`, `.progress-bar`, `.btn-row` and `.btn-status` (a busy form keeps its button and status line readable); the fade runs only without reduced motion | – |
+| Busy region | `aria-busy="true"` on a region (not `html`, `body`, a `dialog`, `.dialog`, `[role="dialog"]` or a button): its children dim to 40 %, except `.runner`, `.loading`, `.loader`, `.progress-bar`, `.btn-row` and `.btn-status` (direct children only: a busy form keeps its button and status line readable when they sit directly in it); the fade runs only without reduced motion | – |
 | Loading word | `.loading` > `.loader` + text: squares and "Lädt …" in one line | – |
 | Button status | `.btn-status` under a `.btn-row`: a reserved line for "Dauert länger …" or an error (`data-kind="error"`), so the row does not jump | – |
 | Step time | `.steps > li > .step-time`: elapsed time of a live step | – |
