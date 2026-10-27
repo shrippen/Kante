@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.46 elements</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<style>main{max-width:var(--max-w);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2rem 0}h2{margin-bottom:.8rem}.demo{background:var(--bg-panel);padding:1.1rem;display:flex;flex-direction:column;gap:.8rem}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.46</h1>
+<p>Andon's VAT check picks a period by its state: status cards as a choice, and busy outlined buttons. Switch <code>data-theme="light"</code> on <code>html</code> for Kante Light.</p>
+
+<section><h2 class="block-title">Status cards as a choice</h2><div class="demo">
+<div class="status-row">
+<a class="status" data-state="ok" href="#"><span class="name">Q1</span><span class="row">filed</span></a>
+<a class="status" data-state="ok" href="#"><span class="name">Q2</span><span class="row">filed</span></a>
+<a class="status" data-state="warn" href="#" aria-current="page"><span class="name">Q3</span><span class="row">due 10.11. · 4 open</span></a>
+<a class="status" data-state="info" href="#" aria-current="false"><span class="name">Q4</span><span class="row">running</span></a>
+</div>
+<p class="small muted">The chosen card (<code>aria-current="page"</code>) is tinted with a <code>--yellow</code> bar at the bottom; Tab onto it shows the focus ring as well. <code>aria-current="false"</code> is not chosen.</p>
+</div></section>
+
+<section><h2 class="block-title">Busy buttons</h2><div class="demo">
+<div class="btn-row">
+<button class="btn btn-primary is-busy" type="button" disabled>Save</button>
+<button class="btn btn-outline is-busy" type="button" disabled>Check</button>
+<button class="btn btn-data is-busy" type="button" disabled>Export</button>
+</div>
+<p class="small muted">Outlined, ghost and data buttons fill with quiet stripes, the primary one with yellow.</p>
+</div></section>
+</main>
+</body>
+</html>
