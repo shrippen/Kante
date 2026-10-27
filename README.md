@@ -794,10 +794,10 @@ The workbench (Andon's VAT check: open bank lines become finished expenses). A l
 |---|---|---|
 | Workbench | `.bench` > `.bench-list` + `.bench-desk`: the list in a column of 16 to 22rem, the desk beside it; below 60rem the desk goes under the list | – |
 | List entry | `.bench-list` > `a.bench-entry` or `button.bench-entry`: `b` (name), amount, `small` (line), `small` (count), `.progress-segs` (how complete) in two lines and a bar; the current one `aria-current="true"`: cyan tint and bar, as `.list-row[aria-selected]`. An `.h-label` above, a `.legend` below | – |
-| Desk | `.bench-desk` > `.bench-top` (`h3` and `p` left, `b` amount right), then `.bench-cols` > `.bench-col` (two columns, one when the desk is narrower than 38rem) and `.bench-pair` (two fields side by side, one under 24rem); the desk is a size container | – |
+| Desk | `.bench-desk` > `.bench-top` (`h3` and `p` left, `b` amount right), then `.bench-cols` > `.bench-col` (two columns, one when the desk is narrower than 38rem) and `.bench-pair` (two fields side by side, one when its column is narrower than 20rem); desk and columns are size containers | – |
 | Field origin | `.field-label` > `.field-origin`: where a value came from ("last expense", "receipt"), lower case after a dot | – |
 | Facts | `dl.kv`: term beside value, terms as small mono labels | – |
-| Pick | `.picks` > `label.check.pick`: a radio (`.check-dia`) or check box (`.check-box`) per card, `.pick-thumb` (an `img`; empty, it draws the lines of a page), `.pick-text` (`b`, `small`), then a `.pill` or `.num`. Checked: cyan tint and bar. `.is-other`: a weaker candidate, faded | – |
+| Pick | `.picks` > `label.check.pick`: a radio (`.check-dia`) or check box (`.check-box`) per card, `.pick-thumb` (an `img`; empty, it draws the lines of a page), `.pick-text` (`b`, `small`), then a `.pill` or `.num`. Checked: cyan tint and bar. `.is-other`: a weaker candidate, its preview faded and its title in the secondary text colour | – |
 | Sum bar | `.sumbar` > `.progress-bar` with one `i` per part (`--p` share, `--c` colour from the data palette) and `i.rest` (hatched), `.sumbar-line` (sum left, rest right; `data-state="ok"` or `"bad"` on the rest) and a `.legend` (`i.rest` hatched there too) | – |
 
 ### Added in Kante 1.47

@@ -1473,7 +1473,7 @@ button.list-row{width:100%;border:0;border-bottom:1px solid var(--bg1);backgroun
 .list-row>.meta{font-family:var(--font-mono);font-size:.7rem;color:var(--fg3);font-variant-numeric:tabular-nums}
 /* Workbench (1.48): a list to scan beside a desk for one entry (Andon: open bank lines, the
    expense made from one). The entry being worked on is aria-current: cyan, as a selected row.
-   Below 60rem the desk goes under the list; a narrow desk stacks its columns.
+   Below 60rem the desk goes under the list; a narrow desk stacks its columns, a narrow column its pairs.
    <div class="bench"><nav class="bench-list"><div class="h-label">Open</div>
      <a class="bench-entry" aria-current="true"><b>Name</b><span>−899,00</span><small>19.10. · New</small><small>8 / 10</small><span class="progress-segs">…</span></a>…</nav>
    <section class="bench-desk"><header class="bench-top"><div><h3>Name</h3><p>Line</p></div><b>−899,00 €</b></header>
@@ -1498,11 +1498,11 @@ button.list-row{width:100%;border:0;border-bottom:1px solid var(--bg1);backgroun
 .bench-top p{margin:.2rem 0 0;font-size:.82rem;color:var(--fg3);overflow-wrap:anywhere}
 .bench-top>b{font-family:var(--font-mono);font-weight:500;font-size:1.25rem;color:var(--fg0);font-variant-numeric:tabular-nums;white-space:nowrap}
 .bench-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem 1.25rem}
-.bench-col{display:flex;flex-direction:column;gap:.65rem;min-width:0}
+.bench-col{container-type:inline-size;display:flex;flex-direction:column;gap:.65rem;min-width:0}
 /* Two fields side by side in a column: <div class="bench-pair"><label class="field">…</label><label class="field">…</label></div> */
 .bench-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
 @container (max-width:38rem){.bench-cols{grid-template-columns:minmax(0,1fr)}}
-@container (max-width:24rem){.bench-pair{grid-template-columns:minmax(0,1fr)}}
+@container (max-width:20rem){.bench-pair{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:60rem){.bench{grid-template-columns:minmax(0,1fr)}}
 /* Where a field's value came from, after its label: <span class="field-label">Category<span class="field-origin">last expense</span></span> */
 .field-origin{margin-left:.45rem;font-size:.62rem;letter-spacing:.04em;text-transform:none;color:var(--fg2)}
@@ -1520,7 +1520,8 @@ button.list-row{width:100%;border:0;border-bottom:1px solid var(--bg1);backgroun
 .check.pick{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;gap:.65rem;padding:.45rem .6rem;background:var(--bg-panel)}
 .check.pick:hover{background:color-mix(in srgb,var(--fg1) 8%,var(--bg-panel))}
 .check.pick:has(>input:checked){background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}
-.check.pick.is-other{opacity:.6}
+.check.pick.is-other>.pick-thumb{opacity:.6}
+.check.pick.is-other :is(.pick-text>b,.num){color:var(--fg2)}
 .pick-thumb{display:flex;flex-direction:column;gap:3px;width:3rem;height:3.8rem;padding:5px;overflow:hidden;background:var(--bg-hard);border:1px solid var(--bg2)}
 .pick-thumb:empty::before,.pick-thumb:empty::after{content:"";display:block;height:3px;background:var(--fg3);width:60%}
 .pick-thumb:empty::after{width:auto;height:15px;background:repeating-linear-gradient(var(--bg2) 0 3px,transparent 3px 6px)}
