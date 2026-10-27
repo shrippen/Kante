@@ -374,7 +374,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Drawer over a dialog | `.sheet.is-drawer` in a positioned parent, a `.scrim` right before it; inset on the right, one surface step raised (`--bg1`), cut top left; slides in, `.is-leaving` slides it out | `KanteSheetSkin` with `drawer: true` |
 | Setting row | `.setting` | `KanteSettingRow` |
 | Day strip | `.day-strip` | `KanteDayStrip` |
-| Status light | `.status[data-state]`; `button.status` opens its entry (`aria-pressed="true"` the open one) | `KanteStatusLight` |
+| Status light | `.status[data-state]`; `button.status` opens its entry (`aria-pressed="true"` the open one); `a.status` chooses one (`aria-current`, 1.46), `.status-row` lines them up | `KanteStatusLight` |
 | Board editor parts | `.tile-add`, `.grip`, `.tile-strip` | – |
 | Clock | `.clock` (SVG classes) | `KanteClock` |
 | Command palette, link tile | `.palette`, `a.link-tile` | – |
@@ -785,6 +785,15 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Key geometry | – | `KanteKeyLayout` (non-visual, shared by keyboard and lane): `low`, `high` (MIDI, 60 = middle C), `width`; `noteNames` (12 names from C, default C, C♯, D, E♭, E, F, F♯, G, A♭, A, B♭, B; the app sets its language, e.g. German H for B), `middleCOctave` (4: MIDI 60 is C4). Piano proportions: white keys equally wide (`whiteWidth`), black keys 0.58 wide and 0.63 long, set off the boundary as on a real keyboard. `x(m)`, `keyWidth(m)`, `isBlack(m)`, `nameOf(m)` ("E1"), `keyAt(px, blackLevel)`, `count`. A range that starts or ends on a black key starts or ends at its edge |
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
+
+### Added in Kante 1.46
+
+Choosing a period by its state (Andon's VAT check: each quarter with its deadline and what it comes to). `button.status[aria-pressed]` marks an entry in cyan; a period is the chosen value of a control, so it is yellow.
+
+| Element | Web | QML |
+|---|---|---|
+| Status as a choice | `a.status` (a link, like `button.status`); the chosen one `aria-current="page"`: tinted, a 4 px `--primary` bar at the bottom and the name in `--primary`, the state's bar stays on top | – |
+| Statuses in a row | `.status-row` > `.status` (or `a.status`): equal columns of at least 9rem, wrapping when narrow | – |
 
 ### Changed in Kante 1.45
 
