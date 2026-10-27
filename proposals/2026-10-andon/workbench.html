@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.48 elements</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<style>main{max-width:var(--max-w-wide);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2rem 0}h2{margin-bottom:.8rem}.demo{background:var(--bg-panel);padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;position:relative}.demo.is-narrow{max-width:30rem}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.48</h1>
+<p>The workbench (Andon: open bank lines become finished expenses). A list to scan beside a desk for one entry, a card to pick a receipt, and a bar that shows how far parts fill an amount. Switch <code>data-theme="light"</code> on <code>html</code> for Leinen.</p>
+
+<section id="bench"><h2 class="block-title">List and desk</h2><div class="demo">
+<div class="bench">
+ <nav class="bench-list" aria-label="Offene Umsätze">
+  <div class="h-label">Offene Umsätze · Oktober</div>
+  <a class="bench-entry" href="#bench" aria-current="true"><b>Kabelwerk Studiobedarf</b><span>−899,00</span><small>19.10. · Neue Ausgabe</small><small>8 / 10</small><span class="progress-segs" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></a>
+  <a class="bench-entry" href="#bench"><b>Tankstelle Elbchaussee</b><span>−72,14</span><small>17.10. · Neue Ausgabe</small><small>8 / 10</small><span class="progress-segs" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></a>
+  <a class="bench-entry" href="#bench"><b>BüroDirekt24</b><span>−47,60</span><small>15.10. · Aufteilen</small><small>6 / 10</small><span class="progress-segs" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span></a>
+  <a class="bench-entry" href="#bench"><b>Donaulicht Film</b><span>+2.751,09</span><small>02.10. · Zahlung</small><small>fertig</small><span class="progress-segs" data-tier="green" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></a>
+  <ul class="legend"><li><i style="--c:var(--primary)"></i>Pflichtteil steht</li><li><i style="--c:var(--bg-hard)"></i>fehlt noch</li><li><i style="--c:var(--aqua)"></i>fertig</li></ul>
+ </nav>
+ <section class="bench-desk" aria-label="Kabelwerk Studiobedarf, −899,00 €">
+  <header class="bench-top"><div><h3>Kabelwerk Studiobedarf</h3><p>19.10.2026 · Geschäftskonto · „KW-56107 Lichtstative“</p></div><b>−899,00 €</b></header>
+  <div class="seg" role="group" aria-label="Was Andon tun soll"><button type="button" aria-pressed="true">Neue Ausgabe</button><button type="button">Vorhandener zuordnen</button><button type="button">Aufteilen</button><button type="button">Privat</button></div>
+  <div class="bench-cols">
+   <div class="bench-col">
+    <div class="h-label">Beleg aus Paperless</div>
+    <div class="picks" role="radiogroup" aria-label="Beleg">
+     <label class="check pick"><input type="radio" name="r1" checked><span class="check-dia"></span><span class="pick-thumb"></span><span class="pick-text"><b>Rechnung KW-56107</b><small>18.10.2026 · 899,00 € · Kabelwerk</small></span><span class="pill" data-state="applied">92</span></label>
+     <label class="check pick is-other"><input type="radio" name="r1"><span class="check-dia"></span><span class="pick-thumb"></span><span class="pick-text"><b>Lieferschein KW-56107</b><small>17.10.2026 · ohne Betrag</small></span><span class="pill" data-state="locked">61</span></label>
+    </div>
+    <div class="h-label">Aus dem Beleg gelesen</div>
+    <dl class="kv"><dt>Nummer</dt><dd>KW-56107</dd><dt>Brutto</dt><dd>899,00 € · darin 143,54 € USt (19 %)</dd><dt>Inhalt</dt><dd>2 × Lichtstativ LS-300, Transporttasche</dd></dl>
+   </div>
+   <div class="bench-col">
+    <div class="h-label">Ausgabe in Invoice Ninja</div>
+    <label class="field"><span class="field-label">Lieferant<span class="field-origin">vorhanden</span></span><input class="input" value="Kabelwerk Studiobedarf"></label>
+    <div class="bench-pair">
+     <label class="field"><span class="field-label">Kategorie<span class="field-origin">letzte Ausgabe</span></span><select class="select"><option>Technik</option></select></label>
+     <label class="field"><span class="field-label">EÜR-Zeile<span class="field-origin">wie KW-55890</span></span><select class="select"><option>Arbeitsmittel</option></select></label>
+    </div>
+    <div class="bench-pair">
+     <label class="field"><span class="field-label">Steuer<span class="field-origin">Beleg</span></span><select class="select"><option>MwSt. 19 %</option></select></label>
+     <label class="field"><span class="field-label">Rechnungsnr.<span class="field-origin">Beleg</span></span><input class="input" value="KW-56107"></label>
+    </div>
+   </div>
+  </div>
+  <div class="btn-row"><button type="button" class="btn btn-accent">Übernehmen und weiter</button><button type="button" class="btn btn-outline">Später</button></div>
+ </section>
+</div>
+<p class="small muted"><code>.bench</code> &gt; <code>.bench-list</code> (entries <code>.bench-entry</code>, the current one <code>aria-current</code>) + <code>.bench-desk</code> (<code>.bench-top</code>, <code>.bench-cols</code> &gt; <code>.bench-col</code>, <code>.bench-pair</code>). <code>.field-origin</code> says where a value came from, <code>dl.kv</code> lists facts. Below 60rem the desk goes under the list.</p>
+</div></section>
+
+<section id="pick"><h2 class="block-title">Pick a receipt</h2><div class="demo is-narrow">
+<div class="picks" aria-label="Rechnungen">
+ <label class="check pick"><input type="checkbox" checked><span class="check-box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span><span class="pick-thumb"></span><span class="pick-text"><b>Kabelprofi24 · R-20417</b><small>14.10.2026 · Bestellung 302-4419871</small></span><span class="num">47,60</span></label>
+ <label class="check pick"><input type="checkbox"><span class="check-box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span><span class="pick-thumb"></span><span class="pick-text"><b>Lichtwerk · 88213</b><small>15.10.2026 · Bestellung 302-4419871</small></span><span class="num">21,90</span></label>
+ <label class="check pick is-other"><input type="checkbox"><span class="check-box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span><span class="pick-thumb"></span><span class="pick-text"><b>Papierhaus · 5512</b><small>12.10.2026 · andere Bestellung</small></span><span class="num">14,87</span></label>
+</div>
+<p class="small muted"><code>label.check.pick</code> with a radio (<code>.check-dia</code>) or a check box (<code>.check-box</code>), <code>.pick-thumb</code> (an <code>img</code>, or empty for page lines), <code>.pick-text</code> and a pill or <code>.num</code>. <code>.is-other</code>: a weaker candidate.</p>
+</div></section>
+
+<section id="sumbar"><h2 class="block-title">Sum bar</h2><div class="demo is-narrow">
+<div class="sumbar" aria-label="Aufteilung">
+ <div class="progress-bar"><i style="--p:56.4%;--c:var(--d1)"></i><i style="--p:26%;--c:var(--d3)"></i><i class="rest" style="--p:17.6%"></i></div>
+ <div class="sumbar-line"><span>69,50 € von 84,37 €</span><span data-state="bad">Rest <b>14,87 €</b></span></div>
+ <ul class="legend"><li><i style="--c:var(--d1)"></i>Kabelprofi24</li><li><i style="--c:var(--d3)"></i>Lichtwerk</li><li><i class="rest"></i>offen</li></ul>
+</div>
+<div class="sumbar" aria-label="Aufteilung">
+ <div class="progress-bar"><i style="--p:50%;--c:var(--d1)"></i><i style="--p:50%;--c:var(--d3)"></i></div>
+ <div class="sumbar-line"><span>47,60 € von 47,60 €</span><span data-state="ok">Rest <b>0,00 €</b></span></div>
+</div>
+<p class="small muted"><code>.sumbar</code> &gt; <code>.progress-bar</code> (one <code>i</code> per part with <code>--p</code> and <code>--c</code>, <code>i.rest</code> hatched) + <code>.sumbar-line</code> (<code>data-state</code> ok or bad on the rest) + <code>.legend</code>.</p>
+</div></section>
+</main>
+</body>
+</html>
