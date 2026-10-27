@@ -592,7 +592,7 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .runner{position:absolute;inset:0;padding:2px;pointer-events:none;
   background:conic-gradient(from var(--run),transparent 0 78%,var(--primary) 90%,transparent 100%);
   -webkit-mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0);mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0)}
-/* Waiting (1.47). Nothing shows for the first 150 ms, so a fast answer stays calm.
+/* Waiting (1.47). Bar, pending light and busy region show after 150 ms, so a fast answer stays calm.
    .page-load: a bar on top while a page change loads (.is-on). .is-pending: the
    clicked link or tab runs a light around itself. A region with aria-busy="true"
    dims its old content until the new one arrives. .loading: squares plus a word.
@@ -601,7 +601,7 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .page-load{position:fixed;left:0;right:0;top:0;height:3px;z-index:60;pointer-events:none;opacity:0;visibility:hidden;
   background:repeating-linear-gradient(-45deg,var(--primary) 0 8px,var(--bg-hard) 8px 16px);background-size:22.63px 22.63px}
 .page-load.is-on{opacity:1;visibility:visible;transition:opacity 0s .15s,visibility 0s .15s}
-[aria-busy="true"]:not(html,body,dialog,button,.btn)>:not(.runner,.loading,.loader,.progress-bar,.btn-row,.btn-status){opacity:.4;transition:opacity 0s .15s}
+[aria-busy="true"]:not(html,body,dialog,.dialog,[role="dialog"],button,.btn)>:not(.runner,.loading,.loader,.progress-bar,.btn-row,.btn-status){opacity:.4;transition:opacity 0s .15s}
 .is-pending{position:relative}
 .is-pending::after{content:"";position:absolute;inset:0;padding:2px;pointer-events:none;
   background:conic-gradient(from var(--run),transparent 0 78%,var(--primary) 90%,transparent 100%);
@@ -626,7 +626,7 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
   .banner::before,.banner::after{animation:k-march-l 1.4s linear infinite}
   .progress-bar.is-indeterminate{animation:k-march-s .9s linear infinite}
   .page-load.is-on{transition:opacity var(--dur-fast) .15s,visibility 0s .15s;animation:k-march-s .9s linear infinite}
-  [aria-busy="true"]:not(html,body,dialog,button,.btn)>:not(.runner,.loading,.loader,.progress-bar,.btn-row,.btn-status){transition:opacity var(--dur) .15s}
+  [aria-busy="true"]:not(html,body,dialog,.dialog,[role="dialog"],button,.btn)>:not(.runner,.loading,.loader,.progress-bar,.btn-row,.btn-status){transition:opacity var(--dur) .15s}
   .is-pending::after{animation:k-show 0s .15s forwards,k-run 1.8s linear .15s infinite}
   /* Segment display (A10): a segment switches on like a lamp when it gets .on; --i staggers a row */
   .progress-segs>i.on{animation:k-lamp 260ms steps(3) both;animation-delay:calc(var(--i,0) * 60ms)}

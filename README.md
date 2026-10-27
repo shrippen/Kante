@@ -788,13 +788,13 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 ### Added in Kante 1.47
 
-Waiting feedback (Andon: every page change, form and fragment load). Nothing shows for the first 150 ms, so a fast answer stays calm; the delay is in the CSS, the app only sets the states.
+Waiting feedback (Andon: every page change, form and fragment load). The page load bar, the pending light and a busy region show only after 150 ms, so a fast answer stays calm; that delay is in the CSS, the app only sets the states. `.loading`, `.btn-status` and `.step-time` show at once: put them in only where a wait is certain (a placeholder before a fragment, a line after 8 s).
 
 | Element | Web | QML |
 |---|---|---|
 | Page load | `<div class="page-load" aria-hidden="true">` once per page; `.is-on` while a page change loads: marching stripes in a 3 px bar on top | – |
 | Pending link | `.is-pending` on the clicked link, tab or card: a running light around it | – |
-| Busy region | `aria-busy="true"` on a region (not `html`, `body`, a dialog or a button): its children dim to 40 %, except `.runner`, `.loading`, `.loader`, `.progress-bar`, `.btn-row` and `.btn-status` (a busy form keeps its button and status line readable); the fade runs only without reduced motion | – |
+| Busy region | `aria-busy="true"` on a region (not `html`, `body`, a `dialog`, `.dialog`, `[role="dialog"]` or a button): its children dim to 40 %, except `.runner`, `.loading`, `.loader`, `.progress-bar`, `.btn-row` and `.btn-status` (a busy form keeps its button and status line readable); the fade runs only without reduced motion | – |
 | Loading word | `.loading` > `.loader` + text: squares and "Lädt …" in one line | – |
 | Button status | `.btn-status` under a `.btn-row`: a reserved line for "Dauert länger …" or an error (`data-kind="error"`), so the row does not jump | – |
 | Step time | `.steps > li > .step-time`: elapsed time of a live step | – |
