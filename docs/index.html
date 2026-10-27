@@ -131,6 +131,30 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.48.0">
+      <div class="release-head"><b class="release-version">1.48</b><time datetime="2026-10-27">27 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A workbench: a list to scan beside a desk for one entry, receipts to pick, and a bar that shows what is left of an amount.</p>
+        <p class="release-lead" lang="de">Eine Werkbank: eine Liste zum Überfliegen neben einer Arbeitsfläche für einen Eintrag, Belege zum Auswählen und ein Balken, der zeigt, was von einem Betrag übrig ist.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>.bench</code> with <code>.bench-list</code> and <code>.bench-desk</code>. Each entry shows in two lines and a bar how complete it is; the current one is cyan. On a phone the desk goes under the list.</li>
+            <li><code>.pick</code>: a receipt card with a preview, a radio or check box and a score. <code>.field-origin</code> says where a value came from, <code>dl.kv</code> lists what was read.</li>
+            <li><code>.sumbar</code>: parts of an amount in their colours, the rest hatched, the rest in red or green.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>.bench</code> mit <code>.bench-list</code> und <code>.bench-desk</code>. Jeder Eintrag zeigt in zwei Zeilen und einem Balken, wie vollständig er ist; der aktuelle ist cyan. Am Telefon steht die Arbeitsfläche unter der Liste.</li>
+            <li><code>.pick</code>: eine Belegkarte mit Vorschau, Radio oder Häkchen und Wertung. <code>.field-origin</code> sagt, woher ein Wert kommt, <code>dl.kv</code> listet, was gelesen wurde.</li>
+            <li><code>.sumbar</code>: die Teile eines Betrags in ihren Farben, der Rest schraffiert, der Rest in Rot oder Grün.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.48-bench.png" alt="A list of open bank lines with completeness bars, the first selected in cyan, beside a desk with a receipt choice, facts read from it and the expense fields with their origin" loading="lazy"><figcaption><span lang="en">List and desk</span><span lang="de">Liste und Arbeitsfläche</span></figcaption></figure>
+          <figure><img src="shots/release-1.48-parts.png" alt="Three receipt cards with check boxes, the first checked; two sum bars, one with a hatched rest of 14.87 euros in red, one with a rest of 0.00 euros in green" loading="lazy"><figcaption><span lang="en">Pick and sum bar, in Kante and Leinen</span><span lang="de">Belegwahl und Summenbalken, in Kante und Leinen</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-148"><span lang="en">All changes in 1.48 →</span><span lang="de">Alle Änderungen in 1.48 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.47.0">
       <div class="release-head"><b class="release-version">1.47</b><time datetime="2026-10-27">27 Oct 2026</time></div>
       <div class="release-body">
@@ -714,7 +738,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.47.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.48.0</p></div>
 </footer>
 
 <script>
