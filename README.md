@@ -795,6 +795,8 @@ Choosing a period by its state (Andon's VAT check: each quarter with its deadlin
 | Status as a choice | `a.status` (a link, like `button.status`); the chosen one `aria-current="page"`: tinted and a 4 px `--primary` bar at the bottom (the name keeps its colour: yellow text fails on Kante Light), the state's bar stays on top | – |
 | Statuses in a row | `.status-row` > `.status` (or `a.status`): equal columns of at least 9rem, wrapping when narrow | – |
 
+Fixed: a busy outlined button (`.btn-outline.is-busy`, also ghost and data) showed its stripes in one 28 px tile at the top right, moving and jumping back: the outline's cut is an unrepeated background image. Busy, the stripes now repeat over the whole button and march through it.
+
 ### Changed in Kante 1.45
 
 qmllint (property-override): `KanteAudioMeter` declared `scale` as a bool and so hid Item's own `scale`, the size factor. Anything reading or animating the meter's `scale` got the bool instead.
