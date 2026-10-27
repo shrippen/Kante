@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kante 1.47 elements</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+<style>main{max-width:var(--max-w);margin:0 auto;padding:2rem 1rem 6rem}section{margin:2rem 0}h2{margin-bottom:.8rem}.demo{background:var(--bg-panel);padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;position:relative}</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">Kante 1.47</h1>
+<p>Waiting looks the same everywhere (Andon: page changes, forms, fragments). Nothing shows for the first 150 ms; the app only sets the states. Switch <code>data-theme="light"</code> on <code>html</code> for Kante Light.</p>
+
+<section><h2 class="block-title">Page load bar</h2><div class="demo" style="padding-top:1.5rem">
+<div class="page-load is-on" style="position:absolute"></div>
+<p class="small muted"><code>&lt;div class="page-load"&gt;</code> once per page; <code>.is-on</code> while a page change loads.</p>
+</div></section>
+
+<section><h2 class="block-title">Pending link</h2><div class="demo">
+<nav class="tabs"><a href="#" aria-current="page">Hints</a><a href="#" class="is-pending">Boards</a><a href="#">Receipts</a></nav>
+<p class="small muted"><code>.is-pending</code> on the clicked link, tab or card: a light runs around it.</p>
+</div></section>
+
+<section><h2 class="block-title">Busy region</h2><div class="demo">
+<div aria-busy="true"><p>Old content stays, dimmed, until the new one arrives.</p><p>Second paragraph.</p></div>
+<p class="small muted"><code>aria-busy="true"</code> on the swapped region; <code>.runner</code>, <code>.loading</code>, <code>.btn-row</code> and <code>.btn-status</code> stay full.</p>
+</div></section>
+
+<section><h2 class="block-title">Loading word</h2><div class="demo">
+<span class="loading"><span class="loader" aria-hidden="true"><i></i><i></i><i></i></span> Loading …</span>
+</div></section>
+
+<section><h2 class="block-title">Button status</h2><div class="demo">
+<div class="btn-row"><button class="btn btn-primary is-busy" type="button" disabled>Save</button></div>
+<p class="btn-status">Taking longer … 9 s</p>
+<p class="btn-status" data-kind="error">Loading failed; the old state stays.</p>
+</div></section>
+</main>
+</body>
+</html>
