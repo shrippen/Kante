@@ -605,7 +605,8 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .is-pending{position:relative}
 .is-pending::after{content:"";position:absolute;inset:0;padding:2px;pointer-events:none;
   background:conic-gradient(from var(--run),transparent 0 78%,var(--primary) 90%,transparent 100%);
-  -webkit-mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0);mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0)}
+  -webkit-mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0);mask:linear-gradient(black 0 0) content-box exclude,linear-gradient(black 0 0);
+  opacity:0;animation:k-show 0s .15s forwards}
 .btn-status{min-height:1.4em;margin:.35rem 0 0;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;color:var(--fg3)}
 .btn-status[data-kind="error"]{color:var(--danger)}
 .steps>li>.step-time{margin-left:.6rem;font-family:var(--font-mono);font-size:.7rem;color:var(--fg3);font-variant-numeric:tabular-nums}
@@ -625,7 +626,7 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
   .banner::before,.banner::after{animation:k-march-l 1.4s linear infinite}
   .progress-bar.is-indeterminate{animation:k-march-s .9s linear infinite}
   .page-load.is-on{animation:k-march-s .9s linear infinite}
-  .is-pending::after{opacity:0;animation:k-show 0s .15s forwards,k-run 1.8s linear .15s infinite}
+  .is-pending::after{animation:k-show 0s .15s forwards,k-run 1.8s linear .15s infinite}
   /* Segment display (A10): a segment switches on like a lamp when it gets .on; --i staggers a row */
   .progress-segs>i.on{animation:k-lamp 260ms steps(3) both;animation-delay:calc(var(--i,0) * 60ms)}
   a.feat{transition:--chamfer var(--dur) var(--ease-out),transform var(--dur) var(--ease-out)}
