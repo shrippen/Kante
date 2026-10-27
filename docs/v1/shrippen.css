@@ -1483,7 +1483,7 @@ button.list-row{width:100%;border:0;border-bottom:1px solid var(--bg1);backgroun
 .bench-list>.h-label{margin-bottom:.4rem}
 .bench-list>.legend{margin-top:.5rem}
 .bench-entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.15rem .8rem;width:100%;padding:.55rem .75rem;border:0;background:var(--bg1);color:var(--fg1);font:inherit;text-align:start;text-decoration:none;cursor:pointer}
-.bench-entry:hover{background:color-mix(in srgb,var(--fg1) 8%,var(--bg1));text-decoration:none}
+.bench-entry:hover{background:linear-gradient(var(--tint-1),var(--tint-1)) var(--bg1);text-decoration:none}
 .bench-entry[aria-current]:not([aria-current="false"]){background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}
 .bench-entry:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
 .bench-entry>b{font-weight:500;font-size:.9rem;color:var(--fg0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1518,7 +1518,7 @@ button.list-row{width:100%;border:0;border-bottom:1px solid var(--bg1);backgroun
      <span class="pill" data-state="applied">92</span></label>…</div> */
 .picks{display:flex;flex-direction:column;gap:2px}
 .check.pick{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;gap:.65rem;padding:.45rem .6rem;background:var(--bg-panel)}
-.check.pick:hover{background:color-mix(in srgb,var(--fg1) 8%,var(--bg-panel))}
+.check.pick:hover{background:linear-gradient(var(--tint-1),var(--tint-1)) var(--bg-panel)}
 .check.pick:has(>input:checked){background:var(--cyan-tint);box-shadow:inset 3px 0 0 var(--cyan)}
 .check.pick.is-other>.pick-thumb{opacity:.6}
 .check.pick.is-other :is(.pick-text>b,.num){color:var(--fg2)}
