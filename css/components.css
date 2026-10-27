@@ -123,7 +123,9 @@ main,.foot{position:relative;z-index:1}
 .btn-outline:disabled,.btn-data:disabled,.btn-quiet:disabled{background-color:transparent}
 /* busy (A08): marching hazard stripes in the fill */
 .btn.is-busy{cursor:progress;background-image:repeating-linear-gradient(-45deg,var(--primary) 0 10px,var(--yellow-lo) 10px 20px);background-size:28.28px 28.28px}
-.btn-outline.is-busy{background-image:repeating-linear-gradient(-45deg,transparent 0 10px,var(--bg1) 10px 20px)}
+:is(.btn-outline,.btn-ghost,.btn-data).is-busy{background-image:repeating-linear-gradient(-45deg,transparent 0 10px,var(--bg1) 10px 20px)}
+/* Outlined buttons draw their cut as one unrepeated image: busy, the stripes fill the whole button */
+:is(.btn-outline,.btn-ghost,.btn-data).is-busy{background-repeat:repeat;background-position:0 0}
 .btn-group{display:inline-flex;flex-wrap:wrap}
 .btn-group .btn{--cut:0px;--grow:0px}.btn-group .btn:last-child{--cut:var(--cut-m);--grow:6px}
 .btn-group .btn+.btn{margin-left:-2px}
@@ -1067,6 +1069,14 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 button.status{width:100%;border-left:0;border-right:0;border-bottom:0;font:inherit;color:inherit;text-align:start;cursor:pointer}
 button.status:hover{background:var(--tint-1)}button.status:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
 button.status[aria-pressed="true"]{box-shadow:inset 3px 0 0 var(--cyan)}
+button.status[aria-pressed="true"]:focus-visible{box-shadow:inset 0 0 0 2px var(--focus),inset 3px 0 0 var(--cyan)}
+/* A status as a choice of one (a period): <a class="status">, the chosen one aria-current; the state stays on top, yellow marks the choice at the bottom */
+a.status{color:inherit;text-decoration:none;cursor:pointer}
+a.status:hover{background:var(--tint-1);text-decoration:none}a.status:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--focus)}
+a.status[aria-current]:not([aria-current="false"]){background:var(--tint-1);box-shadow:inset 0 -4px 0 var(--yellow)}
+a.status[aria-current]:not([aria-current="false"]):focus-visible{box-shadow:inset 0 0 0 2px var(--focus),inset 0 -4px 0 var(--yellow)}
+/* Statuses in one row that wraps when narrow */
+.status-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:2px}
 /* Board editor: add tile, grip, hover strip */
 .tile-add{display:grid;place-items:center;min-height:5rem;border:2px dashed var(--bg2);background:none;color:var(--fg3);cursor:pointer;font-family:var(--font-mono);font-size:1.4rem}
 .tile-add:hover,.tile-add:focus-visible{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-tint);outline:none}
@@ -1759,7 +1769,7 @@ details.help.is-right>.help-text{left:auto;right:-.5rem}
 /* Busy: a slow shimmer instead of marching hazard stripes */
 :root[data-kante="gold"] .progress-bar.is-indeterminate{background:linear-gradient(90deg,var(--bg-hard) 0 30%,var(--yellow) 50%,var(--bg-hard) 70%) 0 0/250% 100%}
 :root[data-kante="gold"] .btn.is-busy{background-image:linear-gradient(90deg,var(--primary) 0 30%,var(--yellow-hi) 50%,var(--primary) 70%);background-size:250% 100%}
-:root[data-kante="gold"] .btn-outline.is-busy{background-image:linear-gradient(90deg,transparent 0 30%,var(--tint-2) 50%,transparent 70%);background-size:250% 100%;background-position:0 0}
+:root[data-kante="gold"] :is(.btn-outline,.btn-ghost,.btn-data).is-busy{background-image:linear-gradient(90deg,transparent 0 30%,var(--tint-2) 50%,transparent 70%);background-size:250% 100%;background-position:0 0}
 :root[data-kante="gold"] .banner::before,:root[data-kante="gold"] .banner::after{height:var(--bar);background:var(--accent)}
 /* Crackle ground: Kintsugi's breaks in gold, very quiet, behind the whole page */
 :root[data-kante="gold"] body::before{content:"";position:fixed;top:-50%;left:-50%;width:200%;height:200%;z-index:-1;pointer-events:none;contain:strict;
