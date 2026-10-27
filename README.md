@@ -792,7 +792,7 @@ Choosing a period by its state (Andon's VAT check: each quarter with its deadlin
 
 | Element | Web | QML |
 |---|---|---|
-| Status as a choice | `a.status` (a link, like `button.status`); the chosen one `aria-current="page"`: tinted and a 4 px `--primary` bar at the bottom (the name keeps its colour: yellow text fails on Kante Light), the state's bar stays on top | – |
+| Status as a choice | `a.status` (a link, like `button.status`); the chosen one `aria-current="page"`: tinted and a 4 px `--yellow` bar at the bottom (ochre on Kante Light, 5:1; the name keeps its colour: yellow text fails there), the focus ring stays on top of it; `aria-current="false"` is not chosen, the state's bar stays on top | – |
 | Statuses in a row | `.status-row` > `.status` (or `a.status`): equal columns of at least 9rem, wrapping when narrow | – |
 
 Fixed: a busy outlined button (`.btn-outline.is-busy`, also ghost and data) showed its stripes in one 28 px tile at the top right, moving and jumping back: the outline's cut is an unrepeated background image. Busy, the stripes now repeat over the whole button and march through it.
