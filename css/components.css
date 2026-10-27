@@ -600,8 +600,8 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
 .loading{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg3);font-family:var(--font-mono);font-size:.78rem}
 .page-load{position:fixed;left:0;right:0;top:0;height:3px;z-index:60;pointer-events:none;opacity:0;visibility:hidden;
   background:repeating-linear-gradient(-45deg,var(--primary) 0 8px,var(--bg-hard) 8px 16px);background-size:22.63px 22.63px}
-.page-load.is-on{opacity:1;visibility:visible;transition:opacity .12s .15s,visibility 0s .15s}
-[aria-busy="true"]:not(html,body,dialog,button,.btn)>:not(.runner,.loading){opacity:.4;transition:opacity .2s .15s}
+.page-load.is-on{opacity:1;visibility:visible;transition:opacity 0s .15s,visibility 0s .15s}
+[aria-busy="true"]:not(html,body,dialog,button,.btn)>:not(.runner,.loading,.btn-row,.btn-status){opacity:.4;transition:opacity 0s .15s}
 .is-pending{position:relative}
 .is-pending::after{content:"";position:absolute;inset:0;padding:2px;pointer-events:none;
   background:conic-gradient(from var(--run),transparent 0 78%,var(--primary) 90%,transparent 100%);
@@ -625,7 +625,8 @@ textarea.input{min-height:5.5rem;line-height:1.5;resize:vertical}
   .btn.is-busy{animation:k-march .7s linear infinite}
   .banner::before,.banner::after{animation:k-march-l 1.4s linear infinite}
   .progress-bar.is-indeterminate{animation:k-march-s .9s linear infinite}
-  .page-load.is-on{animation:k-march-s .9s linear infinite}
+  .page-load.is-on{transition:opacity var(--dur-fast) .15s,visibility 0s .15s;animation:k-march-s .9s linear infinite}
+  [aria-busy="true"]:not(html,body,dialog,button,.btn)>:not(.runner,.loading,.btn-row,.btn-status){transition:opacity var(--dur) .15s}
   .is-pending::after{animation:k-show 0s .15s forwards,k-run 1.8s linear .15s infinite}
   /* Segment display (A10): a segment switches on like a lamp when it gets .on; --i staggers a row */
   .progress-segs>i.on{animation:k-lamp 260ms steps(3) both;animation-delay:calc(var(--i,0) * 60ms)}
