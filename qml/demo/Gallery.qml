@@ -796,6 +796,56 @@ Rectangle {
             }
 
             Section {
+                id: qa151
+                title: "1.51 · qa kontra: gesperrte einträge, fokusfalle, hinweis ohne text, saiten, balken"
+                RowLayout {
+                    spacing: KanteStyle.unit(16)
+                    // Disabled platform controls take the Kante colours from the gallery's KanteScope.
+                    ColumnLayout {
+                        Layout.preferredWidth: KanteStyle.unit(200)
+                        QQC2.ItemDelegate { text: "Bibliothek"; Layout.fillWidth: true }
+                        QQC2.ItemDelegate { text: "Üben (kein Stück)"; enabled: false; Layout.fillWidth: true }
+                        Kirigami.Separator { Layout.fillWidth: true; enabled: false }
+                        QQC2.ItemDelegate { text: "Einstellungen"; Layout.fillWidth: true }
+                    }
+                    // A title only: no empty line under it.
+                    KanteCallout { Layout.alignment: Qt.AlignTop; Layout.preferredWidth: KanteStyle.unit(240); kind: KanteCallout.Kind.Ok; title: "Gespeichert" }
+                    // A sheet in the page: Tab stays inside while it is open; closed, the focus goes back.
+                    ColumnLayout {
+                        Layout.alignment: Qt.AlignTop
+                        KanteButton { id: sheetOpener; text: "Auswertung öffnen"; onClicked: sheetDemo.visible = true }
+                        KanteCard {
+                            id: sheetDemo
+                            visible: false
+                            implicitWidth: KanteStyle.unit(260)
+                            implicitHeight: sheetCol.implicitHeight + KanteStyle.unit(24)
+                            ColumnLayout {
+                                id: sheetCol
+                                x: KanteStyle.unit(12)
+                                y: KanteStyle.unit(12)
+                                KanteButton { text: "Schließen"; onClicked: sheetDemo.visible = false }
+                                KanteButton { text: "Takt 3 üben" }
+                            }
+                        }
+                        KanteFocusTrap { area: sheetDemo; returnTo: sheetOpener }
+                    }
+                }
+                // String colours: in Kante Light and Leinen at least 4.5:1, apart under deuteranopia.
+                KanteTabStaff {
+                    Layout.fillWidth: true
+                    notes: practice.riff; bars: partsDemo.bars; position: 0; barsPerSystem: 4
+                }
+                // Screen readers hear every bar: "−10 bis 0 ms: 5 Noten".
+                KanteTimingHistogram {
+                    Layout.preferredWidth: KanteStyle.unit(420)
+                    counts: [1, 3, 5, 2]
+                    firstBinMs: -20
+                    binMs: 10
+                    meanMs: -4
+                }
+            }
+
+            Section {
                 title: "1.43 · mischpult (lmix): griff, menü, popover, farben, tabelle, kacheln"
                 RowLayout {
                     spacing: KanteStyle.unit(24)
