@@ -92,6 +92,15 @@ TestCase {
         compare(m.Accessible.name, "Teil " + long)
     }
 
+    // Review #87: without room for a letter and "…" the mark draws nothing, not an empty box.
+    function test_markWithoutRoomIsHidden() {
+        const m = createTemporaryObject(markComponent, tc.Window.contentItem, { text: "Refrain", maximumWidth: 4 })
+        verify(!m.fits)
+        compare(findAll(m, function (c) { return c.visible && c !== m }).length, 0)
+        m.maximumWidth = 400
+        verify(m.fits)
+    }
+
     function test_markShape() {
         const m = createTemporaryObject(markComponent, tc.Window.contentItem, { text: "A" })
         // System: square, as the platform; Kante and Kante Light: the small cut.

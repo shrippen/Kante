@@ -33,6 +33,8 @@ Item {
     readonly property real cut: KanteStyle.cutSmall
     readonly property real stroke: Math.max(1, KanteStyle.unit(2))
     readonly property real padX: Math.round(pixelSize * 0.45) + cut / 2
+    /** Room for at least one letter and "…"; else the mark draws nothing (no empty box). */
+    readonly property bool fits: maximumWidth >= 2 * padX + pixelSize * 1.2
 
     objectName: "kanteRehearsalMark"
     implicitWidth: Math.ceil(label.implicitWidth + 2 * padX)
@@ -44,6 +46,7 @@ Item {
     Accessible.name: KanteStyle.partText.arg(text)
 
     KantePolygon {
+        visible: mark.fits
         anchors.fill: parent
         fillColor: mark.groundColor
         strokeColor: KanteStyle.strongTextColor
@@ -52,6 +55,7 @@ Item {
     }
     Text {
         id: label
+        visible: mark.fits
         x: mark.padX
         width: Math.max(0, mark.width - 2 * mark.padX)
         anchors.verticalCenter: parent.verticalCenter

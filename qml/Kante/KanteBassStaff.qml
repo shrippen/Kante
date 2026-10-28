@@ -574,14 +574,14 @@ Item {
         }
         // Rehearsal marks (1.50): over the first bar of a part, as wide as the room up to the
         // next mark on the line (or the line's end).
-        for (var ms = 0; ms < nsys; ms++) {
-            var mFirst = first + ms * per
-            var mLast = Math.min(last, mFirst + per - 1)
-            for (var mb = mLast, mRight = headerWidth + (mLast - mFirst + 1) * barWidth; mb >= mFirst; mb--) {
+        for (let ms = 0; ms < nsys; ms++) {
+            let mFirst = first + ms * per
+            let mLast = Math.min(last, mFirst + per - 1)
+            for (let mb = mLast, mRight = headerWidth + (mLast - mFirst + 1) * barWidth; mb >= mFirst; mb--) {
                 if (bl[mb].section === "") {
                     continue
                 }
-                var mx = headerWidth + (mb - mFirst) * barWidth + sp * 0.2
+                let mx = headerWidth + (mb - mFirst) * barWidth + sp * 0.2
                 L.sections.push({ x: mx, y: ms * systemHeight, text: bl[mb].section, maxW: mRight - mx - sp * 0.6 })
                 mRight = mx
             }
