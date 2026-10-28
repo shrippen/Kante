@@ -37,9 +37,10 @@ Item {
     readonly property bool fits: maximumWidth >= 2 * padX + pixelSize * 1.2
 
     objectName: "kanteRehearsalMark"
-    implicitWidth: Math.ceil(label.implicitWidth + 2 * padX)
+    // Capped by the room, so a layout (which sizes by implicitWidth) cuts it short too.
+    implicitWidth: Math.max(Math.min(Math.ceil(label.implicitWidth + 2 * padX), maximumWidth), 0)
     implicitHeight: Math.ceil(label.implicitHeight + Math.round(pixelSize * 0.3))
-    width: Math.max(Math.min(implicitWidth, maximumWidth), 0)
+    width: implicitWidth
     height: implicitHeight
 
     Accessible.role: Accessible.StaticText

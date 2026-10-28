@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import QtTest
 import Kante
 
@@ -99,6 +100,22 @@ TestCase {
         compare(findAll(m, function (c) { return c.visible && c !== m }).length, 0)
         m.maximumWidth = 400
         verify(m.fits)
+    }
+
+    // Review #87: a layout sizes an item by its implicit width; the mark is cut short there too.
+    Component {
+        id: rowComponent
+        RowLayout {
+            property alias mark: rowMark
+            KanteRehearsalMark { id: rowMark; text: "Bridge mit sehr langem Namen"; maximumWidth: 60 }
+        }
+    }
+
+    function test_markInLayoutIsCut() {
+        const row = createTemporaryObject(rowComponent, tc.Window.contentItem)
+        waitForRendering(row)
+        verify(row.mark.width <= 60)
+        verify(row.mark.truncated)
     }
 
     function test_markShape() {
