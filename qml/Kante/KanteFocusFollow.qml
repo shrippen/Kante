@@ -10,7 +10,8 @@ import "."
  *
  * Whenever the window's focus moves to an item inside `flickable.contentItem`, the view
  * scrolls the least it can so that item, plus `margin`, is visible; an item taller than the
- * view shows its top. Mouse focus moves too, but a clicked item is already in view.
+ * view shows its top. Focus taken by the mouse never moves the view: a button takes the focus on
+ * press, and a scroll then would move it away from the pointer and lose the click.
  */
 QtObject {
     id: follow
@@ -52,6 +53,9 @@ QtObject {
 
     function reveal(item) {
         if (!enabled || !item || !flickable || !contains(item)) {
+            return
+        }
+        if (item.focusReason === Qt.MouseFocusReason) {
             return
         }
         const p = item.mapToItem(flickable.contentItem, 0, 0)

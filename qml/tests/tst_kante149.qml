@@ -46,7 +46,12 @@ TestCase {
                 id: column
                 Repeater {
                     model: 12
-                    KanteButton { text: "Knopf " + index; height: 40 }
+                    KanteButton {
+                        property int presses: 0
+                        text: "Knopf " + index
+                        height: 40
+                        onClicked: presses++
+                    }
                 }
             }
             KanteFocusFollow { id: follow; flickable: page; margin: 10 }
@@ -97,7 +102,7 @@ TestCase {
     }
 
     function test_focusStaysInView() {
-        const page = createTemporaryObject(pageComponent, tc)
+        const page = createTemporaryObject(pageComponent, tc.Window.contentItem)
         const last = page.column.children[11]
         last.forceActiveFocus()
         // Bottom of the last button (480) plus the margin at the view's bottom edge.
@@ -110,6 +115,16 @@ TestCase {
         page.column.children[3].forceActiveFocus()
         wait(20)
         compare(page.contentY, 70)
+    }
+
+    // Review #86: a mouse press took the focus and scrolled the view, the release fell off the
+    // button and the click was lost. The mouse never moves the view.
+    function test_clickDoesNotScroll() {
+        const page = createTemporaryObject(pageComponent, tc.Window.contentItem)
+        const edge = page.column.children[4]
+        mouseClick(edge, 20, 5)
+        compare(page.contentY, 0)
+        compare(edge.presses, 1)
     }
 
     function test_schemeChoosesPalette() {
