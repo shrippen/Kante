@@ -29,6 +29,8 @@ Item {
     property string lateText: "spät"
     property string meanText: "Mittel"
     property string countText: "%1 Noten"
+    /** Title of the count axis (1.49). */
+    property string axisTitle: "Noten"
     property string accessibleName: "Timing"
 
     readonly property alias chart: bars
@@ -105,6 +107,7 @@ Item {
         markers: hist.markerList()
         ranges: hist.rangeList()
         axis: true
+        axisTitle: hist.axisTitle
         wholeSteps: true
         barFill: 0.9
         Accessible.ignored: true

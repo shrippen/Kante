@@ -320,6 +320,7 @@ QQC2.RadioButton { KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape
 |---|---|
 | `KanteStyle` | Singleton: all colour, font and shape roles. `kind` System and KanteLight forward `Kirigami.Theme` colours; Kante reads `KantePalette` (dark, or "Leinen" when the platform theme is light; `preferDark` forces dark, e.g. Android Material Dark) |
 | `KantePalette` | Generated from `tokens/palette.json` (`tools/build-qml.py`), never edited by hand |
+| `KanteFocusFollow` | Keeps the keyboard focus in view in a Flickable (1.49) |
 | `KanteScope` | Hands the Kante colours to an item's `Kirigami.Theme`, so plain controls below follow. Popups need their own |
 | `KanteCard` | Card with the cut corner and an optional accent bar (`chamfer`, `barColor`) |
 | `KanteButton`, `KanteToolButton`, `KanteTextField`, `KanteHeading`, `KanteDialog` | Wrappers: the platform control in System; in Kante square, uppercase Rajdhani, sunken fields, accent-filled primary (`emphasis`) |
@@ -785,6 +786,19 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Key geometry | – | `KanteKeyLayout` (non-visual, shared by keyboard and lane): `low`, `high` (MIDI, 60 = middle C), `width`; `noteNames` (12 names from C, default C, C♯, D, E♭, E, F, F♯, G, A♭, A, B♭, B; the app sets its language, e.g. German H for B), `middleCOctave` (4: MIDI 60 is C4). Piano proportions: white keys equally wide (`whiteWidth`), black keys 0.58 wide and 0.63 long, set off the boundary as on a real keyboard. `x(m)`, `keyWidth(m)`, `isBlack(m)`, `nameOf(m)` ("E1"), `keyAt(px, blackLevel)`, `count`. A range that starts or ends on a black key starts or ends at its edge |
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
+
+### Added in Kante 1.49
+
+From Kontra's QA night (27.10.2026): a keyboard-only player at 200 %, deuteranopia, a beamer.
+
+| Element | Web | QML |
+|---|---|---|
+| Return presses buttons | – | `KanteButton`, `KanteToolButton` (and `KantePlasmaButton`): Return and Enter press a focused button like Space (Qt Quick Controls take only Space); a disabled one lets the key through. `KanteStyle.pressByKey(button, event)` for own buttons |
+| Focus in view | – | `KanteFocusFollow { flickable: … }`: when the focus moves to an item in the flickable's content, the view scrolls the least it can to show it plus `margin` (default 16 px); taller items show their top |
+| Light or dark | – | `KanteStyle.scheme` Auto (default, follows the platform), Light (Leinen) or Dark, for Kante; Kante Light and System keep the platform's colours. `preferDark` still forces dark |
+| Skipped step | – | `KanteSteps.skipped`: indexes of passed steps the user left out; a muted 4 px bar and a dash in a hollow square instead of the check, „übersprungen“ for screen readers (`stateNames.skipped`) |
+| Axis title | – | `KanteBarChart.axisTitle`, written upwards left of the axis labels; `KanteTimingHistogram.axisTitle` (default „Noten“) |
+| Wrong note | – | `KanteTabLane`, `KanteKeyLane`: a wrong note's head (marks Full) is framed in the strong text colour, so it differs from a string's colour by shape, not only by red |
 
 ### Added in Kante 1.48
 

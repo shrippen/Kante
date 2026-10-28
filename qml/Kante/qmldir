@@ -29,6 +29,7 @@ KanteDiffText 1.0 KanteDiffText.qml
 KanteDropZone 1.0 KanteDropZone.qml
 KanteEmptyState 1.0 KanteEmptyState.qml
 KanteFieldSkin 1.0 KanteFieldSkin.qml
+KanteFocusFollow 1.0 KanteFocusFollow.qml
 KanteFretboard 1.0 KanteFretboard.qml
 KanteGoalMeter 1.0 KanteGoalMeter.qml
 KanteHazard 1.0 KanteHazard.qml

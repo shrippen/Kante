@@ -131,6 +131,39 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.49.0">
+      <div class="release-head"><b class="release-version">1.49</b><time datetime="2026-10-28">28 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">For players on the keyboard alone, at 200 % and with deuteranopia: Return presses buttons, the focus stays in view, a wrong note has a frame. Apps choose light or dark themselves.</p>
+        <p class="release-lead" lang="de">Für alle, die nur mit der Tastatur arbeiten, bei 200 % und mit Deuteranopie: Return drückt Knöpfe, der Fokus bleibt sichtbar, ein falscher Ton hat einen Rahmen. Apps wählen hell oder dunkel selbst.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteFocusFollow</code> scrolls a long page so the focused control is in view.</li>
+            <li><code>KanteStyle.scheme</code>: Auto, Light (Leinen) or Dark, independent of the system; a beamer can show light while the laptop stays dark.</li>
+            <li><code>KanteSteps.skipped</code>: a skipped step shows a dash, not the done check. Bar charts and the timing histogram name their value axis.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteFocusFollow</code> scrollt eine lange Seite, sodass das fokussierte Element sichtbar ist.</li>
+            <li><code>KanteStyle.scheme</code>: Auto, hell (Leinen) oder dunkel, unabhängig vom System; der Beamer zeigt hell, der Laptop bleibt dunkel.</li>
+            <li><code>KanteSteps.skipped</code>: Ein übersprungener Schritt zeigt einen Strich statt des Hakens. Balkendiagramme und das Timing-Histogramm beschriften ihre Werteachse.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>Return and Enter press a focused <code>KanteButton</code> or <code>KanteToolButton</code>; before, only Space did.</li>
+            <li>A wrong note in the tab and key lanes is framed; with deuteranopia its red looked like the D string's ochre.</li>
+          </ul>
+          <ul lang="de">
+            <li>Return und Enter drücken einen fokussierten <code>KanteButton</code> oder <code>KanteToolButton</code>; vorher ging nur die Leertaste.</li>
+            <li>Ein falscher Ton in Tab- und Tasten-Lane hat einen Rahmen; mit Deuteranopie sah sein Rot wie das Ocker der D-Saite aus.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.49-qa.png" alt="Setup steps whose skipped Latenz step shows a dash, a tab lane whose wrong note 5 has a frame, and a timing histogram with the axis title Noten, in dark Kante above and Leinen below" loading="lazy"><figcaption><span lang="en">Skipped step, framed wrong note, axis title, in Kante and Leinen</span><span lang="de">Übersprungener Schritt, gerahmter falscher Ton, Achsentitel, in Kante und Leinen</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-149"><span lang="en">All changes in 1.49 →</span><span lang="de">Alle Änderungen in 1.49 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.48.0">
       <div class="release-head"><b class="release-version">1.48</b><time datetime="2026-10-27">27 Oct 2026</time></div>
       <div class="release-body">
@@ -738,7 +771,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.48.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.49.0</p></div>
 </footer>
 
 <script>

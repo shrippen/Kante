@@ -50,6 +50,11 @@ PlasmaComponents3.Button {
     /** Sits on a hard 4 px shadow and presses into it (a big, single action). */
     property bool raised: false
 
+    // Return and Enter press a focused button like Space (1.49, WCAG 2.1.1): Qt Quick
+    // Controls take only Space, so keyboard users pressed Return and nothing happened.
+    Keys.onReturnPressed: function (event) { KanteStyle.pressByKey(control, event) }
+    Keys.onEnterPressed: function (event) { KanteStyle.pressByKey(control, event) }
+
     /** Kante draws this button: always in Kante, only the primary one in Kante Light. */
     readonly property bool drawn: KanteStyle.themed || (KanteStyle.active && emphasis === KantePlasmaButton.Emphasis.Primary)
     readonly property bool filled: emphasis === KantePlasmaButton.Emphasis.Primary || emphasis === KantePlasmaButton.Emphasis.Destructive

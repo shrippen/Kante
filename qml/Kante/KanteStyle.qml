@@ -38,6 +38,13 @@ QtObject {
         KanteLight
     }
 
+    /** Light or dark palette in Kante (1.49): Auto follows the platform theme. */
+    enum Scheme {
+        Auto,
+        Light,
+        Dark
+    }
+
     property int kind: KanteStyle.Kind.System
     /** Kante shapes, type and layouts (Kante and Kante Light). */
     readonly property bool active: kind !== KanteStyle.Kind.System
@@ -57,8 +64,38 @@ QtObject {
      */
     property bool materialStyle: false
 
-    /** Leinen when the platform theme is light, unless preferDark. */
-    readonly property bool light: !preferDark && Kirigami.Theme.backgroundColor.hslLightness > 0.5
+    /**
+     * The palette in Kante, chosen by the app (1.49, Kontra: a beamer wants light while the
+     * laptop runs dark). Kante Light and System keep the platform's colours.
+     */
+    property int scheme: KanteStyle.Scheme.Auto
+
+    /**
+     * Presses a button from the keyboard (Return, Enter) as a click does (1.49). Qt 6.8 and
+     * later animate it; older versions only emit clicked().
+     */
+    function pressByKey(button, event) {
+        if (!button.enabled) {
+            event.accepted = false
+            return
+        }
+        if (typeof button.animateClick === "function") {
+            button.animateClick()
+        } else {
+            button.clicked()
+        }
+    }
+
+    /** Leinen when the scheme is Light, or Auto with a light platform theme, unless preferDark. */
+    readonly property bool light: {
+        if (preferDark || scheme === KanteStyle.Scheme.Dark) {
+            return false
+        }
+        if (scheme === KanteStyle.Scheme.Light) {
+            return true
+        }
+        return Kirigami.Theme.backgroundColor.hslLightness > 0.5
+    }
     readonly property QtObject palette: light ? KantePalette.light : KantePalette.dark
 
     // ── Theme roles (palette only in Kante; Kante Light keeps the theme) ──
