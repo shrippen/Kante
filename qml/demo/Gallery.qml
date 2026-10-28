@@ -769,6 +769,33 @@ Rectangle {
             }
 
             Section {
+                id: partsDemo
+                title: "1.50 · probenzeichen (kontra)"
+                // A bar's `section` names the part that starts there; several names join ("Refrain · B").
+                readonly property var bars: [{ time: 0, section: "Intro" }, { time: 2.4, section: "Strophe mit langem Namen" },
+                                             { time: 4.8, section: ["Refrain", "B"] }, { time: 7.2, section: "Outro" }]
+                RowLayout {
+                    spacing: KanteStyle.unit(10)
+                    KanteRehearsalMark { text: "A" }
+                    KanteRehearsalMark { text: KanteStyle.rehearsalText(["Refrain", "B"]) }
+                    // A long name is cut short to its room.
+                    KanteRehearsalMark { text: "Bridge mit sehr langem Namen"; maximumWidth: KanteStyle.unit(120) }
+                }
+                KanteTabLane {
+                    Layout.fillWidth: true; Layout.preferredHeight: KanteStyle.unit(180)
+                    notes: practice.riff; bars: partsDemo.bars; position: 0; pixelsPerSecond: KanteStyle.unit(90); playLine: 0.05
+                }
+                KanteTabStaff {
+                    Layout.fillWidth: true
+                    notes: practice.riff; bars: partsDemo.bars; position: 0; barsPerSystem: 4
+                }
+                KanteBassStaff {
+                    Layout.fillWidth: true
+                    notes: practice.riff; rests: []; bars: partsDemo.bars; position: 0; barsPerSystem: 4
+                }
+            }
+
+            Section {
                 title: "1.43 · mischpult (lmix): griff, menü, popover, farben, tabelle, kacheln"
                 RowLayout {
                     spacing: KanteStyle.unit(24)
