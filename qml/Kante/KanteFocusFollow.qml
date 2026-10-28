@@ -11,7 +11,9 @@ import "."
  * Whenever the window's focus moves to an item inside `flickable.contentItem`, the view
  * scrolls the least it can so that item, plus `margin`, is visible; an item taller than the
  * view shows its top. Focus taken by the mouse never moves the view: a button takes the focus on
- * press, and a scroll then would move it away from the pointer and lose the click.
+ * press, and a scroll then would move it away from the pointer and lose the click. Rows and tiles
+ * focus themselves from a tap and have no focusReason, so a pointer press in the flickable counts
+ * too, until its release has been handled.
  */
 QtObject {
     id: follow
@@ -25,6 +27,38 @@ QtObject {
                                       ? flickable.Window.activeFocusItem : null
 
     onFocusItemChanged: reveal(focusItem)
+
+    /** True from a press in the flickable until the events of its release are handled. */
+    property bool pointing: false
+
+    // Watches without grabbing, so taps and drags still reach the content. Made per flickable:
+    // a handler declared here has no item to belong to.
+    property Component pointerComponent: Component {
+        PointHandler {
+            acceptedButtons: Qt.AllButtons
+            onActiveChanged: {
+                if (active) {
+                    follow.pointing = true
+                } else {
+                    // A row focuses itself on release; that focus change comes before this call.
+                    Qt.callLater(function () { follow.pointing = false })
+                }
+            }
+        }
+    }
+    property PointHandler pointer: null
+
+    onFlickableChanged: {
+        if (pointer) {
+            pointer.destroy()
+        }
+        pointer = flickable ? pointerComponent.createObject(flickable) : null
+    }
+    Component.onCompleted: {
+        if (flickable && !pointer) {
+            pointer = pointerComponent.createObject(flickable)
+        }
+    }
 
     /** True when `item` lies in the flickable's content. */
     function contains(item) {
@@ -55,7 +89,7 @@ QtObject {
         if (!enabled || !item || !flickable || !contains(item)) {
             return
         }
-        if (item.focusReason === Qt.MouseFocusReason) {
+        if (pointing || item.focusReason === Qt.MouseFocusReason) {
             return
         }
         const p = item.mapToItem(flickable.contentItem, 0, 0)

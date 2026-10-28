@@ -58,6 +58,32 @@ TestCase {
         }
     }
 
+    // Rows and tiles take the focus from their own tap, an Item has no focusReason.
+    Component {
+        id: rowsComponent
+        Flickable {
+            id: rows
+            width: 300
+            height: 200
+            contentHeight: rowColumn.height
+            property alias column: rowColumn
+            Column {
+                id: rowColumn
+                Repeater {
+                    model: 12
+                    KanteListRow {
+                        property int presses: 0
+                        width: 300
+                        height: 40
+                        text: "Zeile " + index
+                        onClicked: presses++
+                    }
+                }
+            }
+            KanteFocusFollow { flickable: rows; margin: 10 }
+        }
+    }
+
     Component { id: stepsComponent; KanteSteps { width: 560 } }
     Component { id: histComponent; KanteTimingHistogram { width: 500; height: 220 } }
     Component { id: laneComponent; KanteTabLane { width: 500; height: 200 } }
@@ -125,6 +151,26 @@ TestCase {
         mouseClick(edge, 20, 5)
         compare(page.contentY, 0)
         compare(edge.presses, 1)
+    }
+
+    // Review #86, round 2: a row focuses itself on tap and has no focusReason; the view moved.
+    function test_rowClickDoesNotScroll() {
+        const page = createTemporaryObject(rowsComponent, tc.Window.contentItem)
+        const edge = page.column.children[4]
+        mouseClick(edge, 20, 5)
+        verify(edge.activeFocus)
+        compare(page.contentY, 0)
+        mouseClick(page.column.children[5], 20, 5)
+        compare(page.contentY, 0)
+    }
+
+    // The keyboard still moves it after a click.
+    function test_tabAfterClickScrolls() {
+        const page = createTemporaryObject(rowsComponent, tc.Window.contentItem)
+        mouseClick(page.column.children[4], 20, 5)
+        wait(0)
+        page.column.children[6].forceActiveFocus(Qt.TabFocusReason)
+        verify(page.contentY > 0)
     }
 
     function test_schemeChoosesPalette() {

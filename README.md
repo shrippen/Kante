@@ -794,7 +794,7 @@ From Kontra's QA night (27.10.2026): a keyboard-only player at 200 %, deuteranop
 | Element | Web | QML |
 |---|---|---|
 | Return presses buttons | – | `KanteButton`, `KanteToolButton` (and `KantePlasmaButton`): Return and Enter press a focused button like Space (Qt Quick Controls take only Space); a disabled one lets the key through. `KanteStyle.pressByKey(button, event)` for own buttons |
-| Focus in view | – | `KanteFocusFollow { flickable: … }`: when the keyboard focus (not the mouse) moves to an item in the flickable's content, the view scrolls the least it can to show it plus `margin` (default 16 px); taller items show their top |
+| Focus in view | – | `KanteFocusFollow { flickable: … }`: when the keyboard focus moves to an item in the flickable's content, the view scrolls the least it can to show it plus `margin` (default 16 px); taller items show their top. A press in the flickable (a button, a row, a tile) never moves it |
 | Light or dark | – | `KanteStyle.scheme` Auto (default, follows the platform), Light (Leinen) or Dark, for Kante; Kante Light and System keep the platform's colours. `preferDark` still forces dark |
 | Skipped step | – | `KanteSteps.skipped`: indexes of passed steps the user left out; a muted 4 px bar and a dash in a hollow square instead of the check, „übersprungen“ for screen readers (`stateNames.skipped`) |
 | Axis title | – | `KanteBarChart.axisTitle`, written upwards left of the axis labels; `KanteTimingHistogram.axisTitle` (default „Noten“) |
