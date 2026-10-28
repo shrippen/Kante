@@ -131,6 +131,37 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.50.0">
+      <div class="release-head"><b class="release-version">1.50</b><time datetime="2026-10-28">28 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Rehearsal marks: tab, notation and the lanes show where Intro, verse, chorus or part B begin, in a framed box over the first bar of each part. For players who find their way in a song by its parts, and for a teacher at the beamer saying "from the chorus".</p>
+        <p class="release-lead" lang="de">Probenzeichen: Tabulatur, Noten und die Lanes zeigen, wo Intro, Strophe, Refrain oder Teil B beginnen, in einem gerahmten Kasten über dem ersten Takt jedes Teils. Für alle, die sich in einem Stück an seinen Teilen orientieren, und für die Lehrkraft am Beamer, die „ab dem Refrain“ sagt.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteRehearsalMark</code>: the name of a part in a framed box, with the small cut in Kante and Kante Light, square in System. A long name is cut short with "…" instead of running into the next mark; screen readers hear all of it ("Teil Refrain · B").</li>
+            <li>A bar's <code>section</code> in <code>KanteTabStaff</code>, <code>KanteBassStaff</code>, <code>KanteTabLane</code> and <code>KanteKeyLane</code> puts the mark over that bar. Several names of one bar are joined: "Refrain · B" (<code>KanteStyle.rehearsalText</code>).</li>
+            <li>Screen readers hear the part being played along with the bar.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteRehearsalMark</code>: der Name eines Teils in einem gerahmten Kasten, mit der kleinen Schnittecke in Kante und Kante Light, eckig in System. Ein langer Name wird mit „…“ gekürzt, statt in das nächste Zeichen zu laufen; Screenreader hören ihn ganz („Teil Refrain · B“).</li>
+            <li>Das Feld <code>section</code> eines Takts in <code>KanteTabStaff</code>, <code>KanteBassStaff</code>, <code>KanteTabLane</code> und <code>KanteKeyLane</code> setzt das Zeichen über diesen Takt. Mehrere Namen eines Takts werden zusammengefasst: „Refrain · B“ (<code>KanteStyle.rehearsalText</code>).</li>
+            <li>Screenreader nennen mit dem Takt den Teil, der gerade läuft.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Only songs with sections change: their staff and lanes move down by the row of the marks. Without <code>section</code> the layout stays as it was.</li>
+          </ul>
+          <ul lang="de">
+            <li>Nur Stücke mit Teilen ändern sich: Notensystem und Lanes rücken um die Zeile der Zeichen nach unten. Ohne <code>section</code> bleibt das Layout, wie es war.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.50-probenzeichen.png" alt="Tab and bass staff with the rehearsal marks Intro, Strophe mit… (cut short), Refrain · B and Outro over bars 1 to 4, and a tab lane with the marks Refrain · B and Outro above their bar numbers, in dark Kante above and Leinen below" loading="lazy"><figcaption><span lang="en">Rehearsal marks in tab, notation and lane, in Kante and Leinen</span><span lang="de">Probenzeichen in Tabulatur, Noten und Lane, in Kante und Leinen</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-150"><span lang="en">All changes in 1.50 →</span><span lang="de">Alle Änderungen in 1.50 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.49.0">
       <div class="release-head"><b class="release-version">1.49</b><time datetime="2026-10-28">28 Oct 2026</time></div>
       <div class="release-body">
@@ -769,7 +800,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.49.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.50.0</p></div>
 </footer>
 
 <script>
