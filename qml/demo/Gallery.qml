@@ -32,6 +32,9 @@ Rectangle {
         KanteHud { fullText: "// " + parent.title; color: KanteStyle.accentTextColor }
     }
 
+    // Tab through the gallery: the focused control stays in view (1.49).
+    KanteFocusFollow { flickable: flick }
+
     Flickable {
         id: flick
         anchors.fill: parent
@@ -105,6 +108,8 @@ Rectangle {
                 KanteTabBar { model: ["Alle", "Prüfen", "Fertig"]; counts: [42, 7, 35] }
                 KanteSegmented { model: ["Raster", "Liste", "Bühne"] }
                 KanteSteps { model: ["Einlesen", "Erkennen", "Prüfen", "Übergeben"]; current: 2 }
+                // A skipped step shows a dash, not the check (1.49).
+                KanteSteps { model: ["Instrument", "Eingang", "Latenz", "Fertig"]; current: 3; skipped: [2] }
                 // Page bar at the window's foot: busy dots by kind, a picture area (stage) and an action at the right end.
                 KantePageBar {
                     Layout.fillWidth: true
