@@ -127,6 +127,45 @@ TestCase {
         compare(String(area.tinted.ink), "#ff0000")
     }
 
+    Component {
+        id: popupScopeComponent
+        Item {
+            width: 300
+            height: 200
+            property alias popup: popup
+            property alias locked: locked
+            property alias scope: popupScope
+            QQC2.Popup {
+                id: popup
+                width: 100
+                height: 100
+                contentItem: Item {
+                    id: content
+                    KanteScope { id: popupScope; target: content }
+                    Rectangle {
+                        id: locked
+                        enabled: false
+                        width: 10
+                        height: 10
+                        color: Kirigami.Theme.backgroundColor
+                    }
+                }
+            }
+        }
+    }
+    // A scope in a popup that is not open yet has no window: it waits for one instead of
+    // judging the colours without it (PR-Agent on #88).
+    function test_scopeInClosedPopup() {
+        const host = createTemporaryObject(popupScopeComponent, tc)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        wait(20)
+        // No probe outside a window: it would never get the platform's colours.
+        verify(!host.scope.probe || host.scope.probe.parent !== null, "probe without a window")
+        host.popup.open()
+        tryCompare(host.popup, "opened", true)
+        tryCompare(host.locked, "color", KanteStyle.dialogColor)
+    }
+
     // System and Kante Light keep the platform's disabled colours, also after Kante.
     function test_scopeDisabledSystem() {
         const area = createTemporaryObject(scopeComponent, tc)
@@ -468,6 +507,11 @@ TestCase {
         compare(KanteStyle.stringColor(1, "kante"), KanteStyle.focusColor)
         compare(KanteStyle.stringColor(2, "kante"), KanteStyle.accentTextColor)
         compare(KanteStyle.stringColor(3, "kante"), KanteStyle.strongTextColor)
+        compare(KanteStyle.stringColor(4, "kante"), KanteStyle.mutedTextColor)
+        compare(KanteStyle.stringColor(5, "kante"), KanteStyle.infoColor)
+        // The preset before 1.51, as colours (info is cyan in dark Kante, as focus).
+        compare(KanteStyle.stringColors(6, "kante").map(function(c) { return String(c) }),
+                ["#d3869b", "#5ccfc4", "#fabd2f", "#fbf1c7", "#bdae93", "#5ccfc4"])
     }
 
     // ── 6. A list row with a focusable trailing control ─────────────────

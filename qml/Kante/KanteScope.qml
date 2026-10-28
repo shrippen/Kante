@@ -238,7 +238,8 @@ Item {
             return
         }
         const t = item.Kirigami.Theme
-        if (!t.inherit || ownColours(t)) {
+        // Without a window there is no probe to judge by: the item waits for one.
+        if (!t.inherit || !scope.Window.contentItem || ownColours(t)) {
             return
         }
         for (const prop in roles) {
@@ -257,6 +258,15 @@ Item {
             enabled: false
         }
     }
+    // A popup's content gets its window on opening: then its disabled items are looked at.
+    readonly property Item windowRoot: scope.Window.contentItem
+    onWindowRootChanged: Qt.callLater(resweep)
+    // After the event: the themes below take the window's colours first.
+    function resweep() {
+        if (applied && windowRoot) {
+            sweep(target)
+        }
+    }
     Component.onDestruction: {
         if (probe) {
             probe.destroy()
@@ -266,7 +276,10 @@ Item {
     // Colours the app set on the theme (review of #88: a red text was lost after Kante): a
     // colour that is neither the platform's for a disabled item nor Kante's.
     function ownColours(t) {
-        if (!probe) {
+        if (!probe || probe.parent !== scope.Window.contentItem) {
+            if (probe) {
+                probe.destroy()
+            }
             probe = probeComponent.createObject(scope.Window.contentItem)
         }
         if (!probe) {
