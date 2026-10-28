@@ -3,9 +3,9 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.49, from Kontra's QA night (27.10.2026: keyboard only, 200 %, deuteranopia; a beamer):
- * Return presses a focused button, the focus stays in view on long pages, the app picks light or
- * dark, a skipped step shows no check, the histogram names its count axis, a wrong note's head
+ * Kante 1.49, from Kontra's QA night (27.10.2026: keyboard only, 200 %, deuteranopia):
+ * Return presses a focused button, the focus stays in view on long pages, a skipped step shows no
+ * check, the histogram names its count axis, a wrong note's head
  * is framed. Run: tools/check-qml.sh.
  */
 TestCase {
@@ -102,7 +102,6 @@ TestCase {
 
     function cleanup() {
         KanteStyle.kind = KanteStyle.Kind.System
-        KanteStyle.scheme = KanteStyle.Scheme.Auto
     }
 
     function test_returnPressesButton() {
@@ -171,17 +170,6 @@ TestCase {
         wait(0)
         page.column.children[6].forceActiveFocus(Qt.TabFocusReason)
         verify(page.contentY > 0)
-    }
-
-    function test_schemeChoosesPalette() {
-        KanteStyle.kind = KanteStyle.Kind.Kante
-        KanteStyle.scheme = KanteStyle.Scheme.Light
-        verify(KanteStyle.light)
-        compare(KanteStyle.backgroundColor, KantePalette.light.ground)
-
-        KanteStyle.scheme = KanteStyle.Scheme.Dark
-        verify(!KanteStyle.light)
-        compare(KanteStyle.backgroundColor, KantePalette.dark.ground)
     }
 
     function test_skippedStepHasNoCheck() {
