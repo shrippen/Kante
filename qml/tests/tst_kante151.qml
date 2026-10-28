@@ -23,6 +23,7 @@ TestCase {
 
     function cleanup() {
         KanteStyle.kind = KanteStyle.Kind.System
+        KanteStyle.preferDark = false
     }
 
     // ── 1. Disabled items under a KanteScope ────────────────────────────
@@ -93,6 +94,37 @@ TestCase {
         area.box.enabled = false
         tryCompare(area.inner, "ink", KanteStyle.disabledTextColor)
         compare(area.inner.color, KanteStyle.dialogColor)
+    }
+
+    Component {
+        id: ownColourComponent
+        Item {
+            id: area
+            width: 100
+            height: 100
+            property alias tinted: tinted
+            KanteScope { target: area }
+            // An app's own colour on an inheriting theme (review of #88).
+            Rectangle {
+                id: tinted
+                enabled: false
+                width: 10
+                height: 10
+                Kirigami.Theme.textColor: "red"
+                property color ink: Kirigami.Theme.textColor
+            }
+        }
+    }
+    // A disabled item with colours of its own keeps them, in Kante and after it.
+    function test_scopeKeepsAppColour() {
+        const area = createTemporaryObject(ownColourComponent, tc)
+        compare(String(area.tinted.ink), "#ff0000")
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        wait(50)
+        compare(String(area.tinted.ink), "#ff0000")
+        KanteStyle.kind = KanteStyle.Kind.System
+        wait(50)
+        compare(String(area.tinted.ink), "#ff0000")
     }
 
     // System and Kante Light keep the platform's disabled colours, also after Kante.
@@ -244,6 +276,42 @@ TestCase {
                 returnTo: play
             }
         }
+    }
+
+    Component {
+        id: trapMiddleComponent
+        Item {
+            width: 640
+            height: 480
+            property alias a: a
+            property alias b: b
+            property alias c: c
+            property alias sheet: sheet
+            QQC2.Button { id: outside; text: "outside" }
+            Column {
+                id: sheet
+                y: 60
+                visible: false
+                QQC2.Button { id: a; text: "a" }
+                QQC2.Button { id: b; text: "b" }
+                QQC2.Button { id: c; text: "c" }
+            }
+            KanteFocusTrap { area: sheet; first: b }
+        }
+    }
+    // `first` is where the focus lands; the ends are the area's first and last stop, so a
+    // stop before `first` stays reachable (review of #88: a was never reached).
+    function test_trapFirstInMiddle() {
+        const page = createTemporaryObject(trapMiddleComponent, tc)
+        const focused = function() { return page.Window.activeFocusItem }
+        page.sheet.visible = true
+        tryVerify(function() { return page.b.activeFocus })
+        keyClick(Qt.Key_Tab)
+        verify(focused() === page.c, "c, focus on " + focused())
+        keyClick(Qt.Key_Tab)
+        verify(focused() === page.a, "a after c, focus on " + focused())
+        keyClick(Qt.Key_Backtab, Qt.ShiftModifier)
+        verify(focused() === page.c, "c before a, focus on " + focused())
     }
 
     function test_trapFocusOnOpen() {
@@ -400,7 +468,6 @@ TestCase {
         compare(KanteStyle.stringColor(1, "kante"), KanteStyle.focusColor)
         compare(KanteStyle.stringColor(2, "kante"), KanteStyle.accentTextColor)
         compare(KanteStyle.stringColor(3, "kante"), KanteStyle.strongTextColor)
-        KanteStyle.preferDark = false
     }
 
     // ── 6. A list row with a focusable trailing control ─────────────────
@@ -422,6 +489,39 @@ TestCase {
             }
             KanteListRow { id: second; width: parent.width; text: "second" }
         }
+    }
+
+    Component {
+        id: twoControlsComponent
+        Column {
+            width: 400
+            property alias tip: tip
+            property alias button: button
+            property alias row: row
+            KanteListRow {
+                id: row
+                width: parent.width
+                text: "row"
+                trailing: Row {
+                    KanteInfoTip { id: tip; term: "Beat"; info: "Schlag" }
+                    KanteButton { id: button; text: "go" }
+                }
+            }
+        }
+    }
+    // Only the row's first control leads back to the row; the second goes to the first.
+    function test_rowTwoControls() {
+        const rows = createTemporaryObject(twoControlsComponent, tc)
+        const focused = function() { return rows.Window.activeFocusItem }
+        rows.row.forceActiveFocus(Qt.TabFocusReason)
+        keyClick(Qt.Key_Tab)
+        verify(focused() === rows.tip, "the ?, focus on " + focused())
+        keyClick(Qt.Key_Tab)
+        verify(focused() === rows.button, "the button, focus on " + focused())
+        keyClick(Qt.Key_Backtab, Qt.ShiftModifier)
+        verify(focused() === rows.tip, "back to the ?, focus on " + focused())
+        keyClick(Qt.Key_Backtab, Qt.ShiftModifier)
+        verify(focused() === rows.row, "back to the row, focus on " + focused())
     }
 
     // Kontra's exercise list (QA 28.10. B5, P7): once the "?" had the focus, the row (a focus

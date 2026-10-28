@@ -10,8 +10,9 @@ import "."
  *
  * While `active` (default: while `area` is visible):
  *   - the focus moves to `first` (default: the area's first stop in the focus chain);
- *   - Tab past the area's last stop goes to `first`, Shift+Tab before `first` to the last
- *     stop. The ends are tied with KeyNavigation, so the focus never touches what lies
+ *   - Tab past the area's last stop goes to its first stop, Shift+Tab before the first stop
+ *     to the last one (`first` only says where the focus lands, a stop before it stays
+ *     reachable). The ends are tied with KeyNavigation, so the focus never touches what lies
  *     outside; the last stop is looked up again as the focus moves (rows shown, hidden);
  *   - the items in `behind` are disabled (`behindMode` Behind.Disable: no focus, no click)
  *     or hidden (Behind.Hide: screen readers do not read them either; for a sheet that
@@ -86,11 +87,13 @@ QtObject {
         return false
     }
 
-    // `first`, or the area's first stop: the focus chain from the area runs through its children first.
+    // Where the focus lands on opening: `first`, or the area's first stop.
     function firstStop() {
-        if (first) {
-            return first
-        }
+        return first ? first : areaStart()
+    }
+
+    // The area's first stop: the focus chain from the area runs through its children first.
+    function areaStart() {
         const next = area ? area.nextItemInFocusChain(true) : null
         return next && inside(next) ? next : null
     }
@@ -117,9 +120,9 @@ QtObject {
         tie()
     }
 
-    // Ties the last stop to the first and back; keeps what the ends held before.
+    // Ties the area's last stop to its first and back; keeps what the ends held before.
     function tie() {
-        const start = firstStop()
+        const start = areaStart()
         if (!start) {
             return
         }

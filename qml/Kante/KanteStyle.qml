@@ -329,8 +329,9 @@ QtObject {
      * light ground raspberry, blue, ochre, strong text, muted, cyan, at least 4.5:1 (the fret
      * digits are drawn in it) and the four bass strings apart under deuteranopia; the platform
      * roles gave the A string 1.7:1 at a beamer, and purple and cyan look alike with
-     * deuteranopia. Dark keeps its colours. Kante Light moves a colour that reads below 4.5:1
-     * on an unusual platform ground (hue kept). System keeps the platform roles.
+     * deuteranopia. Dark Kante keeps its colours; Kante Light on a dark system takes the dark
+     * palette's (before: the platform roles). Kante Light moves a colour that reads below
+     * 4.5:1 on an unusual platform ground (hue kept). System keeps the platform roles.
      */
     readonly property var stringPalettes: ["kante", "mono", "bright"]
     property string stringPalette: "kante"

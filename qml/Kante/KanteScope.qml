@@ -15,7 +15,8 @@ import "."
  * platform's colours, whatever its parents set. In Kante on a light system a disabled drawer
  * entry stood at 1.7:1, a separator white on dark. In Kante the scope binds the roles on
  * each disabled item below `target` too (text in disabledTextColor) and hands them back to
- * the platform when Kante is switched off. It watches the subtree only once Kante is on.
+ * the platform when Kante is switched off. An item with colours of its own keeps them. It
+ * watches the subtree only once Kante is on.
  *
  * `popup` (1.51): a popup or drawer whose ground (`background`) lies beside `target`, its
  * content: the scope themes both. A Kirigami GlobalDrawer showed a white area below the
@@ -226,7 +227,8 @@ Item {
         }
     }
 
-    // A disabled item in Kante gets the roles; an item another scope detached keeps them.
+    // A disabled item in Kante gets the roles; an item another scope detached, or one with
+    // colours of its own, keeps them.
     function check(item) {
         if (!applied || item.enabled) {
             return
@@ -236,13 +238,48 @@ Item {
             return
         }
         const t = item.Kirigami.Theme
-        if (!t.inherit) {
+        if (!t.inherit || ownColours(t)) {
             return
         }
         for (const prop in roles) {
             t[prop] = Qt.binding(prop === "textColor" ? enabledText(item) : roleBinding(roles[prop]))
         }
         dressed[key] = item
+    }
+
+    // A disabled item of the same colour set: the platform's colours, what a theme without
+    // colours of its own shows.
+    // It sits in the window, outside the scope and visible (size 0): the Plasma theme gives a
+    // hidden item no colours.
+    property Item probe: null
+    readonly property Component probeComponent: Component {
+        Item {
+            enabled: false
+        }
+    }
+    Component.onDestruction: {
+        if (probe) {
+            probe.destroy()
+        }
+    }
+
+    // Colours the app set on the theme (review of #88: a red text was lost after Kante): a
+    // colour that is neither the platform's for a disabled item nor Kante's.
+    function ownColours(t) {
+        if (!probe) {
+            probe = probeComponent.createObject(scope.Window.contentItem)
+        }
+        if (!probe) {
+            return false
+        }
+        const p = probe.Kirigami.Theme
+        p.colorSet = t.colorSet
+        for (const prop in roles) {
+            if (!Qt.colorEqual(t[prop], p[prop]) && !Qt.colorEqual(t[prop], KanteStyle[roles[prop]])) {
+                return true
+            }
+        }
+        return false
     }
 
     // An item that is enabled again keeps the binding: then the enabled text colour.

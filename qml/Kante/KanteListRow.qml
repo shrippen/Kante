@@ -17,7 +17,8 @@ import "."
  *   disabledReason  when disabled, shown as the second line, so it is readable on touch too
  *                   (a disabled item gets no hover, so a tooltip would never show)
  * A focusable `trailing` control (1.51, e.g. a KanteInfoTip "?"): Tab reaches the row, then the
- * control; Shift+Tab from the control goes to its row. Leaving the row, the control gives up
+ * control; Shift+Tab from the row's first control goes to its row (from a later one to the
+ * control before it). Leaving the row, the control gives up
  * the row's focus, so Tab into the row stops at the row again.
  */
 FocusScope {
@@ -80,8 +81,9 @@ FocusScope {
     // row, the children give the focus up.
     onActiveFocusChanged: {
         if (activeFocus) {
-            guard(trailingSlot)
-            guard(markerSlot)
+            const start = row.nextItemInFocusChain(true)
+            guard(trailingSlot, start)
+            guard(markerSlot, start)
             return
         }
         dropFocus(trailingSlot)
@@ -95,17 +97,20 @@ FocusScope {
         }
     }
 
-    // Shift+Tab from a control in the row goes to the row; Qt passed over the row to the
+    // Shift+Tab from the row's first control goes to the row; Qt passed over the row to the
     // control before it. Qt moves the focus in the control's own key handling, before the event
-    // reaches the row, so each tab stop below gets the handler (once: dropped first if there).
-    function guard(item) {
+    // reaches the row, so that stop (`start`, the row's next in the focus chain) gets the
+    // handler, once; a later control goes back to the one before it as usual.
+    function guard(item, start) {
         for (let i = 0; i < item.children.length; i++) {
             const c = item.children[i]
             if (c.activeFocusOnTab) {
                 c.Keys.backtabPressed.disconnect(backFromChild)
-                c.Keys.backtabPressed.connect(backFromChild)
+                if (c === start) {
+                    c.Keys.backtabPressed.connect(backFromChild)
+                }
             }
-            guard(c)
+            guard(c, start)
         }
     }
     function backFromChild(event) {
