@@ -131,6 +131,57 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.51.0">
+      <div class="release-head"><b class="release-version">1.51</b><time datetime="2026-10-28">28 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Kontra's QA of 28 October: a sidebar that stays dark in Kante on a light system, sheets that keep the keyboard, string colours that read at the beamer and tell apart with deuteranopia, and histogram bars a screen reader can read. For players at 200 % with a keyboard and a screen reader, for the teacher at the beamer and for beginners on a light desktop.</p>
+        <p class="release-lead" lang="de">Kontras QA vom 28. Oktober: eine Seitenleiste, die in Kante auf hellem System dunkel bleibt, Blätter, die die Tastatur behalten, Saitenfarben, die am Beamer lesbar und mit Deuteranopie unterscheidbar sind, und Histogramm-Balken, die ein Screenreader vorliest. Für alle, die bei 200 % mit Tastatur und Screenreader spielen, für die Lehrkraft am Beamer und für Einsteiger auf einem hellen Desktop.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteFocusTrap</code>: while a sheet in the page is open, Tab and Shift+Tab stay inside it and the page behind takes no focus (or is hidden from screen readers too); closed, the focus goes back to the control the app names. Kontra's run summary let Tab run on into the sidebar.</li>
+            <li><code>KanteScope.popup</code>: a drawer's ground takes the Kante colours with its entries. A Kirigami sidebar was white below its entries, "close sidebar" at 1.4:1.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteFocusTrap</code>: Solange ein Blatt in der Seite offen ist, bleiben Tab und Umschalt+Tab darin, und die Seite dahinter nimmt keinen Fokus (oder ist auch für Screenreader ausgeblendet); geschlossen, geht der Fokus zu dem Bedienelement, das die App nennt. In Kontras Auswertung lief Tab weiter in die Seitenleiste.</li>
+            <li><code>KanteScope.popup</code>: Der Grund einer Seitenleiste nimmt mit ihren Einträgen die Kante-Farben. Eine Kirigami-Seitenleiste war unter den Einträgen weiß, „Seitenleiste schließen“ stand bei 1,4:1.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li>String colours on a light ground (Leinen and Kante Light): raspberry, blue, ochre and strong text for the four bass strings, at least 4.5:1 and apart from each other with deuteranopia. The A string was 1.7:1 at the beamer, purple and cyan looked alike with deuteranopia. The tab draws its string lines in full colour there. Dark Kante keeps its colours.</li>
+            <li>Screen readers hear every bar of the timing histogram with its range and count: "−20 bis −10 ms: 3 Noten" (<code>binText</code>, translatable). Before they heard only "early" and "late".</li>
+          </ul>
+          <ul lang="de">
+            <li>Saitenfarben auf hellem Grund (Leinen und Kante Light): Himbeere, Blau, Ocker und starke Schrift für die vier Basssaiten, mindestens 4,5:1 und auch mit Deuteranopie voneinander unterscheidbar. Die A-Saite stand am Beamer bei 1,7:1, Lila und Cyan sahen mit Deuteranopie gleich aus. Die Tabulatur zeichnet ihre Saitenlinien dort in voller Farbe. Dunkles Kante behält seine Farben.</li>
+            <li>Screenreader nennen jeden Balken des Timing-Histogramms mit Bereich und Anzahl: „−20 bis −10 ms: 3 Noten“ (<code>binText</code>, übersetzbar). Vorher hörten sie nur „früh“ und „spät“.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteScope</code> reaches disabled items: Kirigami gave them the platform's colours, so in Kante on a light system a disabled sidebar entry stood at 1.7:1 and separators white. Kante Light and System keep the platform's look.</li>
+            <li><code>KanteCallout</code> with a title only draws no empty line under it (it was about 40 px too tall).</li>
+            <li><code>KanteListRow</code> with a "?" at its end: Tab reaches the row and then the "?", Shift+Tab from the "?" goes to its row. Once the "?" had the focus, the row was skipped both ways.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteScope</code> erreicht gesperrte Elemente: Kirigami gab ihnen die Farben der Plattform, so stand in Kante auf hellem System ein gesperrter Eintrag der Seitenleiste bei 1,7:1 und Trennlinien weiß. Kante Light und System behalten das Aussehen der Plattform.</li>
+            <li><code>KanteCallout</code> mit nur einem Titel zeichnet keine leere Zeile darunter (er war etwa 40 px zu hoch).</li>
+            <li><code>KanteListRow</code> mit einem „?“ am Ende: Tab erreicht die Zeile und dann das „?“, Umschalt+Tab vom „?“ geht zu seiner Zeile. Hatte das „?“ einmal den Fokus, wurde die Zeile in beide Richtungen übersprungen.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li>Apps that theme a drawer pass it as <code>popup</code>: <code>KanteScope { target: drawer.contentItem; popup: drawer }</code>. Leinen's string colours change for every app that shows strings.</li>
+          </ul>
+          <ul lang="de">
+            <li>Apps, die eine Seitenleiste einfärben, geben sie als <code>popup</code> mit: <code>KanteScope { target: drawer.contentItem; popup: drawer }</code>. Die Saitenfarben in Leinen ändern sich für jede App, die Saiten zeigt.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.51-qa.png" alt="Before and after, side by side. Top, dark Kante on a light system: before, a white sidebar with pale entries; after, a dark sidebar with readable entries and the disabled entry Üben dimmed; the callout Gespeichert without its empty line; a tab staff. Bottom, Kante Light: before, pale string lines and a light blue A string; after, string lines in raspberry, blue, ochre and black" loading="lazy"><figcaption><span lang="en">Before (left) and after (right): sidebar in Kante on a light system, callout with a title only, string colours in Kante Light</span><span lang="de">Vorher (links) und nachher (rechts): Seitenleiste in Kante auf hellem System, Hinweis nur mit Titel, Saitenfarben in Kante Light</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-151"><span lang="en">All changes in 1.51 →</span><span lang="de">Alle Änderungen in 1.51 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.50.0">
       <div class="release-head"><b class="release-version">1.50</b><time datetime="2026-10-28">28 Oct 2026</time></div>
       <div class="release-body">
@@ -150,10 +201,10 @@
         </div>
         <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
           <ul lang="en">
-            <li>Only songs with sections change: their staff and lanes move down by the row of the marks. Without <code>section</code> the layout stays as it was.</li>
+            <li>Only songs with sections change: tab, notation and the tab lane move down by the row of the marks (in the key lane the mark sits right of the bar number, nothing moves). Without <code>section</code> the layout stays as it was.</li>
           </ul>
           <ul lang="de">
-            <li>Nur Stücke mit Teilen ändern sich: Notensystem und Lanes rücken um die Zeile der Zeichen nach unten. Ohne <code>section</code> bleibt das Layout, wie es war.</li>
+            <li>Nur Stücke mit Teilen ändern sich: Tabulatur, Noten und die Tab-Lane rücken um die Zeile der Zeichen nach unten (in der Tasten-Lane steht das Zeichen rechts neben der Taktnummer, dort rückt nichts). Ohne <code>section</code> bleibt das Layout, wie es war.</li>
           </ul>
         </div>
         <div class="release-shots">
@@ -800,7 +851,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.50.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.51.0</p></div>
 </footer>
 
 <script>

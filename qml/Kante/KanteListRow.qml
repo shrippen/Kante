@@ -16,6 +16,9 @@ import "."
  *   focusOnClick    a tap takes the keyboard focus (off where the list keeps it)
  *   disabledReason  when disabled, shown as the second line, so it is readable on touch too
  *                   (a disabled item gets no hover, so a tooltip would never show)
+ * A focusable `trailing` control (1.51, e.g. a KanteInfoTip "?"): Tab reaches the row, then the
+ * control; Shift+Tab from the control goes to its row. Leaving the row, the control gives up
+ * the row's focus, so Tab into the row stops at the row again.
  */
 FocusScope {
     id: row
@@ -71,6 +74,46 @@ FocusScope {
 
     Keys.onReturnPressed: clicked()
     Keys.onSpacePressed: clicked()
+
+    // A focus scope hands its focus on to the child that had it last: once a trailing "?" had
+    // the focus, Tab into the row went straight to the "?" (Kontra QA 28.10., P7). Leaving the
+    // row, the children give the focus up.
+    onActiveFocusChanged: {
+        if (activeFocus) {
+            guard(trailingSlot)
+            guard(markerSlot)
+            return
+        }
+        dropFocus(trailingSlot)
+        dropFocus(markerSlot)
+    }
+    function dropFocus(item) {
+        for (let i = 0; i < item.children.length; i++) {
+            const c = item.children[i]
+            c.focus = false
+            dropFocus(c)
+        }
+    }
+
+    // Shift+Tab from a control in the row goes to the row; Qt passed over the row to the
+    // control before it. Qt moves the focus in the control's own key handling, before the event
+    // reaches the row, so each tab stop below gets the handler (once: dropped first if there).
+    function guard(item) {
+        for (let i = 0; i < item.children.length; i++) {
+            const c = item.children[i]
+            if (c.activeFocusOnTab) {
+                c.Keys.backtabPressed.disconnect(backFromChild)
+                c.Keys.backtabPressed.connect(backFromChild)
+            }
+            guard(c)
+        }
+    }
+    function backFromChild(event) {
+        event.accepted = true
+        dropFocus(trailingSlot)
+        dropFocus(markerSlot)
+        row.forceActiveFocus(Qt.BacktabFocusReason)
+    }
 
     Rectangle {
         anchors.fill: parent

@@ -222,7 +222,13 @@
         0.62
       ],
       "stage": "bg0",
-      "stageText": "fg1"
+      "stageText": "fg1",
+      "string0": "purple",
+      "string1": "cyan",
+      "string2": "yellow",
+      "string3": "fg0",
+      "string4": "#bdae93",
+      "string5": "cyan"
     },
     "light": {
       "text": "fg1",
@@ -276,12 +282,19 @@
         0.5
       ],
       "stage": "#282828",
-      "stageText": "#ebdbb2"
+      "stageText": "#ebdbb2",
+      "string0": "#bc2f6c",
+      "string1": "blue",
+      "string2": "yellow",
+      "string3": "fg0",
+      "string4": "fg2",
+      "string5": "cyan"
     },
     "notes": {
       "mutedText": "#bdae93 is fg3 one step lighter, for secondary text on glass (4.5:1 on the darkest tint)",
       "stage": "picture areas (monitors, video previews, image stages) stay dark in both themes: judging colour on a beige ground misleads. Light uses the dark bg0 and fg1, as the web .stage",
-      "accent (light)": "#fabd2f is the primary fill on linen, as in the dark theme, with ink #141312; text in the accent uses accentText (#8a5a00)"
+      "accent (light)": "#fabd2f is the primary fill on linen, as in the dark theme, with ink #141312; text in the accent uses accentText (#8a5a00)",
+      "string0..5": "string colours of the \"kante\" preset (KanteStyle.stringColor), 0 = the lowest string. Dark: purple, cyan, yellow, strong text, muted, cyan. Light (Leinen and Kante Light, 1.51): raspberry, blue, ochre, strong text, muted, cyan; at least 4.5:1 on the light grounds (the fret digits are drawn in them) and the four bass strings apart under deuteranopia (purple and cyan were not)"
     }
   },
   "extra": {

@@ -344,8 +344,14 @@ TestCase {
         for (var k = 0; k < kinds.length; k++) {
             KanteStyle.kind = kinds[k]
             compare(KanteStyle.stringPalettes.join(","), "kante,mono,bright")
-            compare(String(KanteStyle.stringColor(0)), String(KanteStyle.tagColor), "kante: string 0 purple, as the lane had it")
-            compare(String(KanteStyle.stringColor(1)), String(KanteStyle.focusColor))
+            // System: the roles, string 0 purple as the lane had it; Kante and Kante Light take
+            // the palette's string colours (1.51, tst_kante151).
+            compare(String(KanteStyle.stringColor(0)), String(KanteStyle.kanteStrings[0]))
+            compare(String(KanteStyle.stringColor(1)), String(KanteStyle.kanteStrings[1]))
+            if (!KanteStyle.active) {
+                compare(String(KanteStyle.stringColor(0)), String(KanteStyle.tagColor), "kante: string 0 purple, as the lane had it")
+                compare(String(KanteStyle.stringColor(1)), String(KanteStyle.focusColor))
+            }
             compare(String(KanteStyle.stringColor(6)), String(KanteStyle.stringColor(0)), "repeats after six")
             compare(String(KanteStyle.stringColor(3, "mono")), String(KanteStyle.strongTextColor))
             compare(String(KanteStyle.stringColor(0, "bright")), String(KanteStyle.warningColor))
