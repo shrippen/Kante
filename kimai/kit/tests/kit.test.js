@@ -155,3 +155,42 @@ function testUpdates() {
         console.log('ok   kit.js Tests (Update-Hinweis: Vergleich, Anfrage, einmal am Tag, Ausblenden, nur https, still bei Fehlern)');
     }).catch((err) => { console.error(err); process.exitCode = 1; });
 }
+
+// Neu geladene Seite (window.location.reload() nach "Abrechnen", F5): Firefox setzt den Haken der Checkboxen nach ihrer
+// Position wieder. Die abgerechneten Zeilen fehlen jetzt, die Haken landen auf anderen. kit.js muss beim Start den
+// Stand aus dem Markup (defaultChecked) herstellen.
+(function testReloadKeepsNoSelection() {
+    function box(cls, value, restored) {
+        return {
+            value: String(value), disabled: false, checked: restored, defaultChecked: false, indeterminate: false,
+            classList: { contains: (c) => c === cls },
+            getAttribute: (n) => (n === 'data-kpu-form' ? 'bulk' : null),
+        };
+    }
+    const rows = [box('kpu-select', 3, true), box('kpu-select', 4, true), box('kpu-select', 5, false)];
+    const all = box('kpu-select-all', '', true);
+    const form = {
+        id: 'bulk', hidden: false,
+        getAttribute: () => null, hasAttribute: (n) => n === 'data-kpu-bulk',
+        querySelector: () => null, querySelectorAll: () => [], dispatchEvent() { return true; },
+    };
+    const doc = {
+        readyState: 'complete',
+        addEventListener() {},
+        getElementById: (id) => (id === 'bulk' ? form : null),
+        querySelectorAll(sel) {
+            if (sel.indexOf('form[data-kpu-bulk]') === 0) { return [form]; }
+            if (sel.indexOf('input.kpu-select[') === 0) { return rows; }
+            if (sel.indexOf('input.kpu-select-all') === 0) { return [all]; }
+            return [];
+        },
+        dispatchEvent() { return true; },
+    };
+    const win = { sessionStorage: { getItem: () => null, removeItem() {}, setItem() {} } };
+    vm.runInNewContext(source, { window: win, document: doc, CustomEvent, FormData, JSON, String, Object, Array, Error, Promise });
+    assert.deepStrictEqual(rows.map((b) => b.checked), [false, false, false],
+        'nach dem Neuladen sind Zeilen markiert (vom Browser wiederhergestellt)');
+    assert.strictEqual(all.checked, false, '"alle" nach dem Neuladen markiert');
+    assert.strictEqual(form.hidden, true, 'Sammelleiste nach dem Neuladen sichtbar');
+    console.log('ok   kit.js Tests (nach dem Neuladen keine Auswahl)');
+})();

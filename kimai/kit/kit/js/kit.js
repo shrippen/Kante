@@ -49,7 +49,7 @@
 (function (window, document) {
     'use strict';
 
-    var VERSION = '0.9.0';
+    var VERSION = '0.9.1';
     if (window.KimaiPluginUi && window.KimaiPluginUi.version) {
         return; // bereits von einem anderen Plugin auf dieser Seite geladen
     }
@@ -179,6 +179,16 @@
 
     function updateAll() {
         toArray(document.querySelectorAll('form[data-kpu-bulk]')).forEach(update);
+    }
+
+    /**
+     * Auswahl wie im Markup (defaultChecked). Nach dem Neuladen (reloadWithToast, F5) setzt Firefox die Haken nach ihrer
+     * Position wieder; fehlen dann Zeilen (gerade abgerechnet, gelöscht), landen sie auf anderen Zeilen.
+     */
+    function resetSelection() {
+        toArray(document.querySelectorAll('form[data-kpu-bulk]')).forEach(function (form) {
+            boxesFor(form.id).forEach(function (box) { box.checked = box.defaultChecked; });
+        });
     }
 
     function formById(id) {
@@ -653,6 +663,7 @@
             document.addEventListener('change', onChange);
             document.addEventListener('click', onClick);
             document.addEventListener('submit', onSubmit);
+            resetSelection();
             showPending();
         }
         updateAll();
