@@ -1,6 +1,6 @@
 # Knust release. Tag knust-vX.Y.Z (must match kimai/knust/composer.json's "version").
-#   ──► lint ──► build KnustBundle-X.Y.Z.zip (tools/knust-zip.sh) ──► release with notes from kimai/knust/CHANGELOG.md (if it
-#   has a matching heading), zip attached.
+#   ──► lint ──► build KnustBundle-X.Y.Z.zip (tools/knust-zip.sh) ──► release with notes from kimai/knust/CHANGELOG.md
+#   (the tag's section; the job fails without one), zip attached.
 #
 # GitHub only: GitHub is the public channel and the only one with release files. Gitea runs the
 # checks and gets the release without files (rule "Gitea prüft, GitHub veröffentlicht"); the job
@@ -53,15 +53,19 @@ jobs:
           unzip -l "$ZIP"
 
       - name: Release notes
+        # The tag's section in kimai/knust/CHANGELOG.md (## [X.Y.Z], ## X.Y.Z or ## vX.Y.Z).
+        # No section, no release: the job fails instead of posting a placeholder.
         run: |
-          if grep -qE "^## v?$VERSION( |$)" kimai/knust/CHANGELOG.md; then
-            awk -v v="$VERSION" '
-              $0 ~ "^## v?" v "( |$)" { on = 1; next }
-              /^## /                  { on = 0 }
-              on
-            ' kimai/knust/CHANGELOG.md > notes.md
-          else
-            echo "Knust $VERSION." > notes.md
+          awk -v v="$VERSION" '
+            /^## / { if (found) exit
+                     t = $2
+                     if (t ~ /^\[.*\]$/) t = substr(t, 2, length(t) - 2)
+                     if (t ~ /^v/) t = substr(t, 2)
+                     if (t == v) { found = 1; next } }
+            found { print }' kimai/knust/CHANGELOG.md > notes.md
+          if ! grep -q '[^[:space:]]' notes.md; then
+            echo "::error::kimai/knust/CHANGELOG.md has no section for $VERSION"
+            exit 1
           fi
 
       - name: Publish on GitHub
