@@ -167,6 +167,9 @@ bleibt Kimais `widgets.label_boolean()`.
 | `billed` | Abgerechnet | Billed | `bg-lime-lt` (grün, seit 0.7) | AB: exportiert (Kimai `exported`) · HB: in Abrechnung übernommen |
 | `locked` | Gesperrt | Locked | `bg-purple-lt` (violett) | HB: Monat gesperrt · Kimai-Lockdown |
 | `warning` | Warnung | Warning | `bg-orange-lt` (orange) + Icon `warning` (!) | DZ: Verstoß gegen Regeln (Ruhezeit, Höchstarbeitszeit) – Grund im `tooltip` |
+| `sent` | Gesendet | Sent | `bg-success-lt` (grün, seit 0.9) | DZ: Mail vom Mailserver angenommen (Versandprotokoll) |
+| `failed` | Fehlgeschlagen | Failed | `bg-danger-lt` (rot, seit 0.9) | DZ: Versand gescheitert – Grund im `tooltip` |
+| `skipped` | Übersprungen | Skipped | `bg-secondary-lt` (grau, seit 0.9) | DZ: Versand ausgelassen (z. B. Zeitraum ohne Einträge) – Grund im `tooltip` |
 
 - **`warning` vs. `requested`:** In Tabler sind `warning` und `yellow` dieselbe Farbe. Damit „Warnung“ nie wie „Beantragt“
   aussieht, ist `warning` orange (`bg-orange-lt`) und trägt immer das Ausrufezeichen; `requested` bleibt gelb ohne Icon.
@@ -177,6 +180,8 @@ bleibt Kimais `widgets.label_boolean()`.
   auf dem Cyan der Auswahl; eine abgerechnete Zeile sah aus wie eine ausgewählte. Grün bleibt von `approved` (Aqua mit
   Haken) getrennt; Knust zeichnet `billed` als gefülltes Quadrat mit Haken. Jedes Badge trägt `data-kpu-status="<key>"`.
 - Neue Status MÜSSEN erst hier und im Kit ergänzt werden. Durchstreichen, Klartext oder eigene Chips als Status DÜRFEN NICHT sein.
+- `sent`/`failed`/`skipped` (seit 0.9) sind kein Bearbeitungsstand, sondern das Ergebnis eines Versands; Knust zeichnet
+  `sent` mit Haken und `failed` mit Kreuz wie `approved`/`rejected`.
 - Status DARF NICHT allein über Farbe vermittelt werden (Text im Badge ist Pflicht).
 
 ### 3.4 Kennzahlen (Entscheidung 3.5 a) – Kit

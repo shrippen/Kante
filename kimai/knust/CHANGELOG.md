@@ -2,6 +2,7 @@
 
 ## Unveröffentlicht
 
+- Kit 0.9: Versandergebnisse `sent` mit Haken und `failed` mit Kreuz, wie `approved`/`rejected`.
 - Palette aus Kante 1.9.1: `--shr-red-text` für rote Schrift (4,5:1 auf jedem Grund).
 - Kalendertage (`kpu-day`): Wochenenden hell getönt statt abgesenkt; im dunklen Thema waren sie im
   Abwesenheitskalender kaum von Werktagen zu unterscheiden.

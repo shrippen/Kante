@@ -49,7 +49,7 @@
 (function (window, document) {
     'use strict';
 
-    var VERSION = '0.8.0';
+    var VERSION = '0.9.0';
     if (window.KimaiPluginUi && window.KimaiPluginUi.version) {
         return; // bereits von einem anderen Plugin auf dieser Seite geladen
     }

@@ -179,6 +179,18 @@
         <source>kpu.update.dismiss</source>
         <target>Dismiss</target>
       </trans-unit>
+      <trans-unit id="kpu044" resname="kpu.status.sent">
+        <source>kpu.status.sent</source>
+        <target>Sent</target>
+      </trans-unit>
+      <trans-unit id="kpu045" resname="kpu.status.failed">
+        <source>kpu.status.failed</source>
+        <target>Failed</target>
+      </trans-unit>
+      <trans-unit id="kpu046" resname="kpu.status.skipped">
+        <source>kpu.status.skipped</source>
+        <target>Skipped</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
