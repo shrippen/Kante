@@ -53,20 +53,8 @@ jobs:
           unzip -l "$ZIP"
 
       - name: Release notes
-        # The tag's section in kimai/knust/CHANGELOG.md (## [X.Y.Z], ## X.Y.Z or ## vX.Y.Z).
-        # No section, no release: the job fails instead of posting a placeholder.
-        run: |
-          awk -v v="$VERSION" '
-            /^## / { if (found) exit
-                     t = $2
-                     if (t ~ /^\[.*\]$/) t = substr(t, 2, length(t) - 2)
-                     if (t ~ /^v/) t = substr(t, 2)
-                     if (t == v) { found = 1; next } }
-            found { print }' kimai/knust/CHANGELOG.md > notes.md
-          if ! grep -q '[^[:space:]]' notes.md; then
-            echo "::error::kimai/knust/CHANGELOG.md has no section for $VERSION"
-            exit 1
-          fi
+        # The tag's section in kimai/knust/CHANGELOG.md; no section, no release (tools/release-notes.sh).
+        run: tools/release-notes.sh "$VERSION" kimai/knust/CHANGELOG.md > notes.md
 
       - name: Publish on GitHub
         env:
