@@ -38,6 +38,7 @@ class PublicAssets
     private const TARGET = '/public/bundles/knust';
     private const SOURCE = __DIR__ . '/../Resources/public';
     private const DIR_MODE = 0775;
+    private const TEMP_BYTES = 6;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')] private readonly string $projectDir,
@@ -72,8 +73,13 @@ class PublicAssets
         return $copied !== false && $copied === @filemtime($original);
     }
 
+    // Links in the copy are replaced, never followed: as root, a link planted by a compromised
+    // www-data (css/knust.css -> /etc/shadow) would otherwise overwrite the file it points to.
     private function copyDir(string $from, string $to): void
     {
+        if (is_link($to) && !@unlink($to)) {
+            throw new \RuntimeException('Knust: cannot remove the link ' . $to);
+        }
         if (!is_dir($to) && !@mkdir($to, self::DIR_MODE, true) && !is_dir($to)) {
             throw new \RuntimeException('Knust: cannot create ' . $to);
         }
@@ -88,12 +94,24 @@ class PublicAssets
                 $this->copyDir($path, $to . '/' . $name);
                 continue;
             }
-            if (!@copy($path, $to . '/' . $name)) {
-                throw new \RuntimeException('Knust: cannot copy ' . $name . ' to ' . $to);
-            }
-            // Like cp -p: the time marks the copy as current (isCurrent()), also for a file dated ahead.
-            @touch($to . '/' . $name, (int) filemtime($path));
-            $this->handOver($to . '/' . $name);
+            $this->copyFile($path, $to . '/' . $name);
+        }
+    }
+
+    // Into a new file next to the target, then renamed over it: rename() replaces a link itself.
+    private function copyFile(string $path, string $target): void
+    {
+        $temp = \dirname($target) . '/.' . basename($target) . '.' . bin2hex(random_bytes(self::TEMP_BYTES));
+        if (!@copy($path, $temp)) {
+            throw new \RuntimeException('Knust: cannot copy ' . basename($path) . ' to ' . \dirname($target));
+        }
+
+        // Like cp -p: the time marks the copy as current (isCurrent()), also for a file dated ahead.
+        @touch($temp, (int) filemtime($path));
+        $this->handOver($temp);
+        if (!@rename($temp, $target)) {
+            @unlink($temp);
+            throw new \RuntimeException('Knust: cannot replace ' . $target);
         }
     }
 
@@ -105,7 +123,7 @@ class PublicAssets
         }
 
         $bundles = \dirname($this->projectDir . self::TARGET);
-        @chown($path, (int) fileowner($bundles));
-        @chgrp($path, (int) filegroup($bundles));
+        @lchown($path, (int) fileowner($bundles));
+        @lchgrp($path, (int) filegroup($bundles));
     }
 }

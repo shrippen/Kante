@@ -49,6 +49,25 @@ touch($source . '/css/knust.css', time() - 3600);
 expect('downgrade: copied', true, $assets->ensure(['css/knust.css']));
 expect('downgrade: old content', 'c{}', file_get_contents($target . '/css/knust.css'));
 
+// A symlink in the copy (planted by a compromised www-data) must not be followed: root
+// would overwrite the file it points to. The link is replaced by a plain file.
+$outside = $project . '/outside.txt';
+file_put_contents($outside, 'secret');
+unlink($target . '/css/knust.css');
+symlink($outside, $target . '/css/knust.css');
+$assets->ensure(['css/knust.css']);
+expect('symlink: file outside untouched', 'secret', file_get_contents($outside));
+expect('symlink: replaced by a plain file', [false, 'c{}'], [is_link($target . '/css/knust.css'), file_get_contents($target . '/css/knust.css')]);
+
+// The same for a linked directory.
+mkdir($project . '/elsewhere');
+exec('rm -rf ' . escapeshellarg($target . '/fonts'));
+symlink($project . '/elsewhere', $target . '/fonts');
+unlink($target . '/css/knust.css'); // forces a copy
+$assets->ensure(['css/knust.css']);
+expect('symlinked dir: nothing written outside', [], array_values(array_diff(scandir($project . '/elsewhere'), ['.', '..'])));
+expect('symlinked dir: replaced by a plain dir', [false, true], [is_link($target . '/fonts'), is_file($target . '/fonts/x.woff2')]);
+
 exec('rm -rf ' . escapeshellarg($project));
 
 echo $fails === 0 ? "All checks passed\n" : "$fails failed\n";

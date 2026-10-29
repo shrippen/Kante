@@ -41,7 +41,7 @@ python3 tools/build-knust.py
 cp "$OUT/knust-palette.css" kimai/knust/Resources/public/css/knust-palette.css
 python3 tools/check-tokens.py
 kimai/knust/bin/check-palette.sh
-php kimai/knust/tests/assets.php
+if command -v php >/dev/null; then php kimai/knust/tests/assets.php; else echo "Knust test skipped (no php)"; fi
 tools/check-qml.sh
 kimai/kit/bin/build-assets.sh >/dev/null
 kimai/kit/bin/lint.sh
