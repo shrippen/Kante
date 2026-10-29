@@ -7,6 +7,8 @@ import "."
  * `holidays` and `absences` are lists of day numbers; `dayClicked(day)` on a tap.
  * `dots` marks what is on a day: day number -> list of tones, up to three square dots
  * in the cell's top right ("muted", "accent", "negative", "warning", "positive", "focus").
+ * `rangeFrom`..`rangeTo` (day numbers, 0 = none) tint a stretch of days, such as those a
+ * view shows.
  */
 Item {
     id: cal
@@ -20,6 +22,8 @@ Item {
     property int selectedDay: 0
     property var dayNames: ["MO", "DI", "MI", "DO", "FR", "SA", "SO"]
     property var dots: ({})
+    property int rangeFrom: 0
+    property int rangeTo: 0
     signal dayClicked(int day)
 
     /** Colours of a day's dots, at most three. */
@@ -74,12 +78,14 @@ Item {
             model: cal.offset + cal.days
             delegate: Item {
                 id: cell
+                objectName: "calendarCell" + index
                 required property int index
                 readonly property int day: index - cal.offset + 1
                 readonly property bool real: day >= 1
                 readonly property bool weekend: (index % 7) >= 5
                 readonly property bool holiday: real && cal.holidays.indexOf(day) >= 0
                 readonly property bool absent: real && cal.absences.indexOf(day) >= 0
+                readonly property bool inRange: real && cal.rangeFrom > 0 && day >= cal.rangeFrom && day <= cal.rangeTo
                 width: (cal.width - 12) / 7
                 height: width * 0.85
 
@@ -87,7 +93,8 @@ Item {
                     anchors.fill: parent
                     visible: cell.real
                     color: cal.selectedDay === cell.day ? KanteStyle.selectionColor
-                        : (cell.weekend ? KanteStyle.sunkenColor : KanteStyle.cardColor)
+                        : (cell.inRange ? KanteStyle.tint1Color
+                        : (cell.weekend ? KanteStyle.sunkenColor : KanteStyle.cardColor))
                 }
                 Rectangle {
                     anchors.fill: parent

@@ -793,6 +793,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Element | Web | QML |
 |---|---|---|
 | Day dots in the month grid | – | `KanteCalendarGrid.dots`: day number → list of tones (`muted`, `accent`, `negative`, `warning`, `positive`, `focus`), up to three square dots in the cell's top right. Kurrent's Agenda marks appointments, tasks and overdue tasks per day; without it the Kante style fell back to the plain grid |
+| Range in the month grid | – | `KanteCalendarGrid.rangeFrom` / `rangeTo` (day numbers, 0 = none) tint a stretch of days with `tint1Color`, such as the days a view shows |
 
 ### Added in Kante 1.53
 

@@ -458,6 +458,19 @@ TestCase {
         compare(c.dotColors(6).length, 0)
     }
 
+    function test_calendarGridRange() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(calendarComponent, tc)
+        c.selectedDay = 0
+        c.rangeFrom = 10
+        c.rangeTo = 12
+        // offset 3: day 11 is cell 13
+        var cell = findChild(c, "calendarCell13")
+        verify(cell)
+        verify(cell.inRange)
+        verify(!findChild(c, "calendarCell16").inRange)
+    }
+
     Component {
         id: barChartComponent
         KanteBarChart { width: 200; height: 100; values: [3, 5, 2]; labels: ["A", "B", "C"]; goal: 4 }
