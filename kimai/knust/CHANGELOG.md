@@ -1,6 +1,6 @@
 # Changelog
 
-## Unveröffentlicht
+## 1.5.0
 
 - Stylesheets, Schriften und Logo kommen nach einem neuen Container (Kimai-Update) von selbst zurück: Knust kopiert
   sie beim Cache-Aufwärmen (`kimai:reload`, auch im Startskript des Docker-Images) nach `public/bundles/knust/`, wenn sie

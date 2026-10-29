@@ -103,6 +103,7 @@ class PublicAssets
     {
         $temp = \dirname($target) . '/.' . basename($target) . '.' . bin2hex(random_bytes(self::TEMP_BYTES));
         if (!@copy($path, $temp)) {
+            @unlink($temp); // a write error midway (disk full) leaves a partial file
             throw new \RuntimeException('Knust: cannot copy ' . basename($path) . ' to ' . \dirname($target));
         }
 
