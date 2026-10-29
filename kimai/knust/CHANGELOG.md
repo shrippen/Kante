@@ -6,6 +6,7 @@
   sie beim Cache-Aufwärmen (`kimai:reload`, auch im Startskript des Docker-Images) nach `public/bundles/knust/`, wenn sie
   fehlen oder nicht zur Plugin-Version passen. Vorher war Kimai nach einem Update ohne Theme, bis jemand
   `kimai:bundle:knust:install` aufrief (ki.arianw.de, Kimai 2.71, 27.10.2026). Test: `tests/assets.php`.
+- Kit 0.9: Versandergebnisse `sent` mit Haken und `failed` mit Kreuz, wie `approved`/`rejected`.
 - Palette aus Kante 1.9.1: `--shr-red-text` für rote Schrift (4,5:1 auf jedem Grund).
 - Kalendertage (`kpu-day`): Wochenenden hell getönt statt abgesenkt; im dunklen Thema waren sie im
   Abwesenheitskalender kaum von Werktagen zu unterscheiden.

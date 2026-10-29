@@ -1168,7 +1168,9 @@ div.kpu-bulk-bar {
 }
 
 .badge.kpu-status-approved::before,
-.badge.kpu-status-rejected::before {
+.badge.kpu-status-rejected::before,
+.badge.kpu-status-sent::before,
+.badge.kpu-status-failed::before {
     content: "✓";
     width: auto;
     height: auto;
@@ -1177,7 +1179,8 @@ div.kpu-bulk-bar {
     line-height: 1;
 }
 
-.badge.kpu-status-rejected::before {
+.badge.kpu-status-rejected::before,
+.badge.kpu-status-failed::before {
     content: "✕";
 }
 
