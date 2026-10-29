@@ -2,6 +2,13 @@
 
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/).
 
+## [0.9.0] – 2026-10-29
+
+### Neu
+- `status_badge`: Versandergebnisse `sent` (Gesendet, grün), `failed` (Fehlgeschlagen, rot) und `skipped`
+  (Übersprungen, grau), z. B. für das Versandprotokoll der automatischen Mails im Drehzettel. Keys `kpu.status.sent`,
+  `kpu.status.failed`, `kpu.status.skipped`.
+
 ## [0.8.0] – 2026-10-07
 
 ### Neu

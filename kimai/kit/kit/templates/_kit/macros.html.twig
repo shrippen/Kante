@@ -23,12 +23,16 @@
         'rejected': 'bg-danger-lt',
         'billed': 'bg-lime-lt',
         'locked': 'bg-purple-lt',
+        'sent': 'bg-success-lt',
+        'failed': 'bg-danger-lt',
+        'skipped': 'bg-secondary-lt',
     }[status] ?? 'bg-secondary-lt' -}}
 {%- endmacro %}
 
 {#
     status_badge(status, tooltip = null)
-    status: open | requested | approved | rejected | billed | locked | warning
+    status: open | requested | approved | rejected | billed | locked | warning | sent | failed | skipped
+    sent, failed, skipped (seit 0.9): Ergebnis eines Versands (Mail), z. B. im Versandprotokoll; tooltip nennt bei failed den Grund.
     data-kpu-status (seit 0.7) trägt den Schlüssel auch als Attribut, damit ein Theme jeden Stand eigen gestalten kann
     (billed = erledigt und abgeschlossen: grün mit gefülltem Haken, nie wie eine Auswahl).
     warning (seit 0.2) ist orange und trägt immer das Kimai-Icon "warning" (Ausrufezeichen) – so bleibt es auch
