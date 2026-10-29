@@ -14,12 +14,34 @@ import "."
  * the button's own `enabled` stays as the app bound it). Both hold
  * for the footer of every style, also after a switch at run time (Kante has its own footer;
  * a text or lock set on the button itself was lost there).
+ * Size (Kante 1.55, from lmix): `size` Small, Medium or Large is 24, 36 or 48 grid units
+ * wide and at most 90 % of the window, also in height; Fit (default) sizes to the content
+ * as before.
+ * Destructive (Kante 1.55, from lmix): a question whose yes removes or resets something:
+ * the bar on top and the accept button in the negative colour, so the button says what
+ * goes ("Remove bus"). The accept button stays the dialog's last.
  */
 QQC2.Dialog {
     id: control
 
+    enum Size { Fit, Small, Medium, Large }
+    /** Width by step (see above); Fit: the content's. */
+    property int size: KanteDialog.Size.Fit
+    /** The yes removes or resets something (see above). */
+    property bool destructive: false
     /** Color of the bar on top in Kante (accent; negative for destructive questions). */
-    property color kanteBarColor: KanteStyle.accentColor
+    property color kanteBarColor: destructive ? KanteStyle.negativeTextColor : KanteStyle.accentColor
+
+    /** Width of `size` in pixels, 0 for Fit. */
+    readonly property real sizeWidth: size === KanteDialog.Size.Small ? Kirigami.Units.gridUnit * 24
+        : size === KanteDialog.Size.Medium ? Kirigami.Units.gridUnit * 36
+        : size === KanteDialog.Size.Large ? Kirigami.Units.gridUnit * 48 : 0
+    // The window, not the parent item (a dialog may hang on a small one); no limit
+    // before it has one.
+    readonly property real kanteRoomWidth: control.parent && control.parent.Window.width > 0 ? control.parent.Window.width : Infinity
+    readonly property real kanteRoomHeight: control.parent && control.parent.Window.height > 0 ? control.parent.Window.height : Infinity
+    width: sizeWidth > 0 ? Math.min(sizeWidth, kanteRoomWidth * 0.9) : implicitWidth
+    height: sizeWidth > 0 ? Math.min(implicitHeight, kanteRoomHeight * 0.9) : implicitHeight
     /** Text of the accept button (Ok, Save, Apply, Yes); "": the standard one. */
     property string acceptText: ""
     /** The accept button can be pressed; undefined (default): Kante leaves `enabled` alone,
@@ -102,8 +124,9 @@ QQC2.Dialog {
         padding: control.padding
         background: null
         delegate: KanteButton {
-            emphasis: QQC2.DialogButtonBox.buttonRole === QQC2.DialogButtonBox.AcceptRole
-                      ? KanteButton.Emphasis.Primary : KanteButton.Emphasis.Normal
+            emphasis: QQC2.DialogButtonBox.buttonRole !== QQC2.DialogButtonBox.AcceptRole
+                      ? KanteButton.Emphasis.Normal
+                      : control.destructive ? KanteButton.Emphasis.Destructive : KanteButton.Emphasis.Primary
         }
     }
 

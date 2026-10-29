@@ -944,6 +944,30 @@ Rectangle {
                                 text: "Toast"
                                 onClicked: galleryToast.show()
                             }
+                            // 1.55: a sized, destructive question.
+                            KanteButton {
+                                text: "Bus entfernen…"
+                                emphasis: KanteButton.Emphasis.Destructive
+                                onClicked: galleryRemoveDialog.open()
+                            }
+                            KanteDialog {
+                                id: galleryRemoveDialog
+                                parent: QQC2.Overlay.overlay
+                                anchors.centerIn: parent
+                                modal: true
+                                size: KanteDialog.Size.Small
+                                destructive: true
+                                title: "Bus „Bühne“ entfernen?"
+                                standardButtons: QQC2.Dialog.Ok | QQC2.Dialog.Cancel
+                                acceptText: "Bus entfernen"
+                                contentHeight: galleryRemoveText.implicitHeight
+                                QQC2.Label {
+                                    id: galleryRemoveText
+                                    width: parent.width
+                                    wrapMode: Text.WordWrap
+                                    text: "3 Inputs senden nicht mehr dorthin."
+                                }
+                            }
                         }
                         GridLayout {
                             columns: 3
