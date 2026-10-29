@@ -15,11 +15,15 @@ import "."
  * for the footer of every style, also after a switch at run time (Kante has its own footer;
  * a text or lock set on the button itself was lost there).
  * Size (Kante 1.55, from lmix): `size` Small, Medium or Large is 24, 36 or 48 grid units
- * wide and at most 90 % of the window, also in height; Fit (default) sizes to the content
- * as before.
+ * wide and at most 90 % of the window, also in height (taller content scrolls in the app's
+ * own ScrollView; the dialog does not clip it); Fit (default) sizes to the content as
+ * before.
  * Destructive (Kante 1.55, from lmix): a question whose yes removes or resets something:
- * the bar on top and the accept button in the negative colour, so the button says what
- * goes ("Remove bus"). The accept button stays the dialog's last.
+ * the bar on top and the accept button in the negative colour, Cancel before it; the
+ * button says what goes (`acceptText: "Remove bus"`).
+ * Since 1.55 `acceptText` also holds when the button box sets its standard texts again
+ * (a language change, also the one at start with the app's translations): it read "OK"
+ * in German before.
  */
 QQC2.Dialog {
     id: control
@@ -71,7 +75,17 @@ QQC2.Dialog {
         let kept = standardTexts.find(pair => pair[0] === button)
         if (acceptText.length > 0) {
             if (!kept) {
-                standardTexts.push([button, button.text])
+                kept = [button, button.text]
+                standardTexts.push(kept)
+                // The button box sets the standard texts again when the language changes
+                // (at start, once the app's translations are in): the name comes back on
+                // top, and the new standard text is the one to give back.
+                button.textChanged.connect(() => {
+                    if (control.acceptText.length > 0 && button.text !== control.acceptText) {
+                        kept[1] = button.text
+                        button.text = control.acceptText
+                    }
+                })
             }
             button.text = acceptText
         } else if (kept) {
@@ -123,6 +137,13 @@ QQC2.Dialog {
         spacing: Kirigami.Units.smallSpacing
         padding: control.padding
         background: null
+        // Cancel before the red button (lmix rule 1): whoever reads from the left meets
+        // the way out first.
+        Binding on buttonLayout {
+            when: control.destructive
+            value: QQC2.DialogButtonBox.GnomeLayout
+            restoreMode: Binding.RestoreBindingOrValue
+        }
         delegate: KanteButton {
             emphasis: QQC2.DialogButtonBox.buttonRole !== QQC2.DialogButtonBox.AcceptRole
                       ? KanteButton.Emphasis.Normal

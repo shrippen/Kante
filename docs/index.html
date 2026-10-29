@@ -139,12 +139,23 @@
         <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
           <ul lang="en">
             <li><code>KanteDialog</code> gets <code>size</code>: Small, Medium and Large, at most 90 % of the window.</li>
-            <li><code>KanteDialog</code> gets <code>destructive</code>: the bar and the accept button in the negative colour.</li>
+            <li><code>KanteDialog</code> gets <code>destructive</code>: the bar and the accept button in the negative colour, Cancel before it.</li>
           </ul>
           <ul lang="de">
             <li><code>KanteDialog</code> bekommt <code>size</code>: Small, Medium und Large, höchstens 90 % des Fensters.</li>
-            <li><code>KanteDialog</code> bekommt <code>destructive</code>: Balken und Bestätigungsknopf in der Warnfarbe.</li>
+            <li><code>KanteDialog</code> bekommt <code>destructive</code>: Balken und Bestätigungsknopf in der Warnfarbe, Abbrechen davor.</li>
           </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteDialog</code>'s <code>acceptText</code> holds in every language: in German the button read „OK“, because the button box sets its standard texts again once the translations are in.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>acceptText</code> von <code>KanteDialog</code> hält in jeder Sprache: Auf Deutsch hieß der Knopf „OK“, weil die Knopfleiste ihre Standardtexte neu setzt, sobald die Übersetzungen geladen sind.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.55-dialog.png" alt="A dialog in dark Kante with a red bar on top, the title BUS „BÜHNE“ ENTFERNEN?, the sentence 3 Inputs senden nicht mehr dorthin, and in the footer ABBRECHEN, then the red button BUS ENTFERNEN" loading="lazy"><figcaption><span lang="en">A destructive question: red bar, the button names what goes, Cancel first</span><span lang="de">Eine destruktive Frage: roter Balken, der Knopf nennt, was geht, Abbrechen zuerst</span></figcaption></figure>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155"><span lang="en">All changes in 1.55 →</span><span lang="de">Alle Änderungen in 1.55 →</span></a>
       </div>
@@ -919,7 +930,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · v1.52.0</p></div>
+  <div class="foot-meta"><p>MIT · shrippen · v1.55.0</p></div>
 </footer>
 
 <script>

@@ -62,10 +62,29 @@ TestCase {
         compare(accept.emphasis, KanteButton.Emphasis.Destructive)
         compare(d.standardButton(QQC2.Dialog.Cancel).emphasis, KanteButton.Emphasis.Normal)
 
+        // Cancel first, the red button after it.
+        const cancel = d.standardButton(QQC2.Dialog.Cancel)
+        verify(cancel.mapToItem(null, 0, 0).x < accept.mapToItem(null, 0, 0).x, "Cancel before the red button")
+
         const plain = createTemporaryObject(dialogComponent, tc)
         plain.open()
         tryCompare(plain, "opened", true)
         compare(plain.kanteBarColor, KanteStyle.accentColor)
         compare(plain.standardButton(QQC2.Dialog.Ok).emphasis, KanteButton.Emphasis.Primary)
+    }
+
+    // The button box sets its standard texts again on a language change (at start, once
+    // the translations are in): the accept button read "OK" in German, not its name.
+    function test_acceptTextOutlivesTheStandardTexts() {
+        const d = createTemporaryObject(dialogComponent, tc)
+        d.open()
+        tryCompare(d, "opened", true)
+        const accept = d.standardButton(QQC2.Dialog.Ok)
+        compare(accept.text, "Remove bus")
+        accept.text = "OK"
+        compare(accept.text, "Remove bus")
+        // Unset, the standard text it got last comes back.
+        d.acceptText = ""
+        compare(accept.text, "OK")
     }
 }
