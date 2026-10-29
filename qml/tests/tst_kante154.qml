@@ -98,4 +98,25 @@ TestCase {
         const normal = createTemporaryObject(leadingComponent, tc.Window.contentItem)
         verify(b.implicitWidth < normal.implicitWidth, "Band leaves the leading items out of its width")
     }
+
+    Component {
+        id: tallTrailingComponent
+        KantePageBar {
+            width: 700
+            model: ["Mix", "Show", "Ton"]
+            density: KantePageBar.Density.Compact
+            Rectangle { objectName: "trailing"; implicitWidth: 64; implicitHeight: KanteStyle.heightSmall }
+        }
+    }
+
+    // Compact was three quarters of heightSmall whatever it held: a small button at the end
+    // stuck out over the top line and below the bar.
+    function test_compactGrowsForItsItems() {
+        const b = createTemporaryObject(tallTrailingComponent, tc.Window.contentItem)
+        waitForRendering(b)
+        verify(b.implicitHeight >= KanteStyle.heightSmall, "Compact is " + b.implicitHeight)
+        const item = named(b, "trailing")[0]
+        const top = item.mapToItem(b, 0, 0).y
+        verify(top >= 0 && top + item.height <= b.height, "item from " + top + " to " + (top + item.height) + " in " + b.height)
+    }
 }

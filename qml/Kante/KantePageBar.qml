@@ -21,10 +21,13 @@ import "."
  * while the bar has focus; `activated(index)` fires on every change made in the bar.
  *
  * `density` (1.54) saves height: Normal (heightMedium), Compact (three quarters of heightSmall,
- * smaller labels) and Band, a strip of unit(8) with one coloured segment per page in place of
- * the labels: the current page in the focus colour, a busy page in its kind's colour, the others
- * quiet; the label shows as the tooltip and stays the tab's accessible name. In Band the leading
- * and trailing items are hidden (they do not fit the strip); the app shows them elsewhere.
+ * at least as high as the leading and trailing items; smaller labels) and Band, a strip of
+ * unit(8) with one coloured segment per page in place of the labels: the current page in the
+ * focus colour, a busy page in its kind's colour, the others quiet; the label shows as the
+ * tooltip and stays the tab's accessible name. In Band the leading and trailing items are hidden
+ * (they do not fit the strip); the app shows them elsewhere. The segments tell the busy kinds by
+ * colour only, and the current page shows no busy state: keep Normal or Compact where an error
+ * must be seen.
  */
 FocusScope {
     id: bar
@@ -60,8 +63,10 @@ FocusScope {
 
     readonly property int count: rep.count
 
+    // Compact grows for leading or trailing items taller than it (a small button).
     implicitHeight: band ? KanteStyle.unit(8)
-                  : density === KantePageBar.Density.Compact ? Math.round(KanteStyle.heightSmall * 0.75)
+                  : density === KantePageBar.Density.Compact
+                    ? Math.max(Math.round(KanteStyle.heightSmall * 0.75), leadingRow.implicitHeight, trailingRow.implicitHeight)
                   : KanteStyle.heightMedium
     /** The tabs' labels: smaller in Compact. */
     readonly property font tabFont: {
