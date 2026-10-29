@@ -218,16 +218,19 @@ FocusScope {
 
     HoverHandler { id: hover }
     // A tap, seen passively: a TapHandler would keep the press from an ItemDelegate or
-    // MouseArea underneath. Released inside, not dragged (a flick is no tap).
+    // MouseArea underneath. Released inside, not dragged (a flick is no tap). In scene
+    // coordinates: once a ListView grabbed the press, `position` came in another item's
+    // (Qt 6.11), and every row but the first lost its taps (lmix, 29.10.2026).
     PointHandler {
         id: tap
         onGrabChanged: function (transition, point) {
             if (transition !== PointerDevice.UngrabPassive || point.state !== EventPoint.Released) {
                 return
             }
-            var p = point.position
-            var moved = Math.hypot(p.x - point.pressPosition.x, p.y - point.pressPosition.y)
-            if (moved > Qt.styleHints.startDragDistance || !row.contains(p)) {
+            const at = point.scenePosition
+            const from = point.scenePressPosition
+            const moved = Math.hypot(at.x - from.x, at.y - from.y)
+            if (moved > Qt.styleHints.startDragDistance || !row.contains(row.mapFromItem(null, at.x, at.y))) {
                 return
             }
             row.activate()
