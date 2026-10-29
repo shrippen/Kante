@@ -119,4 +119,46 @@ TestCase {
         const top = item.mapToItem(b, 0, 0).y
         verify(top >= 0 && top + item.height <= b.height, "item from " + top + " to " + (top + item.height) + " in " + b.height)
     }
+
+    // The segments are the only mark of a page in Band, and where to click: in tint1 on
+    // the sunken ground they read at about 1.2:1, below the 3:1 of WCAG 1.4.11.
+    function test_bandSegmentsStandOut() {
+        const low = []
+        try {
+            for (const kind of [KanteStyle.Kind.Kante, KanteStyle.Kind.KanteLight]) {
+                for (const dark of [true, false]) {
+                    KanteStyle.kind = kind
+                    KanteStyle.preferDark = dark
+                    const b = createTemporaryObject(barComponent, tc.Window.contentItem, {
+                        density: KantePageBar.Density.Band, busy: [] })
+                    waitForRendering(b)
+                    const idle = named(b, "kantePageSegment").filter(visibleNow)[1]
+                    // As drawn: roles may have alpha (tints, Kante Light's platform roles);
+                    // the bar is sunken on the window's ground.
+                    const ground = Qt.tint(KanteStyle.backgroundColor, KanteStyle.sunkenColor)
+                    const drawn = Qt.tint(ground, idle.color)
+                    const ratio = KanteStyle.contrastOf(drawn, ground)
+                    if (ratio < 3) {
+                        low.push("kind " + kind + (dark ? " dark" : " light") + ": " + ratio.toFixed(2)
+                                 + " (" + drawn + " on " + ground + ")")
+                    }
+                }
+            }
+        } finally {
+            KanteStyle.kind = KanteStyle.Kind.System
+            KanteStyle.preferDark = false
+        }
+        verify(low.length === 0, low.join(", "))
+    }
+
+    // With tooltips of its own, Band showed only the tip, the page's name nowhere.
+    function test_bandTooltipKeepsTheName() {
+        const b = createTemporaryObject(barComponent, tc.Window.contentItem, {
+            density: KantePageBar.Density.Band, tooltips: ["Bild und Ton", "", ""] })
+        const t = tabs(b)
+        compare(t[0].shownTip, "Mix\nBild und Ton")
+        compare(t[1].shownTip, "Show")
+        b.density = KantePageBar.Density.Normal
+        compare(t[0].shownTip, "Bild und Ton")
+    }
 }
