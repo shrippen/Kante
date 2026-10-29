@@ -161,4 +161,14 @@ TestCase {
         b.density = KantePageBar.Density.Normal
         compare(t[0].shownTip, "Bild und Ton")
     }
+
+    // The band is unit(8) high: a click a few pixels above a segment missed it, below the
+    // 24 px of WCAG 2.5.8.
+    function test_bandTakesAClickAboveTheStrip() {
+        const b = createTemporaryObject(barComponent, tc.Window.contentItem, { y: 100, density: KantePageBar.Density.Band })
+        waitForRendering(b)
+        const t = tabs(b)
+        mouseClick(t[2], t[2].width / 2, -KanteStyle.unit(7))
+        compare(b.currentIndex, 2)
+    }
 }

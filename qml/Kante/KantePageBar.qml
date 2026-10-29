@@ -293,7 +293,8 @@ FocusScope {
                     }
 
                     HoverHandler { id: hover }
-                    TapHandler { onTapped: bar.select(tab.index) }
+                    // Band: the bar takes the click (below), above and below the strip too.
+                    TapHandler { enabled: !bar.band; onTapped: bar.select(tab.index) }
                     // In Band the tooltip is the only place the name shows: the name, then its tip.
                     readonly property string shownTip: !bar.band ? tab.tip
                         : tab.tip.length > 0 ? String(tab.modelData) + "\n" + tab.tip
@@ -307,6 +308,21 @@ FocusScope {
                     Accessible.selected: tab.current
                     Accessible.selectable: true
                 }
+            }
+        }
+    }
+
+    // Band is unit(8) high, a target of at least 24 px (WCAG 2.5.8) takes
+    // unit(8) above and below it. Here and not on the tabs: the flickable
+    // clips their input to the strip.
+    TapHandler {
+        enabled: bar.band
+        margin: KanteStyle.unit(8)
+        onTapped: (point) => {
+            const at = row.mapFromItem(bar, point.position.x, 0)
+            const hit = row.childAt(at.x, row.height / 2)
+            if (hit && hit.index !== undefined) {
+                bar.select(hit.index)
             }
         }
     }
