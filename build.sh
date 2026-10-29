@@ -7,7 +7,7 @@
 #   3. Knust palette: docs/v1/knust-palette.css (--shr-* for the Kimai theme), copied unchanged
 #      into kimai/knust/Resources/public/css/ (tools/build-knust.py)
 #   4. Token check: no raw colours or fonts outside tokens/, palette.json matches variables.css
-#      (tools/check-tokens.py); Knust's palette check (kimai/knust/bin/check-palette.sh), Knust test (kimai/knust/tests/assets.php)
+#      (tools/check-tokens.py); the landing pages' release lists (tools/check-changes.py); Knust's palette check (kimai/knust/bin/check-palette.sh), Knust test (kimai/knust/tests/assets.php)
 #   5. QML module test: qml/tests, if qmltestrunner is installed (tools/check-qml.sh)
 #   6. Kimai plugin kit: assets.html.twig from kit.css/kit.js, self test (kimai/kit/bin/lint.sh)
 #   7. Knust plugin zip: dist/KnustBundle-<version>.zip from the committed files (tools/knust-zip.sh)
@@ -40,6 +40,7 @@ python3 tools/build-qml.py
 python3 tools/build-knust.py
 cp "$OUT/knust-palette.css" kimai/knust/Resources/public/css/knust-palette.css
 python3 tools/check-tokens.py
+python3 tools/check-changes.py
 kimai/knust/bin/check-palette.sh
 if command -v php >/dev/null; then php kimai/knust/tests/assets.php; else echo "Knust test skipped (no php)"; fi
 tools/check-qml.sh

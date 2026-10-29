@@ -75,7 +75,8 @@ QQC2.Dialog {
         let kept = standardTexts.find(pair => pair[0] === button)
         if (acceptText.length > 0) {
             if (!kept) {
-                kept = [button, button.text]
+                // The button, its standard text, the name set last.
+                kept = [button, button.text, ""]
                 standardTexts.push(kept)
                 // The button box sets the standard texts again when the language changes
                 // (at start, once the app's translations are in): the name comes back on
@@ -86,10 +87,12 @@ QQC2.Dialog {
                         button.text = control.acceptText
                     }
                 })
-            } else if (button.text !== acceptText) {
-                // Its standard text may have changed while unset (a language change).
+            } else if (button.text !== acceptText && button.text !== kept[2]) {
+                // Its standard text may have changed while unset (a language change); the
+                // name set last is no standard text.
                 kept[1] = button.text
             }
+            kept[2] = acceptText
             button.text = acceptText
         } else if (kept) {
             button.text = kept[1]

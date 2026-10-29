@@ -50,6 +50,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Tokens
         run: python3 tools/check-tokens.py
+      - name: Release lists
+        run: python3 tools/check-changes.py
       - name: QML tests
         run: tools/check-qml.sh
       - name: Knust tests

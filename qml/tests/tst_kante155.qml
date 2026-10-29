@@ -100,6 +100,20 @@ TestCase {
         compare(accept.text, "Oui")
     }
 
+    // From one name to another, then unset: the name before was kept as the standard text,
+    // the button read "Remove bus" instead of OK.
+    function test_aNewNameIsNoStandardText() {
+        const d = createTemporaryObject(dialogComponent, tc)
+        d.open()
+        tryCompare(d, "opened", true)
+        const accept = d.standardButton(QQC2.Dialog.Ok)
+        const standard = d.standardTexts.find(pair => pair[0] === accept)[1]
+        d.acceptText = "Add"
+        compare(accept.text, "Add")
+        d.acceptText = ""
+        compare(accept.text, standard)
+    }
+
     // Yes is the accept button of a yes/no question: red as Ok would be.
     function test_aDestructiveYesIsRed() {
         const d = createTemporaryObject(dialogComponent, tc, {
