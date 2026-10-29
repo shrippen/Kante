@@ -2,17 +2,41 @@
 
 ## [1.5.0] — 2026-10-29
 
-- Stylesheets, Schriften und Logo kommen nach einem neuen Container (Kimai-Update) von selbst zurück: Knust kopiert
-  sie beim Cache-Aufwärmen (`kimai:reload`, auch im Startskript des Docker-Images) nach `public/bundles/knust/`, wenn sie
-  fehlen oder nicht zur Plugin-Version passen. Vorher war Kimai nach einem Update ohne Theme, bis jemand
-  `kimai:bundle:knust:install` aufrief (ki.arianw.de, Kimai 2.71, 27.10.2026). Test: `tests/assets.php`.
-- Kit 0.9: Versandergebnisse `sent` mit Haken und `failed` mit Kreuz, wie `approved`/`rejected`.
-- Palette aus Kante 1.9.1: `--shr-red-text` für rote Schrift (4,5:1 auf jedem Grund).
-- Kalendertage (`kpu-day`): Wochenenden hell getönt statt abgesenkt; im dunklen Thema waren sie im
-  Abwesenheitskalender kaum von Werktagen zu unterscheiden.
-- Kimais schwebender Hilfe-Knopf ist blass, bis man darüberfährt oder ihn fokussiert; er lag über
-  rechtsbündigen Beträgen (Drehzettel-Woche, Fahrtkosten).
-- Die Quellenangabe der Karten bleibt lesbar (hell auf hell, siehe vorheriger Commit).
+### English
+
+The theme survives Kimai updates: after a new container its files come back on their own. Also new: the send results of kit 0.9, weekends and map credits that stay readable, and a help button that no longer covers amounts.
+
+#### New
+- Send results from kit 0.9: “Sent” with a tick and “Failed” with a cross, like approved and rejected (Drehzettel's mail log).
+#### Improved
+- Palette from Kante: a red for text (`--shr-red-text`) that reaches 4.5:1 on every ground, and a darker green for positive values in the light palette “Leinen”, which now reaches 4.5:1 on every ground too.
+#### Fixed
+- In Kimai's Docker image `public/` is no volume, so every Kimai update started without `public/bundles/knust/`, and Kimai ran without the theme until someone ran `kimai:bundle:knust:install`. Knust now copies its stylesheets, fonts and logo back on every cache warmup (`kimai:reload`, which the image runs at each start) when they are missing or from another version, never on a page load, and never through a link.
+- Weekends in calendar days (`kpu-day`, the absence calendar) are tinted instead of dimmed; in the dark palette they were hard to tell from weekdays.
+- Kimai's floating help button stays faint until hovered or focused; it covered right-aligned amounts (Drehzettel's week, mileage).
+- The credits on maps stay readable: Leaflet's white background stayed under the light text.
+#### Note
+- Update as usual (unzip, `bin/console kimai:reload`). After a Kimai update `kimai:bundle:knust:install` is no longer needed.
+
+All changes: https://github.com/shrippen/Kante/compare/knust-v1.2.0...knust-v1.5.0
+
+### Deutsch
+
+Das Theme übersteht Kimai-Updates: Nach einem neuen Container kommen seine Dateien von selbst zurück. Dazu die Versandergebnisse aus Kit 0.9, Wochenenden und Kartenhinweise, die lesbar bleiben, und ein Hilfe-Knopf, der keine Beträge mehr verdeckt.
+
+#### Neu
+- Versandergebnisse aus Kit 0.9: „Gesendet“ mit Haken, „Fehlgeschlagen“ mit Kreuz, wie genehmigt und abgelehnt (Versandprotokoll im Drehzettel).
+#### Verbessert
+- Palette aus Kante: ein Rot für Schrift (`--shr-red-text`), das auf jedem Grund 4,5:1 erreicht, und ein dunkleres Grün für positive Werte in der hellen Palette „Leinen“, das jetzt ebenfalls auf jedem Grund 4,5:1 erreicht.
+#### Behoben
+- Im Docker-Image von Kimai liegt `public/` auf keinem Volume, darum startete jedes Kimai-Update ohne `public/bundles/knust/`, und Kimai lief ohne Theme, bis jemand `kimai:bundle:knust:install` aufrief. Knust kopiert Stylesheets, Schriften und Logo jetzt bei jedem Cache-Aufwärmen zurück (`kimai:reload`, das das Image bei jedem Start ausführt), wenn sie fehlen oder zu einer anderen Version gehören; nie bei einem Seitenaufruf und nie über einen Link.
+- Wochenenden in Kalendertagen (`kpu-day`, Abwesenheitskalender) sind getönt statt abgesenkt; in der dunklen Palette waren sie kaum von Werktagen zu unterscheiden.
+- Kimais schwebender Hilfe-Knopf bleibt blass, bis man darüberfährt oder ihn fokussiert; er lag über rechtsbündigen Beträgen (Drehzettel-Woche, Fahrtkosten).
+- Die Quellenangabe auf Karten bleibt lesbar: Unter der hellen Schrift blieb Leaflets weißer Hintergrund.
+#### Hinweis
+- Update wie gewohnt (entpacken, `bin/console kimai:reload`). Nach einem Kimai-Update ist `kimai:bundle:knust:install` nicht mehr nötig.
+
+Alle Änderungen: https://github.com/shrippen/Kante/compare/knust-v1.2.0...knust-v1.5.0
 
 ## [1.4.0] — 2026-09-30
 
