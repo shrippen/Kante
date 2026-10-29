@@ -7,6 +7,8 @@
 # A project calls its copy in the release workflow (`scripts/release-notes.sh "$VERSION" > notes.md`)
 # and checks its CHANGELOG.md in CI on every push (`scripts/release-notes.sh --check`).
 set -uo pipefail
+# Project paths are taken from where the script is called, before the cd below
+here="$PWD"
 cd "$(dirname "$0")/.."
 src="$PWD/tools/release-notes.sh"
 
@@ -17,7 +19,8 @@ for arg in "$@"; do
     case "$arg" in
         --check) check=1 ;;
         --all) all=1 ;;
-        *) projects+=("$arg") ;;
+        /*) projects+=("$arg") ;;
+        *) projects+=("$here/$arg") ;;
     esac
 done
 if [ "$all" = 1 ]; then
