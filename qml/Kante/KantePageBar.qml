@@ -23,11 +23,11 @@ import "."
  * `density` (1.54) saves height: Normal (heightMedium), Compact (three quarters of heightSmall,
  * at least as high as the leading and trailing items; smaller labels) and Band, a strip of
  * unit(8) with one coloured segment per page in place of the labels: the current page in the
- * focus colour, a busy page in its kind's colour, the others quiet; the label shows as the
- * tooltip and stays the tab's accessible name. In Band the leading and trailing items are hidden
- * (they do not fit the strip); the app shows them elsewhere. The segments tell the busy kinds by
- * colour only, and the current page shows no busy state: keep Normal or Compact where an error
- * must be seen.
+ * focus colour, a busy page in its kind's colour, the others half as high in the muted text
+ * colour; the tooltip shows the label (then the page's tooltip), which stays the tab's
+ * accessible name. In Band the leading and trailing items are hidden (they do not fit the
+ * strip); the app shows them elsewhere. The segments tell the busy kinds apart by colour only,
+ * and the current page shows no busy state: keep Normal or Compact where an error must be seen.
  */
 FocusScope {
     id: bar
@@ -223,16 +223,20 @@ FocusScope {
                         visible: !bar.band && !tab.current && hover.hovered
                         color: KanteStyle.tint1Color
                     }
-                    // Band: one segment per page, a gap of one rule between them.
+                    // Band: one segment per page, a gap of one rule between them. The others
+                    // in the muted text colour (at least 3:1 on the ground: they show the pages
+                    // and where to click) and half as high, so the current and a busy page
+                    // stand out by their height too, not by colour alone.
                     Rectangle {
                         objectName: "kantePageSegment"
+                        readonly property bool full: tab.current || tab.busy
                         visible: bar.band
                         anchors.fill: parent
-                        anchors.topMargin: 1
+                        anchors.topMargin: full ? 1 : Math.round(parent.height / 2)
                         anchors.rightMargin: 1
                         color: tab.current ? KanteStyle.focusColor
                              : tab.busy ? bar.kindColor(tab.kind)
-                             : hover.hovered ? KanteStyle.tint2Color : KanteStyle.tint1Color
+                             : hover.hovered ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
                     }
                     // The raised current tab. Shapes outside the flickable are still painted by
                     // the software renderer (it ignores the clip for them): draw only in view.
@@ -290,7 +294,11 @@ FocusScope {
 
                     HoverHandler { id: hover }
                     TapHandler { onTapped: bar.select(tab.index) }
-                    QQC2.ToolTip.text: bar.band && tab.tip.length === 0 ? String(tab.modelData) : tab.tip
+                    // In Band the tooltip is the only place the name shows: the name, then its tip.
+                    readonly property string shownTip: !bar.band ? tab.tip
+                        : tab.tip.length > 0 ? String(tab.modelData) + "\n" + tab.tip
+                        : String(tab.modelData)
+                    QQC2.ToolTip.text: shownTip
                     QQC2.ToolTip.visible: hover.hovered && (bar.band || tab.tip.length > 0)
                     QQC2.ToolTip.delay: 500
                     Accessible.role: Accessible.PageTab
