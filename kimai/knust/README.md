@@ -15,6 +15,10 @@ bin/console kimai:reload
 bin/console kimai:bundle:knust:install   # kopiert CSS + Schriften nach public/bundles/knust/
 ```
 
+`public/bundles/` liegt im Docker-Image auf keinem Volume: Ein neuer Container (jedes Kimai-Update) startet ohne die
+Dateien. Knust kopiert sie darum bei jedem Cache-Aufwärmen selbst zurück (das Startskript des Images ruft
+`kimai:reload` auf, ebenso jedes Plugin-Update); Seitenaufrufe kostet das nichts.
+
 Einstellung: System → Einstellungen → „Knust“ → Akzentfarbe (Blau, Gelb, Orange, Aqua).
 Hell/Dunkel wählt jeder Benutzer selbst (Profil → Einstellungen → Theme).
 Logo: shrippen-Bildmarke mit Wortmarke „KIMAI“ als Standard; `theme.branding.company` oder `theme.branding.logo` haben Vorrang.
