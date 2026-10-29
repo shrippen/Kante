@@ -78,4 +78,24 @@ TestCase {
         compare(named(b, "kantePageSegment").filter(visibleNow).length, 0)
         verify(visibleNow(named(b, "trailing")[0]))
     }
+
+    Component {
+        id: leadingComponent
+        KantePageBar {
+            width: 700
+            model: ["Mix", "Show", "Ton"]
+            leading: [Rectangle { implicitWidth: 120; implicitHeight: 24 }]
+        }
+    }
+
+    // Hidden in Band, the leading items left a gap of their width before the segments.
+    function test_bandStartsAtTheEdge() {
+        const b = createTemporaryObject(leadingComponent, tc.Window.contentItem, { density: KantePageBar.Density.Band })
+        waitForRendering(b)
+        const segments = named(b, "kantePageSegment").filter(visibleNow)
+        compare(segments.length, 3)
+        verify(segments[0].mapToItem(b, 0, 0).x < 40, "first segment at " + segments[0].mapToItem(b, 0, 0).x)
+        const normal = createTemporaryObject(leadingComponent, tc.Window.contentItem)
+        verify(b.implicitWidth < normal.implicitWidth, "Band leaves the leading items out of its width")
+    }
 }
