@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Builds the Knust plugin zip from the committed files in kimai/knust:
 #   dist/KnustBundle-<version>.zip  with the folder KnustBundle/ (Kimai expects var/plugins/KnustBundle/)
-# Version from kimai/knust/composer.json. Without bin/, demo/, docs/ and the dot files; aborts if any
+# Version from kimai/knust/composer.json. Without bin/, demo/, docs/, tests/ and the dot files; aborts if any
 # demo code or data would land in the zip. build.sh and the release workflow run it.
 # Usage: tools/knust-zip.sh [<git ref>]   (default HEAD)
 set -euo pipefail
@@ -14,7 +14,7 @@ trap 'rm -rf "$tmp"' EXIT
 
 mkdir -p dist "$tmp/KnustBundle"
 git archive "$REF:kimai/knust" | tar -x -C "$tmp/KnustBundle"
-rm -rf "$tmp/KnustBundle"/{bin,demo,docs} "$tmp/KnustBundle"/.git*
+rm -rf "$tmp/KnustBundle"/{bin,demo,docs,tests} "$tmp/KnustBundle"/.git*
 
 # No demo in a release
 if find "$tmp/KnustBundle" -ipath '*demo*' | grep -q . || grep -rIli 'demo' "$tmp/KnustBundle" --include='*.php' --include='*.yaml' --include='*.twig' | grep -q .; then
