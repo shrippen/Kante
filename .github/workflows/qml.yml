@@ -54,6 +54,13 @@ jobs:
         run: tools/check-qml.sh
       - name: Knust tests
         run: php kimai/knust/tests/assets.php
+      - name: Release notes
+        # The shared script (projects carry a copy) and Kante's own changelogs
+        run: |
+          tools/release-notes.test.sh
+          tools/release-notes.sh --check CHANGELOG.md
+          tools/release-notes.sh --check kimai/knust/CHANGELOG.md
+          tools/release-notes.sh --check kimai/kit/CHANGELOG.md
       - name: qmllint (reports, does not block)
         # Reports without blocking: the container is the latest Arch, so a Qt update can bring
         # new warning categories at any time (Qt 6.12, October 2026). Tests block, lint reports;

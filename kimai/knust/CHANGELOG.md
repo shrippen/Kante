@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.0
+## [1.5.0] — 2026-10-29
 
 - Stylesheets, Schriften und Logo kommen nach einem neuen Container (Kimai-Update) von selbst zurück: Knust kopiert
   sie beim Cache-Aufwärmen (`kimai:reload`, auch im Startskript des Docker-Images) nach `public/bundles/knust/`, wenn sie
@@ -14,7 +14,7 @@
   rechtsbündigen Beträgen (Drehzettel-Woche, Fahrtkosten).
 - Die Quellenangabe der Karten bleibt lesbar (hell auf hell, siehe vorheriger Commit).
 
-## 1.4.0
+## [1.4.0] — 2026-09-30
 
 Farben aus Kante, Kit 0.6/0.7 gestaltet, Abgleich mit Kante 1.9.
 
@@ -33,7 +33,7 @@ Farben aus Kante, Kit 0.6/0.7 gestaltet, Abgleich mit Kante 1.9.
   Popups hell und dunkel.
 - Ausgewählte Zeilen auch über die Kit-Checkbox `kpu-select`, nicht nur `td.multiCheckbox`.
 
-## 1.3.0
+## [1.3.0] — 2026-09-30
 
 Abgleich mit Kante 1.7.
 
@@ -48,23 +48,23 @@ Abgleich mit Kante 1.7.
   Gruppenzeilen mit gelbem Balken, Summenzeile (`tfoot`) wie in Kante.
 - Modal-Hintergrund mit Kantes Scrim.
 
-## 1.2.0
+## [1.2.0] — 2026-09-26
 
 - Kennzahl-Kacheln (`kit.kpi_bar`, kimai-plugin-ui ab 0.5) können jetzt eine eskalierende Bedeutung tragen: das
   optionale `tier`-Feld je Kachel oder je Aufschlüsselungs-Eintrag färbt Balken/Beschriftung bzw. den Wert, statt dass
   wie bisher nur eine einzige Kachel pro Reihe (`highlight`) Farbe bekam. Siehe `PLUGINS.md`, Abschnitt 2.
 
-## 1.1.2
+## [1.1.2] — 2026-09-26
 
 - Logo: shrippen-Bildmarke mit der Wortmarke „KIMAI“ statt „SHRIPPEN“ (Rajdhani 700 als Pfade, wie bisher). Dateien
   heißen jetzt `knust-logo.svg` und `knust-logo-light.svg`.
 
-## 1.1.1
+## [1.1.1] — 2026-09-26
 
 - Login: Der SSO-Button (SAML, z. B. „Anmelden via Authentik“) ist jetzt so breit wie die Karte und umrandet wie die
   übrigen Umriss-Buttons. Vorher ragte der Text in Großbuchstaben aus dem halb so breiten Button heraus.
 
-## 1.1.0
+## [1.1.0] — 2026-09-26
 
 Schnittstelle für Plugins.
 
@@ -74,7 +74,7 @@ Schnittstelle für Plugins.
   Stufenbalken, `kpu-mark` eckig
 - `PLUGINS.md`: Regeln für bestehende und künftige Plugins
 
-## 1.0.0
+## [1.0.0] — 2026-09-26
 
 Erste Veröffentlichung für Kimai 2.67.
 
