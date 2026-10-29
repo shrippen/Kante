@@ -274,7 +274,8 @@ Rectangle {
                 }
                 RowLayout {
                     spacing: KanteStyle.unit(20)
-                    KanteCalendarGrid { Layout.preferredWidth: KanteStyle.unit(280); year: 2026; month: 10; holidays: [3]; absences: [12, 13, 14]; selectedDay: 20 }
+                    KanteCalendarGrid { Layout.preferredWidth: KanteStyle.unit(280); year: 2026; month: 10; holidays: [3]; absences: [12, 13, 14]; selectedDay: 20
+                                        dots: ({ 6: ["muted"], 8: ["muted", "accent"], 20: ["accent"], 22: ["negative"] }) }
                     ColumnLayout {
                         spacing: KanteStyle.unit(14)
                         RowLayout {

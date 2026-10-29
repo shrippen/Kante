@@ -445,6 +445,19 @@ TestCase {
         compare(c.offset, 6)
     }
 
+    function test_calendarGridDots() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var c = createTemporaryObject(calendarComponent, tc)
+        compare(c.dotColors(4).length, 0)
+        c.dots = { 4: ["muted", "negative"], 5: ["accent", "accent", "warning", "focus"], 6: ["nonsense"] }
+        compare(c.dotColors(4).length, 2)
+        compare(c.dotColors(4)[0], KanteStyle.mutedTextColor)
+        compare(c.dotColors(4)[1], KanteStyle.negativeTextColor)
+        // three at most, unknown tones are left out
+        compare(c.dotColors(5).length, 3)
+        compare(c.dotColors(6).length, 0)
+    }
+
     Component {
         id: barChartComponent
         KanteBarChart { width: 200; height: 100; values: [3, 5, 2]; labels: ["A", "B", "C"]; goal: 4 }

@@ -5,6 +5,8 @@ import "."
  * A month as a grid, Monday first. Today = yellow frame, holiday = orange bar,
  * absence = cyan bar, both = split, weekend = sunken, selected = cyan tint and frame.
  * `holidays` and `absences` are lists of day numbers; `dayClicked(day)` on a tap.
+ * `dots` marks what is on a day: day number -> list of tones, up to three square dots
+ * in the cell's top right ("muted", "accent", "negative", "warning", "positive", "focus").
  */
 Item {
     id: cal
@@ -17,7 +19,28 @@ Item {
     property var absences: []
     property int selectedDay: 0
     property var dayNames: ["MO", "DI", "MI", "DO", "FR", "SA", "SO"]
+    property var dots: ({})
     signal dayClicked(int day)
+
+    /** Colours of a day's dots, at most three. */
+    function dotColors(day) {
+        const tones = (dots && dots[day]) || []
+        const roles = {
+            muted: KanteStyle.mutedTextColor,
+            accent: KanteStyle.accentColor,
+            negative: KanteStyle.negativeTextColor,
+            warning: KanteStyle.warningColor,
+            positive: KanteStyle.positiveTextColor,
+            focus: KanteStyle.focusColor
+        }
+        const out = []
+        for (let i = 0; i < tones.length && out.length < 3; ++i) {
+            if (roles[tones[i]] !== undefined) {
+                out.push(roles[tones[i]])
+            }
+        }
+        return out
+    }
 
     readonly property int offset: (new Date(year, month - 1, 1).getDay() + 6) % 7
     readonly property int days: new Date(year, month, 0).getDate()
@@ -80,6 +103,22 @@ Item {
                     text: cell.day
                     color: cal.today === cell.day ? KanteStyle.strongTextColor : (cell.weekend ? KanteStyle.disabledTextColor : KanteStyle.mutedTextColor)
                     font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize, false)
+                }
+                Row {
+                    visible: cell.real
+                    anchors.right: parent.right
+                    anchors.rightMargin: KanteStyle.unit(5)
+                    y: KanteStyle.unit(5)
+                    spacing: KanteStyle.unit(2)
+                    Repeater {
+                        model: cell.real ? cal.dotColors(cell.day) : []
+                        delegate: Rectangle {
+                            required property color modelData
+                            width: KanteStyle.unit(4)
+                            height: width
+                            color: modelData
+                        }
+                    }
                 }
                 Row {
                     visible: cell.holiday || cell.absent
