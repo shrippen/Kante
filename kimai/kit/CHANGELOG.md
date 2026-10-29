@@ -2,14 +2,21 @@
 
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/).
 
-## [0.9.0] – 2026-10-29
+## [0.9.1] — 2026-10-29
+
+### Behoben
+- Sammelauswahl nach dem Neuladen: Firefox setzte die Haken der Checkboxen nach ihrer Position wieder. Nach
+  „Abrechnen“ fehlten die abgerechneten Zeilen, die Haken landeten auf anderen Zeilen (Abrechnung). kit.js stellt
+  beim Start den Stand aus dem Markup her (`defaultChecked`).
+
+## [0.9.0] — 2026-10-29
 
 ### Neu
 - `status_badge`: Versandergebnisse `sent` (Gesendet, grün), `failed` (Fehlgeschlagen, rot) und `skipped`
   (Übersprungen, grau), z. B. für das Versandprotokoll der automatischen Mails im Drehzettel. Keys `kpu.status.sent`,
   `kpu.status.failed`, `kpu.status.skipped`.
 
-## [0.8.0] – 2026-10-07
+## [0.8.0] — 2026-10-07
 
 ### Neu
 - `update_hint(project, version, options)` (`kpu-update`): Hinweis auf eine neue Version des Plugins, nur mit dem Recht
@@ -19,7 +26,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
   nur `https`-Links. `options.enabled` (aus im Demo-Modus, abschaltbar), `options.url`. Keys `kpu.update.*`.
 - `KimaiPluginUi.compareVersions(a, b)`, `KimaiPluginUi.checkUpdates()`.
 
-## [0.7.1] – 2026-10-01
+## [0.7.1] — 2026-10-01
 
 ### Geändert
 - `calendar_day`: Wochenende hell getönt (`--tblr-secondary-lt`) statt abgesenkt; im dunklen Knust waren
@@ -27,7 +34,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 - `context_line` im Kimai-Seitenkopf nimmt die volle Zeile, die Aktionen folgen darunter; bei vielen Aktionen
   wurde die Zeile vorher auf eine schmale Spalte gedrückt und brach mitten im Wort (Drehzettel-Woche ohne Knust).
 
-## [0.7.0] – 2026-09-30
+## [0.7.0] — 2026-09-30
 
 Abgleich mit Knust 1.4 / Kante 1.9. Abwärtskompatibel bis auf die Farbe von `billed`.
 
@@ -52,7 +59,7 @@ Abgleich mit Knust 1.4 / Kante 1.9. Abwärtskompatibel bis auf die Farbe von `bi
 ### Migration 0.6 → 0.7
 - `bin/sync.sh <bundle>`, dann `--check`. Wer `delta` für Kosten oder Fehler nutzt, `good: 'down'` ergänzen.
 
-## [0.6.0] – 2026-09-30
+## [0.6.0] — 2026-09-30
 
 Abgleich mit Knust 1.3 / Kante 1.7. Abwärtskompatibel: bestehende Makros rendern wie in 0.5.
 
@@ -77,7 +84,7 @@ Abgleich mit Knust 1.3 / Kante 1.7. Abwärtskompatibel: bestehende Makros render
 - Eigene Nachbauten dieser Bausteine (Filter-Chips, Pfeil für Veränderung, aufklappbare Abschnitte, Einstellungszeilen,
   Hinweiskarten, Modusleisten) durch die Makros ersetzen. Knust gestaltet die neuen Kennzeichnungen ab 1.4.
 
-## [0.5.0] – 2026-09-26
+## [0.5.0] — 2026-09-26
 
 `kit.kpi_bar` bekommt Bedeutung statt nur Position. Abwärtskompatibel: ohne `tier` sieht eine Kachel aus wie in 0.4.
 
@@ -92,7 +99,7 @@ Abgleich mit Knust 1.3 / Kante 1.7. Abwärtskompatibel: bestehende Makros render
 - Kein Plugin muss `tier` benutzen. Wo eine Kachel oder ein `details`-Eintrag eine echte, eskalierende Bedeutung hat
   (nicht nur Position), eine Zeile ergänzen: `{..., tier: 2}`.
 
-## [0.4.0] – 2026-09-26
+## [0.4.0] — 2026-09-26
 
 Kennzeichnungen für Themes. Abwärtskompatibel: ohne Theme sieht alles aus wie in 0.3.
 
@@ -108,7 +115,7 @@ Kennzeichnungen für Themes. Abwärtskompatibel: ohne Theme sieht alles aus wie 
 - Eigene Tabellenzellen mit formatierten Werten (`|duration`, `|money`, `|amount`, `|date_short`, `|time`) um `kpu-num`
   ergänzen; Stufen-Elemente um `kpu-tier` + `data-kpu-tier`; eigene Farbpunkte um `kpu-mark`.
 
-## [0.3.0] – 2026-09-25
+## [0.3.0] — 2026-09-25
 
 Lücken aus den Integrationen Holiday, Abrechnung, Drehzettel und Anfahrten (MileageBundle). Abwärtskompatibel bis auf
 den Sicherheitsfix: `data-kpu-question` ist jetzt reiner Text.
@@ -145,7 +152,7 @@ den Sicherheitsfix: `data-kpu-question` ist jetzt reiner Text.
   sie würden sonst als Text angezeigt. (Stand 0.3: keines der vier Plugins nutzt HTML in Fragen.)
 - Seitenaktionen mit `icon`-Option und abweichendem Schlüssel auf Schlüssel = Icon umstellen (vor allem Untermenüs).
 
-## [0.2.0] – 2026-09-25
+## [0.2.0] — 2026-09-25
 
 Rückmeldungen aus den Integrationen Drehzettel, Holiday und Abrechnung. Alle Änderungen sind abwärtskompatibel
 (neue Parameter sind optional, 0.1-Aufrufe rendern unverändert).
@@ -190,7 +197,7 @@ Rückmeldungen aus den Integrationen Drehzettel, Holiday und Abrechnung. Alle Ä
 - Hinweis: kit.js lädt pro Seite nur einmal (die zuerst eingebundene Kopie gewinnt). Eine Seite, die Kit-Assets aus zwei
   Plugins mit unterschiedlichen Versionen einbindet, bekommt die ältere – deshalb alle Plugins auf 0.2 synchronisieren.
 
-## [0.1.0] – 2026-09-25
+## [0.1.0] — 2026-09-25
 
 ### Neu
 - GUIDELINES.md mit den Entscheidungen aus der Entscheidungsvorlage (Grundrichtung B, Muster 3.1 a, 3.2 b, 3.3 a–3.8 a, Ablage a).

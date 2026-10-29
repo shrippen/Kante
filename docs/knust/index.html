@@ -92,25 +92,35 @@
     <li class="release" id="v1.5.0">
       <div class="release-head"><b class="release-version">1.5.0</b><time datetime="2026-10-29">29 Oct 2026</time></div>
       <div class="release-body">
-        <p class="release-lead" lang="en">The theme survives Kimai updates: after a new container its files come back on their own.</p>
-        <p class="release-lead" lang="de">Das Theme übersteht Kimai-Updates: Nach einem neuen Container kommen seine Dateien von selbst zurück.</p>
-        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
-          <ul lang="en">
-            <li>In Kimai’s Docker image <code>public/</code> is no volume, so every update started without <code>public/bundles/knust/</code> and Kimai ran unthemed until someone ran <code>kimai:bundle:knust:install</code>. Knust now copies its stylesheets, fonts and logo back on every cache warmup (<code>kimai:reload</code>, which the image runs at each start), never on a page load.</li>
-            <li>Weekends in the absence calendar are tinted instead of dimmed; in the dark palette they were hard to tell from weekdays.</li>
-            <li>Kimai’s floating help button stays faint until hovered or focused; it covered right-aligned amounts.</li>
-          </ul>
-          <ul lang="de">
-            <li>Im Docker-Image von Kimai liegt <code>public/</code> auf keinem Volume, darum startete jedes Update ohne <code>public/bundles/knust/</code>, und Kimai lief ohne Theme, bis jemand <code>kimai:bundle:knust:install</code> aufrief. Knust kopiert Stylesheets, Schriften und Logo jetzt bei jedem Cache-Aufwärmen zurück (<code>kimai:reload</code>, das das Image bei jedem Start ausführt), nie bei einem Seitenaufruf.</li>
-            <li>Wochenenden im Abwesenheitskalender sind getönt statt abgesenkt; in der dunklen Palette waren sie kaum von Werktagen zu unterscheiden.</li>
-            <li>Kimais schwebender Hilfe-Knopf bleibt blass, bis man darüberfährt oder ihn fokussiert; er lag über rechtsbündigen Beträgen.</li>
-          </ul>
-        </div>
+        <p class="release-lead" lang="en">The theme survives Kimai updates: after a new container its files come back on their own. Also new: the send results of kit 0.9, weekends and map credits that stay readable, and a help button that no longer covers amounts.</p>
+        <p class="release-lead" lang="de">Das Theme übersteht Kimai-Updates: Nach einem neuen Container kommen seine Dateien von selbst zurück. Dazu die Versandergebnisse aus Kit 0.9, Wochenenden und Kartenhinweise, die lesbar bleiben, und ein Hilfe-Knopf, der keine Beträge mehr verdeckt.</p>
         <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
-          <ul lang="en"><li>Kit 0.9 send results: “Sent” with a tick, “Failed” with a cross, like approved and rejected (Drehzettel’s mail log).</li></ul>
+          <ul lang="en"><li>Send results from kit 0.9: “Sent” with a tick and “Failed” with a cross, like approved and rejected (Drehzettel’s mail log).</li></ul>
           <ul lang="de"><li>Versandergebnisse aus Kit 0.9: „Gesendet“ mit Haken, „Fehlgeschlagen“ mit Kreuz, wie genehmigt und abgelehnt (Versandprotokoll im Drehzettel).</li></ul>
         </div>
-        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/kimai/knust/CHANGELOG.md"><span lang="en">All changes →</span><span lang="de">Alle Änderungen →</span></a>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en"><li>Palette from Kante: a red for text (<code>--shr-red-text</code>) that reaches 4.5:1 on every ground, and a darker green for positive values in the light palette “Leinen”, which now reaches 4.5:1 on every ground too.</li></ul>
+          <ul lang="de"><li>Palette aus Kante: ein Rot für Schrift (<code>--shr-red-text</code>), das auf jedem Grund 4,5:1 erreicht, und ein dunkleres Grün für positive Werte in der hellen Palette „Leinen“, das jetzt ebenfalls auf jedem Grund 4,5:1 erreicht.</li></ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>In Kimai’s Docker image <code>public/</code> is no volume, so every Kimai update started without <code>public/bundles/knust/</code>, and Kimai ran without the theme until someone ran <code>kimai:bundle:knust:install</code>. Knust now copies its stylesheets, fonts and logo back on every cache warmup (<code>kimai:reload</code>, which the image runs at each start) when they are missing or from another version, never on a page load, and never through a link.</li>
+            <li>Weekends in calendar days (<code>kpu-day</code>, the absence calendar) are tinted instead of dimmed; in the dark palette they were hard to tell from weekdays.</li>
+            <li>Kimai’s floating help button stays faint until hovered or focused; it covered right-aligned amounts (Drehzettel’s week, mileage).</li>
+            <li>The credits on maps stay readable: Leaflet’s white background stayed under the light text.</li>
+          </ul>
+          <ul lang="de">
+            <li>Im Docker-Image von Kimai liegt <code>public/</code> auf keinem Volume, darum startete jedes Kimai-Update ohne <code>public/bundles/knust/</code>, und Kimai lief ohne Theme, bis jemand <code>kimai:bundle:knust:install</code> aufrief. Knust kopiert Stylesheets, Schriften und Logo jetzt bei jedem Cache-Aufwärmen zurück (<code>kimai:reload</code>, das das Image bei jedem Start ausführt), wenn sie fehlen oder zu einer anderen Version gehören; nie bei einem Seitenaufruf und nie über einen Link.</li>
+            <li>Wochenenden in Kalendertagen (<code>kpu-day</code>, Abwesenheitskalender) sind getönt statt abgesenkt; in der dunklen Palette waren sie kaum von Werktagen zu unterscheiden.</li>
+            <li>Kimais schwebender Hilfe-Knopf bleibt blass, bis man darüberfährt oder ihn fokussiert; er lag über rechtsbündigen Beträgen (Drehzettel-Woche, Fahrtkosten).</li>
+            <li>Die Quellenangabe auf Karten bleibt lesbar: Unter der hellen Schrift blieb Leaflets weißer Hintergrund.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en"><li>Update as usual (unzip, <code>bin/console kimai:reload</code>). After a Kimai update <code>kimai:bundle:knust:install</code> is no longer needed.</li></ul>
+          <ul lang="de"><li>Update wie gewohnt (entpacken, <code>bin/console kimai:reload</code>). Nach einem Kimai-Update ist <code>kimai:bundle:knust:install</code> nicht mehr nötig.</li></ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/compare/knust-v1.2.0...knust-v1.5.0"><span lang="en">All changes since 1.2.0 →</span><span lang="de">Alle Änderungen seit 1.2.0 →</span></a>
       </div>
     </li>
   </ol>
@@ -129,7 +139,7 @@
       <div><h4><span lang="en">Source</span><span lang="de">Quelltext</span></h4><a href="https://github.com/shrippen/Kante/tree/main/kimai/knust">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>GPL-3.0-or-later · shrippen · v1.2.0</p></div>
+  <div class="foot-meta"><p>GPL-3.0-or-later · shrippen · <a href="#changes">v1.5.0</a></p></div>
 </footer>
 
 </body>

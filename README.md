@@ -800,7 +800,9 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 | Element | Web | QML |
 |---|---|---|
-| Page bar density | – | `KantePageBar.density`: `Normal` (heightMedium), `Compact` (three quarters of heightSmall, labels 85 %) and `Band`, a strip of unit(8) with one segment per page in place of the labels (current page in the focus colour, a busy page in its kind's colour, the others tint; the label is the tooltip and stays the accessible name). Band hides the leading and trailing items. For lmix, whose operators want the room for the inputs |
+| Day dots in the month grid | – | `KanteCalendarGrid.dots`: day number → list of tones (`muted`, `accent`, `negative`, `warning`, `positive`, `focus`), up to three square dots in the cell's top right. Kurrent's Agenda marks appointments, tasks and overdue tasks per day; without it the Kante style fell back to the plain grid |
+| Range in the month grid | – | `KanteCalendarGrid.rangeFrom` / `rangeTo` (day numbers, 0 = none) tint a stretch of days with `tint1Color`, such as the days a view shows |
+| Page bar density | – | `KantePageBar.density`: `Normal` (heightMedium), `Compact` (three quarters of heightSmall, at least as high as the leading and trailing items, labels 85 %) and `Band`, a strip of unit(8) with one segment per page in place of the labels (current page in the focus colour, a busy page in its kind's colour, the others tint; the label is the tooltip and stays the accessible name). Band hides the leading and trailing items, and its segments tell the kinds by colour only (the screen reader hears the kind; the current page shows no busy state): for a page whose errors must be seen, keep Normal or Compact. For lmix, whose operators want the room for the inputs |
 
 ### Added in Kante 1.53
 
