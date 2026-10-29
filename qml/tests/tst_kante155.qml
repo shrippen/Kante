@@ -16,6 +16,10 @@ TestCase {
     height: 900
     when: windowShown
 
+    // Every test in the Kante style, also the first.
+    function init() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+    }
     function cleanup() {
         KanteStyle.kind = KanteStyle.Kind.Kante
     }
@@ -81,10 +85,28 @@ TestCase {
         tryCompare(d, "opened", true)
         const accept = d.standardButton(QQC2.Dialog.Ok)
         compare(accept.text, "Remove bus")
-        accept.text = "OK"
+        // Another language's standard text, so it shows that it was kept.
+        accept.text = "Ja"
         compare(accept.text, "Remove bus")
         // Unset, the standard text it got last comes back.
         d.acceptText = ""
-        compare(accept.text, "OK")
+        compare(accept.text, "Ja")
+        // A language change while unset, then set and unset again: the newest standard
+        // text comes back, not the one kept before.
+        accept.text = "Oui"
+        d.acceptText = "Remove bus"
+        compare(accept.text, "Remove bus")
+        d.acceptText = ""
+        compare(accept.text, "Oui")
+    }
+
+    // Yes is the accept button of a yes/no question: red as Ok would be.
+    function test_aDestructiveYesIsRed() {
+        const d = createTemporaryObject(dialogComponent, tc, {
+            destructive: true, standardButtons: QQC2.Dialog.Yes | QQC2.Dialog.No, acceptText: "" })
+        d.open()
+        tryCompare(d, "opened", true)
+        compare(d.standardButton(QQC2.Dialog.Yes).emphasis, KanteButton.Emphasis.Destructive)
+        compare(d.standardButton(QQC2.Dialog.No).emphasis, KanteButton.Emphasis.Normal)
     }
 }

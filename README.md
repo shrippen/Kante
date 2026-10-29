@@ -793,7 +793,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Element | Web | QML |
 |---|---|---|
 | Dialog sizes | – | `KanteDialog.size`: `Fit` (default, the content's width as before), `Small`, `Medium` and `Large` (24, 36 and 48 grid units wide, at most 90 % of the window, also in height; content taller than that scrolls in the app's own `ScrollView`, the dialog does not clip it). From lmix's dialog review: one of three widths instead of a width per dialog |
-| Destructive question | – | `KanteDialog.destructive`: the bar on top and the accept button in the negative colour, for a yes that removes or resets something; the button names what goes (`acceptText: "Remove bus"`), Cancel comes before it (GNOME order). `kanteBarColor` follows unless the app sets it |
+| Destructive question | – | `KanteDialog.destructive`: the bar on top and the accept button (Ok, or Yes of a yes/no question) in the negative colour, for a yes that removes or resets something; the button names what goes (`acceptText: "Remove bus"`), Cancel comes before it (GNOME order). `kanteBarColor` follows unless the app sets it |
 | Fixed | – | `KanteDialog.acceptText` holds when the button box sets its standard texts again (a language change, also the one at start once the app's translations are in): in German the button read „OK“ |
 
 ### Added in Kante 1.54

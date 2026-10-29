@@ -86,6 +86,9 @@ QQC2.Dialog {
                         button.text = control.acceptText
                     }
                 })
+            } else if (button.text !== acceptText) {
+                // Its standard text may have changed while unset (a language change).
+                kept[1] = button.text
             }
             button.text = acceptText
         } else if (kept) {
@@ -144,10 +147,14 @@ QQC2.Dialog {
             value: QQC2.DialogButtonBox.GnomeLayout
             restoreMode: Binding.RestoreBindingOrValue
         }
+        // Yes accepts a yes/no question: red there too, as Ok.
         delegate: KanteButton {
-            emphasis: QQC2.DialogButtonBox.buttonRole !== QQC2.DialogButtonBox.AcceptRole
-                      ? KanteButton.Emphasis.Normal
-                      : control.destructive ? KanteButton.Emphasis.Destructive : KanteButton.Emphasis.Primary
+            readonly property int role: QQC2.DialogButtonBox.buttonRole
+            emphasis: role === QQC2.DialogButtonBox.AcceptRole
+                      ? (control.destructive ? KanteButton.Emphasis.Destructive : KanteButton.Emphasis.Primary)
+                      : role === QQC2.DialogButtonBox.YesRole && control.destructive
+                      ? KanteButton.Emphasis.Destructive
+                      : KanteButton.Emphasis.Normal
         }
     }
 

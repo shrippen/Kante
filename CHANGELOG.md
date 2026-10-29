@@ -5,6 +5,34 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.55.0] — 2026-10-30
+
+### English
+
+Dialogs come in three widths, and a destructive question is red.
+
+#### New
+- `KanteDialog` gets `size`: Small, Medium and Large, at most 90 % of the window.
+- `KanteDialog` gets `destructive`: the bar and the accept button (Ok, or Yes of a yes/no question) in the negative colour, Cancel before it.
+
+#### Fixed
+- `KanteDialog`'s `acceptText` holds in every language: in German the button read „OK“, because the button box sets its standard texts again once the translations are in.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155
+
+### Deutsch
+
+Dialoge gibt es in drei Breiten, und eine destruktive Frage ist rot.
+
+#### Neu
+- `KanteDialog` bekommt `size`: Small, Medium und Large, höchstens 90 % des Fensters.
+- `KanteDialog` bekommt `destructive`: Balken und Bestätigungsknopf (Ok, oder Ja einer Ja/Nein-Frage) in der Warnfarbe, Abbrechen davor.
+
+#### Behoben
+- `acceptText` von `KanteDialog` hält in jeder Sprache: Auf Deutsch hieß der Knopf „OK“, weil die Knopfleiste ihre Standardtexte neu setzt, sobald die Übersetzungen geladen sind.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155
+
 ## [1.54.0] — 2026-10-30
 
 ### English
