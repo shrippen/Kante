@@ -1,10 +1,12 @@
 import QtQuick
 import QtTest
+import org.kde.kirigami as Kirigami
 import Kante
 
 /**
  * Kante 1.53: a KanteListRow in a ListView takes a tap on any row, not only the first; a
- * drag out of the row is still no tap. Run: tools/check-qml.sh.
+ * drag out of the row is still no tap. A KanteScope torn down right after its content grew
+ * leaves no deferred call behind. Run: tools/check-qml.sh.
  */
 TestCase {
     id: tc
@@ -36,6 +38,17 @@ TestCase {
         taps = []
     }
 
+    function cleanup() {
+        KanteStyle.kind = KanteStyle.Kind.System
+    }
+
+    Component {
+        id: lateChild
+        Item {
+            enabled: false
+        }
+    }
+
     function test_everyRowOfAListTakesATap() {
         const row = list.itemAtIndex(0).height
         mouseClick(list, 50, row / 2)
@@ -53,5 +66,33 @@ TestCase {
         mouseMove(list, 250, row * 1.5 + 2)
         mouseRelease(list, 250, row * 2.5)
         compare(taps, [])
+    }
+
+    Repeater {
+        id: scopes
+        model: 0
+        delegate: Item {
+            property alias box: box
+            KanteScope { target: parent }
+            Item {
+                id: box
+                enabled: false
+            }
+        }
+    }
+
+    // A delegate with a scope, gone right after its content grew (a page or dialog in lmix):
+    // the scope's deferred sweep ran in the gone delegate's context ("Property 'alive' … is
+    // not a function").
+    function test_aScopeGoneBeforeItsSweepLeavesNoError() {
+        failOnWarning(/KanteScope|invalid context/)
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        for (let i = 0; i < 5; i++) {
+            scopes.model = 1
+            wait(20)
+            lateChild.createObject(scopes.itemAt(0).box)
+            scopes.model = 0
+            wait(20)
+        }
     }
 }

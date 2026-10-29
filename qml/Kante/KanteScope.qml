@@ -210,7 +210,14 @@ Item {
             return
         }
         pending.push(item)
-        Qt.callLater(sweepPending)
+        sweepLater.start()
+    }
+    // Deferred by a timer of the scope's own, not Qt.callLater: a delegate torn down right
+    // after its content grew left the call behind in its gone context (1.53).
+    Timer {
+        id: sweepLater
+        interval: 0
+        onTriggered: scope.sweepPending()
     }
 
     // New children of the items in `pending`; the ones seen before are left alone.
@@ -260,7 +267,12 @@ Item {
     }
     // A popup's content gets its window on opening: then its disabled items are looked at.
     readonly property Item windowRoot: scope.Window.contentItem
-    onWindowRootChanged: Qt.callLater(resweep)
+    onWindowRootChanged: resweepLater.start()
+    Timer {
+        id: resweepLater
+        interval: 0
+        onTriggered: scope.resweep()
+    }
     // After the event: the themes below take the window's colours first.
     function resweep() {
         if (applied && windowRoot) {

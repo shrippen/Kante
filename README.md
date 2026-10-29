@@ -793,6 +793,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Element | Web | QML |
 |---|---|---|
 | List row takes a tap on every row | – | `KanteListRow` in a `ListView` (or another Flickable that grabs the press) emitted `clicked` only on its first row: on release Qt 6.11 hands the point over in another item's coordinates, so the row thought the press had left it. The row now judges the tap in scene coordinates. lmix's cue lists in the Show side bar could not be chosen by click |
+| Scope leaves no call behind | – | `KanteScope` deferred its sweep of new children with `Qt.callLater`. A delegate torn down right after its content grew (a page or dialog going away) left the call behind, and it ran in the gone context: "Property 'alive' … is not a function". Both deferred sweeps now run on timers of the scope's own, which go with it |
 
 ### Added in Kante 1.52
 
