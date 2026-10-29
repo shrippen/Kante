@@ -38,9 +38,11 @@ plugins take Knust and the kit. A bug here shows up in every project:
   A source change without them is a bug.
 - New QML component: test in `qml/tests`, `qml/demo/Gallery.qml`, README.
 - Release: Kante's version in `docs/index.html`, README section,
-  changelog entry with lead, groups and a screenshot or diagram per
-  visible change. Knust: tag `knust-v<version>` equal to
-  `kimai/knust/composer.json`, `kimai/knust/CHANGELOG.md`, the changelog on
+  `CHANGELOG.md` section with the same text as the changelog entry
+  (lead, groups and a screenshot or diagram per visible change).
+  Knust: tag `knust-v<version>` equal to
+  `kimai/knust/composer.json`, a section in `kimai/knust/CHANGELOG.md`
+  (the release fails without it), the changelog on
   `docs/knust/index.html`. Kit: `kimai/kit/VERSION`, `kimai/kit/CHANGELOG.md`.
 - Bug fixes: does the fix remove the cause, with a test that failed before?
 
