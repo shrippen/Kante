@@ -69,14 +69,21 @@ FocusScope {
         if (density !== KantePageBar.Density.Compact) {
             return f
         }
-        return Qt.font({
+        // The label font as it is (weight, spacing), only smaller; by pixels when it has no
+        // point size.
+        const size = f.pointSize > 0
+            ? { pointSize: Math.max(6, f.pointSize * 0.85) }
+            : { pixelSize: Math.max(8, Math.round(f.pixelSize * 0.85)) }
+        return Qt.font(Object.assign({
             family: f.family,
-            pointSize: Math.max(6, f.pointSize * 0.85),
+            weight: f.weight,
+            italic: f.italic,
             capitalization: f.capitalization,
             letterSpacing: f.letterSpacing
-        })
+        }, size))
     }
-    implicitWidth: leadingRow.implicitWidth + row.implicitWidth + trailingRow.implicitWidth + 4 * KanteStyle.unit(8)
+    // Band hides the leading and trailing items: they take no room there.
+    implicitWidth: (band ? 0 : leadingRow.implicitWidth + trailingRow.implicitWidth) + row.implicitWidth + 4 * KanteStyle.unit(8)
     activeFocusOnTab: true
 
     Accessible.role: Accessible.PageTabList
@@ -163,7 +170,8 @@ FocusScope {
 
     Flickable {
         id: flick
-        anchors.left: leadingRow.right
+        // Hidden in Band, the leading row keeps its width: the segments start at the edge.
+        anchors.left: bar.band ? parent.left : leadingRow.right
         anchors.leftMargin: leadingRow.visible && leadingRow.children.length > 0 ? KanteStyle.unit(8) : 0
         anchors.right: bar.band ? parent.right : trailingRow.left
         anchors.rightMargin: KanteStyle.unit(8)
