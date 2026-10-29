@@ -44,8 +44,18 @@ QQC2.Dialog {
     // before it has one.
     readonly property real kanteRoomWidth: control.parent && control.parent.Window.width > 0 ? control.parent.Window.width : Infinity
     readonly property real kanteRoomHeight: control.parent && control.parent.Window.height > 0 ? control.parent.Window.height : Infinity
-    width: sizeWidth > 0 ? Math.min(sizeWidth, kanteRoomWidth * 0.9) : implicitWidth
-    height: sizeWidth > 0 ? Math.min(implicitHeight, kanteRoomHeight * 0.9) : implicitHeight
+    // Only for a size step: a width or height set here counts as the app's, and Qt no longer
+    // fits a Fit dialog taller than the window into it.
+    Binding on width {
+        when: control.sizeWidth > 0
+        value: Math.min(control.sizeWidth, control.kanteRoomWidth * 0.9)
+        restoreMode: Binding.RestoreBindingOrValue
+    }
+    Binding on height {
+        when: control.sizeWidth > 0
+        value: Math.min(control.implicitHeight, control.kanteRoomHeight * 0.9)
+        restoreMode: Binding.RestoreBindingOrValue
+    }
     /** Text of the accept button (Ok, Save, Apply, Yes); "": the standard one. */
     property string acceptText: ""
     /** The accept button can be pressed; undefined (default): Kante leaves `enabled` alone,

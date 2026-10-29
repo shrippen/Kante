@@ -56,6 +56,16 @@ TestCase {
         compare(d.height, tc.Window.height * 0.9)
     }
 
+    // Fit set width and height too: Qt then took them as the app's and no longer shrank a
+    // dialog taller than the window to it, the footer went out of view.
+    function test_aFitDialogLeavesItsSizeToQt() {
+        const d = createTemporaryObject(dialogComponent, tc)
+        d.open()
+        tryCompare(d, "opened", true)
+        verify(d.implicitHeight > tc.Window.height)
+        verify(d.height <= tc.Window.height, "height " + d.height + " in " + tc.Window.height)
+    }
+
     function test_destructiveIsRed() {
         const d = createTemporaryObject(dialogComponent, tc, { destructive: true, size: KanteDialog.Size.Small })
         d.open()

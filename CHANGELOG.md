@@ -18,6 +18,8 @@ Dialogs come in three widths, and a destructive question is red.
 #### Fixed
 - `KanteDialog`'s `acceptText` holds in every language: in German the button read „OK“, because the button box sets its standard texts again once the translations are in.
 
+![A destructive question: red bar, the button names what goes, Cancel first](https://shrippen.github.io/Kante/shots/release-1.55-dialog.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155
 
 ### Deutsch
@@ -30,6 +32,8 @@ Dialoge gibt es in drei Breiten, und eine destruktive Frage ist rot.
 
 #### Behoben
 - `acceptText` von `KanteDialog` hält in jeder Sprache: Auf Deutsch hieß der Knopf „OK“, weil die Knopfleiste ihre Standardtexte neu setzt, sobald die Übersetzungen geladen sind.
+
+![Eine destruktive Frage: roter Balken, der Knopf nennt, was geht, Abbrechen zuerst](https://shrippen.github.io/Kante/shots/release-1.55-dialog.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155
 
