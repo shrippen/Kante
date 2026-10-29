@@ -125,6 +125,19 @@ Rectangle {
                     }
                     KanteButton { text: "Alles aus"; emphasis: KanteButton.Emphasis.Destructive; size: KanteButton.Size.Small }
                 }
+                // Lower (1.54): Compact with smaller labels, Band as a strip of segments.
+                KantePageBar {
+                    Layout.fillWidth: true
+                    density: KantePageBar.Density.Compact
+                    model: ["Eingänge", "Audio", "Ausgänge", "Einstellungen"]
+                    busy: [false, true, false, false]
+                }
+                KantePageBar {
+                    Layout.fillWidth: true
+                    density: KantePageBar.Density.Band
+                    model: ["Eingänge", "Audio", "Ausgänge", "Einstellungen"]
+                    busy: [false, true, false, false]
+                }
             }
 
             Section {
