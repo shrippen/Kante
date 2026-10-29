@@ -2,6 +2,13 @@
 
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/).
 
+## [0.9.1] – 2026-10-29
+
+### Behoben
+- Sammelauswahl nach dem Neuladen: Firefox setzte die Haken der Checkboxen nach ihrer Position wieder. Nach
+  „Abrechnen“ fehlten die abgerechneten Zeilen, die Haken landeten auf anderen Zeilen (Abrechnung). kit.js stellt
+  beim Start den Stand aus dem Markup her (`defaultChecked`).
+
 ## [0.9.0] – 2026-10-29
 
 ### Neu
