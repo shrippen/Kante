@@ -929,6 +929,15 @@ Rectangle {
                                     KanteMenuSection { text: "Input" }
                                     KanteMenuItem { text: "Bei Signalverlust"; iconRoom: true; valueText: "Standbild" }
                                     KanteMenuItem { text: "Entfernen"; icon.name: "edit-delete"; destructive: true; shortcutText: "Entf" }
+                                    KanteMenuSection { text: "Übergang" }
+                                    KanteMenuItem {
+                                        text: "Schieben"
+                                        iconRoom: true
+                                        trailing: [
+                                            KanteToolButton { text: "◀"; checkable: true; focusPolicy: Qt.NoFocus },
+                                            KanteToolButton { text: "▶"; checkable: true; checked: true; focusPolicy: Qt.NoFocus }
+                                        ]
+                                    }
                                 }
                             }
                             KanteButton {
