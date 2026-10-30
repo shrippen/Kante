@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.57.0] — 2026-10-30
+
+### English
+
+A menu row gets room at its end.
+
+#### New
+- `KanteMenuItem` gets `trailing`: items after the value, such as ◀ ▶ of a direction or the lengths as segments; they take their own clicks.
+
+![An effect menu: the direction as ◀ ▶ and the lengths as segments at the row's end](https://shrippen.github.io/Kante/shots/release-1.57-menu.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157
+
+### Deutsch
+
+Eine Menüzeile bekommt Platz an ihrem Ende.
+
+#### Neu
+- `KanteMenuItem` bekommt `trailing`: Inhalt hinter dem Wert, etwa ◀ ▶ einer Richtung oder die Dauern als Segmente; er nimmt seine Klicks selbst an.
+
+![Ein Effektmenü: die Richtung als ◀ ▶ und die Dauern als Segmente am Zeilenende](https://shrippen.github.io/Kante/shots/release-1.57-menu.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157
+
 ## [1.56.0] — 2026-10-30
 
 ### English
