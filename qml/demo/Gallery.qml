@@ -986,6 +986,35 @@ Rectangle {
                                     text: "3 Inputs senden nicht mehr dorthin."
                                 }
                             }
+                            // 1.58: an own button at the start of the footer.
+                            KanteButton {
+                                text: "Tasten…"
+                                onClicked: galleryKeysDialog.open()
+                            }
+                            KanteDialog {
+                                id: galleryKeysDialog
+                                parent: QQC2.Overlay.overlay
+                                anchors.centerIn: parent
+                                modal: true
+                                size: KanteDialog.Size.Small
+                                title: "Tasten"
+                                standardButtons: QQC2.Dialog.Close
+                                footerStart: [
+                                    KanteButton {
+                                        text: "Belegungen…"
+                                        emphasis: KanteButton.Emphasis.Quiet
+                                        onClicked: galleryKeysDialog.close()
+                                    }
+                                ]
+                                contentHeight: galleryKeysRow.implicitHeight
+                                Row {
+                                    id: galleryKeysRow
+                                    spacing: Kirigami.Units.smallSpacing
+                                    KanteKeycap { text: "Strg" }
+                                    KanteKeycap { text: "K" }
+                                    QQC2.Label { text: "Belegungen" }
+                                }
+                            }
                         }
                         GridLayout {
                             columns: 3

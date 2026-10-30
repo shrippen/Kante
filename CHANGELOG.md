@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.58.0] — 2026-10-30
+
+### English
+
+A dialog can have buttons of its own at the start of its footer.
+
+#### New
+- `KanteDialog` gets `footerStart`: the app's own buttons at the start of the footer, before Close or Ok and apart from them, in every style; right to left they stand at the right. lmix puts "Shortcuts…" there in its keys overview; before, it had to rename the Help button.
+
+![An own button at the start of the footer, Close at its end](https://shrippen.github.io/Kante/shots/release-1.58-footer.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-158
+
+### Deutsch
+
+Ein Dialog kann eigene Knöpfe am Anfang seines Fußes haben.
+
+#### Neu
+- `KanteDialog` bekommt `footerStart`: die eigenen Knöpfe der App am Anfang des Fußes, vor Schließen oder Ok und abgesetzt davon, in jedem Stil; von rechts nach links stehen sie rechts. lmix setzt dort „Belegungen…“ in seine Tastenübersicht; vorher musste es den Hilfe-Knopf umbenennen.
+
+![Ein eigener Knopf am Anfang des Fußes, Schließen am Ende](https://shrippen.github.io/Kante/shots/release-1.58-footer.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-158
+
 ## [1.57.0] — 2026-10-30
 
 ### English
