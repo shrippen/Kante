@@ -7,7 +7,8 @@ import Kante
 /**
  * Kante 1.55, from lmix's dialog review: KanteDialog sizes Small, Medium and Large (at most
  * 90 % of the window) and destructive questions with the bar and the accept button in the
- * negative colour. Run: tools/check-qml.sh.
+ * negative colour; a destructive quiet or normal KanteButton with red text. Run:
+ * tools/check-qml.sh.
  */
 TestCase {
     id: tc
@@ -149,5 +150,28 @@ TestCase {
         tryCompare(d, "opened", true)
         compare(d.standardButton(QQC2.Dialog.Yes).emphasis, KanteButton.Emphasis.Destructive)
         compare(d.standardButton(QQC2.Dialog.No).emphasis, KanteButton.Emphasis.Normal)
+    }
+
+    // A quiet button that removes (lmix's audio column, P02): red text, no
+    // fill, so it stays smaller than the actions beside it.
+    Component {
+        id: quietComponent
+        KanteButton {
+            text: "Remove bus"
+            emphasis: KanteButton.Emphasis.Quiet
+        }
+    }
+    function test_aDestructiveQuietButtonIsRedText() {
+        const b = createTemporaryObject(quietComponent, tc, { destructive: true })
+        compare(b.kanteInk, KanteStyle.negativeTextColor)
+        verify(!b.filled)
+        const plain = createTemporaryObject(quietComponent, tc)
+        compare(plain.kanteInk, KanteStyle.mutedTextColor)
+        // Filled buttons keep their ink: the red one is already red.
+        const filled = createTemporaryObject(quietComponent, tc, { destructive: true, emphasis: KanteButton.Emphasis.Primary })
+        compare(filled.kanteInk, KanteStyle.primaryTextColor)
+        // The platform's button (System) takes it in its palette.
+        KanteStyle.kind = KanteStyle.Kind.System
+        compare(b.palette.buttonText, KanteStyle.negativeTextColor)
     }
 }

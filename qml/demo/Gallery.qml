@@ -941,6 +941,13 @@ Rectangle {
                                 title: "Ansicht"
                                 KanteSwitch { text: "Ton am Rand"; checked: true }
                                 KanteSwitch { text: "Einfacher Modus" }
+                                // 1.55: a removal that stays quiet at the foot.
+                                KanteButton {
+                                    text: "Bus entfernen"
+                                    emphasis: KanteButton.Emphasis.Quiet
+                                    destructive: true
+                                    onClicked: galleryRemoveDialog.open()
+                                }
                             }
                             KanteButton {
                                 text: "Toast"
