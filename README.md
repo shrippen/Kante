@@ -792,13 +792,15 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 | Element | Web | QML |
 |---|---|---|
-| Line weights | (`1 px` borders, `2 px` lines as in "Shape, sizes and motion") | `KanteStyle.borderWidth` 1 (borders, grid lines), `lineWidth` 2 (lines that mark: today, the picked day, the now line, an underline), `edgeWidth` 3 (the colour edge of an entry: a calendar's or project's colour on its left side) with `edgeRadius` (0 in the Kante style, 1 elsewhere). In every style |
+| Line weights | `--line-border` 1px, `--line-mark` 2px, `--line-edge` 3px | `KanteStyle.borderWidth` 1 (borders, grid lines), `lineWidth` 2 (lines that mark: today, the picked day, the now line, an underline), `edgeWidth` 3 (the colour edge of an entry: a calendar's or project's colour on its left side) with `edgeRadius` (0 in the Kante style, 1 elsewhere). In every style |
 | Markers, meters, swatches | – | `markerSize` (a quarter grid unit, at least 4 px) with `markerRadius` (square in the Kante style, round elsewhere) for day dots and legend keys; `meterHeight` (a fifth of a grid unit, at least 3 px) with `meterRadius` for a thin meter such as a day's load; `swatchSize` (0.7 grid units) for a colour key in a legend or menu; `dashPattern` [6, 4] for an edge that runs past its room |
-| Tint levels | – | `washLevel` 0.06 (a tray, a quiet area), `fillLevel` 0.12 (free time, a draft), `strongFillLevel` 0.22 (a planned block), `edgeLevel` 0.4 (the border of such an area), for `KanteStyle.tint(colour, level)` on a colour that is data (a project's, a calendar's) or a tone role |
-| Opacities | – | `doneOpacity` 0.6 (something done, such as a completed task) and `dimOpacity` 0.5 (out of range or minor: a day of another month, half-hour lines) |
+| Tint levels | `--level-wash` 6%, `--level-fill` 12%, `--level-strong` 22%, `--level-edge` 40% (for `color-mix()`) | `washLevel` 0.06 (a tray, a quiet area), `fillLevel` 0.12 (free time, a draft), `strongFillLevel` 0.22 (a planned block), `edgeLevel` 0.4 (the border of such an area), for `KanteStyle.tint(colour, level)` on a colour that is data (a project's, a calendar's) or a tone role |
+| Opacities | `--level-done` .6, `--level-dim` .5 | `doneOpacity` 0.6 (something done, such as a completed task) and `dimOpacity` 0.5 (out of range or minor: a day of another month, half-hour lines) |
 | Calendar sizes | – | `minuteHeight` (an hour is 1.5 grid units) for an hour grid, `calendarEntryHeight` (1.1 grid units) for an entry line in a month cell |
 
-From Kurrent's Agenda (day, week and month views), which drew its hour grid, boards and month cells with sizes and tints of its own; now they are Kante's, so other apps with a timeline or a board use the same. Gallery: section 1.56.
+| Fixed | – | A combo box with `KanteFieldSkin` in a style that sizes it from its own background (`org.kde.desktop`) cut its value short ("Erledigu…" in Kurrent's heatmap): the skin draws the value 8 px in and clear of the arrow. The box is now as wide as its widest entry plus that room |
+
+From Kurrent's Agenda (day, week and month views), which drew its hour grid, boards and month cells with sizes and tints of its own; now they are Kante's, so other apps with a timeline or a board use the same. The weights, the dash, the levels and the opacities are tokens (`tokens/palette.json` `shape.lines`, `shape.dash`, `levels`; `variables.css`), checked against each other by `check-tokens.py`. Gallery: section 1.56.
 
 ### Added in Kante 1.55
 

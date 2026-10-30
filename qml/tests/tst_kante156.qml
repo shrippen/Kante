@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls as QQC2
 import QtTest
 import org.kde.kirigami as Kirigami
 import Kante
@@ -20,6 +21,28 @@ TestCase {
     }
     function cleanup() {
         KanteStyle.kind = kindBefore
+    }
+
+    Component {
+        id: comboComponent
+        QQC2.ComboBox {
+            model: ["Erledigungen", "Fälligkeiten"]
+            KanteFieldSkin { id: skin; control: parent }
+        }
+    }
+
+    // A combo box sized by its style showed its value cut short in the Kante style ("Erledigu…"
+    // in Kurrent's heatmap): the skin draws the text 8 px in and clear of the arrow, the style
+    // made room for less.
+    function test_comboBoxMakesRoomForItsValue() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const combo = createTemporaryObject(comboComponent, tc)
+        verify(combo)
+        combo.width = Qt.binding(function() { return combo.implicitWidth })
+        waitForRendering(combo)
+        const text = findChild(combo, "kanteComboValue")
+        compare(text.text, "Erledigungen")
+        verify(!text.truncated, "the value is cut short: " + text.width + " < " + text.implicitWidth)
     }
 
     function test_lineWeights() {

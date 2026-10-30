@@ -16,6 +16,10 @@ Line weights, markers, tint levels and the sizes of an hour grid are Kante roles
 - Markers, meters and swatches have a size: day dots and legend keys square in the Kante style, a thin meter for a day's load, a colour key for a legend.
 - Four tint levels (wash, fill, strong fill, edge) for a colour that is data, such as a project's, and opacities for something done or out of range.
 - An hour grid and a month cell get their sizes: the height of a minute and of an entry line.
+- The web gets the same weights and levels as tokens (`--line-*`, `--level-*`).
+
+#### Fixed
+- A combo box in the Kante style no longer cuts its value short when the platform style sizes it („Erledigu…“ in Kurrent's heatmap): it is as wide as its widest entry.
 
 ![An hour grid drawn from the roles: grid lines, free time, a planned block with its colour edge, the now line, day dots, a load meter and the four tint levels](https://shrippen.github.io/Kante/shots/release-1.56-lines.png)
 
@@ -30,6 +34,10 @@ Linienstärken, Marker, Tönungsstufen und die Maße eines Stundenrasters sind j
 - Marker, Messbalken und Farbfelder haben eine Größe: Tagespunkte und Legendenzeichen im Stil Kante eckig, ein schmaler Balken für die Auslastung eines Tages, ein Farbfeld für eine Legende.
 - Vier Tönungsstufen (Hauch, Fläche, starke Fläche, Rand) für eine Farbe, die Daten zeigt, etwa die eines Projekts, und Deckkräfte für Erledigtes und für das, was außerhalb liegt.
 - Stundenraster und Monatszelle bekommen ihre Maße: die Höhe einer Minute und einer Eintragszeile.
+- Das Web bekommt dieselben Stärken und Stufen als Tokens (`--line-*`, `--level-*`).
+
+#### Behoben
+- Ein Auswahlfeld im Stil Kante schneidet seinen Wert nicht mehr ab, wenn der Plattformstil seine Breite bestimmt („Erledigu…“ in Kurrents Heatmap): Es ist so breit wie sein längster Eintrag.
 
 ![Ein Stundenraster aus den Rollen: Rasterlinien, freie Zeit, ein geplanter Block mit Farbkante, die Jetzt-Linie, Tagespunkte, ein Auslastungsbalken und die vier Tönungsstufen](https://shrippen.github.io/Kante/shots/release-1.56-lines.png)
 
