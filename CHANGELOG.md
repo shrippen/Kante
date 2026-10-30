@@ -19,7 +19,7 @@ Line weights, markers, tint levels and the sizes of an hour grid are Kante roles
 - The web gets the same weights and levels as tokens (`--line-*`, `--level-*`).
 
 #### Fixed
-- A combo box in the Kante style no longer cuts its value short when the platform style sizes it („Erledigu…“ in Kurrent's heatmap): it is as wide as its widest entry.
+- A combo box in the Kante style no longer cuts its value short when the platform style sizes it („Erledigu…“ in Kurrent's heatmap): it is as wide as its widest entry, at least `KanteStyle.comboMinimumWidth`, and follows the font.
 
 ![An hour grid drawn from the roles: grid lines, free time, a planned block with its colour edge, the now line, day dots, a load meter and the four tint levels](https://shrippen.github.io/Kante/shots/release-1.56-lines.png)
 
@@ -37,7 +37,7 @@ Linienstärken, Marker, Tönungsstufen und die Maße eines Stundenrasters sind j
 - Das Web bekommt dieselben Stärken und Stufen als Tokens (`--line-*`, `--level-*`).
 
 #### Behoben
-- Ein Auswahlfeld im Stil Kante schneidet seinen Wert nicht mehr ab, wenn der Plattformstil seine Breite bestimmt („Erledigu…“ in Kurrents Heatmap): Es ist so breit wie sein längster Eintrag.
+- Ein Auswahlfeld im Stil Kante schneidet seinen Wert nicht mehr ab, wenn der Plattformstil seine Breite bestimmt („Erledigu…“ in Kurrents Heatmap): Es ist so breit wie sein längster Eintrag, mindestens `KanteStyle.comboMinimumWidth`, und folgt der Schrift.
 
 ![Ein Stundenraster aus den Rollen: Rasterlinien, freie Zeit, ein geplanter Block mit Farbkante, die Jetzt-Linie, Tagespunkte, ein Auslastungsbalken und die vier Tönungsstufen](https://shrippen.github.io/Kante/shots/release-1.56-lines.png)
 
