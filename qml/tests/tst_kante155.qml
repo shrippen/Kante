@@ -82,6 +82,8 @@ TestCase {
         d.open()
         tryCompare(d, "opened", true)
         verify(d.height <= tc.Window.height, "height " + d.height + " in " + tc.Window.height)
+        verify(d.width > 0, "width " + d.width)
+        compare(d.width, d.implicitWidth)
     }
 
     function test_destructiveIsRed() {
