@@ -131,6 +131,28 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.54.0">
+      <div class="release-head"><b class="release-version">1.54</b><time datetime="2026-10-30">30 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">The page bar can be lower, down to a coloured strip, and the month grid marks its days.</p>
+        <p class="release-lead" lang="de">Die Seitenleiste kann niedriger sein, bis hin zu einem Farbband, und das Monatsraster markiert seine Tage.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KantePageBar</code> gets <code>density</code>: Compact (lower, smaller labels; it grows for a small button at its end) and Band (one segment per page, the others half as high; the name as tooltip). lmix's operators want the room for their inputs.</li>
+            <li><code>KanteCalendarGrid</code> marks days with up to three dots (<code>dots</code>) and tints a range of days (<code>rangeFrom</code>, <code>rangeTo</code>), as Kurrent's Agenda needs for appointments, tasks and the days a view shows.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KantePageBar</code> bekommt <code>density</code>: Compact (niedriger, kleinere Schrift; wächst für einen kleinen Knopf am Ende) und Band (ein Abschnitt je Seite, die übrigen halb so hoch; der Name als Tooltip). Wer lmix bedient, braucht den Platz für die Inputs.</li>
+            <li><code>KanteCalendarGrid</code> markiert Tage mit bis zu drei Punkten (<code>dots</code>) und tönt einen Zeitraum (<code>rangeFrom</code>, <code>rangeTo</code>), wie ihn Kurrents Agenda für Termine, Aufgaben und die gezeigten Tage braucht.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.54-pagebar.png" alt="Three page bars in dark Kante with the pages Mix, Show, Ton, Ausgänge and Setup and a Panik button: Normal; Compact, lower with smaller labels, the button as high as before; Band, a thin strip of segments, Mix in cyan and Ton in orange at full height, the other pages half as high in grey" loading="lazy"><figcaption><span lang="en">The page bar in Normal, Compact and Band</span><span lang="de">Die Seitenleiste in Normal, Compact und Band</span></figcaption></figure>
+          <figure><img src="shots/release-1.54-calendar.png" alt="Two month grids of October 2026 in dark Kante: on the left square dots in the top right of the 5th, 12th, 20th and 27th, up to three per day; on the right the days 19 to 25 tinted as a range" loading="lazy"><figcaption><span lang="en">Day dots and a range in the month grid</span><span lang="de">Tagespunkte und ein Zeitraum im Monatsraster</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-154"><span lang="en">All changes in 1.54 →</span><span lang="de">Alle Änderungen in 1.54 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.53.0">
       <div class="release-head"><b class="release-version">1.53</b><time datetime="2026-10-29">29 Oct 2026</time></div>
       <div class="release-body">
@@ -165,6 +187,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-152"><span lang="en">All changes in 1.52 →</span><span lang="de">Alle Änderungen in 1.52 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.51.0">
       <div class="release-head"><b class="release-version">1.51</b><time datetime="2026-10-28">28 Oct 2026</time></div>
       <div class="release-body">
@@ -216,9 +241,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-151"><span lang="en">All changes in 1.51 →</span><span lang="de">Alle Änderungen in 1.51 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.50.0">
       <div class="release-head"><b class="release-version">1.50</b><time datetime="2026-10-28">28 Oct 2026</time></div>
       <div class="release-body">
@@ -889,7 +911,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.53.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.54.0</a></p></div>
 </footer>
 
 <script>
