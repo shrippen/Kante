@@ -5,7 +5,7 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
-## [1.56.0] — 2026-10-30
+## [1.57.0] — 2026-10-30
 
 ### English
 
@@ -14,9 +14,9 @@ A menu row gets room at its end.
 #### New
 - `KanteMenuItem` gets `trailing`: items after the value, such as ◀ ▶ of a direction or the lengths as segments; they take their own clicks.
 
-![An effect menu: the direction as ◀ ▶ and the lengths as segments at the row's end](https://shrippen.github.io/Kante/shots/release-1.56-menu.png)
+![An effect menu: the direction as ◀ ▶ and the lengths as segments at the row's end](https://shrippen.github.io/Kante/shots/release-1.57-menu.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-156
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157
 
 ### Deutsch
 
@@ -25,7 +25,45 @@ Eine Menüzeile bekommt Platz an ihrem Ende.
 #### Neu
 - `KanteMenuItem` bekommt `trailing`: Inhalt hinter dem Wert, etwa ◀ ▶ einer Richtung oder die Dauern als Segmente; er nimmt seine Klicks selbst an.
 
-![Ein Effektmenü: die Richtung als ◀ ▶ und die Dauern als Segmente am Zeilenende](https://shrippen.github.io/Kante/shots/release-1.56-menu.png)
+![Ein Effektmenü: die Richtung als ◀ ▶ und die Dauern als Segmente am Zeilenende](https://shrippen.github.io/Kante/shots/release-1.57-menu.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157
+
+## [1.56.0] — 2026-10-30
+
+### English
+
+Line weights, markers, tint levels and the sizes of an hour grid are Kante roles now, so an app that draws a timeline or a board by hand needs no sizes of its own.
+
+#### New
+- `KanteStyle` gets line weights for borders (1), marking lines (2) and the colour edge of an entry (3), in every style.
+- Markers, meters and swatches have a size: day dots and legend keys square in the Kante style, a thin meter for a day's load, a colour key for a legend.
+- Four tint levels (wash, fill, strong fill, edge) for a colour that is data, such as a project's, and opacities for something done or out of range.
+- An hour grid and a month cell get their sizes: the height of a minute and of an entry line.
+- The web gets the same weights and levels as tokens (`--line-*`, `--level-*`).
+
+#### Fixed
+- A combo box in the Kante style no longer cuts its value short when the platform style sizes it („Erledigu…“ in Kurrent's heatmap): it is as wide as its widest entry, at least `KanteStyle.comboMinimumWidth`, and follows the font.
+
+![An hour grid drawn from the roles: grid lines, free time, a planned block with its colour edge, the now line, day dots, a load meter and the four tint levels](https://shrippen.github.io/Kante/shots/release-1.56-lines.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-156
+
+### Deutsch
+
+Linienstärken, Marker, Tönungsstufen und die Maße eines Stundenrasters sind jetzt Rollen von Kante, damit eine App, die eine Zeitleiste oder ein Brett selbst zeichnet, keine eigenen Größen braucht.
+
+#### Neu
+- `KanteStyle` bekommt Linienstärken für Ränder (1), markierende Linien (2) und die Farbkante eines Eintrags (3), in jedem Stil.
+- Marker, Messbalken und Farbfelder haben eine Größe: Tagespunkte und Legendenzeichen im Stil Kante eckig, ein schmaler Balken für die Auslastung eines Tages, ein Farbfeld für eine Legende.
+- Vier Tönungsstufen (Hauch, Fläche, starke Fläche, Rand) für eine Farbe, die Daten zeigt, etwa die eines Projekts, und Deckkräfte für Erledigtes und für das, was außerhalb liegt.
+- Stundenraster und Monatszelle bekommen ihre Maße: die Höhe einer Minute und einer Eintragszeile.
+- Das Web bekommt dieselben Stärken und Stufen als Tokens (`--line-*`, `--level-*`).
+
+#### Behoben
+- Ein Auswahlfeld im Stil Kante schneidet seinen Wert nicht mehr ab, wenn der Plattformstil seine Breite bestimmt („Erledigu…“ in Kurrents Heatmap): Es ist so breit wie sein längster Eintrag, mindestens `KanteStyle.comboMinimumWidth`, und folgt der Schrift.
+
+![Ein Stundenraster aus den Rollen: Rasterlinien, freie Zeit, ein geplanter Block mit Farbkante, die Jetzt-Linie, Tagespunkte, ein Auslastungsbalken und die vier Tönungsstufen](https://shrippen.github.io/Kante/shots/release-1.56-lines.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-156
 

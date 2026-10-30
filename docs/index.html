@@ -131,8 +131,8 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
-    <li class="release" id="v1.56.0">
-      <div class="release-head"><b class="release-version">1.56</b><time datetime="2026-10-30">30 Oct 2026</time></div>
+    <li class="release" id="v1.57.0">
+      <div class="release-head"><b class="release-version">1.57</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
         <p class="release-lead" lang="en">A menu row gets room at its end.</p>
         <p class="release-lead" lang="de">Eine Menüzeile bekommt Platz an ihrem Ende.</p>
@@ -145,7 +145,42 @@
           </ul>
         </div>
         <div class="release-shots">
-          <figure><img src="shots/release-1.56-menu.png" alt="A menu in light Kante: the heading TASTE 1 · EFFEKT, the effects Cut, Blende and Schieben, Schieben ticked with the buttons ◀ and ▶ at its end, ▶ chosen; under DAUER the segments 250, 500 and 1000 with 500 chosen, then ms" loading="lazy"><figcaption><span lang="en">An effect menu: the direction as ◀ ▶ and the lengths as segments at the row's end</span><span lang="de">Ein Effektmenü: die Richtung als ◀ ▶ und die Dauern als Segmente am Zeilenende</span></figcaption></figure>
+          <figure><img src="shots/release-1.57-menu.png" alt="A menu in light Kante: the heading TASTE 1 · EFFEKT, the effects Cut, Blende and Schieben, Schieben ticked with the buttons ◀ and ▶ at its end, ▶ chosen; under DAUER the segments 250, 500 and 1000 with 500 chosen, then ms" loading="lazy"><figcaption><span lang="en">An effect menu: the direction as ◀ ▶ and the lengths as segments at the row's end</span><span lang="de">Ein Effektmenü: die Richtung als ◀ ▶ und die Dauern als Segmente am Zeilenende</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157"><span lang="en">All changes in 1.57 →</span><span lang="de">Alle Änderungen in 1.57 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.56.0">
+      <div class="release-head"><b class="release-version">1.56</b><time datetime="2026-10-30">30 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Line weights, markers, tint levels and the sizes of an hour grid are Kante roles now, so an app that draws a timeline or a board by hand needs no sizes of its own.</p>
+        <p class="release-lead" lang="de">Linienstärken, Marker, Tönungsstufen und die Maße eines Stundenrasters sind jetzt Rollen von Kante, damit eine App, die eine Zeitleiste oder ein Brett selbst zeichnet, keine eigenen Größen braucht.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteStyle</code> gets line weights for borders (1), marking lines (2) and the colour edge of an entry (3), in every style.</li>
+            <li>Markers, meters and swatches have a size: day dots and legend keys square in the Kante style, a thin meter for a day's load, a colour key for a legend.</li>
+            <li>Four tint levels (wash, fill, strong fill, edge) for a colour that is data, such as a project's, and opacities for something done or out of range.</li>
+            <li>An hour grid and a month cell get their sizes: the height of a minute and of an entry line.</li>
+            <li>The web gets the same weights and levels as tokens (<code>--line-*</code>, <code>--level-*</code>).</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteStyle</code> bekommt Linienstärken für Ränder (1), markierende Linien (2) und die Farbkante eines Eintrags (3), in jedem Stil.</li>
+            <li>Marker, Messbalken und Farbfelder haben eine Größe: Tagespunkte und Legendenzeichen im Stil Kante eckig, ein schmaler Balken für die Auslastung eines Tages, ein Farbfeld für eine Legende.</li>
+            <li>Vier Tönungsstufen (Hauch, Fläche, starke Fläche, Rand) für eine Farbe, die Daten zeigt, etwa die eines Projekts, und Deckkräfte für Erledigtes und für das, was außerhalb liegt.</li>
+            <li>Stundenraster und Monatszelle bekommen ihre Maße: die Höhe einer Minute und einer Eintragszeile.</li>
+            <li>Das Web bekommt dieselben Stärken und Stufen als Tokens (<code>--line-*</code>, <code>--level-*</code>).</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>A combo box in the Kante style no longer cuts its value short when the platform style sizes it („Erledigu…“ in Kurrent's heatmap): it is as wide as its widest entry, at least <code>KanteStyle.comboMinimumWidth</code>, and follows the font.</li>
+          </ul>
+          <ul lang="de">
+            <li>Ein Auswahlfeld im Stil Kante schneidet seinen Wert nicht mehr ab, wenn der Plattformstil seine Breite bestimmt („Erledigu…“ in Kurrents Heatmap): Es ist so breit wie sein längster Eintrag, mindestens <code>KanteStyle.comboMinimumWidth</code>, und folgt der Schrift.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.56-lines.png" alt="A small hour grid in dark Kante: thin grid lines with fainter half-hour lines, a green tinted free stretch labelled FREI 1,5 H, a blue tinted block Schnitt exportieren with a blue edge on its left, a red now line; beside it square dots for Termin, Aufgabe and Überfällig, a yellow load meter at three quarters, four yellow swatches from faint to strong, and Erledigt struck through and faded" loading="lazy"><figcaption><span lang="en">An hour grid drawn from the roles only</span><span lang="de">Ein Stundenraster nur aus den Rollen</span></figcaption></figure>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-156"><span lang="en">All changes in 1.56 →</span><span lang="de">Alle Änderungen in 1.56 →</span></a>
       </div>
@@ -181,6 +216,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155"><span lang="en">All changes in 1.55 →</span><span lang="de">Alle Änderungen in 1.55 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.54.0">
       <div class="release-head"><b class="release-version">1.54</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
@@ -203,9 +241,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-154"><span lang="en">All changes in 1.54 →</span><span lang="de">Alle Änderungen in 1.54 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.53.0">
       <div class="release-head"><b class="release-version">1.53</b><time datetime="2026-10-29">29 Oct 2026</time></div>
       <div class="release-body">
@@ -961,7 +996,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.56.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.57.0</a></p></div>
 </footer>
 
 <script>

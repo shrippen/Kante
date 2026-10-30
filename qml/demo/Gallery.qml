@@ -1008,6 +1008,118 @@ Rectangle {
             }
 
             Section {
+                objectName: "section156"
+                title: "1.56 · linien, marker, tönungen (kurrent)"
+                // An hour grid drawn by hand from the roles only: grid lines, free time, a planned
+                // block with its colour edge, the now line, the day's dots and a load meter.
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    Item {
+                        id: hourGrid
+                        readonly property real hour: KanteStyle.minuteHeight * 60
+                        Layout.preferredWidth: KanteStyle.unit(300)
+                        Layout.preferredHeight: hour * 4
+                        Repeater {
+                            model: 9
+                            Rectangle {
+                                required property int index
+                                y: index * hourGrid.hour / 2
+                                width: hourGrid.width
+                                height: KanteStyle.borderWidth
+                                color: KanteStyle.ruleColor
+                                opacity: index % 2 ? KanteStyle.dimOpacity : 1
+                            }
+                        }
+                        // Free time: a tinted fill with a stronger edge.
+                        Rectangle {
+                            x: KanteStyle.unit(4)
+                            y: hourGrid.hour * 0.5
+                            width: hourGrid.width - KanteStyle.unit(8)
+                            height: hourGrid.hour * 1.5
+                            color: KanteStyle.tint(KanteStyle.positiveTextColor, KanteStyle.fillLevel)
+                            border.width: KanteStyle.borderWidth
+                            border.color: KanteStyle.tint(KanteStyle.positiveTextColor, KanteStyle.edgeLevel)
+                            KanteHud {
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                anchors.margins: KanteStyle.unit(4)
+                                fullText: "frei 1,5 h"
+                                color: KanteStyle.positiveTextColor
+                            }
+                        }
+                        // A planned block in its project's colour, with the colour edge.
+                        Rectangle {
+                            x: KanteStyle.unit(4)
+                            y: hourGrid.hour * 2.25
+                            width: hourGrid.width - KanteStyle.unit(8)
+                            height: hourGrid.hour
+                            color: KanteStyle.tint(KanteStyle.labelColor("blue"), KanteStyle.strongFillLevel)
+                            Rectangle {
+                                width: KanteStyle.edgeWidth
+                                height: parent.height
+                                radius: KanteStyle.edgeRadius
+                                color: KanteStyle.labelColor("blue")
+                            }
+                            QQC2.Label { x: KanteStyle.unit(10); y: KanteStyle.unit(4); text: "Schnitt exportieren"; color: KanteStyle.textColor }
+                        }
+                        // The now line.
+                        Rectangle {
+                            y: hourGrid.hour * 3.6
+                            width: hourGrid.width
+                            height: KanteStyle.lineWidth
+                            color: KanteStyle.negativeTextColor
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.alignment: Qt.AlignTop
+                        spacing: KanteStyle.unit(10)
+                        Repeater {
+                            model: [{ c: KanteStyle.mutedTextColor, t: "Termin" }, { c: KanteStyle.accentColor, t: "Aufgabe" },
+                                    { c: KanteStyle.negativeTextColor, t: "Überfällig" }]
+                            RowLayout {
+                                required property var modelData
+                                spacing: KanteStyle.unit(6)
+                                Rectangle {
+                                    implicitWidth: KanteStyle.markerSize
+                                    implicitHeight: KanteStyle.markerSize
+                                    radius: KanteStyle.markerRadius
+                                    color: modelData.c
+                                }
+                                QQC2.Label { text: modelData.t; color: KanteStyle.mutedTextColor }
+                            }
+                        }
+                        // A day's load: 6 of 8 hours.
+                        Rectangle {
+                            implicitWidth: KanteStyle.unit(160)
+                            implicitHeight: KanteStyle.meterHeight
+                            radius: KanteStyle.meterRadius
+                            color: KanteStyle.tint1Color
+                            Rectangle {
+                                width: parent.width * 0.75
+                                height: parent.height
+                                radius: KanteStyle.meterRadius
+                                color: KanteStyle.accentColor
+                            }
+                        }
+                        // The four tint levels of one colour.
+                        RowLayout {
+                            spacing: KanteStyle.unit(6)
+                            Repeater {
+                                model: [KanteStyle.washLevel, KanteStyle.fillLevel, KanteStyle.strongFillLevel, KanteStyle.edgeLevel]
+                                Rectangle {
+                                    required property real modelData
+                                    implicitWidth: KanteStyle.swatchSize
+                                    implicitHeight: KanteStyle.swatchSize
+                                    color: KanteStyle.tint(KanteStyle.accentColor, modelData)
+                                }
+                            }
+                        }
+                        QQC2.Label { text: "Erledigt"; color: KanteStyle.textColor; opacity: KanteStyle.doneOpacity; font.strikeout: true }
+                    }
+                }
+            }
+
+            Section {
                 title: "1.25, 1.33 · gespräch (kaiwa)"
                 // The talk button walks through its states on click, as an app would drive it.
                 RowLayout {

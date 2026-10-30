@@ -68,6 +68,7 @@ def roles_block(theme):
 
 def write_palette_module():
     shape = PALETTE["shape"]
+    levels = PALETTE["levels"]
     typo = PALETTE["typography"]
     text = f"""{HEADER}
 pragma Singleton
@@ -100,6 +101,18 @@ QtObject {{
     readonly property int heightSmall: {shape['heights']['small']}
     readonly property int heightMedium: {shape['heights']['medium']}
     readonly property int heightLarge: {shape['heights']['large']}
+    // Lines (px, not scaled): borders, marking lines, the colour edge of an entry; dash pattern.
+    readonly property int lineBorder: {shape['lines']['border']}
+    readonly property int lineMark: {shape['lines']['mark']}
+    readonly property int lineEdge: {shape['lines']['edge']}
+    readonly property var dash: {json.dumps(shape['dash'])}
+    // Tint levels and opacities.
+    readonly property real levelWash: {levels['wash']}
+    readonly property real levelFill: {levels['fill']}
+    readonly property real levelStrongFill: {levels['strongFill']}
+    readonly property real levelEdge: {levels['edge']}
+    readonly property real levelDone: {levels['done']}
+    readonly property real levelDim: {levels['dim']}
 
     // Type
     readonly property string headingFamily: "{typo['heading']}"
