@@ -170,8 +170,10 @@ TestCase {
         // Filled buttons keep their ink: the red one is already red.
         const filled = createTemporaryObject(quietComponent, tc, { destructive: true, emphasis: KanteButton.Emphasis.Primary })
         compare(filled.kanteInk, KanteStyle.primaryTextColor)
-        // The platform's button (System) takes it in its palette.
+        // System keeps the platform's button as it is: Plasma's styles take no label
+        // colour, a red promised there would show in Fusion only.
         KanteStyle.kind = KanteStyle.Kind.System
-        compare(b.palette.buttonText, KanteStyle.negativeTextColor)
+        verify(!b.drawn)
+        compare(b.palette.buttonText, plain.palette.buttonText)
     }
 }

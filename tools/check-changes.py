@@ -6,7 +6,7 @@
   - The footer names the newest entry's version.
   - Each release on the page says what its CHANGELOG section says, lead for lead and point
     for point, both ways (markup, code ticks and pictures aside): the two once drifted apart
-    when a fix changed only one of them.
+    when a fix changed only one of them. The newest release of the CHANGELOG is on the page.
 
 Usage: python3 tools/check-changes.py [page.html ...]   (default: docs/index.html,
 docs/knust/index.html; build.sh runs it). Exits 1 on any finding.
@@ -57,6 +57,10 @@ def drift(html: str, log: Path) -> list[str]:
     """Where a release on the page and its CHANGELOG section say different things, both ways."""
     logged = sections(log)
     found = []
+    # The newest release of the log is on the page (older ones may be told in the README).
+    newest = next(iter(logged), None)
+    if newest and f'id="v{newest}"' not in html:
+        found.append(f"v{newest}, the newest in {log.name}, is not on the page")
     entries = re.finditer(
         r'<li class="release" id="v([0-9.]+)">(.*?)</li>\s*(?=<li class="release"|</ol>)', html, re.S
     )
@@ -97,6 +101,8 @@ def check(page: Path) -> list[str]:
     log = LOGS.get(page)
     if log is not None:
         found += drift(html, log)
+    else:
+        found.append("no CHANGELOG known for this page: its text is not compared")
     return [f"{page.relative_to(ROOT) if page.is_relative_to(ROOT) else page}: {f}" for f in found]
 
 

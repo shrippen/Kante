@@ -14,7 +14,7 @@ Dialogs come in three widths, and a destructive question is red.
 #### New
 - `KanteDialog` gets `size`: Small, Medium and Large, at most 90 % of the window.
 - `KanteDialog` gets `destructive`: the bar and the accept button (Ok, or Yes of a yes/no question) in the negative colour, Cancel before it.
-- `KanteButton` gets `destructive`: a Normal or Quiet button with red text, for a removal that should not outweigh the actions beside it.
+- `KanteButton` gets `destructive`: a Normal or Quiet button with red text in the Kante style, for a removal that should not outweigh the actions beside it.
 
 #### Fixed
 - `KanteDialog`'s `acceptText` holds in every language: in German the button read „OK“, because the button box sets its standard texts again once the translations are in.
@@ -30,7 +30,7 @@ Dialoge gibt es in drei Breiten, und eine destruktive Frage ist rot.
 #### Neu
 - `KanteDialog` bekommt `size`: Small, Medium und Large, höchstens 90 % des Fensters.
 - `KanteDialog` bekommt `destructive`: Balken und Bestätigungsknopf (Ok, oder Ja einer Ja/Nein-Frage) in der Warnfarbe, Abbrechen davor.
-- `KanteButton` bekommt `destructive`: ein Normal- oder Quiet-Knopf mit roter Schrift, für ein Entfernen, das die Aktionen daneben nicht überragen soll.
+- `KanteButton` bekommt `destructive`: ein Normal- oder Quiet-Knopf mit roter Schrift im Stil Kante, für ein Entfernen, das die Aktionen daneben nicht überragen soll.
 
 #### Behoben
 - `acceptText` von `KanteDialog` hält in jeder Sprache: Auf Deutsch hieß der Knopf „OK“, weil die Knopfleiste ihre Standardtexte neu setzt, sobald die Übersetzungen geladen sind.
