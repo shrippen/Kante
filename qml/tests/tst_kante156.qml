@@ -23,12 +23,31 @@ TestCase {
         KanteStyle.kind = kindBefore
     }
 
+    // Sized like org.kde.desktop: from its background, with an empty content item. CI runs
+    // Basic, which sized this box wide enough anyway; this one fails there too without the fix.
     Component {
         id: comboComponent
         QQC2.ComboBox {
             model: ["Erledigungen", "Fälligkeiten"]
-            KanteFieldSkin { id: skin; control: parent }
+            contentItem: Item {}
+            background: Rectangle { implicitWidth: 60; implicitHeight: 30 }
+            KanteFieldSkin { control: parent }
         }
+    }
+
+    // The value the skin draws over the hidden content item.
+    function drawnValue(item, value) {
+        for (let i = 0; i < item.children.length; ++i) {
+            const child = item.children[i]
+            if (child.text === value && child.elide !== undefined) {
+                return child
+            }
+            const found = drawnValue(child, value)
+            if (found) {
+                return found
+            }
+        }
+        return null
     }
 
     // A combo box sized by its style showed its value cut short in the Kante style ("Erledigu…"
@@ -40,9 +59,23 @@ TestCase {
         verify(combo)
         combo.width = Qt.binding(function() { return combo.implicitWidth })
         waitForRendering(combo)
-        const text = findChild(combo, "kanteComboValue")
+        const text = drawnValue(combo, combo.displayText)
         compare(text.text, "Erledigungen")
         verify(!text.truncated, "the value is cut short: " + text.width + " < " + text.implicitWidth)
+        // A larger font later widens the box too.
+        combo.font.pixelSize = 30
+        waitForRendering(combo)
+        verify(!text.truncated, "after a font change: " + text.width + " < " + text.implicitWidth)
+    }
+
+    // Short entries keep a usable box; System gives the style's width back.
+    function test_comboBoxKeepsAMinimumAndGivesItBack() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const combo = createTemporaryObject(comboComponent, tc, { model: ["a", "b"] })
+        verify(combo)
+        verify(combo.implicitWidth >= KanteStyle.unit(120), "too narrow: " + combo.implicitWidth)
+        KanteStyle.kind = KanteStyle.Kind.System
+        compare(combo.implicitWidth, 60)
     }
 
     function test_lineWeights() {

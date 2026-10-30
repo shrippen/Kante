@@ -86,6 +86,7 @@ Item {
             return 0
         }
         void control.model
+        void comboMetrics.font
         let widest = comboMetrics.advanceWidth(control.displayText)
         for (let i = 0; i < control.count; ++i) {
             widest = Math.max(widest, comboMetrics.advanceWidth(control.textAt(i)))
@@ -99,7 +100,10 @@ Item {
         property: "implicitWidth"
         // Not the style's background width: it is hidden here, and org.kde.desktop measures it
         // again from the width this sets (a binding loop).
-        value: Math.max(skin.control ? skin.control.implicitContentWidth + skin.control.leftPadding + skin.control.rightPadding : 0,
+        // At least comboMinimumWidth, so short entries keep a box that is easy to hit. To fix a
+        // width, set width or Layout.preferredWidth; implicitWidth is the skin's in Kante.
+        value: Math.max(KanteStyle.comboMinimumWidth,
+                        skin.control ? skin.control.implicitContentWidth + skin.control.leftPadding + skin.control.rightPadding : 0,
                         skin.comboTextWidth + skin.valueInset + skin.arrowRoom)
         when: KanteStyle.themed && skin.comboBox && !skin.control.editable
         restoreMode: Binding.RestoreBindingOrValue

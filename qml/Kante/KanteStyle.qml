@@ -447,6 +447,8 @@ QtObject {
     /** A thin meter (a day's load, progress inside a row). */
     readonly property int meterHeight: Math.max(3, Math.round(Kirigami.Units.gridUnit / 5))
     readonly property int meterRadius: themed ? 0 : Math.floor(meterHeight / 2)
+    /** Narrowest combo box in the Kante style (KanteFieldSkin), 120 px at a grid unit of 18. */
+    readonly property int comboMinimumWidth: unit(120)
     /** A colour swatch in a legend or a menu. */
     readonly property int swatchSize: Math.round(Kirigami.Units.gridUnit * 0.7)
     /** Dash pattern of an edge that runs past its room (ShapePath.dashPattern, in line widths). */
