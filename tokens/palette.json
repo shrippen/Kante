@@ -166,7 +166,26 @@
       "medium": 40,
       "large": 48
     },
-    "cutSmall": 6
+    "cutSmall": 6,
+    "lines": {
+      "border": 1,
+      "mark": 2,
+      "edge": 3,
+      "note": "1 px borders and grid lines, 2 px lines that mark (today, the picked day, the now line, underlines), 3 px the colour edge of an entry (a calendar's or project's colour). Web: --line-border, --line-mark, --line-edge. Apps: KanteStyle.borderWidth, lineWidth, edgeWidth."
+    },
+    "dash": [
+      6,
+      4
+    ]
+  },
+  "levels": {
+    "wash": 0.06,
+    "fill": 0.12,
+    "strongFill": 0.22,
+    "edge": 0.4,
+    "done": 0.6,
+    "dim": 0.5,
+    "note": "Tint levels of a colour that is data (a project's, a calendar's) over the ground: wash (a tray), fill (free time, a draft), strongFill (a planned block), edge (the border of such an area); opacity of something done and of something out of range or minor. Web: --level-wash, --level-fill, --level-strong, --level-edge (color-mix percentages), --level-done, --level-dim. Apps: KanteStyle.washLevel, fillLevel, strongFillLevel, edgeLevel, doneOpacity, dimOpacity."
   },
   "app": {
     "usage": "Qt Quick / Kirigami apps and Plasma widgets (qml/Kante). Surfaces are tints with alpha so a blurred or translucent platform ground shows through; colour only in small opaque areas.",
