@@ -49,6 +49,11 @@ PlasmaComponents3.Button {
     property bool busy: false
     /** Sits on a hard 4 px shadow and presses into it (a big, single action). */
     property bool raised: false
+    /** Removes or resets (1.55): a Normal or Quiet button with the text in the negative
+     *  colour, for a removal that should not outweigh the actions beside it (Destructive
+     *  is the filled red one). Filled buttons keep their ink. Kante style only: System and
+     *  Kante Light keep the platform's button (its styles do not take a label colour). */
+    property bool destructive: false
 
     // Return and Enter press a focused button like Space (1.49, WCAG 2.1.1): Qt Quick
     // Controls take only Space, so keyboard users pressed Return and nothing happened.
@@ -83,8 +88,9 @@ PlasmaComponents3.Button {
         case KantePlasmaButton.Emphasis.Primary: return KanteStyle.primaryTextColor
         case KantePlasmaButton.Emphasis.Destructive: return KanteStyle.onStateColor
         case KantePlasmaButton.Emphasis.Data: return KanteStyle.focusColor
-        case KantePlasmaButton.Emphasis.Quiet: return hovered ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
-        default: return KanteStyle.textColor
+        case KantePlasmaButton.Emphasis.Quiet:
+            return destructive ? KanteStyle.negativeTextColor : hovered ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
+        default: return destructive ? KanteStyle.negativeTextColor : KanteStyle.textColor
         }
     }
     readonly property color kanteFrame: emphasis === KantePlasmaButton.Emphasis.Data
