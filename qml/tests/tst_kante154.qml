@@ -162,10 +162,9 @@ TestCase {
         compare(t[0].shownTip, "Bild und Ton")
     }
 
-    // The band is unit(8) high: a click a few pixels above a segment missed it, below the
-    // 24 px of WCAG 2.5.8.
-    // Band's target is the strip: a click just above it is the page's
-    // (in lmix the inputs sit right there), a click on it picks the page.
+    // Band's target is the strip, 8 px, below the 24 px of WCAG 2.5.8 (README: by choice,
+    // more room would be the page's): a click just above it is the page's (in lmix the
+    // inputs sit right there), a click on it picks the page.
     Component {
         id: overComponent
         MouseArea {
