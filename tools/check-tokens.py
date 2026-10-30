@@ -103,6 +103,12 @@ def check_shared_palette():
     expected += [("gold", gold, "accent", gd["accent"])]
     for group in ("backgrounds", "foregrounds", "semantic", "extra"):
         expected += [("gold", gold, k, v) for k, v in gd[group].items()]
+    # Lines and levels: px and percentages on the web, plain numbers in palette.json.
+    lines, levels = palette["shape"]["lines"], palette["levels"]
+    expected += [(":root", dark, f"line-{k}", f"{v}px") for k, v in lines.items() if k != "note"]
+    expected += [(":root", dark, f"level-{k}", f"{round(levels[n] * 100)}%")
+                 for k, n in (("wash", "wash"), ("fill", "fill"), ("strong", "strongFill"), ("edge", "edge"))]
+    expected += [(":root", dark, f"level-{k}", str(levels[k]).lstrip("0")) for k in ("done", "dim")]
     for block, props, name, value in expected:
         if props.get(name) != value.lower():
             yield f"tokens/palette.json {name} = {value} but tokens/variables.css ({block}) has {props.get(name)}"

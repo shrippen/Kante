@@ -4,13 +4,13 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.57, from lmix's keys overview: KanteDialog's `footerStart` puts the app's own
+ * Kante 1.58, from lmix's keys overview: KanteDialog's `footerStart` puts the app's own
  * buttons at the start of the footer, before the standard buttons, in every style and
  * after a switch at run time. Run: tools/check-qml.sh.
  */
 TestCase {
     id: tc
-    name: "Kante157"
+    name: "Kante158"
     width: 1200
     height: 800
     when: windowShown
