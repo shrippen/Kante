@@ -1,12 +1,13 @@
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Window
 import QtTest
 import Kante
 
 /**
  * Kante 1.58, from lmix's keys overview: KanteDialog's `footerStart` puts the app's own
  * buttons at the start of the footer, before the standard buttons, in every style and
- * after a switch at run time. Run: tools/check-qml.sh.
+ * after a switch at run time, mirrored right to left. Run: tools/check-qml.sh.
  */
 TestCase {
     id: tc
@@ -145,5 +146,50 @@ TestCase {
         const own = d.footerStart[0]
         verify(d.footer.implicitWidth >= own.width + d.standardButton(QQC2.Dialog.Close).width,
                "footer " + d.footer.implicitWidth)
+    }
+
+    // A window laid out right to left (LayoutMirroring, as an app in Arabic or Hebrew
+    // sets it): the dialog's overlay and so the dialog inherit it.
+    Component {
+        id: mirroredComponent
+        Window {
+            property alias dialog: mirroredDialog
+            width: 900
+            height: 600
+            visible: true
+            LayoutMirroring.enabled: true
+            LayoutMirroring.childrenInherit: true
+            KanteDialog {
+                id: mirroredDialog
+                title: "Keys"
+                standardButtons: QQC2.Dialog.Close
+                footerStart: [
+                    KanteButton { text: "Shortcuts…" }
+                ]
+                contentHeight: 40
+                Item { implicitWidth: 300; implicitHeight: 40 }
+            }
+        }
+    }
+
+    function test_rightToLeftTheyStandAtTheRight() {
+        for (const kind of [KanteStyle.Kind.Kante, KanteStyle.Kind.System]) {
+            KanteStyle.kind = kind
+            const w = createTemporaryObject(mirroredComponent, tc)
+            const d = w.dialog
+            d.open()
+            tryCompare(d, "opened", true)
+            verify(d.mirrored, "the dialog is mirrored")
+            const own = d.footerStart[0]
+            const close = d.standardButton(QQC2.Dialog.Close)
+            compare(own.parent.parent, d.footer)
+            const ownLeft = own.mapToItem(d.footer, 0, 0).x
+            const closeRight = close.mapToItem(d.footer, close.width, 0).x
+            verify(ownLeft >= closeRight, "after Close in style " + kind + ": " + ownLeft + " >= " + closeRight)
+            verify(ownLeft + own.width / 2 > d.footer.width / 2, "at the start, on the right")
+            verify(ownLeft + own.width <= d.footer.width - d.footer.rightPadding + 0.5 || ownLeft + own.width <= d.footer.width,
+                   "inside the footer")
+            checkInside(d)
+        }
     }
 }

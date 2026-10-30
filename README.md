@@ -792,7 +792,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 | Element | Web | QML |
 |---|---|---|
-| Footer start | – | `KanteDialog.footerStart`: the app's own buttons (`KanteButton`, usually Quiet) at the start of the footer, before the standard buttons and apart from them, such as lmix's "Shortcuts…" beside Close in its keys overview. In every style (Kante, Kante Light, System) and after a switch at run time; the footer makes room for them. They are no standard buttons: their own `onClicked`, no accept, reject or role (before, an app had to rename a standard button such as Help, which also sends `helpRequested`). The footer grows to their height and shows without a standard button too; a button taken out of `footerStart` leaves the footer |
+| Footer start | – | `KanteDialog.footerStart`: the app's own buttons (`KanteButton`, usually Quiet) at the start of the footer, before the standard buttons and apart from them, such as lmix's "Shortcuts…" beside Close in its keys overview. In every style (Kante, Kante Light, System) and after a switch at run time; the footer makes room for them. Right to left (`LayoutMirroring`, as Kirigami's window sets it for an RTL language) they stand at the right and the standard buttons on the left. They are no standard buttons: their own `onClicked`, no accept, reject or role (before, an app had to rename a standard button such as Help, which also sends `helpRequested`). The footer grows to their height and shows without a standard button too; a button taken out of `footerStart` leaves the footer |
 
 ### Added in Kante 1.56
 
