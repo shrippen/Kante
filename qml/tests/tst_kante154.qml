@@ -164,11 +164,27 @@ TestCase {
 
     // The band is unit(8) high: a click a few pixels above a segment missed it, below the
     // 24 px of WCAG 2.5.8.
-    function test_bandTakesAClickAboveTheStrip() {
+    // Band sits at a window edge (lmix: the bottom), the page right above
+    // it: a click just above the strip is the page's, one below it the
+    // bar's, 24 px in all (WCAG 2.5.8).
+    Component {
+        id: overComponent
+        MouseArea {
+            width: 400
+            height: 100
+            property int clicks: 0
+            onClicked: clicks++
+        }
+    }
+    function test_bandTakesAClickBelowTheStripOnly() {
+        const over = createTemporaryObject(overComponent, tc.Window.contentItem, { y: 0 })
         const b = createTemporaryObject(barComponent, tc.Window.contentItem, { y: 100, density: KantePageBar.Density.Band })
         waitForRendering(b)
         const t = tabs(b)
         mouseClick(t[2], t[2].width / 2, -KanteStyle.unit(7))
+        compare(b.currentIndex, 0)
+        compare(over.clicks, 1)
+        mouseClick(t[2], t[2].width / 2, t[2].height + KanteStyle.unit(15))
         compare(b.currentIndex, 2)
     }
 }

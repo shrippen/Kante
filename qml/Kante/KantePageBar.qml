@@ -312,17 +312,23 @@ FocusScope {
         }
     }
 
-    // Band is unit(8) high, a target of at least 24 px (WCAG 2.5.8) takes
-    // unit(8) above and below it. Here and not on the tabs: the flickable
-    // clips their input to the strip.
-    TapHandler {
-        enabled: bar.band
-        margin: KanteStyle.unit(8)
-        onTapped: (point) => {
-            const at = row.mapFromItem(bar, point.position.x, 0)
-            const hit = row.childAt(at.x, row.height / 2)
-            if (hit && hit.index !== undefined) {
-                bar.select(hit.index)
+    // Band is unit(8) high; for a target of 24 px (WCAG 2.5.8) a click up to
+    // unit(16) below the strip counts too. Below only: Band belongs at a
+    // window edge, the page right above it keeps its own clicks. Here and
+    // not on the tabs: the flickable clips their input to the strip.
+    Item {
+        visible: bar.band
+        anchors.top: parent.top
+        anchors.left: flick.left
+        anchors.right: flick.right
+        height: KanteStyle.unit(24)
+        TapHandler {
+            onTapped: (point) => {
+                const at = row.mapFromItem(parent, point.position.x, 0)
+                const hit = row.childAt(at.x, row.height / 2)
+                if (hit && hit.index !== undefined) {
+                    bar.select(hit.index)
+                }
             }
         }
     }

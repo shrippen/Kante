@@ -44,7 +44,7 @@ Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in
 The page bar can be lower, down to a coloured strip, and the month grid marks its days.
 
 #### New
-- `KantePageBar` gets `density`: Compact (lower, smaller labels; it grows for a small button at its end) and Band (one segment per page, the others half as high; the name as tooltip; a click just above or below it counts, 24 px in all). lmix's operators want the room for their inputs.
+- `KantePageBar` gets `density`: Compact (lower, smaller labels; it grows for a small button at its end) and Band (one segment per page, the others half as high; the name as tooltip; a click just below it counts, 24 px in all). lmix's operators want the room for their inputs.
 - `KanteCalendarGrid` marks days with up to three dots (`dots`) and tints a range of days (`rangeFrom`, `rangeTo`), as Kurrent's Agenda needs for appointments, tasks and the days a view shows.
 
 ![The page bar in Normal, Compact and Band](https://shrippen.github.io/Kante/shots/release-1.54-pagebar.png)
@@ -58,7 +58,7 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kant
 Die Seitenleiste kann niedriger sein, bis hin zu einem Farbband, und das Monatsraster markiert seine Tage.
 
 #### Neu
-- `KantePageBar` bekommt `density`: Compact (niedriger, kleinere Schrift; wächst für einen kleinen Knopf am Ende) und Band (ein Abschnitt je Seite, die übrigen halb so hoch; der Name als Tooltip; ein Klick knapp darüber oder darunter zählt mit, 24 px insgesamt). Wer lmix bedient, braucht den Platz für die Inputs.
+- `KantePageBar` bekommt `density`: Compact (niedriger, kleinere Schrift; wächst für einen kleinen Knopf am Ende) und Band (ein Abschnitt je Seite, die übrigen halb so hoch; der Name als Tooltip; ein Klick knapp darunter zählt mit, 24 px insgesamt). Wer lmix bedient, braucht den Platz für die Inputs.
 - `KanteCalendarGrid` markiert Tage mit bis zu drei Punkten (`dots`) und tönt einen Zeitraum (`rangeFrom`, `rangeTo`), wie ihn Kurrents Agenda für Termine, Aufgaben und die gezeigten Tage braucht.
 
 ![Die Seitenleiste in Normal, Compact und Band](https://shrippen.github.io/Kante/shots/release-1.54-pagebar.png)
