@@ -247,6 +247,26 @@ Rectangle {
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
                     }
                 }
+                // 1.59: a labelled heat grid, hits per string and fret.
+                KanteHeatGrid {
+                    id: galleryHeatGrid
+                    objectName: "galleryHeatGrid"
+                    rowLabels: ["G", "D", "A", "E"]
+                    columnLabels: ["0", "1", "2", "3", "4", "5", "6", "7"]
+                    rowTitle: "Saite"
+                    columnTitle: "Bund"
+                    unit: " %"
+                    minValue: 0
+                    maxValue: 100
+                    legendTitle: "Treffer"
+                    accessibleName: "Treffer je Saite und Bund"
+                    cells: [
+                        [100, 90, 75, 60, null, 40, 20, 0],
+                        [95, 80, { value: 55, tip: "D, Bund 2: 11 von 20" }, 50, 35, null, 15, 5],
+                        [90, 85, 70, 45, 30, 25, 10, null],
+                        [100, 100, 65, 40, 25, 20, 0, 0]
+                    ]
+                }
                 RowLayout {
                     spacing: KanteStyle.unit(20)
                     KanteCurveEditor {

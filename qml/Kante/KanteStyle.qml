@@ -202,6 +202,14 @@ QtObject {
             : [focusColor, warningColor, tagColor, positiveTextColor, disabledTextColor, accentTextColor]
         return colors[((i % colors.length) + colors.length) % colors.length]
     }
+    /**
+     * Heat scale (KanteHeatmap, KanteHeatGrid; web `.heat`): level 0 to 4 as 0 / 22 / 44 / 66 /
+     * 100 % of the focus colour, drawn over the sunken ground.
+     */
+    function heatColor(level) {
+        const l = Math.max(0, Math.min(4, level))
+        return tint(focusColor, l >= 4 ? 1 : l * 0.22)
+    }
     // Map and entity roles, as on the web (--map-marker, --map-route, --entity-fallback).
     /** Pins and markers on a map (cyan). */
     readonly property color mapMarkerColor: focusColor

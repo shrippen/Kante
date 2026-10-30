@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.59.0] — 2026-10-31
+
+### English
+
+A heat grid with labels: rows, columns, a number in every cell and a legend.
+
+#### New
+- `KanteHeatGrid`: rows × columns on the heat scale, with row and column labels, the value as a number in each cell, a legend with the value of each level, a tooltip per cell and keyboard focus (arrows, Enter). Screen readers hear each cell by name. Kontra's fretboard quiz shows its hits per string and fret with it; `KanteHeatmap` stays the unlabelled grid of days.
+
+![Hits per string and fret, a number in every cell, the legend below](https://shrippen.github.io/Kante/shots/release-1.59-heatgrid.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
+
+### Deutsch
+
+Ein Wärmeraster mit Beschriftung: Zeilen, Spalten, eine Zahl in jeder Zelle und eine Legende.
+
+#### Neu
+- `KanteHeatGrid`: Zeilen × Spalten auf der Wärmeskala, mit Zeilen- und Spaltenbeschriftung, dem Wert als Zahl in jeder Zelle, einer Legende mit dem Wert jeder Stufe, einem Tooltip je Zelle und Tastaturfokus (Pfeile, Enter). Screenreader lesen jede Zelle mit Namen vor. Kontras Griffbrett-Quiz zeigt damit seine Treffer je Saite und Bund; `KanteHeatmap` bleibt das unbeschriftete Raster der Tage.
+
+![Treffer je Saite und Bund, eine Zahl in jeder Zelle, darunter die Legende](https://shrippen.github.io/Kante/shots/release-1.59-heatgrid.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
+
 ## [1.58.0] — 2026-10-30
 
 ### English
