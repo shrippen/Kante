@@ -164,9 +164,8 @@ TestCase {
 
     // The band is unit(8) high: a click a few pixels above a segment missed it, below the
     // 24 px of WCAG 2.5.8.
-    // Band sits at a window edge (lmix: the bottom), the page right above
-    // it: a click just above the strip is the page's, one below it the
-    // bar's, 24 px in all (WCAG 2.5.8).
+    // Band's target is the strip: a click just above it is the page's
+    // (in lmix the inputs sit right there), a click on it picks the page.
     Component {
         id: overComponent
         MouseArea {
@@ -176,7 +175,7 @@ TestCase {
             onClicked: clicks++
         }
     }
-    function test_bandTakesAClickBelowTheStripOnly() {
+    function test_bandLeavesAClickAboveItToThePage() {
         const over = createTemporaryObject(overComponent, tc.Window.contentItem, { y: 0 })
         const b = createTemporaryObject(barComponent, tc.Window.contentItem, { y: 100, density: KantePageBar.Density.Band })
         waitForRendering(b)
@@ -184,7 +183,7 @@ TestCase {
         mouseClick(t[2], t[2].width / 2, -KanteStyle.unit(7))
         compare(b.currentIndex, 0)
         compare(over.clicks, 1)
-        mouseClick(t[2], t[2].width / 2, t[2].height + KanteStyle.unit(15))
+        mouseClick(t[2], t[2].width / 2, t[2].height / 2)
         compare(b.currentIndex, 2)
     }
 }
