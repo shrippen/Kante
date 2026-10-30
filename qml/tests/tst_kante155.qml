@@ -17,11 +17,14 @@ TestCase {
     when: windowShown
 
     // Every test in the Kante style, also the first.
+    // KanteStyle is one for all test files: give the next one back the style it had.
+    property int kindBefore: KanteStyle.Kind.System
     function init() {
+        kindBefore = KanteStyle.kind
         KanteStyle.kind = KanteStyle.Kind.Kante
     }
     function cleanup() {
-        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.kind = kindBefore
     }
 
     Component {
