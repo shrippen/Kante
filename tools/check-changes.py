@@ -4,8 +4,9 @@
   - At most three entries in view; the older ones in one `details.changelog-more`, not two
     (a merge of two release branches once left a second one inside the first).
   - The footer names the newest entry's version.
-  - Every lead and point says what its CHANGELOG says (markup, code ticks and pictures aside):
-    the two once drifted apart when a fix changed only one of them.
+  - Each release on the page says what its CHANGELOG section says, lead for lead and point
+    for point, both ways (markup, code ticks and pictures aside): the two once drifted apart
+    when a fix changed only one of them.
 
 Usage: python3 tools/check-changes.py [page.html ...]   (default: docs/index.html,
 docs/knust/index.html; build.sh runs it). Exits 1 on any finding.
@@ -33,23 +34,48 @@ def plain(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def sections(log: Path) -> dict[str, tuple[set[str], set[str]]]:
+    """Per version of the CHANGELOG: its points and its leads."""
+    found: dict[str, tuple[set[str], set[str]]] = {}
+    points: set[str] = set()
+    leads: set[str] = set()
+    for line in log.read_text(encoding="utf-8").splitlines():
+        head = re.match(r"## \[([0-9.]+)\]", line)
+        if head:
+            points, leads = set(), set()
+            found[head.group(1)] = (points, leads)
+        elif not found or not line.strip() or line.startswith(("#", "!", "All changes", "Alle Änderungen")):
+            continue
+        elif line.startswith("- "):
+            points.add(plain(line[2:]))
+        else:
+            leads.add(plain(line))
+    return found
+
+
 def drift(html: str, log: Path) -> list[str]:
-    """Leads and points of the page that its CHANGELOG does not say so."""
-    lines = log.read_text(encoding="utf-8").splitlines()
-    points = {plain(line[2:]) for line in lines if line.startswith("- ")}
-    leads = {plain(line) for line in lines if line and not line.startswith(("#", "-", "!"))}
+    """Where a release on the page and its CHANGELOG section say different things, both ways."""
+    logged = sections(log)
     found = []
     entries = re.finditer(
         r'<li class="release" id="v([0-9.]+)">(.*?)</li>\s*(?=<li class="release"|</ol>)', html, re.S
     )
     for entry in entries:
         version, body = entry.groups()
-        for point in re.findall(r"<li>(.*?)</li>", body, re.S):
-            if plain(point) not in points:
-                found.append(f"v{version}: not in {log.name}: {plain(point)[:70]}")
-        for lead in re.findall(r'<p class="release-lead"[^>]*>(.*?)</p>', body, re.S):
-            if plain(lead) not in leads:
-                found.append(f"v{version}: lead not in {log.name}: {plain(lead)[:70]}")
+        if version not in logged:
+            found.append(f"v{version}: no section in {log.name}")
+            continue
+        points, leads = logged[version]
+        shown_points = {plain(p) for p in re.findall(r"<li>(.*?)</li>", body, re.S)}
+        shown_leads = {plain(p) for p in re.findall(r'<p class="release-lead"[^>]*>(.*?)</p>', body, re.S)}
+        for point in sorted(shown_points - points):
+            found.append(f"v{version}: not in {log.name}: {point[:70]}")
+        for point in sorted(points - shown_points):
+            found.append(f"v{version}: not on the page: {point[:70]}")
+        for lead in sorted(shown_leads - leads):
+            found.append(f"v{version}: lead not in {log.name}: {lead[:70]}")
+        for lead in sorted(leads - shown_leads):
+            found.append(f"v{version}: lead not on the page: {lead[:70]}")
     return found
 
 
