@@ -45,16 +45,23 @@ QQC2.Dialog {
     readonly property real kanteRoomWidth: control.parent && control.parent.Window.width > 0 ? control.parent.Window.width : Infinity
     readonly property real kanteRoomHeight: control.parent && control.parent.Window.height > 0 ? control.parent.Window.height : Infinity
     // Only for a size step: a width or height set here counts as the app's, and Qt no longer
-    // fits a Fit dialog taller than the window into it.
+    // fits a Fit dialog taller than the window into it. Back to Fit they are reset, not
+    // restored: a restored value would count as the app's too.
     Binding on width {
         when: control.sizeWidth > 0
         value: Math.min(control.sizeWidth, control.kanteRoomWidth * 0.9)
-        restoreMode: Binding.RestoreBindingOrValue
+        restoreMode: Binding.RestoreNone
     }
     Binding on height {
         when: control.sizeWidth > 0
         value: Math.min(control.implicitHeight, control.kanteRoomHeight * 0.9)
-        restoreMode: Binding.RestoreBindingOrValue
+        restoreMode: Binding.RestoreNone
+    }
+    onSizeWidthChanged: {
+        if (sizeWidth === 0) {
+            width = undefined
+            height = undefined
+        }
     }
     /** Text of the accept button (Ok, Save, Apply, Yes); "": the standard one. */
     property string acceptText: ""

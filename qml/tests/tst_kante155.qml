@@ -66,6 +66,20 @@ TestCase {
         verify(d.height <= tc.Window.height, "height " + d.height + " in " + tc.Window.height)
     }
 
+    // Back from a size step to Fit at run time: the restored width and
+    // height counted as the app's, and Qt no longer fitted the dialog in.
+    function test_backToFitLeavesTheSizeToQtAgain() {
+        const d = createTemporaryObject(dialogComponent, tc, { size: KanteDialog.Size.Small })
+        d.open()
+        tryCompare(d, "opened", true)
+        d.size = KanteDialog.Size.Fit
+        d.close()
+        tryCompare(d, "visible", false)
+        d.open()
+        tryCompare(d, "opened", true)
+        verify(d.height <= tc.Window.height, "height " + d.height + " in " + tc.Window.height)
+    }
+
     function test_destructiveIsRed() {
         const d = createTemporaryObject(dialogComponent, tc, { destructive: true, size: KanteDialog.Size.Small })
         d.open()
