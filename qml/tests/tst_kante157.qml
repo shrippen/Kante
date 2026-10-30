@@ -44,6 +44,56 @@ TestCase {
         }
     }
 
+    Component {
+        id: bareComponent
+        KanteDialog {
+            title: "Keys"
+            standardButtons: QQC2.Dialog.NoButton
+            footerStart: [
+                KanteButton { text: "Shortcuts…" }
+            ]
+            contentHeight: 40
+            Item { implicitWidth: 300; implicitHeight: 40 }
+        }
+    }
+
+    // The own buttons lie inside the footer and the footer inside the dialog.
+    function checkInside(d) {
+        const own = d.footerStart[0]
+        const top = own.mapToItem(d.footer, 0, 0).y
+        verify(top >= 0, "top " + top)
+        verify(top + own.height <= d.footer.height, "bottom " + (top + own.height) + " <= " + d.footer.height)
+        const bottom = own.mapToItem(d.contentItem.parent, 0, own.height).y
+        const dialogBottom = d.footer.mapToItem(d.contentItem.parent, 0, d.footer.height).y
+        verify(bottom <= dialogBottom, "in the dialog")
+        verify(d.height >= d.footer.y + d.footer.height - 0.5, "dialog " + d.height + " holds the footer")
+    }
+
+    function test_withoutStandardButtonsTheFooterHoldsThem() {
+        for (const kind of [KanteStyle.Kind.Kante, KanteStyle.Kind.System]) {
+            KanteStyle.kind = kind
+            const d = createTemporaryObject(bareComponent, tc)
+            d.open()
+            tryCompare(d, "opened", true)
+            verify(d.footer && d.footer.visible, "a footer in style " + kind)
+            checkInside(d)
+        }
+    }
+
+    function test_removedButtonsLeaveTheFooter() {
+        const d = openDialog()
+        const a = d.footerStart[0]
+        const b = Qt.createQmlObject('import Kante; KanteButton { text: "More" }', tc)
+        d.footerStart = [a, b]
+        compare(b.parent.parent, d.footer)
+        d.footerStart = [a]
+        verify(b.parent === null || b.parent.parent !== d.footer, "b out of the footer")
+        compare(a.parent.parent, d.footer)
+        d.footerStart = []
+        verify(a.parent === null || a.parent.parent !== d.footer, "a out of the footer")
+        b.destroy()
+    }
+
     function openDialog() {
         pressed = 0
         const d = createTemporaryObject(dialogComponent, tc)
