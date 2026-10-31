@@ -215,6 +215,59 @@ TestCase {
         verify(!g.activeFocusOnTab)
     }
 
+    // Gapped column labels (only every third fret written): the name says the real fret.
+    function test_gappedLabelsKeepTheRealName() {
+        const g = make()
+        g.columnLabels = ["0", "", "", "3"]
+        compare(g.cellAt(0, 1).Accessible.name, "G: 75 %", "no invented index")
+        compare(g.cellAt(0, 1).QQC2.ToolTip.text, "G: 75 %")
+        g.columnNames = ["Bund 0", "Bund 1", "Bund 2", "Bund 3"]
+        compare(g.cellAt(0, 1).Accessible.name, "G, Bund 1: 75 %")
+        compare(g.cellAt(0, 3).Accessible.name, "G, Bund 3: 0 %")
+        g.rowNames = ["G-Saite"]
+        compare(g.cellAt(0, 1).Accessible.name, "G-Saite, Bund 1: 75 %")
+        compare(g.cellAt(1, 1).Accessible.name, "D, Bund 1: 25 %", "label where no name")
+    }
+
+    // Cells shrink while the focus sat on a cell that goes away: Tab still lands on a cell.
+    function test_shrinkKeepsAFocusedCell() {
+        activations = 0
+        const chain = createTemporaryObject(chainComponent, tc.Window.contentItem)
+        const g = chain.grid
+        g.columnLabels = []
+        g.cells = [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]
+        waitForRendering(chain)
+        chain.before.forceActiveFocus()
+        keyClick(Qt.Key_Tab)
+        keyClick(Qt.Key_End, Qt.ControlModifier)
+        compare([g.currentRow, g.currentColumn], [3, 5])
+        keyClick(Qt.Key_Tab)
+        verify(chain.after.activeFocus)
+        g.rowLabels = ["G", "D"]
+        g.cells = [[1, 2, 3], [1, 2, 3]]
+        waitForRendering(chain)
+        compare([g.currentRow, g.currentColumn], [1, 2], "clamped")
+        keyClick(Qt.Key_Backtab)
+        tryVerify(() => g.cellAt(1, 2) && g.cellAt(1, 2).activeFocus, 1000, "focus on a valid cell")
+        keyClick(Qt.Key_Left)
+        verify(g.cellAt(1, 1).activeFocus, "arrows work")
+        // Shrink while a cell that goes away holds the focus: it moves on, arrows still work.
+        keyClick(Qt.Key_End)
+        verify(g.cellAt(1, 2).activeFocus)
+        g.cells = [[1, 2], [1, 2]]
+        tryVerify(() => g.cellAt(1, 1) && g.cellAt(1, 1).activeFocus, 1000, "focus moves to a valid cell")
+        keyClick(Qt.Key_Up)
+        verify(g.cellAt(0, 1).activeFocus)
+    }
+
+    // Row title and column labels share one baseline.
+    function test_headerBaseline() {
+        const g = make()
+        const title = findAll(g, c => c.text === "Saite")[0]
+        const col = named(g, "kanteHeatColumnLabel")[0]
+        fuzzyCompare(title.mapToItem(g, 0, title.baselineOffset).y, col.mapToItem(g, 0, col.baselineOffset).y, 1)
+    }
+
     // The number reads on every level, dark and Leinen: in its ink or on its plate.
     function test_textReadsOnEveryLevel() {
         for (const dark of [true, false]) {

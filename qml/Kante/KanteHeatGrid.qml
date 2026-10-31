@@ -18,6 +18,8 @@ import "."
  *   columnLabels   ["0", "1", …, "12"]; "" leaves one out
  *   rowTitle       name of the rows, above their labels (e.g. "Saite"); optional
  *   columnTitle    name of the columns, above their labels (e.g. "Bund"); optional
+ *   rowNames, columnNames   names in the accessible names and tooltips (e.g. "Bund 1" where
+ *                  the label is ""); default the label; with neither, that part is left out
  *   cells          one list per row; an entry is a number, null (no data) or
  *                  {value, label, tip, accessibleName}: `label` replaces the number in the
  *                  cell, `tip` is the tooltip, `accessibleName` what a screen reader says
@@ -45,6 +47,9 @@ FocusScope {
     property var columnLabels: []
     property string rowTitle: ""
     property string columnTitle: ""
+    /** Row and column names for screen readers and tooltips; default the labels. */
+    property var rowNames: []
+    property var columnNames: []
     property var cells: []
     property real minValue: NaN
     property real maxValue: NaN
@@ -176,11 +181,18 @@ FocusScope {
         }
         return Math.max(0, Math.min(4, Math.round((v - scaleMin) / span * 4)))
     }
+    /** Entry i of `names`, else of `labels`, else "" (no invented index: a gap stays a gap). */
+    function pick(names, labels, i) {
+        if (names && i < names.length && String(names[i]) !== "") {
+            return String(names[i])
+        }
+        return labels && i < labels.length ? String(labels[i]) : ""
+    }
     function rowName(r) {
-        return r < rowLabels.length ? String(rowLabels[r]) : String(r + 1)
+        return pick(rowNames, rowLabels, r)
     }
     function columnName(c) {
-        return c < columnLabels.length && String(columnLabels[c]) !== "" ? String(columnLabels[c]) : String(c + 1)
+        return pick(columnNames, columnLabels, c)
     }
     /** What a screen reader says for a cell; also the default tooltip. */
     function nameOf(r, c) {
@@ -188,7 +200,9 @@ FocusScope {
         if (e && typeof e === "object" && e.accessibleName) {
             return String(e.accessibleName)
         }
-        return rowName(r) + ", " + columnName(c) + ": " + textOf(r, c)
+        // "G, 3: 80 %"; without a name the part is left out: "G: 80 %", "80 %".
+        const where = [rowName(r), columnName(c)].filter(n => n !== "").join(", ")
+        return where !== "" ? where + ": " + textOf(r, c) : textOf(r, c)
     }
     function tipOf(r, c) {
         const e = entryOf(r, c)
@@ -243,6 +257,35 @@ FocusScope {
         }
     }
 
+    /** Keeps the current cell inside the grid when the cells shrink, so a cell holds the focus. */
+    function clampCurrent() {
+        currentRow = Math.max(0, Math.min(rowCount - 1, currentRow))
+        currentColumn = Math.max(0, Math.min(columnCount - 1, currentColumn))
+    }
+    onRowCountChanged: clampCurrent()
+    onColumnCountChanged: clampCurrent()
+    // The scope itself holds the focus only when no cell took it (e.g. its cell went away):
+    // hand it on, and send keys there.
+    onActiveFocusChanged: {
+        if (activeFocus) {
+            Qt.callLater(focusCurrent)
+        }
+    }
+    function focusCurrent() {
+        const cell = cellAt(currentRow, currentColumn)
+        if (activeFocus && cell && !cell.activeFocus) {
+            cell.forceActiveFocus(Qt.TabFocusReason)
+        }
+    }
+    Keys.onPressed: function (event) {
+        const cell = cellAt(currentRow, currentColumn)
+        if (!interactive || !cell || cell.activeFocus) {
+            return
+        }
+        cell.forceActiveFocus(Qt.TabFocusReason)
+        event.accepted = true
+    }
+
     implicitWidth: body.implicitWidth
     implicitHeight: body.implicitHeight
 
@@ -286,8 +329,10 @@ FocusScope {
         }
         Row {
             spacing: grid.spacing
+            // Row title and column labels on one baseline (their fonts differ).
             Text {
                 width: grid.labelWidth
+                y: Math.max(0, labelMetrics.ascent - titleMetrics.ascent)
                 text: grid.rowTitle
                 color: KanteStyle.mutedTextColor
                 font: KanteStyle.labelFont()
@@ -298,6 +343,7 @@ FocusScope {
                 delegate: Text {
                     required property int index
                     objectName: "kanteHeatColumnLabel"
+                    y: Math.max(0, titleMetrics.ascent - labelMetrics.ascent)
                     width: grid.cellWidth
                     horizontalAlignment: Text.AlignHCenter
                     text: index < grid.columnLabels.length ? String(grid.columnLabels[index]) : ""
