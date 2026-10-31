@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.59.0] — 2026-10-31
+
+### English
+
+A window that holds a Kante dialog goes down without a crash.
+
+#### Fixed
+- An app crashed when a window with a `KanteDialog`, or a dialog with `KanteDialogSkin`, in it went down and the garbage collector took it: the dialog gave its old background back while Qt was already deleting it. lmix had to take its page windows down by hand for it.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-159
+
+### Deutsch
+
+Ein Fenster mit einem Kante-Dialog darin geht ohne Absturz zu.
+
+#### Behoben
+- Eine App stürzte ab, wenn ein Fenster mit einem `KanteDialog` oder einem Dialog mit `KanteDialogSkin` darin abgebaut wurde und der Garbage Collector es nahm: Der Dialog gab seinen alten Hintergrund zurück, während Qt ihn schon löschte. lmix musste seine Seitenfenster dafür von Hand abbauen.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-159
+
 ## [1.58.0] — 2026-10-30
 
 ### English

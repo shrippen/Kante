@@ -131,6 +131,22 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.59.0">
+      <div class="release-head"><b class="release-version">1.59</b><time datetime="2026-10-31">31 Oct 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A window that holds a Kante dialog goes down without a crash.</p>
+        <p class="release-lead" lang="de">Ein Fenster mit einem Kante-Dialog darin geht ohne Absturz zu.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>An app crashed when a window with a <code>KanteDialog</code>, or a dialog with <code>KanteDialogSkin</code>, in it went down and the garbage collector took it: the dialog gave its old background back while Qt was already deleting it. lmix had to take its page windows down by hand for it.</li>
+          </ul>
+          <ul lang="de">
+            <li>Eine App stürzte ab, wenn ein Fenster mit einem <code>KanteDialog</code> oder einem Dialog mit <code>KanteDialogSkin</code> darin abgebaut wurde und der Garbage Collector es nahm: Der Dialog gab seinen alten Hintergrund zurück, während Qt ihn schon löschte. lmix musste seine Seitenfenster dafür von Hand abbauen.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-159"><span lang="en">All changes in 1.59 →</span><span lang="de">Alle Änderungen in 1.59 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.58.0">
       <div class="release-head"><b class="release-version">1.58</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
@@ -169,6 +185,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157"><span lang="en">All changes in 1.57 →</span><span lang="de">Alle Änderungen in 1.57 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.56.0">
       <div class="release-head"><b class="release-version">1.56</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
@@ -204,9 +223,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-156"><span lang="en">All changes in 1.56 →</span><span lang="de">Alle Änderungen in 1.56 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.55.0">
       <div class="release-head"><b class="release-version">1.55</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
@@ -1015,7 +1031,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.58.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.59.0</a></p></div>
 </footer>
 
 <script>
