@@ -69,7 +69,8 @@ FocusScope {
     // Whether a popup stacked above the row (a sheet, a dialog, a drawer) lies at scene point
     // `at` (1.61.1). The passive tap below also sees presses that a TapHandler in the popup took.
     // Only popups count: Kirigami and apps keep other items in the overlay (passive
-    // notifications, toasts). A row inside a popup only yields to popups opened after its own.
+    // notifications, toasts). A row inside a popup only yields to popups drawn above its own
+    // (higher z, or the same z and opened later).
     function underPopup(at) {
         const overlay = QQC2.Overlay.overlay
         if (!overlay || !overlay.visible) {
@@ -82,9 +83,12 @@ FocusScope {
                 break
             }
         }
-        for (let i = own + 1; i < overlay.children.length; i++) {
+        const ownZ = own >= 0 ? overlay.children[own].z : -Infinity
+        for (let i = 0; i < overlay.children.length; i++) {
             const c = overlay.children[i]
-            if (c.visible && c.opacity > 0 && String(c).startsWith("QQuickPopupItem")
+            // Above the row's own popup: a higher z, or the same z and opened later (drawn later).
+            const above = c.z > ownZ || (c.z === ownZ && i > own)
+            if (i !== own && above && c.visible && c.opacity > 0 && String(c).startsWith("QQuickPopupItem")
                     && c.contains(c.mapFromItem(null, at.x, at.y))) {
                 return true
             }

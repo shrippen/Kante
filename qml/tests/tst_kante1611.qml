@@ -170,4 +170,20 @@ TestCase {
         mouseClick(s.row, 200, s.row.height / 2)
         compare(rowSpy.count, 1, "the tap was the popup's above the drawer")
     }
+
+    // The row's popup has a higher z (as Kirigami's dialogs, z 300): a popup opened later but
+    // drawn below it does not take the row's taps.
+    function test_higherPopupKeepsItsRowsTaps() {
+        var s = createTemporaryObject(drawerScene, stage())
+        s.drawer.z = 10
+        s.popup.modal = false
+        s.drawer.open()
+        tryVerify(() => s.drawer.opened)
+        s.popup.open()
+        tryVerify(() => s.popup.opened)
+        rowSpy.clear()
+        rowSpy.target = s.row
+        mouseClick(s.row, 200, s.row.height / 2)
+        compare(rowSpy.count, 1, "the drawer is drawn above the later popup")
+    }
 }
