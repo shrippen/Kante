@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import "."
 
@@ -66,6 +67,27 @@ FocusScope {
     activeFocusOnTab: true
 
     /** A tap: takes the focus (`focusOnClick`) and emits `clicked`. */
+    // Whether a popup above the row (a sheet, a dialog, its dimmed overlay) lies at scene point
+    // `at`: the passive tap below also sees presses that a handler in the popup took (1.61.1).
+    function underPopup(at) {
+        const overlay = QQC2.Overlay.overlay
+        if (!overlay || !overlay.visible) {
+            return false
+        }
+        for (let p = row.parent; p; p = p.parent) {
+            if (p === overlay) {
+                return false
+            }
+        }
+        for (let i = 0; i < overlay.children.length; i++) {
+            const c = overlay.children[i]
+            if (c.visible && c.opacity > 0 && c.contains(c.mapFromItem(null, at.x, at.y))) {
+                return true
+            }
+        }
+        return false
+    }
+
     function activate() {
         if (focusOnClick) {
             forceActiveFocus()
@@ -230,7 +252,8 @@ FocusScope {
             const at = point.scenePosition
             const from = point.scenePressPosition
             const moved = Math.hypot(at.x - from.x, at.y - from.y)
-            if (moved > Qt.styleHints.startDragDistance || !row.contains(row.mapFromItem(null, at.x, at.y))) {
+            if (moved > Qt.styleHints.startDragDistance || !row.contains(row.mapFromItem(null, at.x, at.y))
+                    || row.underPopup(from)) {
                 return
             }
             row.activate()

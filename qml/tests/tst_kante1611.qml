@@ -1,0 +1,92 @@
+import QtQuick
+import QtQuick.Controls as QQC2
+import QtQuick.Window
+import QtTest
+import Kante
+
+/**
+ * Kante 1.61.1: a KanteListRow under a modal popup (a sheet, a dialog) takes no taps meant for
+ * the popup. Its passive tap handler saw them anyway (Mitori: a tap on the rating in the
+ * technique sheet also opened the row underneath). Run: tools/check-qml.sh.
+ */
+TestCase {
+    id: tc
+    name: "Kante1611"
+    width: 400
+    height: 400
+    when: windowShown
+
+    function stage() {
+        return tc.Window.contentItem
+    }
+
+    Component {
+        id: scene
+        Item {
+            property alias row: row
+            property alias popup: popup
+            property alias button: button
+            width: 400
+            height: 400
+            KanteListRow { id: row; width: 400; y: 100; text: "Under the sheet" }
+            QQC2.Popup {
+                id: popup
+                modal: true
+                x: 50; y: 60; width: 300; height: 120
+                closePolicy: QQC2.Popup.NoAutoClose
+                // Like KanteLevelPicker's cells: a TapHandler that only grabs passively at first.
+                Rectangle {
+                    id: button
+                    anchors.fill: parent
+                    property int taps: 0
+                    TapHandler { onTapped: button.taps++ }
+                }
+            }
+        }
+    }
+    SignalSpy { id: rowSpy; signalName: "clicked" }
+
+    function test_rowIgnoresTapsOnAModalPopup() {
+        var s = createTemporaryObject(scene, stage())
+        rowSpy.clear()
+        rowSpy.target = s.row
+        mouseClick(s.row, 200, s.row.height / 2)
+        compare(rowSpy.count, 1, "without a popup the row takes its tap")
+        s.popup.open()
+        tryVerify(() => s.popup.opened)
+        mouseClick(s.row, 200, s.row.height / 2)        // lands on the popup, above the row
+        compare(rowSpy.count, 1, "the tap was the popup's")
+        compare(s.button.taps, 1)
+        mouseClick(s.row, 10, s.row.height / 2)         // beside the popup, on its dimmed overlay
+        compare(rowSpy.count, 1, "a modal popup blocks the rest of the window too")
+        s.popup.close()
+        tryVerify(() => !s.popup.visible)
+        mouseClick(s.row, 200, s.row.height / 2)
+        compare(rowSpy.count, 2, "after the popup closed the row takes taps again")
+    }
+
+    Component {
+        id: inPopup
+        Item {
+            property alias row: row
+            property alias popup: popup
+            width: 400
+            height: 400
+            QQC2.Popup {
+                id: popup
+                modal: true
+                x: 0; y: 0; width: 400; height: 200
+                KanteListRow { id: row; width: 380; text: "In the sheet" }
+            }
+        }
+    }
+    function test_rowInsideAPopupStillWorks() {
+        var s = createTemporaryObject(inPopup, stage())
+        s.popup.open()
+        tryVerify(() => s.popup.opened)
+        rowSpy.clear()
+        rowSpy.target = s.row
+        mouseClick(s.row, 100, s.row.height / 2)
+        compare(rowSpy.count, 1)
+    }
+}
