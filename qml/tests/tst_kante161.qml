@@ -31,6 +31,8 @@ TestCase {
         compare(KanteStyle.levelColor(0), KanteStyle.sunkenColor)
         compare(KanteStyle.levelColor(4), KanteStyle.focusColor)
         compare(KanteStyle.levelColor(9), KanteStyle.focusColor, "above the top: full")
+        compare(KanteStyle.levelColor(NaN), KanteStyle.sunkenColor, "no number: the ground")
+        compare(KanteStyle.levelColor(undefined), KanteStyle.sunkenColor)
         var steps = [1, 2, 3].map(l => KanteStyle.levelColor(l).a)
         verify(steps[0] < steps[1] && steps[1] < steps[2] && steps[2] < 1, "even steps up: " + steps)
         fuzzyCompare(steps[0], 0.22, 0.005)
@@ -75,13 +77,19 @@ TestCase {
         compare(it[1].Accessible.name, "seen")
         compare(it[0].children[0].color, KanteStyle.levelColor(4))
         compare(it[0].children[0].radius, 0, "square key in Kante")
+        compare(it[0].children[0].width, KanteStyle.swatchSize)
+        // The model reads style colours: a new style makes new items.
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        compare(items(legend)[0].children[0].radius > 0, KanteStyle.markerRadius > 0, "the key's shape as markerRadius")
         KanteStyle.kind = KanteStyle.Kind.System
-        verify(it[0].children[0].radius > 0, "round key in System")
+        verify(items(legend)[0].children[0].radius > 0, "round key in System")
     }
     function test_legendWraps() {
         var legend = createTemporaryObject(legendComponent, stage(), { width: 60 })
         var it = items(legend)
         verify(it[1].y > it[0].y, "narrow: one item per line")
+        var long = createTemporaryObject(legendComponent, stage(), { width: 80, model: [{ color: "red", text: "a rather long word for a narrow legend" }] })
+        verify(long.childrenRect.width <= 80.5, "a long word wraps inside (" + long.childrenRect.width + ")")
     }
 
     Component {

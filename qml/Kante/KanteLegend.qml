@@ -8,7 +8,9 @@ import "."
  *
  *   model   [{color, text}, …], drawn in this order; an item may carry `value` ("3"), shown
  *           before the word
- *   keySize the square (Kante styles) or round (System) key: KanteStyle.markerSize × 2
+ *   keySize the key, KanteStyle.swatchSize; square in the Kante style, round elsewhere (as
+ *           markerRadius)
+ * A word longer than the legend is wide wraps under its key.
  *
  * Screen readers hear each item as "value text".
  */
@@ -16,7 +18,7 @@ Flow {
     id: legend
 
     property var model: []
-    property real keySize: KanteStyle.markerSize * 2
+    property real keySize: KanteStyle.swatchSize
 
     spacing: KanteStyle.unit(12)
 
@@ -34,13 +36,15 @@ Flow {
                 anchors.verticalCenter: parent.verticalCenter
                 width: legend.keySize
                 height: legend.keySize
-                radius: KanteStyle.active ? 0 : width / 2
+                radius: KanteStyle.markerRadius > 0 ? width / 2 : 0
                 color: item.modelData.color || KanteStyle.sunkenColor
                 border.width: KanteStyle.borderWidth
                 border.color: KanteStyle.frameColor
             }
             Text {
                 anchors.verticalCenter: parent.verticalCenter
+                width: legend.width > 0 ? Math.min(implicitWidth, legend.width - legend.keySize - item.spacing) : implicitWidth
+                wrapMode: Text.Wrap
                 text: item.words
                 font: KanteStyle.smallFont
                 color: KanteStyle.mutedTextColor

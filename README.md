@@ -792,8 +792,8 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 | Element | Web | QML |
 |---|---|---|
-| Level colour | – | `KanteStyle.levelColor(level, count, base)`: the colour of a level 0..`count` (4) on a scale, as `KanteHeatmap` draws it (which now uses it): 0 the sunken ground, then even steps of `base` (the focus colour unless given) up to full. For shares by level, such as how many techniques of a grade sit at each rating in Mitori |
-| Legend | – | `KanteLegend`: a key and a word per item (`model` [{color, text, value}]), wrapping onto more lines when narrow; the key square in the Kante styles, round in System; screen readers hear "value text". Every chart without axes needs one |
+| Level colour | – | `KanteStyle.levelColor(level, count, base)`: the colour of a level 0..`count` (4) on a scale, as `KanteHeatmap` draws it (which now uses it): 0 (or no number) the sunken ground, then `base` (the focus colour unless given) in steps of 0.88 / `count` opacity, full at `count`. For shares by level, such as how many techniques of a grade sit at each rating in Mitori |
+| Legend | – | `KanteLegend`: a key and a word per item (`model` [{color, text, value}]), wrapping onto more lines when narrow (a long word under its key); the key `swatchSize`, square in the Kante style and round elsewhere like `markerRadius`; screen readers hear "value text". Every chart without axes needs one |
 | Part tooltips | – | `KanteProgressBar.parts`: a part's `text` ("5 sure") shows as its tooltip on hover and names it for screen readers |
 
 ### Added in Kante 1.60
