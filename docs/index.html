@@ -131,6 +131,29 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.61.0">
+      <div class="release-head"><b class="release-version">1.61</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Shares by level get colours from one scale and a legend that explains them.</p>
+        <p class="release-lead" lang="de">Anteile je Stufe bekommen Farben aus einer Skala und eine Legende, die sie erklärt.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteLegend</code> explains a chart: a key and a word per item, wrapping when narrow.</li>
+            <li><code>KanteStyle.levelColor</code> gives the colour of a level on a scale, the same as the heatmap's, for shares by level.</li>
+            <li>Parts of a stacked <code>KanteProgressBar</code> show their <code>text</code> as a tooltip and name it for screen readers.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteLegend</code> erklärt ein Diagramm: ein Farbfeld und ein Wort je Eintrag, bei wenig Platz umbrochen.</li>
+            <li><code>KanteStyle.levelColor</code> liefert die Farbe einer Stufe auf einer Skala, dieselbe wie in der Heatmap, für Anteile je Stufe.</li>
+            <li>Teile einer gestapelten <code>KanteProgressBar</code> zeigen ihren <code>text</code> als Tooltip und nennen ihn Bildschirmlesern.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.61-legend.png" alt="Kante in its light (Leinen) palette: the label AIKIDO · 5. KYU · 20 TECHNIKEN, a bar in four shades of teal from dark to pale and the rest sunken, below it the legend 2 prüfungsreif, 5 sicher, 3 mit Hilfe, 4 gesehen, 6 offen with square keys" loading="lazy"><figcaption><span lang="en">Shares by level and their legend</span><span lang="de">Anteile je Stufe und ihre Legende</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161"><span lang="en">All changes in 1.61 →</span><span lang="de">Alle Änderungen in 1.61 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.60.0">
       <div class="release-head"><b class="release-version">1.60</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -181,6 +204,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159"><span lang="en">All changes in 1.59 →</span><span lang="de">Alle Änderungen in 1.59 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.58.0">
       <div class="release-head"><b class="release-version">1.58</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
@@ -200,9 +226,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-158"><span lang="en">All changes in 1.58 →</span><span lang="de">Alle Änderungen in 1.58 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.57.0">
       <div class="release-head"><b class="release-version">1.57</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
@@ -1065,7 +1088,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.60.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.61.0</a></p></div>
 </footer>
 
 <script>
