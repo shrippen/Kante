@@ -55,12 +55,15 @@ TestCase {
         compare(dots.Accessible.name, "0 / 4")
     }
 
+    // The level buttons: children of the picker's row.
     function cells(picker) {
-        var row = picker.children[1]
         var list = []
-        for (var i = 0; i < row.children.length; i++) {
-            if (row.children[i].level !== undefined) {
-                list.push(row.children[i])
+        for (var r = 0; r < picker.children.length; r++) {
+            var row = picker.children[r]
+            for (var i = 0; i < row.children.length; i++) {
+                if (row.children[i].level !== undefined) {
+                    list.push(row.children[i])
+                }
             }
         }
         return list
@@ -111,8 +114,58 @@ TestCase {
 
     function test_cellsMakeRoomForTheWidestWord() {
         var picker = createTemporaryObject(pickerComponent, stage(), { width: undefined })
-        verify(picker.cellWidth > KanteStyle.unit(56) || picker.implicitWidth >= 4 * KanteStyle.unit(56))
-        var long = createTemporaryObject(pickerComponent, stage(), { names: ["", "a", "b", "c", "a very long word for four"] })
-        verify(long.implicitWidth > picker.implicitWidth)
+        var wide = createTemporaryObject(pickerComponent, stage(), { width: undefined, names: ["", "a", "b", "c", "a very long word for four"] })
+        verify(wide.implicitWidth > picker.implicitWidth, "a longer word widens every cell")
+        // By pixels, not letters: nine wide letters need more room than eleven narrow ones (in
+        // System's proportional font; Kante's labels are monospaced).
+        KanteStyle.kind = KanteStyle.Kind.System
+        var byPixels = createTemporaryObject(pickerComponent, stage(), { width: undefined, names: ["", "iiiiiiiiiii", "WWWWWWWWW", "", ""] })
+        var widest = createTemporaryObject(pickerComponent, stage(), { width: undefined, names: ["", "WWWWWWWWW", "", "", ""] })
+        tryCompare(byPixels, "cellWidth", widest.cellWidth)
+    }
+
+    // Narrower than its words: each word stays inside its button.
+    function test_narrowKeepsWordsInside() {
+        var picker = createTemporaryObject(pickerComponent, stage(), { width: 240, value: 4, names: ["offen", "gesehen", "mit Hilfe", "sicher", "prüfungsreif"] })
+        waitForRendering(picker)
+        var c = cells(picker)
+        for (var i = 0; i < c.length; i++) {
+            var word = c[i].children[0].children[1]
+            verify(word.paintedWidth <= c[i].width, "word " + (i + 1) + " fits (" + word.paintedWidth + " > " + c[i].width + ")")
+        }
+    }
+
+    // Right to left: the arrow keys stay within 1..count.
+    Component {
+        id: mirroredPicker
+        Item {
+            property alias picker: inner
+            width: 400; height: 60
+            LayoutMirroring.enabled: true
+            LayoutMirroring.childrenInherit: true
+            KanteLevelPicker { id: inner; anchors.fill: parent; names: tc.words }
+        }
+    }
+    function test_rightToLeftStaysInRange() {
+        var holder = createTemporaryObject(mirroredPicker, stage())
+        var picker = holder.picker
+        picker.forceActiveFocus()
+        for (var i = 0; i < 6; i++) {
+            keyClick(Qt.Key_Left)
+        }
+        compare(picker.focusLevel, 4)
+        for (i = 0; i < 8; i++) {
+            keyClick(Qt.Key_Right)
+        }
+        compare(picker.focusLevel, 1)
+    }
+
+    // The dots are square in both Kante styles, round in System.
+    function test_dotShapePerStyle() {
+        var dots = createTemporaryObject(dotsComponent, stage(), { value: 2 })
+        KanteStyle.kind = KanteStyle.Kind.KanteLight
+        compare(dots.children[0].radius, 0, "Kante Light: square")
+        KanteStyle.kind = KanteStyle.Kind.System
+        verify(dots.children[0].radius > 0, "System: round")
     }
 }

@@ -34,7 +34,7 @@ Row {
             readonly property bool filled: index < dots.value
             width: dots.dotSize
             height: dots.dotSize
-            radius: KanteStyle.themed ? 0 : width / 2
+            radius: KanteStyle.active ? 0 : width / 2
             color: filled ? dots.color : KanteStyle.sunkenColor
             border.width: filled ? 0 : KanteStyle.borderWidth
             border.color: KanteStyle.frameColor

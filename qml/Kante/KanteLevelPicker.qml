@@ -15,7 +15,8 @@ import "."
  *
  * Keyboard: Tab into the row, Left / Right move the focus, Space or Enter picks the focused
  * level. Screen readers hear radio buttons "3 sure", the chosen one checked.
- * Fills the width it is given; implicitly as wide as its widest word needs.
+ * Fills the width it is given; implicitly as wide as its widest word needs. Narrower, the words
+ * shrink to fit their buttons (then elide).
  */
 FocusScope {
     id: picker
@@ -28,7 +29,9 @@ FocusScope {
     // The level with the keyboard focus (1..count).
     property int focusLevel: Math.max(1, value)
 
-    readonly property real cellWidth: Math.max(KanteStyle.unit(56), widest.implicitWidth + KanteStyle.unit(12))
+    readonly property real cellWidth: Math.max(KanteStyle.unit(56), widestWord + KanteStyle.unit(12))
+    // The widest word in pixels (measured below).
+    property real widestWord: 0
 
     implicitWidth: count * cellWidth + (count - 1) * row.spacing
     implicitHeight: KanteStyle.unit(52)
@@ -38,27 +41,39 @@ FocusScope {
         return names && names.length > level ? String(names[level]) : ""
     }
 
-    Keys.onLeftPressed: focusLevel = Math.max(1, focusLevel - (LayoutMirroring.enabled ? -1 : 1))
-    Keys.onRightPressed: focusLevel = Math.min(count, focusLevel + (LayoutMirroring.enabled ? -1 : 1))
+    // Left and right on screen; right to left level 1 stands at the right.
+    function moveFocus(dir) {
+        focusLevel = Math.max(1, Math.min(count, focusLevel + (LayoutMirroring.enabled ? -dir : dir)))
+    }
+    Keys.onLeftPressed: moveFocus(-1)
+    Keys.onRightPressed: moveFocus(1)
     Keys.onSpacePressed: picked(focusLevel)
     Keys.onReturnPressed: picked(focusLevel)
     Keys.onEnterPressed: picked(focusLevel)
     onValueChanged: if (value > 0) focusLevel = value
 
-    // Measures the widest word, so every cell has room for it.
-    Text {
-        id: widest
-        visible: false
-        font: KanteStyle.labelFont()
-        text: {
-            var w = ""
-            for (var i = 1; i <= picker.count; i++) {
-                if (picker.nameOf(i).length > w.length) {
-                    w = picker.nameOf(i)
-                }
-            }
-            return w
+    // Measures the words, so every cell has room for the widest.
+    Repeater {
+        id: measure
+        model: picker.count
+        delegate: Text {
+            required property int index
+            visible: false
+            font: KanteStyle.labelFont()
+            text: picker.nameOf(index + 1)
+            onImplicitWidthChanged: picker.measureWords()
+            Component.onCompleted: picker.measureWords()
         }
+    }
+    function measureWords() {
+        var w = 0
+        for (var i = 0; i < measure.count; i++) {
+            var t = measure.itemAt(i)
+            if (t) {
+                w = Math.max(w, t.implicitWidth)
+            }
+        }
+        widestWord = w
     }
 
     Row {
@@ -91,9 +106,15 @@ FocusScope {
                         font: KanteStyle.headingFont(15)
                         color: cell.ink
                     }
+                    // Narrower than the word: the word shrinks to fit (down to 6 pt), then elides.
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         visible: text.length > 0
+                        width: Math.min(implicitWidth, cell.width - KanteStyle.unit(6))
+                        horizontalAlignment: Text.AlignHCenter
+                        fontSizeMode: Text.HorizontalFit
+                        minimumPointSize: 6
+                        elide: Text.ElideRight
                         text: picker.nameOf(cell.level)
                         font: KanteStyle.labelFont()
                         color: cell.chosen ? cell.ink : KanteStyle.mutedTextColor
@@ -118,6 +139,7 @@ FocusScope {
                 Accessible.role: Accessible.RadioButton
                 Accessible.name: cell.level + (picker.nameOf(cell.level) ? " " + picker.nameOf(cell.level) : "")
                 Accessible.checked: cell.chosen
+                Accessible.focused: cell.focused
                 Accessible.onPressAction: picker.picked(cell.level)
             }
         }
