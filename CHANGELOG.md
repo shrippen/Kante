@@ -5,6 +5,32 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.60.0] — 2026-11-02
+
+### English
+
+Kante can show and pick a level of four, for ratings such as how well a technique sits.
+
+#### New
+- `KanteLevelDots` shows a level as dots, such as how well a technique sits (3 of 4), small enough for a list row.
+- `KanteLevelPicker` picks a level 1 to 4 with large buttons, number and word; a tap on the chosen level counts again. Mitori rates its techniques with it.
+
+![A list with dots per technique, below four buttons 1 to 4 with 3 chosen](https://shrippen.github.io/Kante/shots/release-1.60-levels.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-160
+
+### Deutsch
+
+Kante kann eine Stufe von vier zeigen und wählen lassen, für Einschätzungen wie die, wie sicher eine Technik sitzt.
+
+#### Neu
+- `KanteLevelDots` zeigt eine Stufe als Punkte, etwa wie sicher eine Technik sitzt (3 von 4), klein genug für eine Listenzeile.
+- `KanteLevelPicker` wählt eine Stufe von 1 bis 4 mit großen Knöpfen, Zahl und Wort; ein Tipp auf die gewählte Stufe zählt erneut. Mitori schätzt damit seine Techniken ein.
+
+![Eine Liste mit Punkten je Technik, darunter vier Knöpfe 1 bis 4, 3 gewählt](https://shrippen.github.io/Kante/shots/release-1.60-levels.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-160
+
 ## [1.59.0] — 2026-11-01
 
 ### English
