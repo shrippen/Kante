@@ -22,7 +22,8 @@ import "."
  *
  * Keyboard: Tab moves between the controls, Space or Enter presses the focused one.
  * Anywhere in the bar: K play/pause, L loop, M metronome, C count-in, Home rewind,
- * + / − speed by 5 %. Every control has an accessible name; toggles are check boxes for
+ * + / − speed by 5 % (or to the next of `speedSteps`), , and . a single frame (with `frameStep`).
+ * Right to left the bar keeps its order (1.59): it runs along time, like the timeline. Every control has an accessible name; toggles are check boxes for
  * screen readers and show their state by the lamp before the word alone (1.38). The controls wrap onto a second line when
  * the bar is narrow (large fonts, 200 %).
  */
@@ -76,10 +77,10 @@ FocusScope {
     }
     function stepSpeed(dir) {
         if (speedSteps.length > 0) {
-            var i = speedSteps.indexOf(speed)
-            var n = i < 0 ? (dir > 0 ? 0 : speedSteps.length - 1) : Math.max(0, Math.min(speedSteps.length - 1, i + dir))
-            if (speedSteps[n] !== speed) {
-                speedChangeRequested(speedSteps[n])
+            // The next step above (+) or below (−) the tempo, also from a tempo between steps.
+            var next = speedSteps.filter(function (s) { return dir > 0 ? s > speed : s < speed })
+            if (next.length > 0) {
+                speedChangeRequested(dir > 0 ? Math.min.apply(null, next) : Math.max.apply(null, next))
             }
             return
         }
@@ -200,6 +201,9 @@ FocusScope {
 
     Flow {
         id: flow
+        // Transport controls follow time, not the reading direction (rewind left, frame on right).
+        LayoutMirroring.enabled: false
+        LayoutMirroring.childrenInherit: true
         width: bar.width > 0 ? bar.width : implicitWidth
         spacing: KanteStyle.unit(8)
 
@@ -271,7 +275,12 @@ FocusScope {
                 visible: bar.speedSteps.length > 0
                 model: bar.speedSteps.map(function (s) { return bar.speedLabel(s) })
                 currentIndex: bar.speedSteps.indexOf(bar.speed)
-                onActivated: function (index) { bar.speedChangeRequested(bar.speedSteps[index]) }
+                // A click sets currentIndex and breaks the binding: bind again, so the row keeps
+                // showing the app's tempo (it may refuse the request or change it later).
+                onActivated: function (index) {
+                    currentIndex = Qt.binding(function () { return bar.speedSteps.indexOf(bar.speed) })
+                    bar.speedChangeRequested(bar.speedSteps[index])
+                }
                 Accessible.name: bar.speedText
             }
             QQC2.SpinBox {

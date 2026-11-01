@@ -109,6 +109,53 @@ TestCase {
         compare(bar.speedLabel(0.25), "25 %")
     }
 
+    // Between two steps (a restored tempo, or steps without 1): + goes up, − goes down.
+    function test_stepsFromBetween() {
+        var bar = createTemporaryObject(videoBar, stage(), { speed: 0.6 })
+        spyOn(bar)
+        bar.forceActiveFocus()
+        keyClick(Qt.Key_Plus)
+        compare(speedSpy.signalArguments[0][0], 0.75)
+        keyClick(Qt.Key_Minus)
+        compare(speedSpy.signalArguments[1][0], 0.5)
+        var low = createTemporaryObject(videoBar, stage(), { speedSteps: [0.25, 0.5, 0.75], speed: 1 })
+        spyOn(low)
+        low.forceActiveFocus()
+        keyClick(Qt.Key_Plus)
+        compare(speedSpy.count, 0, "nothing above 1 in these steps")
+        keyClick(Qt.Key_Minus)
+        compare(speedSpy.signalArguments[0][0], 0.75)
+    }
+
+    function findSegmented(root) {
+        var stack = [root]
+        while (stack.length) {
+            var item = stack.pop()
+            if (item.model !== undefined && item.select !== undefined && item.visible) {
+                return item
+            }
+            for (var i = 0; i < item.children.length; i++) {
+                stack.push(item.children[i])
+            }
+        }
+        return null
+    }
+
+    // After a click on a segment the row still shows the app's tempo.
+    function test_segmentsFollowSpeedAfterClick() {
+        var bar = createTemporaryObject(videoBar, stage(), { speed: 0.5 })
+        var seg = findSegmented(bar)
+        verify(seg !== null)
+        compare(seg.currentIndex, 1)
+        seg.select(3)                   // what a click does
+        bar.speed = 1                   // the app takes the request
+        compare(seg.currentIndex, 3)
+        bar.speed = 0.75
+        compare(seg.currentIndex, 2, "follows the app")
+        bar.speed = 0.25
+        compare(seg.currentIndex, 0)
+    }
+
     function test_hiddenTogglesHaveNoKeys() {
         var bar = createTemporaryObject(videoBar, stage())
         spyOn(bar)
@@ -153,18 +200,28 @@ TestCase {
         verify(findByName(bar, "Bild zurück") !== null, "frame-back button")
         waitForRendering(bar)
         var image = grabImage(on)
+        // Pixels unlike the button's own corner: works for light and dark themes.
+        var ground = image.pixel(2, 2)
         var ink = 0
         var cx = Math.round(on.width / 2), cy = Math.round(on.height / 2)
         for (var x = cx - 7; x <= cx + 7; x++) {
             for (var y = cy - 7; y <= cy + 7; y++) {
-                if (image.pixel(x, y).hslLightness < 0.4) {
+                if (Math.abs(image.pixel(x, y).hslLightness - ground.hslLightness) > 0.3) {
                     ink++
                 }
             }
         }
-        verify(ink > 10, "the mark is drawn (" + ink + " dark pixels)")
+        verify(ink > 10, "the mark is drawn (" + ink + " ink pixels)")
         mouseClick(on)
         compare(frameSpy.signalArguments[0][0], 1)
+    }
+
+    // Right to left the transport keeps its order: frame back left of play, frame on right of it.
+    function test_rightToLeftKeepsOrder() {
+        var bar = createTemporaryObject(videoBar, stage(), { "LayoutMirroring.enabled": true, "LayoutMirroring.childrenInherit": true })
+        waitForRendering(bar)
+        var back = findByName(bar, "Bild zurück"), on = findByName(bar, "Bild vor")
+        verify(back.mapToItem(bar, 0, 0).x < on.mapToItem(bar, 0, 0).x)
     }
 
     function test_defaultsUnchanged() {
