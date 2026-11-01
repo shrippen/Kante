@@ -5,6 +5,34 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.61.0] — 2026-11-02
+
+### English
+
+Shares by level get colours from one scale and a legend that explains them.
+
+#### New
+- `KanteLegend` explains a chart: a key and a word per item, wrapping when narrow.
+- `KanteStyle.levelColor` gives the colour of a level on a scale, the same as the heatmap's, for shares by level.
+- Parts of a stacked `KanteProgressBar` show their `text` as a tooltip and name it for screen readers.
+
+![A bar of shares by level in four steps of the focus colour, below it the legend with counts](https://shrippen.github.io/Kante/shots/release-1.61-legend.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161
+
+### Deutsch
+
+Anteile je Stufe bekommen Farben aus einer Skala und eine Legende, die sie erklärt.
+
+#### Neu
+- `KanteLegend` erklärt ein Diagramm: ein Farbfeld und ein Wort je Eintrag, bei wenig Platz umbrochen.
+- `KanteStyle.levelColor` liefert die Farbe einer Stufe auf einer Skala, dieselbe wie in der Heatmap, für Anteile je Stufe.
+- Teile einer gestapelten `KanteProgressBar` zeigen ihren `text` als Tooltip und nennen ihn Bildschirmlesern.
+
+![Eine Leiste mit Anteilen je Stufe in vier Stufen der Fokusfarbe, darunter die Legende mit Anzahlen](https://shrippen.github.io/Kante/shots/release-1.61-legend.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161
+
 ## [1.60.0] — 2026-11-02
 
 ### English

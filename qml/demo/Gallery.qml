@@ -1056,6 +1056,25 @@ Rectangle {
                                 onPicked: level => value = level
                             }
                         }
+                        // 1.61, from Mitori: shares by level with a legend (KanteStyle.levelColor).
+                        ColumnLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteProgressBar {
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                parts: [{ value: 0.10, color: KanteStyle.levelColor(4), text: "2 prüfungsreif" },
+                                        { value: 0.25, color: KanteStyle.levelColor(3), text: "5 sicher" },
+                                        { value: 0.15, color: KanteStyle.levelColor(2), text: "3 mit Hilfe" },
+                                        { value: 0.20, color: KanteStyle.levelColor(1), text: "4 gesehen" }]
+                            }
+                            KanteLegend {
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                model: [{ color: KanteStyle.levelColor(4), value: 2, text: "prüfungsreif" },
+                                        { color: KanteStyle.levelColor(3), value: 5, text: "sicher" },
+                                        { color: KanteStyle.levelColor(2), value: 3, text: "mit Hilfe" },
+                                        { color: KanteStyle.levelColor(1), value: 4, text: "gesehen" },
+                                        { color: KanteStyle.levelColor(0), value: 6, text: "offen" }]
+                            }
+                        }
                         KanteToast {
                             id: galleryToast
                             Layout.preferredWidth: KanteStyle.unit(340)
