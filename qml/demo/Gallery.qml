@@ -1044,6 +1044,18 @@ Rectangle {
                             KanteOptionTile { text: "Heute"; hint: "3 fällig"; glyph: "稽"; checkable: false; autoExclusive: false }
                             KanteOptionTile { text: "Prüfung"; hint: "Probe 4. Kyu"; glyph: "試"; checkable: false; autoExclusive: false }
                         }
+                        // 1.60, from Mitori: a level as dots, and picking one (how well a technique sits).
+                        RowLayout {
+                            spacing: KanteStyle.unit(12)
+                            KanteLevelDots { value: ratingPicker.value; names: ratingPicker.names }
+                            KanteLevelPicker {
+                                id: ratingPicker
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                value: 3
+                                names: ["offen", "gesehen", "mit Hilfe", "sicher", "prüfungsreif"]
+                                onPicked: level => value = level
+                            }
+                        }
                         KanteToast {
                             id: galleryToast
                             Layout.preferredWidth: KanteStyle.unit(340)
