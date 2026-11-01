@@ -37,6 +37,10 @@ TestCase {
         KanteLevelPicker { width: 400; names: tc.words }
     }
     SignalSpy { id: pickSpy; signalName: "picked" }
+    Component {
+        id: wordComponent
+        Text { font: KanteStyle.labelFont() }
+    }
 
     function test_dotsFillToValue() {
         var dots = createTemporaryObject(dotsComponent, stage(), { value: 3 })
@@ -116,12 +120,13 @@ TestCase {
         var picker = createTemporaryObject(pickerComponent, stage(), { width: undefined })
         var wide = createTemporaryObject(pickerComponent, stage(), { width: undefined, names: ["", "a", "b", "c", "a very long word for four"] })
         verify(wide.implicitWidth > picker.implicitWidth, "a longer word widens every cell")
-        // By pixels, not letters: nine wide letters need more room than eleven narrow ones (in
-        // System's proportional font; Kante's labels are monospaced).
+        // By pixels, not letters: the cell follows the widest word as drawn (in System's
+        // proportional font eleven i are narrower than nine W; Kante's labels are monospaced).
         KanteStyle.kind = KanteStyle.Kind.System
         var byPixels = createTemporaryObject(pickerComponent, stage(), { width: undefined, names: ["", "iiiiiiiiiii", "WWWWWWWWW", "", ""] })
-        var widest = createTemporaryObject(pickerComponent, stage(), { width: undefined, names: ["", "WWWWWWWWW", "", "", ""] })
-        tryCompare(byPixels, "cellWidth", widest.cellWidth)
+        var i = createTemporaryObject(wordComponent, stage(), { text: "iiiiiiiiiii" })
+        var w = createTemporaryObject(wordComponent, stage(), { text: "WWWWWWWWW" })
+        tryCompare(byPixels, "widestWord", Math.max(i.implicitWidth, w.implicitWidth))
     }
 
     // Narrower than its words: each word stays inside its button.
