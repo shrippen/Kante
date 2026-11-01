@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.61.1] — 2026-11-02
+
+### English
+
+A tap in a sheet stays in the sheet.
+
+#### Fixed
+- A `KanteListRow` under a modal sheet or dialog took taps meant for it, when the tap landed on a `TapHandler` such as the buttons of `KanteLevelPicker`. In Mitori a rating in the technique sheet also opened the row underneath.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611
+
+### Deutsch
+
+Ein Tipp in einem Blatt bleibt im Blatt.
+
+#### Behoben
+- Eine `KanteListRow` unter einem modalen Blatt oder Dialog nahm Tipps an, die ihm galten, wenn der Tipp auf einem `TapHandler` landete, etwa den Knöpfen von `KanteLevelPicker`. In Mitori öffnete eine Einschätzung im Technik-Blatt zugleich die Zeile darunter.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611
+
 ## [1.61.0] — 2026-11-02
 
 ### English
