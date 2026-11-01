@@ -12,8 +12,11 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 Kante gets the pieces for a video player and a start menu of tiles.
 
 #### New
-- `KanteTransportBar` for video: fixed tempi as segments (25, 50, 75, 100 %), buttons for single frames back and on (keys , and .), and the metronome and count-in can be hidden; right to left the bar keeps its order, as it runs along time. Mitori's player uses it for the exam videos.
+- `KanteTransportBar` for video: fixed tempi as segments (25, 50, 75, 100 %), buttons for single frames back and on (keys , and .), and the metronome and count-in can be hidden. Mitori's player uses it for the exam videos.
 - `KanteOptionTile` as a launch tile: with `checkable: false` it opens something and is never chosen; `glyph` shows a character such as a kanji in place of the icon.
+
+#### Improved
+- Right to left, the transport bar keeps its order: it runs along time like a timeline, and its marks point the right way.
 
 ![Three launch tiles with kanji, below a transport bar with single frames and four tempi](https://shrippen.github.io/Kante/shots/release-1.59-video.png)
 
@@ -24,8 +27,11 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kant
 Kante bekommt die Bausteine für einen Videoplayer und ein Startmenü aus Kacheln.
 
 #### Neu
-- `KanteTransportBar` für Video: feste Tempi als Segmente (25, 50, 75, 100 %), Knöpfe für einzelne Bilder zurück und vor (Tasten , und .), Metronom und Einzählen lassen sich ausblenden; von rechts nach links behält die Leiste ihre Reihenfolge, weil sie der Zeit folgt. Der Player von Mitori nutzt sie für die Prüfungsvideos.
+- `KanteTransportBar` für Video: feste Tempi als Segmente (25, 50, 75, 100 %), Knöpfe für einzelne Bilder zurück und vor (Tasten , und .), Metronom und Einzählen lassen sich ausblenden. Der Player von Mitori nutzt sie für die Prüfungsvideos.
 - `KanteOptionTile` als Startkachel: mit `checkable: false` öffnet sie etwas und wird nie gewählt; `glyph` zeigt statt des Symbols ein Zeichen, etwa ein Kanji.
+
+#### Verbessert
+- Von rechts nach links behält die Transportleiste ihre Reihenfolge: Sie folgt der Zeit wie eine Zeitleiste, und ihre Marken zeigen in die richtige Richtung.
 
 ![Drei Startkacheln mit Kanji, darunter eine Transportleiste mit Einzelbildern und vier Tempi](https://shrippen.github.io/Kante/shots/release-1.59-video.png)
 

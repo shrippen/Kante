@@ -200,13 +200,14 @@ TestCase {
         verify(findByName(bar, "Bild zurück") !== null, "frame-back button")
         waitForRendering(bar)
         var image = grabImage(on)
-        // Pixels unlike the button's own corner: works for light and dark themes.
-        var ground = image.pixel(2, 2)
+        // Pixels in the button's ink (light or dark theme alike).
+        var inkColor = on.kanteInk
         var ink = 0
         var cx = Math.round(on.width / 2), cy = Math.round(on.height / 2)
         for (var x = cx - 7; x <= cx + 7; x++) {
             for (var y = cy - 7; y <= cy + 7; y++) {
-                if (Math.abs(image.pixel(x, y).hslLightness - ground.hslLightness) > 0.3) {
+                var p = image.pixel(x, y)
+                if (Math.abs(p.r - inkColor.r) + Math.abs(p.g - inkColor.g) + Math.abs(p.b - inkColor.b) < 0.15) {
                     ink++
                 }
             }
