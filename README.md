@@ -794,7 +794,7 @@ Taps through a sheet (found in Mitori): a `KanteListRow` under a modal popup als
 
 | Change | Web | QML |
 |---|---|---|
-| Rows under popups | – | `KanteListRow` takes no tap that lands on an open popup or its dimmed overlay; a row inside the popup keeps its taps. `underPopup(scenePoint)` |
+| Rows under popups | – | `KanteListRow` takes no tap that lands on a popup stacked above it (a sheet, a dialog, a drawer); a row inside a popup yields only to popups opened after its own. Other items in the overlay (Kirigami's passive notifications, an app's toast) do not count. `underPopup(scenePoint)` |
 
 ### Added in Kante 1.61
 

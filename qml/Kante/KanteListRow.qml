@@ -66,28 +66,33 @@ FocusScope {
     implicitHeight: Math.max(densityHeight, texts.implicitHeight + KanteStyle.unit(density === KanteListRow.Density.Dense ? 4 : 12))
     activeFocusOnTab: true
 
-    /** A tap: takes the focus (`focusOnClick`) and emits `clicked`. */
-    // Whether a popup above the row (a sheet, a dialog, its dimmed overlay) lies at scene point
-    // `at`: the passive tap below also sees presses that a handler in the popup took (1.61.1).
+    // Whether a popup stacked above the row (a sheet, a dialog, a drawer) lies at scene point
+    // `at` (1.61.1). The passive tap below also sees presses that a TapHandler in the popup took.
+    // Only popups count: Kirigami and apps keep other items in the overlay (passive
+    // notifications, toasts). A row inside a popup only yields to popups opened after its own.
     function underPopup(at) {
         const overlay = QQC2.Overlay.overlay
         if (!overlay || !overlay.visible) {
             return false
         }
-        for (let p = row.parent; p; p = p.parent) {
-            if (p === overlay) {
-                return false
+        let own = -1
+        for (let p = row; p && p.parent; p = p.parent) {
+            if (p.parent === overlay) {
+                own = overlay.children.indexOf(p)
+                break
             }
         }
-        for (let i = 0; i < overlay.children.length; i++) {
+        for (let i = own + 1; i < overlay.children.length; i++) {
             const c = overlay.children[i]
-            if (c.visible && c.opacity > 0 && c.contains(c.mapFromItem(null, at.x, at.y))) {
+            if (c.visible && c.opacity > 0 && String(c).startsWith("QQuickPopupItem")
+                    && c.contains(c.mapFromItem(null, at.x, at.y))) {
                 return true
             }
         }
         return false
     }
 
+    /** A tap: takes the focus (`focusOnClick`) and emits `clicked`. */
     function activate() {
         if (focusOnClick) {
             forceActiveFocus()
