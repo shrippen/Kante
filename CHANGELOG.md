@@ -5,6 +5,32 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.59.0] — 2026-11-01
+
+### English
+
+Kante gets the pieces for a video player and a start menu of tiles.
+
+#### New
+- `KanteTransportBar` for video: fixed tempi as segments (25, 50, 75, 100 %), buttons for single frames back and on (keys , and .), and the metronome and count-in can be hidden. Mitori's player uses it for the exam videos.
+- `KanteOptionTile` as a launch tile: with `checkable: false` it opens something and is never chosen; `glyph` shows a character such as a kanji in place of the icon.
+
+![Three launch tiles with kanji, below a transport bar with single frames and four tempi](https://shrippen.github.io/Kante/shots/release-1.59-video.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
+
+### Deutsch
+
+Kante bekommt die Bausteine für einen Videoplayer und ein Startmenü aus Kacheln.
+
+#### Neu
+- `KanteTransportBar` für Video: feste Tempi als Segmente (25, 50, 75, 100 %), Knöpfe für einzelne Bilder zurück und vor (Tasten , und .), Metronom und Einzählen lassen sich ausblenden. Der Player von Mitori nutzt sie für die Prüfungsvideos.
+- `KanteOptionTile` als Startkachel: mit `checkable: false` öffnet sie etwas und wird nie gewählt; `glyph` zeigt statt des Symbols ein Zeichen, etwa ein Kanji.
+
+![Drei Startkacheln mit Kanji, darunter eine Transportleiste mit Einzelbildern und vier Tempi](https://shrippen.github.io/Kante/shots/release-1.59-video.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
+
 ## [1.58.0] — 2026-10-30
 
 ### English

@@ -559,6 +559,19 @@ Rectangle {
                     onSpeedChangeRequested: function (s) { practice.speed = s }
                     onRewind: practice.position = 0
                 }
+                // 1.59, from Mitori: the bar for a video, fixed tempi and single frames.
+                KanteTransportBar {
+                    Layout.fillWidth: true
+                    playing: practice.playing; looping: practice.looping
+                    speed: practice.speed; position: practice.position; duration: 12
+                    metronomeVisible: false; countInVisible: false
+                    speedSteps: [0.25, 0.5, 0.75, 1]; frameStep: true
+                    onPlayToggled: practice.playing = !practice.playing
+                    onLoopToggled: practice.looping = !practice.looping
+                    onSpeedChangeRequested: function (s) { practice.speed = s }
+                    onFrameStepRequested: function (d) { practice.position = Math.max(0, practice.position + d * 0.04) }
+                    onRewind: practice.position = 0
+                }
                 KanteSegmented {
                     model: ["Voll", "Leise", "Aus"]
                     tooltips: ["Zustände voll", "Zustände leise (Spielen)", "Keine Zustände"]
@@ -1023,6 +1036,13 @@ Rectangle {
                             KanteOptionTile { text: "Kamera"; hint: "Capture, Webcam"; icon.name: "camera-web"; checked: true }
                             KanteOptionTile { text: "Video"; hint: "Datei"; icon.name: "video-x-generic" }
                             KanteOptionTile { text: "Stream"; hint: "HLS, RTMP"; icon.name: "network-wired" }
+                        }
+                        // 1.59, from Mitori: launch tiles with a glyph (a start menu).
+                        RowLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteOptionTile { text: "Programm"; hint: "Aikido · 5. Kyu"; glyph: "技"; checkable: false; autoExclusive: false }
+                            KanteOptionTile { text: "Heute"; hint: "3 fällig"; glyph: "稽"; checkable: false; autoExclusive: false }
+                            KanteOptionTile { text: "Prüfung"; hint: "Probe 4. Kyu"; glyph: "試"; checkable: false; autoExclusive: false }
                         }
                         KanteToast {
                             id: galleryToast

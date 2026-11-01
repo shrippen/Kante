@@ -13,6 +13,13 @@ import "."
  *   speed       1.0 = 100 %; speedChangeRequested(real) asks for a new one (0.25..1.5)
  *   position, duration   seconds, shown as m:ss / m:ss (or `positionText`)
  *
+ * For video (1.59, from Mitori):
+ *   metronomeVisible, countInVisible   false hides the toggle (and its key)
+ *   speedSteps  fixed tempi, e.g. [0.25, 0.5, 0.75, 1]: a segmented row in place of the
+ *               spin box; + and − move to the next step (speedLabel(step) gives the words)
+ *   frameStep   true adds single-frame buttons back and on (keys , and .);
+ *               frameStepRequested(-1 | 1) asks for one frame
+ *
  * Keyboard: Tab moves between the controls, Space or Enter presses the focused one.
  * Anywhere in the bar: K play/pause, L loop, M metronome, C count-in, Home rewind,
  * + / − speed by 5 %. Every control has an accessible name; toggles are check boxes for
@@ -27,6 +34,12 @@ FocusScope {
     property bool metronome: false
     property bool countIn: false
     property real speed: 1.0
+    property bool metronomeVisible: true
+    property bool countInVisible: true
+    property var speedSteps: []
+    property bool frameStep: false
+    property string frameBackText: "Bild zurück"
+    property string frameOnText: "Bild vor"
     property real minSpeed: 0.25
     property real maxSpeed: 1.5
     property real position: 0
@@ -49,6 +62,7 @@ FocusScope {
     signal metronomeToggled()
     signal countInToggled()
     signal rewind()
+    signal frameStepRequested(int direction)
 
     readonly property int speedPercent: Math.round(speed * 100)
 
@@ -56,7 +70,19 @@ FocusScope {
         var t = Math.max(0, Math.floor(s))
         return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0")
     }
+    /** The words of a fixed tempo: "25 %" for 0.25. */
+    function speedLabel(step) {
+        return Math.round(step * 100) + " %"
+    }
     function stepSpeed(dir) {
+        if (speedSteps.length > 0) {
+            var i = speedSteps.indexOf(speed)
+            var n = i < 0 ? (dir > 0 ? 0 : speedSteps.length - 1) : Math.max(0, Math.min(speedSteps.length - 1, i + dir))
+            if (speedSteps[n] !== speed) {
+                speedChangeRequested(speedSteps[n])
+            }
+            return
+        }
         var p = Math.max(Math.round(minSpeed * 100), Math.min(Math.round(maxSpeed * 100), Math.round(speedPercent / 5) * 5 + dir * 5))
         if (p !== speedPercent) {
             speedChangeRequested(p / 100)
@@ -74,8 +100,10 @@ FocusScope {
         switch (event.key) {
         case Qt.Key_K: playToggled(); break
         case Qt.Key_L: loopToggled(); break
-        case Qt.Key_M: metronomeToggled(); break
-        case Qt.Key_C: countInToggled(); break
+        case Qt.Key_M: if (!metronomeVisible) return; metronomeToggled(); break
+        case Qt.Key_C: if (!countInVisible) return; countInToggled(); break
+        case Qt.Key_Comma: if (!frameStep) return; frameStepRequested(-1); break
+        case Qt.Key_Period: if (!frameStep) return; frameStepRequested(1); break
         case Qt.Key_Home: rewind(); break
         case Qt.Key_Plus:
         case Qt.Key_Equal: stepSpeed(1); break
@@ -126,6 +154,50 @@ FocusScope {
         }
     }
 
+    // A single-frame button, drawn (no icon theme needed): ▷| on, mirrored |◁ back.
+    component FrameButton: KanteToolButton {
+        id: frameButton
+        property int direction: 1
+        property string label: ""
+        readonly property real glyphSize: KanteStyle.unit(14)
+        visible: bar.frameStep
+        height: KanteStyle.heightMedium
+        implicitWidth: KanteStyle.heightMedium
+        text: ""
+        display: QQC2.AbstractButton.TextOnly
+        focusPolicy: Qt.StrongFocus
+        Accessible.name: label
+        QQC2.ToolTip.text: label
+        QQC2.ToolTip.visible: hovered
+        onClicked: bar.frameStepRequested(direction)
+        Shape {
+            anchors.centerIn: parent
+            width: frameButton.glyphSize
+            height: width
+            antialiasing: true
+            transform: Scale { origin.x: frameButton.glyphSize / 2; xScale: frameButton.direction }
+            // A hollow triangle and a bar: unlike the solid |◀ of rewind.
+            ShapePath {
+                strokeColor: KanteStyle.themed ? frameButton.kanteInk : KanteStyle.textColor
+                strokeWidth: KanteStyle.unit(1.5)
+                fillColor: "transparent"
+                joinStyle: ShapePath.MiterJoin
+                PathSvg {
+                    readonly property real s: frameButton.glyphSize
+                    path: "M 1 1 L " + (s * 0.6) + " " + s / 2 + " L 1 " + (s - 1) + " Z"
+                }
+            }
+            ShapePath {
+                strokeColor: "transparent"
+                fillColor: KanteStyle.themed ? frameButton.kanteInk : KanteStyle.textColor
+                PathSvg {
+                    readonly property real s: frameButton.glyphSize
+                    path: "M " + s * 0.78 + " 0 H " + s + " V " + s + " H " + s * 0.78 + " Z"
+                }
+            }
+        }
+    }
+
     Flow {
         id: flow
         width: bar.width > 0 ? bar.width : implicitWidth
@@ -159,6 +231,10 @@ FocusScope {
                 }
             }
         }
+        FrameButton {
+            direction: -1
+            label: bar.frameBackText
+        }
         KanteButton {
             id: playButton
             focus: true
@@ -169,6 +245,10 @@ FocusScope {
             focusPolicy: Qt.StrongFocus
             Accessible.name: text
             onClicked: bar.playToggled()
+        }
+        FrameButton {
+            direction: 1
+            label: bar.frameOnText
         }
         Toggle {
             id: loopButton
@@ -186,8 +266,17 @@ FocusScope {
                 color: KanteStyle.mutedTextColor
                 font: KanteStyle.labelFont()
             }
+            KanteSegmented {
+                anchors.verticalCenter: parent.verticalCenter
+                visible: bar.speedSteps.length > 0
+                model: bar.speedSteps.map(function (s) { return bar.speedLabel(s) })
+                currentIndex: bar.speedSteps.indexOf(bar.speed)
+                onActivated: function (index) { bar.speedChangeRequested(bar.speedSteps[index]) }
+                Accessible.name: bar.speedText
+            }
             QQC2.SpinBox {
                 id: speedBox
+                visible: bar.speedSteps.length === 0
                 anchors.verticalCenter: parent.verticalCenter
                 from: Math.round(bar.minSpeed * 100)
                 to: Math.round(bar.maxSpeed * 100)
@@ -209,6 +298,7 @@ FocusScope {
         }
         Toggle {
             id: metronomeButton
+            visible: bar.metronomeVisible
             height: KanteStyle.heightMedium
             text: bar.metronomeText
             on: bar.metronome
@@ -216,6 +306,7 @@ FocusScope {
         }
         Toggle {
             id: countInButton
+            visible: bar.countInVisible
             height: KanteStyle.heightMedium
             text: bar.countInText
             on: bar.countIn
