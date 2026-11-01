@@ -16,7 +16,7 @@ import "."
  * Keyboard: Tab into the row, Left / Right move the focus, Space or Enter picks the focused
  * level. Screen readers hear radio buttons "3 sure", the chosen one checked.
  * Fills the width it is given; implicitly as wide as its widest word needs. Narrower, the words
- * shrink to fit their buttons (then elide).
+ * elide inside their buttons.
  */
 FocusScope {
     id: picker
@@ -51,6 +51,7 @@ FocusScope {
     Keys.onReturnPressed: picked(focusLevel)
     Keys.onEnterPressed: picked(focusLevel)
     onValueChanged: if (value > 0) focusLevel = value
+    onCountChanged: focusLevel = Math.max(1, Math.min(focusLevel, count))
 
     // Measures the words, so every cell has room for the widest.
     Repeater {
@@ -106,14 +107,12 @@ FocusScope {
                         font: KanteStyle.headingFont(15)
                         color: cell.ink
                     }
-                    // Narrower than the word: the word shrinks to fit (down to 6 pt), then elides.
+                    // Narrower than the word: the word elides (labels stay at Kante's 7 pt or more).
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         visible: text.length > 0
                         width: Math.min(implicitWidth, cell.width - KanteStyle.unit(6))
                         horizontalAlignment: Text.AlignHCenter
-                        fontSizeMode: Text.HorizontalFit
-                        minimumPointSize: 6
                         elide: Text.ElideRight
                         text: picker.nameOf(cell.level)
                         font: KanteStyle.labelFont()

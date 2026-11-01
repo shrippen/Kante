@@ -160,6 +160,14 @@ TestCase {
         compare(picker.focusLevel, 1)
     }
 
+    // Fewer levels at run time: the keyboard focus stays on one of them.
+    function test_fewerLevelsKeepFocusInRange() {
+        var picker = createTemporaryObject(pickerComponent, stage(), { value: 4 })
+        compare(picker.focusLevel, 4)
+        picker.count = 2
+        compare(picker.focusLevel, 2)
+    }
+
     // The dots are square in both Kante styles, round in System.
     function test_dotShapePerStyle() {
         var dots = createTemporaryObject(dotsComponent, stage(), { value: 2 })
