@@ -367,7 +367,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Chip (entity, filter) | `.chip`, `.chip-x`, `.chips-row` | `KanteChip` |
 | Swatch with origin ring | `.swatch[data-src]`, `.swatch-grid` | `KanteSwatch` |
 | Table: numbers, group row, total | `.table .num`, `.group-row`, `tfoot` | – |
-| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap`, `KanteHeatGrid` |
+| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
 | Month grid | `.cal` | `KanteCalendarGrid` |
 | KPI with change | `.kpi`, `.delta` | `KanteKpi` |
 | Wide KPI with spark line | `.kpi` > `.spark` from 24rem content width on (container query on the `.kpi`): figures left, the line right; the value stays on one line | – |
@@ -788,12 +788,48 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
+### Fixed in Kante 1.61.1
+
+Taps through a sheet (found in Mitori): a `KanteListRow` under a modal popup also took the taps meant for the popup, when what the popup's tap landed on only watches the press (a `TapHandler`, as in `KanteLevelPicker`). In Mitori a rating in the technique sheet opened the row underneath as well.
+
+| Change | Web | QML |
+|---|---|---|
+| Rows under popups | – | `KanteListRow` takes no tap that lands on a popup drawn above it (a sheet, a dialog, a drawer); a row inside a popup yields only to popups drawn above its own (higher `z`, or the same `z` and opened later). Other items in the overlay (Kirigami's passive notifications, an app's toast) do not count. `underPopup(scenePoint)` |
+
+### Fixed in Kante 1.62.1
+
+| Change | Web | QML |
+|---|---|---|
+| Calendar heatmap edges | – | `KanteCalendarHeatmap` mirrors at the width it gets, so right to left the grid sits at the right edge also when a layout makes it wider than its implicit width; a single week names the month of its last drawn day (Monday 30 November: November, not December) |
+
+### Added in Kante 1.62
+
+| Element | Web | QML |
+|---|---|---|
+| Calendar heatmap | – | `KanteCalendarHeatmap`: days on a calendar grid, a column per week (`weeks`, newest on the right, ending with `endDate`), a row per weekday from `firstDayOfWeek` (the locale's). Labelled axes: weekday names on every second row, the month's short name above the week it begins in (the first column names the month of its last day when the next name is three weeks away or more). `levels` {"YYYY-MM-DD": 0..4} coloured as `KanteHeatmap` (`KanteStyle.levelColor`), `tips` {"YYYY-MM-DD": text} shown after the date as the tooltip on hover, or for three seconds after a tap (touch); screen readers hear the date in full (`Locale.LongFormat`). Mirrored with `LayoutMirroring` (newest week on the left). Pair it with a `KanteLegend` for the levels. Mitori's practice days |
+
+### Added in Kante 1.61
+
+| Element | Web | QML |
+|---|---|---|
+| Level colour | – | `KanteStyle.levelColor(level, count, base)`: the colour of a level 0..`count` (4) on a scale, as `KanteHeatmap` draws it (which now uses it): 0 (or no number) the sunken ground, then `base` (the focus colour unless given) in steps of 0.88 / `count` opacity, full at `count`. For shares by level, such as how many techniques of a grade sit at each rating in Mitori |
+| Legend | – | `KanteLegend`: a key and a word per item (`model` [{color, text, value}]), wrapping onto more lines when narrow (a long word under its key); the key `swatchSize`, square in the Kante style and round elsewhere like `markerRadius`; screen readers hear "value text". Every chart without axes needs one |
+| Part tooltips | – | `KanteProgressBar.parts`: a part's `text` ("5 sure") shows as its tooltip on hover and names it for screen readers |
+
+### Added in Kante 1.60
+
+| Element | Web | QML |
+|---|---|---|
+| Level dots | – | `KanteLevelDots`: a level as a row of dots, `value` of `count` (4) filled with the accent, the rest sunken and framed, such as how well a technique sits in Mitori's programme list. Small enough for a list row; the number of filled dots says it, not the colour alone. `names` gives screen readers the word per level (`names[0]` for none), else "3 / 4"; `dotSize` (8 px), square in the Kante styles, round in System |
+| Level picker | – | `KanteLevelPicker`: pick a level 1..`count` as a row of equal buttons, the number large and the word from `names` small under it, the chosen one filled with the accent (Mitori: "Wie sitzt die Technik?" 1 seen … 4 ready for the exam). Unlike `KanteSegmented` a tap on the chosen level sends `picked(level)` again (rating the same today is a new rating); presentational, the app sets `value`. Left / Right move the focus ring, Space or Enter pick; radio buttons "3 sure" for screen readers. Fills the width it gets, implicitly wide enough for its longest word; narrower, the words elide inside their buttons |
+
 ### Added in Kante 1.59
 
 | Element | Web | QML |
 |---|---|---|
-| Heat grid with labels | – | `KanteHeatGrid` (from Kontra's fretboard quiz, hits per string and fret): `rowLabels` (top to bottom), `columnLabels` ("" leaves one out), `rowTitle` and `columnTitle` (e.g. "Saite", "Bund"); `cells` one list per row, an entry a number, `null` (no data) or `{value, label, tip, accessibleName}`. The value stands in the cell as a number (`showValues`, `formatter` or `unit`; `label` replaces it), so the colour is never the only sign; the number takes the ink that reads best on its level and, where none reaches 4.5:1, sits on a small plate of the ground. Levels 0 to 4 on `KanteHeatmap`'s scale between `minValue` and `maxValue` (NaN: from the cells); no data is the ground with a rule frame and `emptyText` ("–"). `legend` below the grid: five swatches with the value of each level (`legendLabels` overrides them), `legendTitle` before them, `noDataText` after them when a cell has no data. A tooltip per cell on hover and on focus (`tip`, default "<row>, <column>: <text>"), the same text as the cell's accessible name unless `accessibleName` says otherwise. Row and column come from `rowNames` / `columnNames` (e.g. "Bund 1" where the label is ""), else from the labels; with neither the part is left out, never replaced by an index. When the cells shrink, the current cell moves into the grid, so the focus stays on a cell. `interactive` (default true): one Tab stop, arrows move, Home / End to the row's ends, Ctrl+Home / End to the first and last cell, Enter / Space or a click fire `activated(row, column)`; `currentRow`, `currentColumn`; right to left Left goes on. `KanteHeatmap` stays the unlabelled grid of days. The web has no labelled heat grid yet (`.heat`, `.heat-legend`) |
-| Heat scale | – | `KanteStyle.heatColor(level)`: level 0 to 4 as 0 / 22 / 44 / 66 / 100 % of the focus colour, the scale of `KanteHeatmap` (its `levelColor`), `KanteHeatGrid` and the web's `.heat` |
+| Launch tile | – | `KanteOptionTile` with `checkable: false` opens something instead of being chosen (Mitori's start menu): no chosen state, screen readers hear a button with name and hint (a radio button as before when checkable). `glyph`: a character in place of the icon, such as a kanji (技 for the programme), in the Japanese family and the icon's colour and size |
+| Transport for video | – | `KanteTransportBar` for a video player (Mitori): `metronomeVisible` and `countInVisible` false hide those toggles and their keys M and C; `speedSteps` (e.g. `[0.25, 0.5, 0.75, 1]`) shows fixed tempi as a segmented row in place of the spin box, + and − move to the next step, `speedLabel(step)` gives "25 %"; `frameStep` adds single-frame buttons back and on beside play/pause (a hollow triangle and a bar, unlike the solid rewind mark; keys , and .) that send `frameStepRequested(-1 | 1)`, names in `frameBackText` and `frameOnText`. + and − also move to the right step from a tempo between steps, and the segments keep showing the app's tempo after a click. Without these properties the bar is as before |
+| Transport right to left | – | Every `KanteTransportBar` keeps its order right to left (`LayoutMirroring`): rewind left, play, frame on right, tempi from slow to fast, as it runs along time like a timeline. Before, the order mirrored but the marks did not |
 
 ### Added in Kante 1.58
 

@@ -12,7 +12,7 @@ Grid {
     property int cellSize: KanteStyle.unit(16)
     /** Colour of a level; apps read it for their legend. */
     function levelColor(l) {
-        return KanteStyle.heatColor(l)
+        return KanteStyle.levelColor(l, 4)
     }
 
     spacing: 3

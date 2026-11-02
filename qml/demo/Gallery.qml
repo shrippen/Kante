@@ -579,6 +579,19 @@ Rectangle {
                     onSpeedChangeRequested: function (s) { practice.speed = s }
                     onRewind: practice.position = 0
                 }
+                // 1.59, from Mitori: the bar for a video, fixed tempi and single frames.
+                KanteTransportBar {
+                    Layout.fillWidth: true
+                    playing: practice.playing; looping: practice.looping
+                    speed: practice.speed; position: practice.position; duration: 12
+                    metronomeVisible: false; countInVisible: false
+                    speedSteps: [0.25, 0.5, 0.75, 1]; frameStep: true
+                    onPlayToggled: practice.playing = !practice.playing
+                    onLoopToggled: practice.looping = !practice.looping
+                    onSpeedChangeRequested: function (s) { practice.speed = s }
+                    onFrameStepRequested: function (d) { practice.position = Math.max(0, practice.position + d * 0.04) }
+                    onRewind: practice.position = 0
+                }
                 KanteSegmented {
                     model: ["Voll", "Leise", "Aus"]
                     tooltips: ["Zustände voll", "Zustände leise (Spielen)", "Keine Zustände"]
@@ -1043,6 +1056,65 @@ Rectangle {
                             KanteOptionTile { text: "Kamera"; hint: "Capture, Webcam"; icon.name: "camera-web"; checked: true }
                             KanteOptionTile { text: "Video"; hint: "Datei"; icon.name: "video-x-generic" }
                             KanteOptionTile { text: "Stream"; hint: "HLS, RTMP"; icon.name: "network-wired" }
+                        }
+                        // 1.59, from Mitori: launch tiles with a glyph (a start menu).
+                        RowLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteOptionTile { text: "Programm"; hint: "Aikido · 5. Kyu"; glyph: "技"; checkable: false; autoExclusive: false }
+                            KanteOptionTile { text: "Heute"; hint: "3 fällig"; glyph: "稽"; checkable: false; autoExclusive: false }
+                            KanteOptionTile { text: "Prüfung"; hint: "Probe 4. Kyu"; glyph: "試"; checkable: false; autoExclusive: false }
+                        }
+                        // 1.60, from Mitori: a level as dots, and picking one (how well a technique sits).
+                        RowLayout {
+                            spacing: KanteStyle.unit(12)
+                            KanteLevelDots { value: ratingPicker.value; names: ratingPicker.names }
+                            KanteLevelPicker {
+                                id: ratingPicker
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                value: 3
+                                names: ["offen", "gesehen", "mit Hilfe", "sicher", "prüfungsreif"]
+                                onPicked: level => value = level
+                            }
+                        }
+                        // 1.61, from Mitori: shares by level with a legend (KanteStyle.levelColor).
+                        ColumnLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteProgressBar {
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                parts: [{ value: 0.10, color: KanteStyle.levelColor(4), text: "2 prüfungsreif" },
+                                        { value: 0.25, color: KanteStyle.levelColor(3), text: "5 sicher" },
+                                        { value: 0.15, color: KanteStyle.levelColor(2), text: "3 mit Hilfe" },
+                                        { value: 0.20, color: KanteStyle.levelColor(1), text: "4 gesehen" }]
+                            }
+                            KanteLegend {
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                model: [{ color: KanteStyle.levelColor(4), value: 2, text: "prüfungsreif" },
+                                        { color: KanteStyle.levelColor(3), value: 5, text: "sicher" },
+                                        { color: KanteStyle.levelColor(2), value: 3, text: "mit Hilfe" },
+                                        { color: KanteStyle.levelColor(1), value: 4, text: "gesehen" },
+                                        { color: KanteStyle.levelColor(0), value: 6, text: "offen" }]
+                            }
+                        }
+                        // 1.62, from Mitori: practice days on a calendar, with a legend.
+                        ColumnLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteCalendarHeatmap {
+                                weeks: 12
+                                levels: {
+                                    const l = {}
+                                    for (let i = 0; i < 84; i++) {
+                                        if (i % 3 === 2)
+                                            continue
+                                        const d = new Date()
+                                        d.setDate(d.getDate() - i)
+                                        l[isoDay(d)] = 1 + i % 4
+                                    }
+                                    return l
+                                }
+                            }
+                            KanteLegend {
+                                model: [1, 2, 3, 4].map(l => ({ color: KanteStyle.levelColor(l), text: "Stufe " + l }))
+                            }
                         }
                         KanteToast {
                             id: galleryToast

@@ -131,21 +131,131 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
-    <li class="release" id="v1.59.0">
-      <div class="release-head"><b class="release-version">1.59</b><time datetime="2026-10-31">31 Oct 2026</time></div>
+    <li class="release" id="v1.62.1">
+      <div class="release-head"><b class="release-version">1.62.1</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
-        <p class="release-lead" lang="en">A heat grid with labels: rows, columns, a number in every cell and a legend.</p>
-        <p class="release-lead" lang="de">Ein Wärmeraster mit Beschriftung: Zeilen, Spalten, eine Zahl in jeder Zelle und eine Legende.</p>
-        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+        <p class="release-lead" lang="en">The practice calendar sits right also in a wide layout, and a single week names its own month.</p>
+        <p class="release-lead" lang="de">Der Übungskalender steht auch in einem breiten Layout richtig, und eine einzelne Woche nennt ihren eigenen Monat.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
           <ul lang="en">
-            <li><code>KanteHeatGrid</code>: rows × columns on the heat scale, with row and column labels, the value as a number in each cell, a legend with the value of each level, a tooltip per cell and keyboard focus (arrows, Enter). Screen readers hear each cell by name. Kontra's fretboard quiz shows its hits per string and fret with it; <code>KanteHeatmap</code> stays the unlabelled grid of days.</li>
+            <li>Right to left, <code>KanteCalendarHeatmap</code> stayed at the left edge when a layout gave it more width than it needs.</li>
+            <li>A calendar of one week ending on 30 November was labelled December.</li>
           </ul>
           <ul lang="de">
-            <li><code>KanteHeatGrid</code>: Zeilen × Spalten auf der Wärmeskala, mit Zeilen- und Spaltenbeschriftung, dem Wert als Zahl in jeder Zelle, einer Legende mit dem Wert jeder Stufe, einem Tooltip je Zelle und Tastaturfokus (Pfeile, Enter). Screenreader lesen jede Zelle mit Namen vor. Kontras Griffbrett-Quiz zeigt damit seine Treffer je Saite und Bund; <code>KanteHeatmap</code> bleibt das unbeschriftete Raster der Tage.</li>
+            <li>Von rechts nach links blieb <code>KanteCalendarHeatmap</code> am linken Rand, wenn ein Layout ihr mehr Breite gab, als sie braucht.</li>
+            <li>Ein Kalender von einer Woche, die am 30. November endet, war mit Dezember beschriftet.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621"><span lang="en">All changes in 1.62.1 →</span><span lang="de">Alle Änderungen in 1.62.1 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.62.0">
+      <div class="release-head"><b class="release-version">1.62</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Practice days on a calendar, with weekdays, months and a tooltip per day.</p>
+        <p class="release-lead" lang="de">Übungstage auf einem Kalender, mit Wochentagen, Monaten und einem Tooltip je Tag.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteCalendarHeatmap</code> shows days on a calendar grid: a column per week, weekday names at the side, the month's name above the week it begins in. Each day is coloured by its level like the heatmap; hovering or tapping it shows the date and a text, screen readers hear the date in full. Right to left, the newest week is on the left.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteCalendarHeatmap</code> zeigt Tage auf einem Kalenderraster: eine Spalte je Woche, Wochentage an der Seite, der Monatsname über der Woche, in der er beginnt. Jeder Tag hat die Farbe seiner Stufe wie in der Heatmap; beim Darüberfahren oder Antippen zeigt er Datum und Text, Bildschirmleser hören das volle Datum. Von rechts nach links steht die neueste Woche links.</li>
           </ul>
         </div>
         <div class="release-shots">
-          <figure><img src="shots/release-1.59-heatgrid.png" alt="A heat grid in dark Kante: rows G, D, A, E, columns 0 to 7, each cell a cyan shade with its percentage written in it, empty cells marked with a dash; below a legend from 0 % to 100 % and Keine Daten" loading="lazy"><figcaption><span lang="en">Hits per string and fret, a number in every cell, the legend below</span><span lang="de">Treffer je Saite und Bund, eine Zahl in jeder Zelle, darunter die Legende</span></figcaption></figure>
+          <figure><img src="shots/release-1.62-calendar.png" alt="Kante in its light (Leinen) palette: the label ÜBUNGSTAGE · 26 WOCHEN, a grid of 26 week columns in four shades of teal with Di., Do., Sa. at the left and Mai to Nov above, below it the legend 1–2 Techniken, 3–5, 6–9, 10 und mehr" loading="lazy"><figcaption><span lang="en">Practice days on a calendar</span><span lang="de">Übungstage auf einem Kalender</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162"><span lang="en">All changes in 1.62 →</span><span lang="de">Alle Änderungen in 1.62 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.61.1">
+      <div class="release-head"><b class="release-version">1.61.1</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A tap in a sheet stays in the sheet.</p>
+        <p class="release-lead" lang="de">Ein Tipp in einem Blatt bleibt im Blatt.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>A <code>KanteListRow</code> under a modal sheet or dialog took taps meant for it, when the tap landed on a <code>TapHandler</code> such as the buttons of <code>KanteLevelPicker</code>. In Mitori a rating in the technique sheet also opened the row underneath.</li>
+          </ul>
+          <ul lang="de">
+            <li>Eine <code>KanteListRow</code> unter einem modalen Blatt oder Dialog nahm Tipps an, die ihm galten, wenn der Tipp auf einem <code>TapHandler</code> landete, etwa den Knöpfen von <code>KanteLevelPicker</code>. In Mitori öffnete eine Einschätzung im Technik-Blatt zugleich die Zeile darunter.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611"><span lang="en">All changes in 1.61.1 →</span><span lang="de">Alle Änderungen in 1.61.1 →</span></a>
+      </div>
+    </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
+    <li class="release" id="v1.61.0">
+      <div class="release-head"><b class="release-version">1.61</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Shares by level get colours from one scale and a legend that explains them.</p>
+        <p class="release-lead" lang="de">Anteile je Stufe bekommen Farben aus einer Skala und eine Legende, die sie erklärt.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteLegend</code> explains a chart: a key and a word per item, wrapping when narrow.</li>
+            <li><code>KanteStyle.levelColor</code> gives the colour of a level on a scale, the same as the heatmap's, for shares by level.</li>
+            <li>Parts of a stacked <code>KanteProgressBar</code> show their <code>text</code> as a tooltip and name it for screen readers.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteLegend</code> erklärt ein Diagramm: ein Farbfeld und ein Wort je Eintrag, bei wenig Platz umbrochen.</li>
+            <li><code>KanteStyle.levelColor</code> liefert die Farbe einer Stufe auf einer Skala, dieselbe wie in der Heatmap, für Anteile je Stufe.</li>
+            <li>Teile einer gestapelten <code>KanteProgressBar</code> zeigen ihren <code>text</code> als Tooltip und nennen ihn Bildschirmlesern.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.61-legend.png" alt="Kante in its light (Leinen) palette: the label AIKIDO · 5. KYU · 20 TECHNIKEN, a bar in four shades of teal from dark to pale and the rest sunken, below it the legend 2 prüfungsreif, 5 sicher, 3 mit Hilfe, 4 gesehen, 6 offen with square keys" loading="lazy"><figcaption><span lang="en">Shares by level and their legend</span><span lang="de">Anteile je Stufe und ihre Legende</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161"><span lang="en">All changes in 1.61 →</span><span lang="de">Alle Änderungen in 1.61 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.60.0">
+      <div class="release-head"><b class="release-version">1.60</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Kante can show and pick a level of four, for ratings such as how well a technique sits.</p>
+        <p class="release-lead" lang="de">Kante kann eine Stufe von vier zeigen und wählen lassen, für Einschätzungen wie die, wie sicher eine Technik sitzt.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteLevelDots</code> shows a level as dots, such as how well a technique sits (3 of 4), small enough for a list row.</li>
+            <li><code>KanteLevelPicker</code> picks a level 1 to 4 with large buttons, number and word; a tap on the chosen level counts again. Mitori rates its techniques with it.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteLevelDots</code> zeigt eine Stufe als Punkte, etwa wie sicher eine Technik sitzt (3 von 4), klein genug für eine Listenzeile.</li>
+            <li><code>KanteLevelPicker</code> wählt eine Stufe von 1 bis 4 mit großen Knöpfen, Zahl und Wort; ein Tipp auf die gewählte Stufe zählt erneut. Mitori schätzt damit seine Techniken ein.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.60-levels.png" alt="Kante in its light (Leinen) palette: three techniques, Ikkyo with three of four yellow squares, Shiho-nage with one, Kote-gaeshi with none; below the question Wie sitzt Ikkyo? and four buttons 1 GESEHEN, 2 MIT HILFE, 3 SICHER in yellow, 4 PRÜFUNGSREIF" loading="lazy"><figcaption><span lang="en">Dots per technique, and the picker for a new rating</span><span lang="de">Punkte je Technik und die Auswahl für eine neue Einschätzung</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-160"><span lang="en">All changes in 1.60 →</span><span lang="de">Alle Änderungen in 1.60 →</span></a>
+      </div>
+    </li>
+    <li class="release" id="v1.59.0">
+      <div class="release-head"><b class="release-version">1.59</b><time datetime="2026-11-01">1 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Kante gets the pieces for a video player and a start menu of tiles.</p>
+        <p class="release-lead" lang="de">Kante bekommt die Bausteine für einen Videoplayer und ein Startmenü aus Kacheln.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteTransportBar</code> for video: fixed tempi as segments (25, 50, 75, 100 %), buttons for single frames back and on (keys , and .), and the metronome and count-in can be hidden. Mitori's player uses it for the exam videos.</li>
+            <li><code>KanteOptionTile</code> as a launch tile: with <code>checkable: false</code> it opens something and is never chosen; <code>glyph</code> shows a character such as a kanji in place of the icon.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTransportBar</code> für Video: feste Tempi als Segmente (25, 50, 75, 100 %), Knöpfe für einzelne Bilder zurück und vor (Tasten , und .), Metronom und Einzählen lassen sich ausblenden. Der Player von Mitori nutzt sie für die Prüfungsvideos.</li>
+            <li><code>KanteOptionTile</code> als Startkachel: mit <code>checkable: false</code> öffnet sie etwas und wird nie gewählt; <code>glyph</code> zeigt statt des Symbols ein Zeichen, etwa ein Kanji.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li>Right to left, the transport bar keeps its order: it runs along time like a timeline, and its marks point the right way.</li>
+          </ul>
+          <ul lang="de">
+            <li>Von rechts nach links behält die Transportleiste ihre Reihenfolge: Sie folgt der Zeit wie eine Zeitleiste, und ihre Marken zeigen in die richtige Richtung.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.59-video.png" alt="Light Kante: three tiles with the kanji 技, 稽 and 試 above the names Programm, Heute and Prüfung; below a transport bar with rewind, a hollow frame-back mark, the yellow PAUSE button, a frame-on mark, Schleife, the tempi 25, 50, 75 and 100 % with 50 % chosen, and 0:03 / 0:28" loading="lazy"><figcaption><span lang="en">Launch tiles with kanji, a transport bar with single frames and four tempi</span><span lang="de">Startkacheln mit Kanji, eine Transportleiste mit Einzelbildern und vier Tempi</span></figcaption></figure>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159"><span lang="en">All changes in 1.59 →</span><span lang="de">Alle Änderungen in 1.59 →</span></a>
       </div>
@@ -188,9 +298,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157"><span lang="en">All changes in 1.57 →</span><span lang="de">Alle Änderungen in 1.57 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.56.0">
       <div class="release-head"><b class="release-version">1.56</b><time datetime="2026-10-30">30 Oct 2026</time></div>
       <div class="release-body">
@@ -1034,7 +1141,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.59.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.62.1</a></p></div>
 </footer>
 
 <script>
