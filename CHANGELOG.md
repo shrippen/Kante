@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.66.0] — 2026-11-02
+
+### English
+
+A window with a Kante dialog or page scope that the garbage collector takes leaves no errors in the log.
+
+#### Fixed
+- When the garbage collector took a window, a pending step of `KanteScope` or `KanteDialog` ran on it and wrote a `TypeError` to the log, up to 14 times in a test. Found in Mitori.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166
+
+### Deutsch
+
+Ein Fenster mit einem Kante-Dialog oder Seiten-Scope, das der Garbage Collector nimmt, hinterlässt keine Fehler im Log.
+
+#### Behoben
+- Nahm der Garbage Collector ein Fenster, lief ein ausstehender Schritt von `KanteScope` oder `KanteDialog` darauf und schrieb einen `TypeError` ins Log, im Test bis zu 14-mal. Gefunden in Mitori.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166
+
 ## [1.65.0] — 2026-11-02
 
 ### English

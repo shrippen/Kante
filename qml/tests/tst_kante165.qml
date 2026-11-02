@@ -21,6 +21,9 @@ TestCase {
     property int kindBefore: KanteStyle.Kind.System
     function init() {
         kindBefore = KanteStyle.kind
+        // A Timer or Qt.callLater that fires on a scope or dialog the garbage collector took
+        // ("Property 'resweep' … is not a function", Kante 1.66).
+        failOnWarning(/TypeError/)
     }
     function cleanup() {
         KanteStyle.kind = kindBefore

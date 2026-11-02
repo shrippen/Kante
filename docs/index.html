@@ -131,6 +131,22 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.66.0">
+      <div class="release-head"><b class="release-version">1.66</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A window with a Kante dialog or page scope that the garbage collector takes leaves no errors in the log.</p>
+        <p class="release-lead" lang="de">Ein Fenster mit einem Kante-Dialog oder Seiten-Scope, das der Garbage Collector nimmt, hinterlässt keine Fehler im Log.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>When the garbage collector took a window, a pending step of <code>KanteScope</code> or <code>KanteDialog</code> ran on it and wrote a <code>TypeError</code> to the log, up to 14 times in a test. Found in Mitori.</li>
+          </ul>
+          <ul lang="de">
+            <li>Nahm der Garbage Collector ein Fenster, lief ein ausstehender Schritt von <code>KanteScope</code> oder <code>KanteDialog</code> darauf und schrieb einen <code>TypeError</code> ins Log, im Test bis zu 14-mal. Gefunden in Mitori.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166"><span lang="en">All changes in 1.66 →</span><span lang="de">Alle Änderungen in 1.66 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.65.0">
       <div class="release-head"><b class="release-version">1.65</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -191,6 +207,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164"><span lang="en">All changes in 1.64 →</span><span lang="de">Alle Änderungen in 1.64 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.63.0">
       <div class="release-head"><b class="release-version">1.63</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -215,9 +234,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163"><span lang="en">All changes in 1.63 →</span><span lang="de">Alle Änderungen in 1.63 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.62.1">
       <div class="release-head"><b class="release-version">1.62.1</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -1225,7 +1241,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.65.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.66.0</a></p></div>
 </footer>
 
 <script>
