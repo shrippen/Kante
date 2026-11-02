@@ -796,6 +796,12 @@ Taps through a sheet (found in Mitori): a `KanteListRow` under a modal popup als
 |---|---|---|
 | Rows under popups | – | `KanteListRow` takes no tap that lands on a popup drawn above it (a sheet, a dialog, a drawer); a row inside a popup yields only to popups drawn above its own (higher `z`, or the same `z` and opened later). Other items in the overlay (Kirigami's passive notifications, an app's toast) do not count. `underPopup(scenePoint)` |
 
+### Fixed in Kante 1.62.1
+
+| Change | Web | QML |
+|---|---|---|
+| Calendar heatmap edges | – | `KanteCalendarHeatmap` mirrors at the width it gets, so right to left the grid sits at the right edge also when a layout makes it wider than its implicit width; a single week names the month of its last drawn day (Monday 30 November: November, not December) |
+
 ### Added in Kante 1.62
 
 | Element | Web | QML |

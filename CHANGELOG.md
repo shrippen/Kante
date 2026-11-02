@@ -5,6 +5,28 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.62.1] — 2026-11-02
+
+### English
+
+The practice calendar sits right also in a wide layout, and a single week names its own month.
+
+#### Fixed
+- Right to left, `KanteCalendarHeatmap` stayed at the left edge when a layout gave it more width than it needs.
+- A calendar of one week ending on 30 November was labelled December.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621
+
+### Deutsch
+
+Der Übungskalender steht auch in einem breiten Layout richtig, und eine einzelne Woche nennt ihren eigenen Monat.
+
+#### Behoben
+- Von rechts nach links blieb `KanteCalendarHeatmap` am linken Rand, wenn ein Layout ihr mehr Breite gab, als sie braucht.
+- Ein Kalender von einer Woche, die am 30. November endet, war mit Dezember beschriftet.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621
+
 ## [1.62.0] — 2026-11-02
 
 ### English
