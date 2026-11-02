@@ -450,7 +450,7 @@ Rectangle {
                 RowLayout {
                     spacing: KanteStyle.unit(24)
                     ColumnLayout {
-                        Layout.preferredWidth: KanteStyle.unit(320)
+                        Layout.preferredWidth: KanteStyle.unit(380)
                         spacing: 0
                         KanteListRow { Layout.fillWidth: true; leadingText: "09:15"; leadingWidth: KanteStyle.unit(44); text: "Rohschnitt"; subtitle: "Kader · Schnitt"; meta: "02:14"; count: "3"; selected: true; KanteSwatch { size: KanteSwatch.Size.Small } }
                         KanteListRow { Layout.fillWidth: true; leadingText: "11:30"; leadingWidth: KanteStyle.unit(44); text: "Farbkorrektur"; subtitle: "Andon · Pflege"; meta: "01:05"; count: "12"; KanteSwatch { size: KanteSwatch.Size.Small; swatchColor: KanteStyle.tagColor } }
@@ -503,7 +503,7 @@ Rectangle {
                         hoverIndex: 1; hoverPart: 1
                     }
                     ColumnLayout {
-                        Layout.preferredWidth: KanteStyle.unit(320)
+                        Layout.preferredWidth: KanteStyle.unit(380)
                         spacing: 0
                         KanteListRow {
                             Layout.fillWidth: true; text: "Import"; subtitle: "3 Fehler"; count: "3"
@@ -664,10 +664,10 @@ Rectangle {
                     KanteTunerGauge { Layout.preferredWidth: KanteStyle.unit(270); noteName: "A"; octave: 1; cents: 2; active: true }
                     ColumnLayout {
                         spacing: KanteStyle.unit(14)
-                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(320); peakDb: -14; rmsDb: -22 }
-                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(320); peakDb: -0.4; rmsDb: -5; clipped: true }
+                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -14; rmsDb: -22 }
+                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -0.4; rmsDb: -5; clipped: true }
                         KanteTimingHistogram {
-                            Layout.preferredWidth: KanteStyle.unit(320); Layout.preferredHeight: KanteStyle.unit(170)
+                            Layout.preferredWidth: KanteStyle.unit(380); Layout.preferredHeight: KanteStyle.unit(170)
                             counts: [0, 1, 3, 6, 11, 15, 9, 5, 2, 1]; firstBinMs: -50; binMs: 10; meanMs: 4.2
                         }
                     }
@@ -1095,7 +1095,7 @@ Rectangle {
                             KanteLevelDots { value: ratingPicker.value; names: ratingPicker.names }
                             KanteLevelPicker {
                                 id: ratingPicker
-                                Layout.preferredWidth: KanteStyle.unit(320)
+                                Layout.preferredWidth: KanteStyle.unit(380)
                                 value: 3
                                 names: ["offen", "gesehen", "mit Hilfe", "sicher", "prüfungsreif"]
                                 onPicked: level => value = level
@@ -1105,14 +1105,14 @@ Rectangle {
                         ColumnLayout {
                             spacing: KanteStyle.unit(6)
                             KanteProgressBar {
-                                Layout.preferredWidth: KanteStyle.unit(320)
+                                Layout.preferredWidth: KanteStyle.unit(380)
                                 parts: [{ value: 0.10, color: KanteStyle.levelColor(4), text: "2 prüfungsreif" },
                                         { value: 0.25, color: KanteStyle.levelColor(3), text: "5 sicher" },
                                         { value: 0.15, color: KanteStyle.levelColor(2), text: "3 mit Hilfe" },
                                         { value: 0.20, color: KanteStyle.levelColor(1), text: "4 gesehen" }]
                             }
                             KanteLegend {
-                                Layout.preferredWidth: KanteStyle.unit(320)
+                                Layout.preferredWidth: KanteStyle.unit(380)
                                 model: [{ color: KanteStyle.levelColor(4), value: 2, text: "prüfungsreif" },
                                         { color: KanteStyle.levelColor(3), value: 5, text: "sicher" },
                                         { color: KanteStyle.levelColor(2), value: 3, text: "mit Hilfe" },

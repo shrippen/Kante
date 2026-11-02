@@ -31,7 +31,8 @@ import "."
  *   formatter      function (value) -> string; default rounds to one decimal and adds `unit`
  *   showEmpty      a cell without data is drawn (ground, rule frame, `emptyText`) and takes
  *                  the focus (default true); false leaves a blank gap that the keys skip
- *                  ("no such combination")
+ *                  ("no such combination"); then a grid of gaps only is no Tab stop, and a
+ *                  current cell set onto a gap moves onto a drawn one before it takes the focus
  *   legend         the scale below the grid (default true), a KanteLegend: a key per level of
  *                  `legendLevels` (default 0..4) with the value it stands for
  *                  (`legendLabels[level]` overrides it), `legendTitle` before them and
@@ -53,8 +54,10 @@ import "."
  *   Irimi-…  [ ]     [4]       (blank: no data with showEmpty false)
  *
  * Level of a value: round((value - min) / (max - min) × 4), 0 to 4 as
- * KanteStyle.levelColor(level, 4). Level 0 is the sunken ground; a cell without data is the
- * page ground with a rule frame and `emptyText`. The number takes the ink that reads best on
+ * KanteStyle.levelColor(level, 4); all values alike on the scale are level 0. Level 0 is the
+ * sunken ground with a rule frame (apart from the page ground and a gap); a cell without data
+ * is the page ground with a rule frame and `emptyText`. A cell with label "" still says its value
+ * (the word of its level in `legendLabels`, else the number) to screen readers. The number takes the ink that reads best on
  * its fill (inkOf); where none reaches 4.5:1 (the middle of the scale), it sits on a small
  * plate of the ground. The focus ring is two lines: the focus colour outside the cell, against
  * the ground, and the ink of the fill inside its edge, so it shows on every level, the full
@@ -146,6 +149,21 @@ FocusScope {
         return false
     }
 
+    /** Some cell can take the focus (with showEmpty false, not every cell is a gap). */
+    readonly property bool hasFocusable: rowCount > 0 && columnCount > 0 && (showEmpty || hasData)
+    readonly property bool hasData: {
+        for (let r = 0; r < rowCount; r++) {
+            for (let c = 0; c < columnCount; c++) {
+                if (!isEmpty(r, c)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    /** All values alike on the scale: one level (0). */
+    readonly property bool flat: scaleMax - scaleMin <= 0
+
     /** Contrast the number keeps on its cell (WCAG AA for small text). */
     readonly property real minContrast: 4.5
     readonly property font labelFont: KanteStyle.monoFont(KanteStyle.labelFont().pointSize * 0.85, false)
@@ -204,12 +222,16 @@ FocusScope {
     /** The legend's entries as KanteLegend takes them ({color, text}). */
     readonly property var legendModel: {
         const out = []
-        for (let i = 0; i < legendLevels.length; i++) {
-            const k = Math.max(0, Math.min(4, legendLevels[i]))
+        // A flat scale (all values alike) has one level, 0.
+        const levels = flat ? [0] : legendLevels
+        for (let i = 0; i < levels.length; i++) {
+            const k = Math.max(0, Math.min(4, levels[i]))
             out.push({ color: KanteStyle.levelColor(k, 4), text: legendText(k) })
         }
+        // No data: a framed key like the framed cell, or a blank one like the gap.
         if (hasEmpty && noDataText !== "") {
-            out.push({ color: "transparent", text: showEmpty ? emptyText + " " + noDataText : noDataText })
+            out.push(showEmpty ? { color: "transparent", text: emptyText + " " + noDataText, frame: true }
+                               : { color: "transparent", text: noDataText, frame: false })
         }
         return out
     }
@@ -270,7 +292,7 @@ FocusScope {
         }
         const span = scaleMax - scaleMin
         if (span <= 0) {
-            return v >= scaleMax ? 4 : 0
+            return 0
         }
         return Math.max(0, Math.min(4, Math.round((v - scaleMin) / span * 4)))
     }
@@ -295,7 +317,13 @@ FocusScope {
         }
         // "G, 3: 80 %"; without a name the part is left out: "G: 80 %", "80 %".
         const where = [rowName(r), columnName(c)].filter(n => n !== "").join(", ")
-        const what = textOf(r, c)
+        // A blank cell (label "") still says its value: the word of its level, else the number.
+        let what = textOf(r, c)
+        const v = valueOf(r, c)
+        if (what === "" && !isNaN(v)) {
+            const word = legendLabels && legendLabels[levelOf(v)]
+            what = word ? String(word) : format(v)
+        }
         if (what === "") {
             return where
         }
@@ -350,8 +378,14 @@ FocusScope {
     }
     /** Moves the focus to a cell, clamped to the grid. */
     function moveTo(r, c) {
-        currentRow = Math.max(0, Math.min(rowCount - 1, r))
-        currentColumn = Math.max(0, Math.min(columnCount - 1, c))
+        const rr = Math.max(0, Math.min(rowCount - 1, r))
+        const cc = Math.max(0, Math.min(columnCount - 1, c))
+        // A gap (showEmpty false) never takes the focus.
+        if (!focusable(rr, cc)) {
+            return
+        }
+        currentRow = rr
+        currentColumn = cc
         const cell = cellAt(currentRow, currentColumn)
         if (cell) {
             cell.forceActiveFocus(Qt.TabFocusReason)
@@ -405,13 +439,16 @@ FocusScope {
         }
     }
     function focusCurrent() {
-        const cell = cellAt(currentRow, currentColumn)
+        // The app may have set the current cell onto a gap: move it onto a drawn cell first.
+        clampCurrent()
+        const cell = focusable(currentRow, currentColumn) ? cellAt(currentRow, currentColumn) : null
         if (activeFocus && cell && !cell.activeFocus) {
             cell.forceActiveFocus(Qt.TabFocusReason)
         }
     }
     Keys.onPressed: function (event) {
-        const cell = cellAt(currentRow, currentColumn)
+        clampCurrent()
+        const cell = focusable(currentRow, currentColumn) ? cellAt(currentRow, currentColumn) : null
         if (!interactive || !cell || cell.activeFocus) {
             return
         }
@@ -447,7 +484,8 @@ FocusScope {
     implicitHeight: body.implicitHeight
 
     // A focus scope in the Tab chain: Tab enters at the current cell, the next Tab leaves.
-    activeFocusOnTab: interactive
+    // No Tab stop when every cell is a gap.
+    activeFocusOnTab: interactive && hasFocusable
 
     Accessible.role: Accessible.Table
     Accessible.name: accessibleName
@@ -673,7 +711,8 @@ FocusScope {
                                                 objectName: "kanteHeatFill"
                                                 anchors.fill: parent
                                                 color: cell.level < 0 ? "transparent" : KanteStyle.levelColor(cell.level, 4)
-                                                border.width: cell.level < 0 ? KanteStyle.borderWidth : 0
+                                                // No data and level 0 framed: level 0 stays apart from the ground and a gap.
+                                                border.width: cell.level <= 0 ? KanteStyle.borderWidth : 0
                                                 border.color: KanteStyle.ruleColor
                                             }
                                             // The number in its best ink; where no ink reaches 4.5:1 on the

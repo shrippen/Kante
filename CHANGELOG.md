@@ -12,9 +12,9 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 A heat grid with labels: rows, columns, a number in every cell and a legend, also for wide grids on a phone.
 
 #### New
-- `KanteHeatGrid`: rows × columns on the heat scale, with row and column labels, the value as a number in each cell, a legend with the value of each level, a tooltip per cell and keyboard focus (arrows, Enter). Screen readers hear each cell by name. Kontra's fretboard quiz shows its hits per string and fret with it; `KanteHeatmap` stays the unlabelled grid of days.
-- Wide grids fit a phone: the cells scroll sideways while the row names stay, with a scroll bar, and the focused cell stays in sight. Column names can stand upright, so long names allow narrow columns; long row names are cut to a width with the full name as a tooltip. Mitori's technique map shows techniques × attacks with it.
-- Levels 0 to 4 as steps, with a word per level in the legend, and blank places where there is nothing to show. The focus ring stands out on every level, also on the strongest, which is filled with the focus colour.
+- `KanteHeatGrid`: rows × columns on the heat scale, with row and column labels, the value as a number in each cell, a legend with the value of each level, a tooltip per cell and keyboard focus (arrows, Enter). Screen readers hear each cell by name. Built for Kontra's fretboard quiz (hits per string and fret); `KanteHeatmap` stays the unlabelled grid of days.
+- Wide grids fit a phone: the cells scroll sideways while the row names stay, with a scroll bar, and the focused cell stays in sight. Column names can stand upright, so long names allow narrow columns; long row names are cut to a width with the full name as a tooltip. Built for Mitori's technique map (techniques × attacks).
+- Levels 0 to 4 as steps, with a word per level in the legend, and blank places where there is nothing to show; level 0 keeps a fine frame, so it stays apart from a blank place. The focus ring stands out on every level, also on the strongest, which is filled with the focus colour.
 
 ![Hits per string and fret, a number in every cell, the legend below](https://shrippen.github.io/Kante/shots/release-1.63-heatgrid.png)
 
@@ -27,9 +27,9 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kant
 Ein Wärmeraster mit Beschriftung: Zeilen, Spalten, eine Zahl in jeder Zelle und eine Legende, auch für breite Raster auf dem Handy.
 
 #### Neu
-- `KanteHeatGrid`: Zeilen × Spalten auf der Wärmeskala, mit Zeilen- und Spaltenbeschriftung, dem Wert als Zahl in jeder Zelle, einer Legende mit dem Wert jeder Stufe, einem Tooltip je Zelle und Tastaturfokus (Pfeile, Enter). Screenreader lesen jede Zelle mit Namen vor. Kontras Griffbrett-Quiz zeigt damit seine Treffer je Saite und Bund; `KanteHeatmap` bleibt das unbeschriftete Raster der Tage.
-- Breite Raster passen aufs Handy: Die Zellen scrollen waagerecht, die Zeilennamen bleiben stehen, eine Scrollleiste zeigt die Stelle, und die Zelle mit dem Fokus bleibt im Blick. Spaltennamen können hochkant stehen, so erlauben lange Namen schmale Spalten; lange Zeilennamen werden auf eine Breite gekürzt, der ganze Name steht im Tooltip. Mitoris Technik-Landkarte zeigt damit Techniken × Angriffe.
-- Stufen 0 bis 4 als Schritte, mit einem Wort je Stufe in der Legende, und leere Plätze, wo es nichts zu zeigen gibt. Der Fokusrahmen ist auf jeder Stufe zu sehen, auch auf der stärksten, die in der Fokusfarbe gefüllt ist.
+- `KanteHeatGrid`: Zeilen × Spalten auf der Wärmeskala, mit Zeilen- und Spaltenbeschriftung, dem Wert als Zahl in jeder Zelle, einer Legende mit dem Wert jeder Stufe, einem Tooltip je Zelle und Tastaturfokus (Pfeile, Enter). Screenreader lesen jede Zelle mit Namen vor. Gebaut für Kontras Griffbrett-Quiz (Treffer je Saite und Bund); `KanteHeatmap` bleibt das unbeschriftete Raster der Tage.
+- Breite Raster passen aufs Handy: Die Zellen scrollen waagerecht, die Zeilennamen bleiben stehen, eine Scrollleiste zeigt die Stelle, und die Zelle mit dem Fokus bleibt im Blick. Spaltennamen können hochkant stehen, so erlauben lange Namen schmale Spalten; lange Zeilennamen werden auf eine Breite gekürzt, der ganze Name steht im Tooltip. Gebaut für Mitoris Technik-Landkarte (Techniken × Angriffe).
+- Stufen 0 bis 4 als Schritte, mit einem Wort je Stufe in der Legende, und leere Plätze, wo es nichts zu zeigen gibt; Stufe 0 behält einen feinen Rahmen und bleibt so von einem leeren Platz zu unterscheiden. Der Fokusrahmen ist auf jeder Stufe zu sehen, auch auf der stärksten, die in der Fokusfarbe gefüllt ist.
 
 ![Treffer je Saite und Bund, eine Zahl in jeder Zelle, darunter die Legende](https://shrippen.github.io/Kante/shots/release-1.63-heatgrid.png)
 

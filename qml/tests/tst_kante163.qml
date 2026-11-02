@@ -377,7 +377,7 @@ TestCase {
         }
         const zero = g.cellAt(0, 0)
         verify(!named(zero, "kanteHeatPlate")[0].visible, "no plate for an empty label")
-        compare(zero.Accessible.name, "Ikkyo (Ude-osae), Shomen-uchi · 1")
+        compare(zero.Accessible.name, "Ikkyo (Ude-osae), Shomen-uchi · 1: 0", "a blank cell still says its value")
         // The legend: the levels asked for with their words, then the blank places.
         compare(g.legendModel.map(e => e.text), ["1 gesehen", "2 geübt", "3 sicher", "4 prüfungsreif", "keine Kombination"])
         compare(String(g.legendModel[3].color), String(KanteStyle.levelColor(4, 4)))
@@ -591,5 +591,73 @@ TestCase {
         verify(x >= 0 && x + cell.width <= view.width + 0.5, "first column in view")
         const label = named(g, "kanteHeatRowLabel")[0]
         verify(label.mapToItem(o, 0, 0).x > view.mapToItem(o, 0, 0).x, "row labels on the right")
+    }
+
+    // showEmpty false and no cell drawn: no Tab stop that shows nothing.
+    function test_allGapsTakeNoTab() {
+        const chain = createTemporaryObject(chainComponent, tc.Window.contentItem)
+        const g = chain.grid
+        g.showEmpty = false
+        g.cells = [[null, null], [null, null]]
+        waitForRendering(chain)
+        verify(!g.activeFocusOnTab, "nothing to focus")
+        chain.before.forceActiveFocus()
+        keyClick(Qt.Key_Tab)
+        verify(chain.after.activeFocus, "Tab goes past the grid")
+        // Focus forced onto the grid: still no gap takes it.
+        g.forceActiveFocus()
+        wait(50)
+        verify(named(g, "kanteHeatCell").every(c => !c.activeFocus))
+    }
+
+    // The current cell set from outside onto a gap: Tab lands on a drawn cell with its ring.
+    function test_currentOnAGapFromOutside() {
+        const chain = createTemporaryObject(chainComponent, tc.Window.contentItem)
+        const g = chain.grid
+        g.showEmpty = false
+        g.cells = [[1, null, 2, 4], [3, 4, null, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+        waitForRendering(chain)
+        g.currentRow = 0
+        g.currentColumn = 1
+        chain.before.forceActiveFocus()
+        keyClick(Qt.Key_Tab)
+        tryVerify(() => named(g, "kanteHeatCell").some(c => c.activeFocus), 1000, "a cell has the focus")
+        const cell = named(g, "kanteHeatCell").filter(c => c.activeFocus)[0]
+        verify(cell.shown, "not a gap")
+        verify(named(cell, "kanteHeatRing")[0].visible, "its ring shows")
+        verify(g.focusable(g.currentRow, g.currentColumn))
+        // moveTo onto a gap does not take the focus there either.
+        g.moveTo(1, 2)
+        verify(!g.cellAt(1, 2).activeFocus)
+        verify(g.focusable(g.currentRow, g.currentColumn))
+    }
+
+    // Level 0 stands apart from a gap: a rule frame; a gap is not framed, nor its legend key.
+    function test_levelZeroApartFromAGap() {
+        const g = makeMap().grid
+        const zero = g.cellAt(0, 0)
+        compare(zero.level, 0)
+        verify(named(zero, "kanteHeatFill")[0].border.width > 0, "level 0 framed")
+        verify(named(g.cellAt(0, 1), "kanteHeatFill")[0].border.width === 0, "level 1 not")
+        const gapEntry = g.legendModel[g.legendModel.length - 1]
+        compare(gapEntry.text, "keine Kombination")
+        compare(gapEntry.frame, false)
+        const keys = named(g, "kanteHeatLegendKeys")[0]
+        const key = findAll(keys, c => c.objectName === "kanteLegendKey" && c.parent.Accessible.name === "keine Kombination")[0]
+        verify(key)
+        compare(key.border.width, 0, "a blank key like the blank place")
+        g.showEmpty = true
+        compare(g.legendModel[g.legendModel.length - 1].frame, true)
+    }
+
+    // All values alike on a scale from the cells: level 0, one legend key.
+    function test_flatScale() {
+        const g = make()
+        g.cells = [[0, 0, 0], [0, 0, 0]]
+        compare(g.cellAt(0, 0).level, 0)
+        compare(g.legendModel.map(e => e.text), ["0 %", "– Keine Daten"])
+        g.cells = [[5, 5], [5, 5]]
+        compare(g.cellAt(1, 1).level, 0)
+        compare(g.legendModel.map(e => e.text), ["5 %", "– Keine Daten"])
     }
 }
