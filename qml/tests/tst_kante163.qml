@@ -660,4 +660,50 @@ TestCase {
         compare(g.cellAt(1, 1).level, 0)
         compare(g.legendModel.map(e => e.text), ["5 %", "– Keine Daten"])
     }
+
+    // The app sets the current cell onto a gap while a cell has the focus: a drawn cell takes it.
+    function test_currentOntoAGapWhileFocused() {
+        const chain = createTemporaryObject(chainComponent, tc.Window.contentItem)
+        const g = chain.grid
+        g.showEmpty = false
+        g.cells = [[1, null, 2, 4], [3, 4, null, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+        waitForRendering(chain)
+        chain.before.forceActiveFocus()
+        keyClick(Qt.Key_Tab)
+        tryVerify(() => g.cellAt(0, 0).activeFocus, 1000)
+        g.currentColumn = 1
+        tryVerify(() => named(g, "kanteHeatCell").some(c => c.activeFocus), 1000, "a cell has the focus again")
+        const cell = named(g, "kanteHeatCell").filter(c => c.activeFocus)[0]
+        verify(cell.shown, "not a gap")
+        verify(named(cell, "kanteHeatRing")[0].visible, "its ring shows")
+        verify(g.focusable(g.currentRow, g.currentColumn))
+        keyClick(Qt.Key_Right)
+        verify(g.cellAt(0, 2).activeFocus, "the next key moves on")
+    }
+
+    // Focus moves to a cell whose row with the old column would be a gap: it stays there.
+    function test_focusThroughAGapOnTheWay() {
+        const chain = createTemporaryObject(chainComponent, tc.Window.contentItem)
+        const g = chain.grid
+        g.showEmpty = false
+        g.cells = [[1, null, 2, 4], [3, 4, null, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+        waitForRendering(chain)
+        chain.before.forceActiveFocus()
+        keyClick(Qt.Key_Tab)
+        g.moveTo(0, 2)
+        verify(g.cellAt(0, 2).activeFocus)
+        // Row 1 with column 2 is a gap on the way to (1, 1).
+        g.cellAt(1, 1).forceActiveFocus(Qt.TabFocusReason)
+        wait(50)
+        verify(g.cellAt(1, 1).activeFocus, "focused cell keeps the focus")
+        compare([g.currentRow, g.currentColumn], [1, 1])
+        // The same by a click.
+        g.moveTo(0, 2)
+        verify(g.cellAt(0, 2).activeFocus)
+        const target = g.cellAt(1, 1)
+        mouseClick(target, target.width / 2, target.height / 2)
+        wait(50)
+        verify(target.activeFocus, "clicked cell keeps the focus")
+        compare([g.currentRow, g.currentColumn], [1, 1])
+    }
 }

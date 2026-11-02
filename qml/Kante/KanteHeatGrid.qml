@@ -430,6 +430,16 @@ FocusScope {
     onColumnCountChanged: clampCurrent()
     onCellsChanged: clampCurrent()
     onShowEmptyChanged: clampCurrent()
+    // The app may set the current cell onto a gap while a cell has the focus: settle it on a
+    // drawn cell once the change is done (not at once: a cell taking the focus sets the row,
+    // then the column, and the step between may be a gap).
+    onCurrentRowChanged: Qt.callLater(settleCurrent)
+    onCurrentColumnChanged: Qt.callLater(settleCurrent)
+    function settleCurrent() {
+        if (!focusable(currentRow, currentColumn)) {
+            focusCurrent()
+        }
+    }
     Component.onCompleted: clampCurrent()
     // The scope itself holds the focus only when no cell took it (e.g. its cell went away):
     // hand it on, and send keys there.
