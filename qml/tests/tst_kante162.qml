@@ -114,6 +114,18 @@ TestCase {
         compare(rtl, h.implicitWidth - h.labelWidth - h.cellSize, "the oldest week at the right")
     }
 
+    // 1.62.1: mirrored at the width it gets (wider than its implicit width in a layout), and a
+    // single week names the month of its last drawn day.
+    function test_edges() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 4, firstDayOfWeek: Locale.Monday })
+        h.width = h.implicitWidth + 100
+        h.LayoutMirroring.enabled = true
+        compare(h.lead(h.labelWidth, h.cellSize), h.width - h.labelWidth - h.cellSize, "the grid at the right edge")
+        // Monday 30 Nov 2026, one week: only that Monday is drawn, November it is.
+        const one = make({ endDate: new Date(2026, 10, 30), weeks: 1, firstDayOfWeek: Locale.Monday })
+        compare(one.monthLabels().map(m => m.month), [10])
+    }
+
     function test_size() {
         const h = make({ weeks: 26 })
         compare(h.implicitWidth, h.labelWidth + 26 * h.step - h.spacing)
