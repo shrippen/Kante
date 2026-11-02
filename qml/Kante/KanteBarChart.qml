@@ -28,7 +28,8 @@ import "."
  * `minValue` (1.64) is the floor of the scale (default 0): the axis, the grid and the bars start
  * there (Mitori's averages 1–4: `minValue: 1`, `maxValue: 4`); a stack loses its bottom part
  * below it. `minBarHeight` (1.64, pixels) is the least height of a bar with a value, so a bar
- * on the floor still shows; the read-out says the real value.
+ * on the floor still shows (a value below the floor too, it looks the same); the read-out says
+ * the real value.
  */
 Item {
     id: chart
@@ -185,15 +186,16 @@ Item {
         if (h < 0 || h > top) {
             return -1
         }
-        // Part tops as drawn: the floor cuts the bottom part, the top part reaches the bar's top.
-        var sum = 0
-        for (var k = 0; k < parts.length; k++) {
-            sum += Math.max(0, parts[k])
-            if (h <= (k === parts.length - 1 ? top : heightOf(sum))) {
+        // As drawn, from the top: each upper part its own height, the bottom part the rest (the
+        // floor cuts it, a least height lifts it).
+        var edge = top
+        for (var k = parts.length - 1; k > 0; k--) {
+            edge -= Math.max(0, parts[k]) / scaleSpan * plotHeight
+            if (h > edge) {
                 return k
             }
         }
-        return -1
+        return 0
     }
 
     function partColor(k) {
@@ -207,7 +209,9 @@ Item {
     TextMetrics {
         id: axisWidth
         font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize * 0.85, false)
-        text: chart.format(chart.scaleMax)
+        // Mono figures: the longer text is the wider one (a floor below 0 may be).
+        text: chart.format(chart.minValue).length > chart.format(chart.scaleMax).length
+            ? chart.format(chart.minValue) : chart.format(chart.scaleMax)
     }
 
     // Axis title, turned upwards; rotation keeps the centre, so x and y place the turned box

@@ -212,6 +212,16 @@ TestCase {
         compare([g.currentRow, g.currentColumn], [2, 11])
     }
 
+    // Of two cells alike far off, the one further on (below, right) is the nearest.
+    function test_nearestOfTie() {
+        const chain = makeChain()
+        const g = chain.grid
+        g.cells = [[1, null, null], [null, null, null], [null, null, 1]]
+        compare(g.nearestOf(1, 1), [2, 2])
+        g.cells = [[null, null, 1], [null, null, null], [1, null, null]]
+        compare(g.nearestOf(1, 1), [2, 0])
+    }
+
     // 3. Without the focus, the app sets the row and, a moment later, the column: an in-between
     // gap does not throw the current cell back to the first one.
     function test_currentNotClampedWithoutFocus() {
@@ -221,6 +231,7 @@ TestCase {
         waitForRendering(chain)
         g.currentRow = 1           // (1, 0) is a gap for a moment
         wait(50)
+        compare([g.currentRow, g.currentColumn], [1, 0], "not moved without the focus")
         g.currentColumn = 2
         wait(50)
         compare([g.currentRow, g.currentColumn], [1, 2])
@@ -426,5 +437,29 @@ TestCase {
         tryCompare(bars[0], "height", c.heightOf(2.5), 2000)
         tryCompare(bars[1], "height", c.heightOf(2.5), 2000)
         verify(bars[1].clip)
+    }
+    // A least height lifts a stack: the pointer finds the parts as drawn, from the top.
+    function test_barChartLiftedStack() {
+        const c = createTemporaryObject(examComponent, tc.Window.contentItem)
+        c.minBarHeight = 20
+        c.values = [[1.05, 0.05]]
+        waitForRendering(c)
+        const upper = 0.05 / c.scaleSpan * c.plotHeight
+        compare(c.barHeight(0), 20)
+        compare(c.partAt(0, c.plotHeight - 20 + upper / 2), 1, "the upper part at the top")
+        compare(c.partAt(0, c.plotHeight - 5), 0, "the lifted bottom part below it")
+        compare(c.partAt(0, c.plotHeight - 21), -1, "above the bar nothing")
+    }
+    // A floor below 0: the axis keeps room for its widest label, the negative one.
+    function test_barChartNegativeFloorLabel() {
+        const c = createTemporaryObject(examComponent, tc.Window.contentItem)
+        c.axisTitle = ""           // the title would leave room of its own
+        c.minValue = -100
+        c.maxValue = 0
+        c.values = [5, -50]
+        waitForRendering(c)
+        const label = findAll(c, t => t.text !== undefined && t.font !== undefined && t.visible && String(t.text) === c.format(-100))
+        verify(label.length > 0, "the floor on the axis")
+        verify(label[0].x >= 0, "inside the chart: " + label[0].x)
     }
 }

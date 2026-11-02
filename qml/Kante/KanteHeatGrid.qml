@@ -52,7 +52,9 @@ import "."
  * font (e.g. KanteStyle.smallFont, so long names read on a phone).
  *
  * A fixed number of columns that fills the width (1.64, Mitori's form grid): `fillWidth` makes
- * the cells square and as large as the room beside the row labels allows, `cellSize` at least.
+ * the cells square and as large as the room beside the row labels allows, `cellSize` at least
+ * (a text wider than that widens its column; without a width set from outside, the legend's
+ * width counts).
  *
  *            ┌ upright column labels, starting on one line above the cells
  *   Ikkyo    [3] [ ] [1] ◂━━ scroll bar ━━▸
@@ -463,10 +465,11 @@ FocusScope {
                 return [r - d, c]
             }
         }
+        // Backwards, so that of two alike the one further on (below, right) wins.
         let best = null
         let bestDistance = Infinity
-        for (let rr = 0; rr < rowCount; rr++) {
-            for (let cc = 0; cc < columnCount; cc++) {
+        for (let rr = rowCount - 1; rr >= 0; rr--) {
+            for (let cc = columnCount - 1; cc >= 0; cc--) {
                 const distance = Math.abs(rr - r) + Math.abs(cc - c)
                 if (distance < bestDistance && focusable(rr, cc)) {
                     best = [rr, cc]
