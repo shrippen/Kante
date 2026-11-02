@@ -796,6 +796,12 @@ Taps through a sheet (found in Mitori): a `KanteListRow` under a modal popup als
 |---|---|---|
 | Rows under popups | – | `KanteListRow` takes no tap that lands on a popup drawn above it (a sheet, a dialog, a drawer); a row inside a popup yields only to popups drawn above its own (higher `z`, or the same `z` and opened later). Other items in the overlay (Kirigami's passive notifications, an app's toast) do not count. `underPopup(scenePoint)` |
 
+### Added in Kante 1.62
+
+| Element | Web | QML |
+|---|---|---|
+| Calendar heatmap | – | `KanteCalendarHeatmap`: days on a calendar grid, a column per week (`weeks`, newest on the right, ending with `endDate`), a row per weekday from `firstDayOfWeek` (the locale's). Labelled axes: weekday names on every second row, the month's short name above the week it begins in (the first column names the month of its last day when the next name is three weeks away or more). `levels` {"YYYY-MM-DD": 0..4} coloured as `KanteHeatmap` (`KanteStyle.levelColor`), `tips` {"YYYY-MM-DD": text} shown after the date as the tooltip on hover, or for three seconds after a tap (touch); screen readers hear the date in full (`Locale.LongFormat`). Mirrored with `LayoutMirroring` (newest week on the left). Pair it with a `KanteLegend` for the levels. Mitori's practice days |
+
 ### Added in Kante 1.61
 
 | Element | Web | QML |
