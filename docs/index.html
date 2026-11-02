@@ -131,6 +131,30 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.63.0">
+      <div class="release-head"><b class="release-version">1.63</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A heat grid with labels: rows, columns, a number in every cell and a legend, also for wide grids on a phone.</p>
+        <p class="release-lead" lang="de">Ein Wärmeraster mit Beschriftung: Zeilen, Spalten, eine Zahl in jeder Zelle und eine Legende, auch für breite Raster auf dem Handy.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteHeatGrid</code>: rows × columns on the heat scale, with row and column labels, the value as a number in each cell, a legend with the value of each level, a tooltip per cell and keyboard focus (arrows, Enter). Screen readers hear each cell by name. Kontra's fretboard quiz shows its hits per string and fret with it; <code>KanteHeatmap</code> stays the unlabelled grid of days.</li>
+            <li>Wide grids fit a phone: the cells scroll sideways while the row names stay, with a scroll bar, and the focused cell stays in sight. Column names can stand upright, so long names allow narrow columns; long row names are cut to a width with the full name as a tooltip. Mitori's technique map shows techniques × attacks with it.</li>
+            <li>Levels 0 to 4 as steps, with a word per level in the legend, and blank places where there is nothing to show. The focus ring stands out on every level, also on the strongest, which is filled with the focus colour.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteHeatGrid</code>: Zeilen × Spalten auf der Wärmeskala, mit Zeilen- und Spaltenbeschriftung, dem Wert als Zahl in jeder Zelle, einer Legende mit dem Wert jeder Stufe, einem Tooltip je Zelle und Tastaturfokus (Pfeile, Enter). Screenreader lesen jede Zelle mit Namen vor. Kontras Griffbrett-Quiz zeigt damit seine Treffer je Saite und Bund; <code>KanteHeatmap</code> bleibt das unbeschriftete Raster der Tage.</li>
+            <li>Breite Raster passen aufs Handy: Die Zellen scrollen waagerecht, die Zeilennamen bleiben stehen, eine Scrollleiste zeigt die Stelle, und die Zelle mit dem Fokus bleibt im Blick. Spaltennamen können hochkant stehen, so erlauben lange Namen schmale Spalten; lange Zeilennamen werden auf eine Breite gekürzt, der ganze Name steht im Tooltip. Mitoris Technik-Landkarte zeigt damit Techniken × Angriffe.</li>
+            <li>Stufen 0 bis 4 als Schritte, mit einem Wort je Stufe in der Legende, und leere Plätze, wo es nichts zu zeigen gibt. Der Fokusrahmen ist auf jeder Stufe zu sehen, auch auf der stärksten, die in der Fokusfarbe gefüllt ist.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.63-heatgrid.png" alt="A heat grid in dark Kante: rows G, D, A, E under the title Saite, columns 0 to 7 under Bund, each cell a cyan shade with its percentage written in it, empty cells framed with a dash; below the legend Treffer from 0 % to 100 % and Keine Daten" loading="lazy"><figcaption><span lang="en">Hits per string and fret, a number in every cell, the legend below</span><span lang="de">Treffer je Saite und Bund, eine Zahl in jeder Zelle, darunter die Legende</span></figcaption></figure>
+          <figure><img src="shots/release-1.63-technique-map.png" alt="A narrow heat grid in dark Kante: techniques Ikkyo to Kote-gaeshi down the side, attack names standing upright above the columns, cells with levels 1 to 4 in cyan shades and blank places between them, a scroll bar under the cells, one cell framed by the focus ring; below the legend 1 gesehen to 4 prüfungsreif and keine Kombination" loading="lazy"><figcaption><span lang="en">Techniques by attack on a phone: upright names, blank places, a scroll bar</span><span lang="de">Techniken je Angriff auf dem Handy: hochkante Namen, leere Plätze, eine Scrollleiste</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163"><span lang="en">All changes in 1.63 →</span><span lang="de">Alle Änderungen in 1.63 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.62.1">
       <div class="release-head"><b class="release-version">1.62.1</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -168,6 +192,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162"><span lang="en">All changes in 1.62 →</span><span lang="de">Alle Änderungen in 1.62 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.61.1">
       <div class="release-head"><b class="release-version">1.61.1</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -184,9 +211,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611"><span lang="en">All changes in 1.61.1 →</span><span lang="de">Alle Änderungen in 1.61.1 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.61.0">
       <div class="release-head"><b class="release-version">1.61</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -1141,7 +1165,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.62.1</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.63.0</a></p></div>
 </footer>
 
 <script>

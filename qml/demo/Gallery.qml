@@ -247,7 +247,7 @@ Rectangle {
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
                     }
                 }
-                // 1.59: a labelled heat grid, hits per string and fret.
+                // 1.63: a labelled heat grid, hits per string and fret.
                 KanteHeatGrid {
                     id: galleryHeatGrid
                     objectName: "galleryHeatGrid"
@@ -265,6 +265,31 @@ Rectangle {
                         [95, 80, { value: 55, tip: "D, Bund 2: 11 von 20" }, 50, 35, null, 15, 5],
                         [90, 85, 70, 45, 30, 25, 10, null],
                         [100, 100, 65, 40, 25, 20, 0, 0]
+                    ]
+                }
+                // 1.63: Mitori's technique map, levels 0..4, upright attack names, blank where a
+                // technique does not answer an attack; narrow, so the cells scroll sideways.
+                KanteHeatGrid {
+                    objectName: "galleryTechniqueMap"
+                    Layout.preferredWidth: KanteStyle.unit(320)
+                    minValue: 0
+                    maxValue: 4
+                    showEmpty: false
+                    columnLabelsVertical: true
+                    rowLabelWidth: KanteStyle.unit(96)
+                    cellSize: KanteStyle.unit(26)
+                    rowTitle: "Technik"
+                    rowLabels: ["Ikkyo", "Irimi-nage", "Shiho-nage omote", "Kote-gaeshi"]
+                    columnLabels: ["Ai-hanmi katate-dori", "Gyaku-hanmi katate-dori", "Shomen-uchi", "Yokomen-uchi", "Tsuki", "Ryote-dori", "Kata-dori", "Ushiro ryote-dori", "Morote-dori", "Mune-dori"]
+                    legendLevels: [1, 2, 3, 4]
+                    legendLabels: ["", "1 gesehen", "2 geübt", "3 sicher", "4 prüfungsreif"]
+                    noDataText: "keine Kombination"
+                    accessibleName: "Techniken je Angriff"
+                    cells: [
+                        [{ value: 4, label: "4" }, { value: 3, label: "3" }, { value: 4, label: "4" }, { value: 2, label: "2" }, null, { value: 1, label: "1" }, { value: 3, label: "3" }, { value: 0, label: "" }, null, { value: 1, label: "1" }],
+                        [{ value: 2, label: "2" }, { value: 3, label: "3" }, { value: 1, label: "1" }, null, { value: 2, label: "2" }, { value: 0, label: "" }, null, { value: 1, label: "1" }, { value: 2, label: "2" }, null],
+                        [{ value: 3, label: "3" }, null, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 2, label: "2" }, { value: 1, label: "1" }, { value: 3, label: "3" }, null, { value: 0, label: "" }],
+                        [null, { value: 1, label: "1" }, { value: 2, label: "2" }, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 3, label: "3" }, null, { value: 1, label: "1" }, { value: 2, label: "2" }]
                     ]
                 }
                 RowLayout {
@@ -425,7 +450,7 @@ Rectangle {
                 RowLayout {
                     spacing: KanteStyle.unit(24)
                     ColumnLayout {
-                        Layout.preferredWidth: KanteStyle.unit(380)
+                        Layout.preferredWidth: KanteStyle.unit(320)
                         spacing: 0
                         KanteListRow { Layout.fillWidth: true; leadingText: "09:15"; leadingWidth: KanteStyle.unit(44); text: "Rohschnitt"; subtitle: "Kader · Schnitt"; meta: "02:14"; count: "3"; selected: true; KanteSwatch { size: KanteSwatch.Size.Small } }
                         KanteListRow { Layout.fillWidth: true; leadingText: "11:30"; leadingWidth: KanteStyle.unit(44); text: "Farbkorrektur"; subtitle: "Andon · Pflege"; meta: "01:05"; count: "12"; KanteSwatch { size: KanteSwatch.Size.Small; swatchColor: KanteStyle.tagColor } }
@@ -478,7 +503,7 @@ Rectangle {
                         hoverIndex: 1; hoverPart: 1
                     }
                     ColumnLayout {
-                        Layout.preferredWidth: KanteStyle.unit(380)
+                        Layout.preferredWidth: KanteStyle.unit(320)
                         spacing: 0
                         KanteListRow {
                             Layout.fillWidth: true; text: "Import"; subtitle: "3 Fehler"; count: "3"
@@ -639,10 +664,10 @@ Rectangle {
                     KanteTunerGauge { Layout.preferredWidth: KanteStyle.unit(270); noteName: "A"; octave: 1; cents: 2; active: true }
                     ColumnLayout {
                         spacing: KanteStyle.unit(14)
-                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -14; rmsDb: -22 }
-                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -0.4; rmsDb: -5; clipped: true }
+                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(320); peakDb: -14; rmsDb: -22 }
+                        KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(320); peakDb: -0.4; rmsDb: -5; clipped: true }
                         KanteTimingHistogram {
-                            Layout.preferredWidth: KanteStyle.unit(380); Layout.preferredHeight: KanteStyle.unit(170)
+                            Layout.preferredWidth: KanteStyle.unit(320); Layout.preferredHeight: KanteStyle.unit(170)
                             counts: [0, 1, 3, 6, 11, 15, 9, 5, 2, 1]; firstBinMs: -50; binMs: 10; meanMs: 4.2
                         }
                     }
@@ -1070,7 +1095,7 @@ Rectangle {
                             KanteLevelDots { value: ratingPicker.value; names: ratingPicker.names }
                             KanteLevelPicker {
                                 id: ratingPicker
-                                Layout.preferredWidth: KanteStyle.unit(380)
+                                Layout.preferredWidth: KanteStyle.unit(320)
                                 value: 3
                                 names: ["offen", "gesehen", "mit Hilfe", "sicher", "prüfungsreif"]
                                 onPicked: level => value = level
@@ -1080,14 +1105,14 @@ Rectangle {
                         ColumnLayout {
                             spacing: KanteStyle.unit(6)
                             KanteProgressBar {
-                                Layout.preferredWidth: KanteStyle.unit(380)
+                                Layout.preferredWidth: KanteStyle.unit(320)
                                 parts: [{ value: 0.10, color: KanteStyle.levelColor(4), text: "2 prüfungsreif" },
                                         { value: 0.25, color: KanteStyle.levelColor(3), text: "5 sicher" },
                                         { value: 0.15, color: KanteStyle.levelColor(2), text: "3 mit Hilfe" },
                                         { value: 0.20, color: KanteStyle.levelColor(1), text: "4 gesehen" }]
                             }
                             KanteLegend {
-                                Layout.preferredWidth: KanteStyle.unit(380)
+                                Layout.preferredWidth: KanteStyle.unit(320)
                                 model: [{ color: KanteStyle.levelColor(4), value: 2, text: "prüfungsreif" },
                                         { color: KanteStyle.levelColor(3), value: 5, text: "sicher" },
                                         { color: KanteStyle.levelColor(2), value: 3, text: "mit Hilfe" },

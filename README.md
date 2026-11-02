@@ -367,7 +367,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Chip (entity, filter) | `.chip`, `.chip-x`, `.chips-row` | `KanteChip` |
 | Swatch with origin ring | `.swatch[data-src]`, `.swatch-grid` | `KanteSwatch` |
 | Table: numbers, group row, total | `.table .num`, `.group-row`, `tfoot` | – |
-| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
+| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap`, `KanteHeatGrid` |
 | Month grid | `.cal` | `KanteCalendarGrid` |
 | KPI with change | `.kpi`, `.delta` | `KanteKpi` |
 | Wide KPI with spark line | `.kpi` > `.spark` from 24rem content width on (container query on the `.kpi`): figures left, the line right; the value stays on one line | – |
@@ -787,6 +787,38 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Key geometry | – | `KanteKeyLayout` (non-visual, shared by keyboard and lane): `low`, `high` (MIDI, 60 = middle C), `width`; `noteNames` (12 names from C, default C, C♯, D, E♭, E, F, F♯, G, A♭, A, B♭, B; the app sets its language, e.g. German H for B), `middleCOctave` (4: MIDI 60 is C4). Piano proportions: white keys equally wide (`whiteWidth`), black keys 0.58 wide and 0.63 long, set off the boundary as on a real keyboard. `x(m)`, `keyWidth(m)`, `isBlack(m)`, `nameOf(m)` ("E1"), `keyAt(px, blackLevel)`, `count`. A range that starts or ends on a black key starts or ends at its edge |
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
+
+### Added in Kante 1.63
+
+A heat grid with labels, for two apps: Kontra's fretboard quiz (hits per string and fret, a percentage in each cell) and Mitori's technique map (a grid per group, techniques × attacks, each place the best level 0–4 of its techniques, blank where a technique does not answer an attack; 20 and more attacks on a phone).
+
+| Element | Web | QML |
+|---|---|---|
+| Heat grid with labels | – | `KanteHeatGrid`: `rowLabels` (top to bottom), `columnLabels` ("" leaves one out), `rowTitle` and `columnTitle` (e.g. "Saite", "Bund"); `cells` one list per row, an entry a number, `null` (no data) or `{value, label, tip, accessibleName}`. The value stands in the cell as a number (`showValues`, `formatter` or `unit`; `label` replaces it, `""` leaves the cell blank), so the colour is never the only sign; the number takes the ink that reads best on its level and, where none reaches 4.5:1, sits on a small plate of the ground. Levels 0 to 4 as `KanteStyle.levelColor(level, 4)`, the scale of `KanteHeatmap`, between `minValue` and `maxValue` (NaN: from the cells); with `minValue: 0`, `maxValue: 4` and whole values each value is its level. No data is the ground with a rule frame and `emptyText` ("–"); `showEmpty: false` leaves a blank gap instead that takes no focus, no tap and no screen reader's attention, and the keys skip it. `legend` below the grid, a `KanteLegend` that wraps when narrow: a key per level of `legendLevels` (default `[0, 1, 2, 3, 4]`, e.g. `[1, 2, 3, 4]` without level 0) with its value or `legendLabels[level]` (by level, so `legendLabels[0]` names level 0), `legendTitle` before them, `noDataText` after them when a cell has no data (`legendModel` holds the entries). A tooltip per cell on hover and on focus (`tip`, default "<row>, <column>: <text>"), the same text as the cell's accessible name unless `accessibleName` says otherwise. Row and column come from `rowNames` / `columnNames` (e.g. "Bund 1" where the label is ""), else from the labels; with neither the part is left out, never replaced by an index. `interactive` (default true): one Tab stop, arrows move, Home / End to the row's ends, Ctrl+Home / End to the first and last cell, Enter / Space or a click fire `activated(row, column)`; `currentRow`, `currentColumn`; right to left Left goes on. When the cells change, the current cell moves onto a cell that is there, so the focus stays on a cell. The focus ring is two lines, the focus colour outside the cell and the fill's ink (ground or strong text) inside its edge, so it stands out 3:1 on every level, also on level 4, which is filled with the focus colour. `KanteHeatmap` stays the unlabelled grid of days. The web has no labelled heat grid yet (`.heat`, `.heat-legend`) |
+| Wide heat grids | – | `KanteHeatGrid` on a narrow screen: `scrollable` (default true) lets the cells scroll sideways when the grid is narrower than they are, the row labels stay at the start side, a horizontal scroll bar shows (`scrolling` says when); the focused cell is scrolled into view, its ring included, and right to left the view starts at the first column on the right. `rowLabelWidth` caps the row labels (0: as wide as the longest; bind it to e.g. `width * 0.4` on a phone); longer names elide, the full name shows as a tooltip. `columnLabelsVertical` turns the column labels upright, reading upwards from one line above the cells, so long names allow narrow columns; they are as long as the longest name and never cut, unless `columnLabelMaxLength` caps them (then they elide, the full name as a tooltip). `columnTips` gives a column label a tooltip of its own (e.g. the Japanese name). `cellSize` is the smallest side of a cell (larger on a tablet) |
+
+Mitori's technique map with it, a grid per group:
+
+```qml
+KanteHeatGrid {
+    Layout.fillWidth: true
+    minValue: 0; maxValue: 4                // whole values are the levels
+    showEmpty: false                        // null: no such combination, a blank gap
+    columnLabelsVertical: true
+    rowLabelWidth: width * 0.4
+    cellSize: wide ? KanteStyle.unit(34) : KanteStyle.unit(26)
+    rowLabels: grid.rows.map(r => r.title)
+    columnLabels: grid.columns.map(c => c.extra ? c.title + " · " + c.extra : c.title)
+    columnTips: grid.columns.map(c => c.jp || "")
+    cells: grid.rows.map(r => r.cells.map(c => c.ids
+        ? { value: level(c), label: level(c) > 0 ? String(level(c)) : "", tip: tipOf(r, c) }
+        : null))
+    legendLevels: [1, 2, 3, 4]
+    legendLabels: ["", "1 seen", "2 practised", "3 sure", "4 ready"]
+    noDataText: "no such combination"
+    onActivated: (row, column) => openSheet(grid.rows[row].cells[column])
+}
+```
 
 ### Fixed in Kante 1.61.1
 

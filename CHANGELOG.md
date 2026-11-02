@@ -5,6 +5,38 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.63.0] — 2026-11-02
+
+### English
+
+A heat grid with labels: rows, columns, a number in every cell and a legend, also for wide grids on a phone.
+
+#### New
+- `KanteHeatGrid`: rows × columns on the heat scale, with row and column labels, the value as a number in each cell, a legend with the value of each level, a tooltip per cell and keyboard focus (arrows, Enter). Screen readers hear each cell by name. Kontra's fretboard quiz shows its hits per string and fret with it; `KanteHeatmap` stays the unlabelled grid of days.
+- Wide grids fit a phone: the cells scroll sideways while the row names stay, with a scroll bar, and the focused cell stays in sight. Column names can stand upright, so long names allow narrow columns; long row names are cut to a width with the full name as a tooltip. Mitori's technique map shows techniques × attacks with it.
+- Levels 0 to 4 as steps, with a word per level in the legend, and blank places where there is nothing to show. The focus ring stands out on every level, also on the strongest, which is filled with the focus colour.
+
+![Hits per string and fret, a number in every cell, the legend below](https://shrippen.github.io/Kante/shots/release-1.63-heatgrid.png)
+
+![Techniques by attack with upright attack names, levels 1 to 4, blank places, a scroll bar and a focused cell](https://shrippen.github.io/Kante/shots/release-1.63-technique-map.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163
+
+### Deutsch
+
+Ein Wärmeraster mit Beschriftung: Zeilen, Spalten, eine Zahl in jeder Zelle und eine Legende, auch für breite Raster auf dem Handy.
+
+#### Neu
+- `KanteHeatGrid`: Zeilen × Spalten auf der Wärmeskala, mit Zeilen- und Spaltenbeschriftung, dem Wert als Zahl in jeder Zelle, einer Legende mit dem Wert jeder Stufe, einem Tooltip je Zelle und Tastaturfokus (Pfeile, Enter). Screenreader lesen jede Zelle mit Namen vor. Kontras Griffbrett-Quiz zeigt damit seine Treffer je Saite und Bund; `KanteHeatmap` bleibt das unbeschriftete Raster der Tage.
+- Breite Raster passen aufs Handy: Die Zellen scrollen waagerecht, die Zeilennamen bleiben stehen, eine Scrollleiste zeigt die Stelle, und die Zelle mit dem Fokus bleibt im Blick. Spaltennamen können hochkant stehen, so erlauben lange Namen schmale Spalten; lange Zeilennamen werden auf eine Breite gekürzt, der ganze Name steht im Tooltip. Mitoris Technik-Landkarte zeigt damit Techniken × Angriffe.
+- Stufen 0 bis 4 als Schritte, mit einem Wort je Stufe in der Legende, und leere Plätze, wo es nichts zu zeigen gibt. Der Fokusrahmen ist auf jeder Stufe zu sehen, auch auf der stärksten, die in der Fokusfarbe gefüllt ist.
+
+![Treffer je Saite und Bund, eine Zahl in jeder Zelle, darunter die Legende](https://shrippen.github.io/Kante/shots/release-1.63-heatgrid.png)
+
+![Techniken je Angriff mit hochkanten Angriffsnamen, Stufen 1 bis 4, leeren Plätzen, einer Scrollleiste und einer Zelle mit Fokus](https://shrippen.github.io/Kante/shots/release-1.63-technique-map.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163
+
 ## [1.62.1] — 2026-11-02
 
 ### English

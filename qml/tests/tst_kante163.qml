@@ -5,14 +5,15 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.59, from Kontra's fretboard quiz: KanteHeatGrid, a heat grid with row and column
- * labels, a number per cell, a legend, a tooltip and keyboard focus per cell, and an
- * accessible name per cell. KanteHeatmap keeps its scale (KanteStyle.heatColor).
+ * Kante 1.63, from Kontra's fretboard quiz and Mitori's technique map: KanteHeatGrid, a heat
+ * grid with row and column labels, a number per cell, a legend, a tooltip and keyboard focus
+ * per cell, and an accessible name per cell; wide grids scroll under standing row labels,
+ * column labels stand upright, levels 0..4 as KanteStyle.levelColor, a focus ring on every level.
  * Run: tools/check-qml.sh.
  */
 TestCase {
     id: tc
-    name: "Kante159"
+    name: "Kante163"
     width: 800
     height: 600
     when: windowShown
@@ -66,6 +67,51 @@ TestCase {
     Component {
         id: heatmapComponent
         KanteHeatmap { levels: [0, 1, 2, 3, 4] }
+    }
+    // Mitori's technique map: long technique names, 24 attacks with a suffix, levels 0..4,
+    // blank where a technique does not answer an attack.
+    Component {
+        id: mapComponent
+        Column {
+            property alias before: mapBefore
+            property alias grid: mapGrid
+            width: 320
+            Item { id: mapBefore; width: 20; height: 20; activeFocusOnTab: true }
+            KanteHeatGrid {
+                id: mapGrid
+                width: parent.width
+                minValue: 0
+                maxValue: 4
+                showEmpty: false
+                columnLabelsVertical: true
+                rowLabelWidth: 90
+                cellSize: KanteStyle.unit(26)
+                rowLabels: ["Ikkyo (Ude-osae)", "Irimi-nage", "Shiho-nage omote und ura", "Kote-gaeshi"]
+                columnLabels: {
+                    const out = []
+                    for (let c = 0; c < 24; c++) {
+                        out.push((c % 2 ? "Katate-dori" : "Shomen-uchi") + " · " + (c + 1))
+                    }
+                    return out
+                }
+                cells: {
+                    const out = []
+                    for (let r = 0; r < 4; r++) {
+                        const row = []
+                        for (let c = 0; c < 24; c++) {
+                            const l = (r + c) % 6
+                            row.push(l === 5 ? null : { value: l, label: l > 0 ? String(l) : "" })
+                        }
+                        out.push(row)
+                    }
+                    return out
+                }
+                legendLevels: [1, 2, 3, 4]
+                legendLabels: ["", "1 gesehen", "2 geübt", "3 sicher", "4 prüfungsreif"]
+                noDataText: "keine Kombination"
+                onActivated: (r, c) => tc.onActivated(r, c)
+            }
+        }
     }
 
     property int activations: 0
@@ -149,12 +195,14 @@ TestCase {
 
     function test_legend() {
         const g = make()
-        compare(named(g, "kanteHeatLegendLabel").map(t => t.text), ["0 %", "25 %", "50 %", "75 %", "100 %"])
+        compare(g.legendModel.map(e => e.text), ["0 %", "25 %", "50 %", "75 %", "100 %", "– Keine Daten"])
         verify(g.hasEmpty)
         const legend = named(g, "kanteHeatLegend")[0]
-        verify(legend.Accessible.name.indexOf("Keine Daten") >= 0)
-        g.legendLabels = ["wenig", "", "", "", "viel"]
-        compare(named(g, "kanteHeatLegendLabel")[4].text, "viel")
+        const keys = named(g, "kanteHeatLegendKeys")[0]
+        verify(findAll(keys, c => c.Accessible.name === "– Keine Daten").length === 1, "screen readers hear each key")
+        g.legendLabels = ["wenig", undefined, undefined, undefined, "viel"]
+        compare(g.legendModel[4].text, "viel")
+        compare(g.legendModel[1].text, "25 %", "an undefined label keeps the value")
         g.legend = false
         verify(!legend.visible)
     }
@@ -263,7 +311,7 @@ TestCase {
     // Row title and column labels share one baseline.
     function test_headerBaseline() {
         const g = make()
-        const title = findAll(g, c => c.text === "Saite")[0]
+        const title = named(g, "kanteHeatRowTitle")[0]
         const col = named(g, "kanteHeatColumnLabel")[0]
         fuzzyCompare(title.mapToItem(g, 0, title.baselineOffset).y, col.mapToItem(g, 0, col.baselineOffset).y, 1)
     }
@@ -287,12 +335,261 @@ TestCase {
         }
     }
 
+    // KanteHeatmap and KanteHeatGrid draw one scale: KanteStyle.levelColor(level, 4).
     function test_heatmapKeepsItsScale() {
         const h = createTemporaryObject(heatmapComponent, tc)
         for (let l = 0; l <= 4; l++) {
-            compare(String(h.levelColor(l)), String(KanteStyle.heatColor(l)))
+            compare(String(h.levelColor(l)), String(KanteStyle.levelColor(l, 4)))
         }
-        compare(KanteStyle.heatColor(4).a, 1)
-        fuzzyCompare(KanteStyle.heatColor(2).a, 0.44, 0.01)
+    }
+
+    /** Bounding box of a (turned) item in `to`'s coordinates: [left, top, right, bottom]. */
+    function boxIn(item, to) {
+        const pts = [item.mapToItem(to, 0, 0), item.mapToItem(to, item.width, 0),
+                     item.mapToItem(to, 0, item.height), item.mapToItem(to, item.width, item.height)]
+        return [Math.min(...pts.map(p => p.x)), Math.min(...pts.map(p => p.y)),
+                Math.max(...pts.map(p => p.x)), Math.max(...pts.map(p => p.y))]
+    }
+    function makeMap() {
+        activations = 0
+        const m = createTemporaryObject(mapComponent, tc.Window.contentItem)
+        verify(m)
+        waitForRendering(m)
+        return m
+    }
+
+    // Whole values on 0..4 are the levels themselves, in KanteStyle.levelColor's colours.
+    function test_discreteLevels() {
+        const g = makeMap().grid
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 24; c++) {
+                const want = (r + c) % 6
+                const cell = g.cellAt(r, c)
+                if (want === 5) {
+                    compare(cell.level, -1)
+                    continue
+                }
+                compare(cell.level, want, "value " + want + " is level " + want)
+                const fill = named(cell, "kanteHeatFill")[0]
+                compare(String(fill.color), String(KanteStyle.levelColor(want, 4)))
+                compare(cell.text, want > 0 ? String(want) : "", "level 0 without a number")
+            }
+        }
+        const zero = g.cellAt(0, 0)
+        verify(!named(zero, "kanteHeatPlate")[0].visible, "no plate for an empty label")
+        compare(zero.Accessible.name, "Ikkyo (Ude-osae), Shomen-uchi · 1")
+        // The legend: the levels asked for with their words, then the blank places.
+        compare(g.legendModel.map(e => e.text), ["1 gesehen", "2 geübt", "3 sicher", "4 prüfungsreif", "keine Kombination"])
+        compare(String(g.legendModel[3].color), String(KanteStyle.levelColor(4, 4)))
+    }
+
+    // showEmpty false: no data is a blank gap, not drawn, not focusable, skipped by the keys.
+    function test_blankGaps() {
+        const m = makeMap()
+        const g = m.grid
+        const gap = g.cellAt(0, 5)
+        verify(!gap.shown)
+        verify(gap.Accessible.ignored)
+        verify(!named(gap, "kanteHeatFill")[0].visible)
+        m.before.forceActiveFocus()
+        keyClick(Qt.Key_Tab)
+        tryVerify(() => g.cellAt(0, 0).activeFocus, 1000)
+        keyClick(Qt.Key_End)
+        compare([g.currentRow, g.currentColumn], [0, 22], "End: the last drawn cell of the row")
+        keyClick(Qt.Key_Right)
+        compare([g.currentRow, g.currentColumn], [0, 22], "no drawn cell further on: stays")
+        keyClick(Qt.Key_Home)
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Right)
+        compare(g.currentColumn, 4)
+        keyClick(Qt.Key_Right)
+        compare(g.currentColumn, 6, "the gap at 5 is skipped")
+        keyClick(Qt.Key_Left)
+        compare(g.currentColumn, 4, "back over the gap")
+        keyClick(Qt.Key_Left)
+        compare(g.currentColumn, 3)
+        keyClick(Qt.Key_Down)
+        compare([g.currentRow, g.currentColumn], [1, 3])
+        keyClick(Qt.Key_Down)
+        compare([g.currentRow, g.currentColumn], [3, 3], "the gap at (2, 3) is skipped")
+        // A tap on a gap does nothing.
+        const before = activations
+        mouseClick(g.cellAt(1, 4), 3, 3)
+        compare(activations, before)
+        // Cells change so that the current cell becomes a gap: it moves to a drawn one.
+        g.currentRow = 0
+        g.currentColumn = 5
+        g.cells = g.cells.slice()
+        verify(g.focusable(g.currentRow, g.currentColumn))
+    }
+
+    // A wide grid on a narrow screen: the cells scroll, the row labels stay, a scroll bar shows.
+    function test_scrollKeepsRowLabels() {
+        const m = makeMap()
+        const g = m.grid
+        verify(g.scrolling, "24 columns do not fit 320 px")
+        const view = named(g, "kanteHeatView")[0]
+        const bar = named(g, "kanteHeatScrollBar")[0]
+        verify(bar.visible)
+        verify(bar.height > 0)
+        verify(view.width <= g.width - g.labelWidth)
+        const label = named(g, "kanteHeatRowLabel")[2]
+        const xBefore = label.mapToItem(g, 0, 0).x
+        const cell = g.cellAt(2, 0)
+        const cellBefore = cell.mapToItem(g, 0, 0).x
+        view.contentX = 200
+        waitForRendering(g)
+        compare(label.mapToItem(g, 0, 0).x, xBefore, "row label stays")
+        fuzzyCompare(cell.mapToItem(g, 0, 0).x, cellBefore - 200, 1, "cells move")
+        verify(label.visible)
+        // Not scrollable: no scroll bar, the view as wide as the cells.
+        g.scrollable = false
+        verify(!g.scrolling)
+        verify(!bar.visible)
+    }
+
+    // Arrow keys move the view along so the focused cell, ring included, stays in sight.
+    function test_focusStaysInView() {
+        const m = makeMap()
+        const g = m.grid
+        const view = named(g, "kanteHeatView")[0]
+        function inView(r, c) {
+            const cell = g.cellAt(r, c)
+            const x = cell.mapToItem(view, 0, 0).x
+            return x - g.ringRoom >= -0.5 && x + cell.width + g.ringRoom <= view.width + 0.5
+        }
+        m.before.forceActiveFocus()
+        keyClick(Qt.Key_Tab)
+        tryVerify(() => g.cellAt(0, 0).activeFocus, 1000)
+        compare(view.contentX, 0)
+        for (let i = 0; i < 12; i++) {
+            keyClick(Qt.Key_Right)
+            verify(inView(g.currentRow, g.currentColumn), "column " + g.currentColumn + " in view")
+        }
+        verify(view.contentX > 0, "the view moved")
+        keyClick(Qt.Key_End, Qt.ControlModifier)
+        verify(inView(g.currentRow, g.currentColumn), "last cell in view")
+        fuzzyCompare(view.contentX, view.contentWidth - view.width, 1)
+        keyClick(Qt.Key_Home, Qt.ControlModifier)
+        verify(inView(0, 0))
+        compare(view.contentX, 0)
+    }
+
+    // Upright column labels: whole, inside the header, all starting on one line above the
+    // cells (the row title stands on it), and the columns narrower than the names are long.
+    function test_verticalLabelsWhole() {
+        const g = makeMap().grid
+        g.rowTitle = "Technik"
+        waitForRendering(g)
+        const labels = named(g, "kanteHeatColumnLabel")
+        compare(labels.length, 24)
+        const first = g.cellAt(0, 0).mapToItem(g, 0, 0).y
+        const starts = []
+        for (let i = 0; i < labels.length; i++) {
+            const t = labels[i]
+            verify(!t.truncated, "label " + i + " whole")
+            compare(t.rotation, -90)
+            verify(t.implicitWidth <= t.width + 0.5, "label " + i + " fits its length")
+            const box = boxIn(t, g)
+            verify(box[1] >= -0.5, "label " + i + " not above the grid")
+            verify(box[3] <= first + 0.5, "label " + i + " ends above the cells")
+            const cell = g.cellAt(0, i)
+            const cx = cell.mapToItem(g, cell.width / 2, 0).x
+            verify(box[0] >= cx - cell.width / 2 - 0.5 && box[2] <= cx + cell.width / 2 + 0.5, "label " + i + " over its column")
+            starts.push(box[3])
+        }
+        for (const y of starts) {
+            fuzzyCompare(y, starts[0], 0.5, "one start line")
+        }
+        verify(g.cellWidth < labels[0].implicitWidth, "columns narrower than their names")
+        const title = named(g, "kanteHeatRowTitle")[0]
+        fuzzyCompare(title.mapToItem(g, 0, title.baselineOffset).y, starts[0], 1, "row title on the start line")
+        // Capped: the labels elide and the full name is the tooltip.
+        g.columnLabelMaxLength = 40
+        waitForRendering(g)
+        const t = labels[3]
+        verify(t.truncated)
+        verify(boxIn(t, g)[3] <= first + 0.5)
+        compare(t.parent.tip, "Katate-dori · 4")
+        g.columnTips = ["", "", "", "片手取り"]
+        compare(t.parent.tip, "片手取り")
+    }
+
+    // Long row names: capped by rowLabelWidth, elided, the full name as a tooltip.
+    function test_longRowLabels() {
+        const g = makeMap().grid
+        compare(g.labelWidth, 90)
+        verify(g.naturalLabelWidth > 90)
+        const label = named(g, "kanteHeatRowLabel")[2]
+        compare(label.width, 90)
+        verify(label.truncated)
+        compare(label.QQC2.ToolTip.text, "Shiho-nage omote und ura")
+        verify(g.cellAt(2, 0).mapToItem(g, 0, 0).x >= label.mapToItem(g, label.width, 0).x)
+        verify(!named(g, "kanteHeatRowLabel")[1].truncated, "a short name stays whole")
+        g.rowLabelWidth = 0
+        compare(g.labelWidth, g.naturalLabelWidth)
+        verify(!label.truncated)
+    }
+
+    // The focus ring shows on every level, the full focus colour of level 4 too: its outer
+    // line stands out from the ground, its inner line from the fill (3:1, WCAG non-text), dark and light.
+    function test_focusRingOnEveryLevel() {
+        for (const dark of [true, false]) {
+            KanteStyle.preferDark = dark
+            if (!dark && !KanteStyle.light) {
+                skip("the platform theme is dark: no Leinen here")
+            }
+            const m = makeMap()
+            const g = m.grid
+            const ground = g.fillOf(-1)
+            for (let l = 0; l <= 4; l++) {
+                const cell = g.cellAt(0, l)
+                compare(cell.level, l)
+                g.moveTo(0, l)
+                verify(cell.activeFocus)
+                const ring = named(cell, "kanteHeatRing")[0]
+                const inner = named(cell, "kanteHeatRingInner")[0]
+                verify(ring.visible)
+                const fill = g.fillOf(l)
+                const outer = KanteStyle.contrastOf(g.over(ring.border.color, ground), ground)
+                const inside = KanteStyle.contrastOf(g.over(inner.border.color, fill), fill)
+                verify(outer >= 3, (dark ? "dark" : "light") + " level " + l + " outer " + outer)
+                verify(inside >= 3, (dark ? "dark" : "light") + " level " + l + " inner " + inside)
+                verify(inner.border.width >= KanteStyle.lineWidth)
+            }
+        }
+    }
+
+    // Right to left the first column is on the right: the view starts at the right end.
+    Component {
+        id: rtlComponent
+        Item {
+            property alias grid: rtlGrid
+            width: 320
+            height: 300
+            LayoutMirroring.enabled: true
+            LayoutMirroring.childrenInherit: true
+            KanteHeatGrid {
+                id: rtlGrid
+                width: parent.width
+                rowLabels: ["A", "B"]
+                cells: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]
+            }
+        }
+    }
+    function test_rightToLeftStartsAtTheFirstColumn() {
+        const o = createTemporaryObject(rtlComponent, tc.Window.contentItem)
+        const g = o.grid
+        waitForRendering(o)
+        verify(g.scrolling)
+        const view = named(g, "kanteHeatView")[0]
+        tryVerify(() => Math.abs(view.contentX - (view.contentWidth - view.width)) < 1, 1000, "at the right end")
+        const cell = g.cellAt(0, 0)
+        const x = cell.mapToItem(view, 0, 0).x
+        verify(x >= 0 && x + cell.width <= view.width + 0.5, "first column in view")
+        const label = named(g, "kanteHeatRowLabel")[0]
+        verify(label.mapToItem(o, 0, 0).x > view.mapToItem(o, 0, 0).x, "row labels on the right")
     }
 }
