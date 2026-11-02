@@ -1082,7 +1082,9 @@ Rectangle {
                                 weeks: 12
                                 levels: {
                                     const l = {}
-                                    for (let i = 0; i < 84; i += 2) {
+                                    for (let i = 0; i < 84; i++) {
+                                        if (i % 3 === 2)
+                                            continue
                                         const d = new Date()
                                         d.setDate(d.getDate() - i)
                                         l[isoDay(d)] = 1 + i % 4
