@@ -5,7 +5,7 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
-## [1.59.0] — 2026-10-31
+## [1.65.0] — 2026-11-02
 
 ### English
 
@@ -14,7 +14,7 @@ A window that holds a Kante dialog goes down without a crash.
 #### Fixed
 - An app crashed when a window with a `KanteDialog`, or a dialog with `KanteDialogSkin`, in it went down and the garbage collector took it: the dialog gave its old background back while Qt was already deleting it. lmix had to take its page windows down by hand for it.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-159
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-165
 
 ### Deutsch
 
@@ -23,7 +23,239 @@ Ein Fenster mit einem Kante-Dialog darin geht ohne Absturz zu.
 #### Behoben
 - Eine App stürzte ab, wenn ein Fenster mit einem `KanteDialog` oder einem Dialog mit `KanteDialogSkin` darin abgebaut wurde und der Garbage Collector es nahm: Der Dialog gab seinen alten Hintergrund zurück, während Qt ihn schon löschte. lmix musste seine Seitenfenster dafür von Hand abbauen.
 
-Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-159
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-165
+
+## [1.64.0] — 2026-11-02
+
+### English
+
+The heat grid keeps the focus where it was and fills a width; bar charts can start their scale above zero.
+
+#### New
+- Heat grids can fill their width: a fixed number of columns shares the room, with square cells as large as it allows. Built for Mitori's forms, eight a row on a phone and eleven on a tablet.
+- Bar charts can start their scale above zero, so an average from 1 to 4 has an axis from 1 to 4. A bar on the lowest value can keep a small height, so it still shows; the read-out says its real value. Built for Mitori's exam mode.
+- The row names of a heat grid can take another font, so long technique names stay readable on a phone.
+
+#### Improved
+- Level 0 of a heat grid and its legend key have the same, clearer frame, so level 0 stands apart from the page and from a blank place.
+
+#### Fixed
+- When the focused cell of a heat grid turned into a blank place, the focus jumped to the first cell and the view to the start; now it moves to the nearest cell.
+- When all cells turned blank while one had the focus, Tab went backwards and the app logged a warning; now Tab goes on.
+- A cell the app chose in two steps (first the row, then the column) was moved to the first cell in between when the grid did not have the focus; now it stays.
+
+![Techniques by attack with readable names, level 0 in the legend with its word, a focused cell](https://shrippen.github.io/Kante/shots/release-1.64-technique-map.png)
+
+![Twelve forms filling the width, eight a row; beside them the average per round on an axis from 1 to 4](https://shrippen.github.io/Kante/shots/release-1.64-forms-exam.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164
+
+### Deutsch
+
+Das Wärmeraster behält den Fokus, wo er war, und füllt eine Breite; Balkendiagramme können ihre Skala über null beginnen.
+
+#### Neu
+- Wärmeraster können ihre Breite füllen: Eine feste Zahl von Spalten teilt sich den Platz, mit quadratischen Zellen, so groß er es erlaubt. Gebaut für Mitoris Formen, acht je Reihe auf dem Handy und elf auf dem Tablet.
+- Balkendiagramme können ihre Skala über null beginnen, so hat ein Schnitt von 1 bis 4 eine Achse von 1 bis 4. Ein Balken auf dem kleinsten Wert kann eine kleine Höhe behalten und bleibt so sichtbar; die Ablesung nennt seinen echten Wert. Gebaut für Mitoris Prüfungsmodus.
+- Die Zeilennamen eines Wärmerasters können eine andere Schrift nehmen, so bleiben lange Technik-Namen auf dem Handy lesbar.
+
+#### Verbessert
+- Stufe 0 eines Wärmerasters und ihr Legenden-Schlüssel haben denselben, deutlicheren Rahmen, so hebt sich Stufe 0 von der Seite und von einem leeren Platz ab.
+
+#### Behoben
+- Wurde die Zelle mit dem Fokus zu einem leeren Platz, sprang der Fokus auf die erste Zelle und die Ansicht an den Anfang; jetzt geht er zur nächstgelegenen Zelle.
+- Wurden alle Zellen leer, während eine den Fokus hatte, ging Tab rückwärts und die App schrieb eine Warnung; jetzt geht Tab weiter.
+- Eine Zelle, die die App in zwei Schritten wählte (erst die Zeile, dann die Spalte), wurde dazwischen auf die erste Zelle gesetzt, wenn das Raster keinen Fokus hatte; jetzt bleibt sie.
+
+![Techniken je Angriff mit lesbaren Namen, Stufe 0 mit ihrem Wort in der Legende, eine Zelle mit Fokus](https://shrippen.github.io/Kante/shots/release-1.64-technique-map.png)
+
+![Zwölf Formen, die die Breite füllen, acht je Reihe; daneben der Schnitt je Runde auf einer Achse von 1 bis 4](https://shrippen.github.io/Kante/shots/release-1.64-forms-exam.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164
+
+## [1.63.0] — 2026-11-02
+
+### English
+
+A heat grid with labels: rows, columns, a number in every cell and a legend, also for wide grids on a phone.
+
+#### New
+- `KanteHeatGrid`: rows × columns on the heat scale, with row and column labels, the value as a number in each cell, a legend with the value of each level, a tooltip per cell and keyboard focus (arrows, Enter). Screen readers hear each cell by name. Built for Kontra's fretboard quiz (hits per string and fret); `KanteHeatmap` stays the unlabelled grid of days.
+- Wide grids fit a phone: the cells scroll sideways while the row names stay, with a scroll bar, and the focused cell stays in sight. Column names can stand upright, so long names allow narrow columns; long row names are cut to a width with the full name as a tooltip. Built for Mitori's technique map (techniques × attacks).
+- Levels 0 to 4 as steps, with a word per level in the legend, and blank places where there is nothing to show; level 0 keeps a fine frame, so it stays apart from a blank place. The focus ring stands out on every level, also on the strongest, which is filled with the focus colour.
+
+![Hits per string and fret, a number in every cell, the legend below](https://shrippen.github.io/Kante/shots/release-1.63-heatgrid.png)
+
+![Techniques by attack with upright attack names, levels 1 to 4, blank places, a scroll bar and a focused cell](https://shrippen.github.io/Kante/shots/release-1.63-technique-map.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163
+
+### Deutsch
+
+Ein Wärmeraster mit Beschriftung: Zeilen, Spalten, eine Zahl in jeder Zelle und eine Legende, auch für breite Raster auf dem Handy.
+
+#### Neu
+- `KanteHeatGrid`: Zeilen × Spalten auf der Wärmeskala, mit Zeilen- und Spaltenbeschriftung, dem Wert als Zahl in jeder Zelle, einer Legende mit dem Wert jeder Stufe, einem Tooltip je Zelle und Tastaturfokus (Pfeile, Enter). Screenreader lesen jede Zelle mit Namen vor. Gebaut für Kontras Griffbrett-Quiz (Treffer je Saite und Bund); `KanteHeatmap` bleibt das unbeschriftete Raster der Tage.
+- Breite Raster passen aufs Handy: Die Zellen scrollen waagerecht, die Zeilennamen bleiben stehen, eine Scrollleiste zeigt die Stelle, und die Zelle mit dem Fokus bleibt im Blick. Spaltennamen können hochkant stehen, so erlauben lange Namen schmale Spalten; lange Zeilennamen werden auf eine Breite gekürzt, der ganze Name steht im Tooltip. Gebaut für Mitoris Technik-Landkarte (Techniken × Angriffe).
+- Stufen 0 bis 4 als Schritte, mit einem Wort je Stufe in der Legende, und leere Plätze, wo es nichts zu zeigen gibt; Stufe 0 behält einen feinen Rahmen und bleibt so von einem leeren Platz zu unterscheiden. Der Fokusrahmen ist auf jeder Stufe zu sehen, auch auf der stärksten, die in der Fokusfarbe gefüllt ist.
+
+![Treffer je Saite und Bund, eine Zahl in jeder Zelle, darunter die Legende](https://shrippen.github.io/Kante/shots/release-1.63-heatgrid.png)
+
+![Techniken je Angriff mit hochkanten Angriffsnamen, Stufen 1 bis 4, leeren Plätzen, einer Scrollleiste und einer Zelle mit Fokus](https://shrippen.github.io/Kante/shots/release-1.63-technique-map.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163
+
+## [1.62.1] — 2026-11-02
+
+### English
+
+The practice calendar sits right also in a wide layout, and a single week names its own month.
+
+#### Fixed
+- Right to left, `KanteCalendarHeatmap` stayed at the left edge when a layout gave it more width than it needs.
+- A calendar of one week ending on 30 November was labelled December.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621
+
+### Deutsch
+
+Der Übungskalender steht auch in einem breiten Layout richtig, und eine einzelne Woche nennt ihren eigenen Monat.
+
+#### Behoben
+- Von rechts nach links blieb `KanteCalendarHeatmap` am linken Rand, wenn ein Layout ihr mehr Breite gab, als sie braucht.
+- Ein Kalender von einer Woche, die am 30. November endet, war mit Dezember beschriftet.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621
+
+## [1.62.0] — 2026-11-02
+
+### English
+
+Practice days on a calendar, with weekdays, months and a tooltip per day.
+
+#### New
+- `KanteCalendarHeatmap` shows days on a calendar grid: a column per week, weekday names at the side, the month's name above the week it begins in. Each day is coloured by its level like the heatmap; hovering or tapping it shows the date and a text, screen readers hear the date in full. Right to left, the newest week is on the left.
+
+![Twenty-six weeks of practice days in four shades of teal, weekdays at the left, months above, below a legend from 1–2 techniques to 10 and more](https://shrippen.github.io/Kante/shots/release-1.62-calendar.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162
+
+### Deutsch
+
+Übungstage auf einem Kalender, mit Wochentagen, Monaten und einem Tooltip je Tag.
+
+#### Neu
+- `KanteCalendarHeatmap` zeigt Tage auf einem Kalenderraster: eine Spalte je Woche, Wochentage an der Seite, der Monatsname über der Woche, in der er beginnt. Jeder Tag hat die Farbe seiner Stufe wie in der Heatmap; beim Darüberfahren oder Antippen zeigt er Datum und Text, Bildschirmleser hören das volle Datum. Von rechts nach links steht die neueste Woche links.
+
+![Sechsundzwanzig Wochen Übungstage in vier Abstufungen von Petrol, links die Wochentage, oben die Monate, darunter eine Legende von 1–2 Techniken bis 10 und mehr](https://shrippen.github.io/Kante/shots/release-1.62-calendar.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162
+
+## [1.61.1] — 2026-11-02
+
+### English
+
+A tap in a sheet stays in the sheet.
+
+#### Fixed
+- A `KanteListRow` under a modal sheet or dialog took taps meant for it, when the tap landed on a `TapHandler` such as the buttons of `KanteLevelPicker`. In Mitori a rating in the technique sheet also opened the row underneath.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611
+
+### Deutsch
+
+Ein Tipp in einem Blatt bleibt im Blatt.
+
+#### Behoben
+- Eine `KanteListRow` unter einem modalen Blatt oder Dialog nahm Tipps an, die ihm galten, wenn der Tipp auf einem `TapHandler` landete, etwa den Knöpfen von `KanteLevelPicker`. In Mitori öffnete eine Einschätzung im Technik-Blatt zugleich die Zeile darunter.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611
+
+## [1.61.0] — 2026-11-02
+
+### English
+
+Shares by level get colours from one scale and a legend that explains them.
+
+#### New
+- `KanteLegend` explains a chart: a key and a word per item, wrapping when narrow.
+- `KanteStyle.levelColor` gives the colour of a level on a scale, the same as the heatmap's, for shares by level.
+- Parts of a stacked `KanteProgressBar` show their `text` as a tooltip and name it for screen readers.
+
+![A bar of shares by level in four steps of the focus colour, below it the legend with counts](https://shrippen.github.io/Kante/shots/release-1.61-legend.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161
+
+### Deutsch
+
+Anteile je Stufe bekommen Farben aus einer Skala und eine Legende, die sie erklärt.
+
+#### Neu
+- `KanteLegend` erklärt ein Diagramm: ein Farbfeld und ein Wort je Eintrag, bei wenig Platz umbrochen.
+- `KanteStyle.levelColor` liefert die Farbe einer Stufe auf einer Skala, dieselbe wie in der Heatmap, für Anteile je Stufe.
+- Teile einer gestapelten `KanteProgressBar` zeigen ihren `text` als Tooltip und nennen ihn Bildschirmlesern.
+
+![Eine Leiste mit Anteilen je Stufe in vier Stufen der Fokusfarbe, darunter die Legende mit Anzahlen](https://shrippen.github.io/Kante/shots/release-1.61-legend.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161
+
+## [1.60.0] — 2026-11-02
+
+### English
+
+Kante can show and pick a level of four, for ratings such as how well a technique sits.
+
+#### New
+- `KanteLevelDots` shows a level as dots, such as how well a technique sits (3 of 4), small enough for a list row.
+- `KanteLevelPicker` picks a level 1 to 4 with large buttons, number and word; a tap on the chosen level counts again. Mitori rates its techniques with it.
+
+![A list with dots per technique, below four buttons 1 to 4 with 3 chosen](https://shrippen.github.io/Kante/shots/release-1.60-levels.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-160
+
+### Deutsch
+
+Kante kann eine Stufe von vier zeigen und wählen lassen, für Einschätzungen wie die, wie sicher eine Technik sitzt.
+
+#### Neu
+- `KanteLevelDots` zeigt eine Stufe als Punkte, etwa wie sicher eine Technik sitzt (3 von 4), klein genug für eine Listenzeile.
+- `KanteLevelPicker` wählt eine Stufe von 1 bis 4 mit großen Knöpfen, Zahl und Wort; ein Tipp auf die gewählte Stufe zählt erneut. Mitori schätzt damit seine Techniken ein.
+
+![Eine Liste mit Punkten je Technik, darunter vier Knöpfe 1 bis 4, 3 gewählt](https://shrippen.github.io/Kante/shots/release-1.60-levels.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-160
+
+## [1.59.0] — 2026-11-01
+
+### English
+
+Kante gets the pieces for a video player and a start menu of tiles.
+
+#### New
+- `KanteTransportBar` for video: fixed tempi as segments (25, 50, 75, 100 %), buttons for single frames back and on (keys , and .), and the metronome and count-in can be hidden. Mitori's player uses it for the exam videos.
+- `KanteOptionTile` as a launch tile: with `checkable: false` it opens something and is never chosen; `glyph` shows a character such as a kanji in place of the icon.
+
+#### Improved
+- Right to left, the transport bar keeps its order: it runs along time like a timeline, and its marks point the right way.
+
+![Three launch tiles with kanji, below a transport bar with single frames and four tempi](https://shrippen.github.io/Kante/shots/release-1.59-video.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
+
+### Deutsch
+
+Kante bekommt die Bausteine für einen Videoplayer und ein Startmenü aus Kacheln.
+
+#### Neu
+- `KanteTransportBar` für Video: feste Tempi als Segmente (25, 50, 75, 100 %), Knöpfe für einzelne Bilder zurück und vor (Tasten , und .), Metronom und Einzählen lassen sich ausblenden. Der Player von Mitori nutzt sie für die Prüfungsvideos.
+- `KanteOptionTile` als Startkachel: mit `checkable: false` öffnet sie etwas und wird nie gewählt; `glyph` zeigt statt des Symbols ein Zeichen, etwa ein Kanji.
+
+#### Verbessert
+- Von rechts nach links behält die Transportleiste ihre Reihenfolge: Sie folgt der Zeit wie eine Zeitleiste, und ihre Marken zeigen in die richtige Richtung.
+
+![Drei Startkacheln mit Kanji, darunter eine Transportleiste mit Einzelbildern und vier Tempi](https://shrippen.github.io/Kante/shots/release-1.59-video.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
 
 ## [1.58.0] — 2026-10-30
 

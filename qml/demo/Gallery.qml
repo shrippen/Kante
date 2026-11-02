@@ -247,6 +247,89 @@ Rectangle {
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
                     }
                 }
+                // 1.63: a labelled heat grid, hits per string and fret.
+                KanteHeatGrid {
+                    id: galleryHeatGrid
+                    objectName: "galleryHeatGrid"
+                    rowLabels: ["G", "D", "A", "E"]
+                    columnLabels: ["0", "1", "2", "3", "4", "5", "6", "7"]
+                    rowTitle: "Saite"
+                    columnTitle: "Bund"
+                    unit: " %"
+                    minValue: 0
+                    maxValue: 100
+                    legendTitle: "Treffer"
+                    accessibleName: "Treffer je Saite und Bund"
+                    cells: [
+                        [100, 90, 75, 60, null, 40, 20, 0],
+                        [95, 80, { value: 55, tip: "D, Bund 2: 11 von 20" }, 50, 35, null, 15, 5],
+                        [90, 85, 70, 45, 30, 25, 10, null],
+                        [100, 100, 65, 40, 25, 20, 0, 0]
+                    ]
+                }
+                // 1.63: Mitori's technique map, levels 0..4, upright attack names, blank where a
+                // technique does not answer an attack; narrow, so the cells scroll sideways.
+                KanteHeatGrid {
+                    objectName: "galleryTechniqueMap"
+                    Layout.preferredWidth: KanteStyle.unit(320)
+                    minValue: 0
+                    maxValue: 4
+                    showEmpty: false
+                    columnLabelsVertical: true
+                    rowLabelWidth: KanteStyle.unit(96)
+                    cellSize: KanteStyle.unit(26)
+                    rowTitle: "Technik"
+                    rowLabels: ["Ikkyo", "Irimi-nage", "Shiho-nage omote", "Kote-gaeshi"]
+                    columnLabels: ["Ai-hanmi katate-dori", "Gyaku-hanmi katate-dori", "Shomen-uchi", "Yokomen-uchi", "Tsuki", "Ryote-dori", "Kata-dori", "Ushiro ryote-dori", "Morote-dori", "Mune-dori"]
+                    // 1.64: level 0 in the legend with its word, framed like its cells.
+                    legendLevels: [0, 1, 2, 3, 4]
+                    legendLabels: ["0 nicht bewertet", "1 gesehen", "2 mit Hilfe", "3 sicher", "4 prüfungsreif"]
+                    rowLabelFont: KanteStyle.smallFont
+                    noDataText: "keine Kombination"
+                    accessibleName: "Techniken je Angriff"
+                    cells: [
+                        [{ value: 4, label: "4" }, { value: 3, label: "3" }, { value: 4, label: "4" }, { value: 2, label: "2" }, null, { value: 1, label: "1" }, { value: 3, label: "3" }, { value: 0, label: "" }, null, { value: 1, label: "1" }],
+                        [{ value: 2, label: "2" }, { value: 3, label: "3" }, { value: 1, label: "1" }, null, { value: 2, label: "2" }, { value: 0, label: "" }, null, { value: 1, label: "1" }, { value: 2, label: "2" }, null],
+                        [{ value: 3, label: "3" }, null, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 2, label: "2" }, { value: 1, label: "1" }, { value: 3, label: "3" }, null, { value: 0, label: "" }],
+                        [null, { value: 1, label: "1" }, { value: 2, label: "2" }, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 3, label: "3" }, null, { value: 1, label: "1" }, { value: 2, label: "2" }]
+                    ]
+                }
+                // 1.64: a fixed number of columns filling the width (Mitori's forms, 8 a row on a
+                // phone), and a bar chart on a scale from 1 (Mitori's exam mode, average per round).
+                RowLayout {
+                    spacing: KanteStyle.unit(20)
+                    KanteHeatGrid {
+                        objectName: "galleryFormGrid"
+                        Layout.preferredWidth: KanteStyle.unit(300)
+                        Layout.alignment: Qt.AlignTop
+                        fillWidth: true
+                        scrollable: false
+                        minValue: 0
+                        maxValue: 4
+                        showEmpty: false
+                        cellSize: KanteStyle.unit(22)
+                        legendLevels: [0, 1, 2, 3, 4]
+                        legendLabels: ["0", "1", "2", "3", "4"]
+                        noDataText: ""
+                        accessibleName: "Formen"
+                        cells: [
+                            [{ value: 4, label: "1" }, { value: 3, label: "2" }, { value: 3, label: "3" }, { value: 2, label: "4" }, { value: 2, label: "5" }, { value: 1, label: "6" }, { value: 0, label: "7" }, { value: 1, label: "8" }],
+                            [{ value: 2, label: "9" }, { value: 0, label: "10" }, { value: 0, label: "11" }, { value: 1, label: "12" }, null, null, null, null]
+                        ]
+                    }
+                    KanteBarChart {
+                        objectName: "galleryExamChart"
+                        Layout.preferredWidth: KanteStyle.unit(240)
+                        Layout.preferredHeight: KanteStyle.unit(120)
+                        values: [1, 2.25, 3.5, 2.75, 4]
+                        labels: ["5.10", "12.10", "19.10", "26.10", "2.11"]
+                        minValue: 1
+                        maxValue: 4
+                        minBarHeight: KanteStyle.unit(3)
+                        axis: true
+                        axisTitle: "Schnitt"
+                    }
+                }
                 RowLayout {
                     spacing: KanteStyle.unit(20)
                     KanteCurveEditor {
@@ -557,6 +640,19 @@ Rectangle {
                     onMetronomeToggled: practice.metronome = !practice.metronome
                     onCountInToggled: practice.countIn = !practice.countIn
                     onSpeedChangeRequested: function (s) { practice.speed = s }
+                    onRewind: practice.position = 0
+                }
+                // 1.59, from Mitori: the bar for a video, fixed tempi and single frames.
+                KanteTransportBar {
+                    Layout.fillWidth: true
+                    playing: practice.playing; looping: practice.looping
+                    speed: practice.speed; position: practice.position; duration: 12
+                    metronomeVisible: false; countInVisible: false
+                    speedSteps: [0.25, 0.5, 0.75, 1]; frameStep: true
+                    onPlayToggled: practice.playing = !practice.playing
+                    onLoopToggled: practice.looping = !practice.looping
+                    onSpeedChangeRequested: function (s) { practice.speed = s }
+                    onFrameStepRequested: function (d) { practice.position = Math.max(0, practice.position + d * 0.04) }
                     onRewind: practice.position = 0
                 }
                 KanteSegmented {
@@ -1023,6 +1119,65 @@ Rectangle {
                             KanteOptionTile { text: "Kamera"; hint: "Capture, Webcam"; icon.name: "camera-web"; checked: true }
                             KanteOptionTile { text: "Video"; hint: "Datei"; icon.name: "video-x-generic" }
                             KanteOptionTile { text: "Stream"; hint: "HLS, RTMP"; icon.name: "network-wired" }
+                        }
+                        // 1.59, from Mitori: launch tiles with a glyph (a start menu).
+                        RowLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteOptionTile { text: "Programm"; hint: "Aikido · 5. Kyu"; glyph: "技"; checkable: false; autoExclusive: false }
+                            KanteOptionTile { text: "Heute"; hint: "3 fällig"; glyph: "稽"; checkable: false; autoExclusive: false }
+                            KanteOptionTile { text: "Prüfung"; hint: "Probe 4. Kyu"; glyph: "試"; checkable: false; autoExclusive: false }
+                        }
+                        // 1.60, from Mitori: a level as dots, and picking one (how well a technique sits).
+                        RowLayout {
+                            spacing: KanteStyle.unit(12)
+                            KanteLevelDots { value: ratingPicker.value; names: ratingPicker.names }
+                            KanteLevelPicker {
+                                id: ratingPicker
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                value: 3
+                                names: ["offen", "gesehen", "mit Hilfe", "sicher", "prüfungsreif"]
+                                onPicked: level => value = level
+                            }
+                        }
+                        // 1.61, from Mitori: shares by level with a legend (KanteStyle.levelColor).
+                        ColumnLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteProgressBar {
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                parts: [{ value: 0.10, color: KanteStyle.levelColor(4), text: "2 prüfungsreif" },
+                                        { value: 0.25, color: KanteStyle.levelColor(3), text: "5 sicher" },
+                                        { value: 0.15, color: KanteStyle.levelColor(2), text: "3 mit Hilfe" },
+                                        { value: 0.20, color: KanteStyle.levelColor(1), text: "4 gesehen" }]
+                            }
+                            KanteLegend {
+                                Layout.preferredWidth: KanteStyle.unit(380)
+                                model: [{ color: KanteStyle.levelColor(4), value: 2, text: "prüfungsreif" },
+                                        { color: KanteStyle.levelColor(3), value: 5, text: "sicher" },
+                                        { color: KanteStyle.levelColor(2), value: 3, text: "mit Hilfe" },
+                                        { color: KanteStyle.levelColor(1), value: 4, text: "gesehen" },
+                                        { color: KanteStyle.levelColor(0), value: 6, text: "offen" }]
+                            }
+                        }
+                        // 1.62, from Mitori: practice days on a calendar, with a legend.
+                        ColumnLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteCalendarHeatmap {
+                                weeks: 12
+                                levels: {
+                                    const l = {}
+                                    for (let i = 0; i < 84; i++) {
+                                        if (i % 3 === 2)
+                                            continue
+                                        const d = new Date()
+                                        d.setDate(d.getDate() - i)
+                                        l[isoDay(d)] = 1 + i % 4
+                                    }
+                                    return l
+                                }
+                            }
+                            KanteLegend {
+                                model: [1, 2, 3, 4].map(l => ({ color: KanteStyle.levelColor(l), text: "Stufe " + l }))
+                            }
                         }
                         KanteToast {
                             id: galleryToast

@@ -367,7 +367,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Chip (entity, filter) | `.chip`, `.chip-x`, `.chips-row` | `KanteChip` |
 | Swatch with origin ring | `.swatch[data-src]`, `.swatch-grid` | `KanteSwatch` |
 | Table: numbers, group row, total | `.table .num`, `.group-row`, `tfoot` | – |
-| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap` |
+| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap`, `KanteHeatGrid` |
 | Month grid | `.cal` | `KanteCalendarGrid` |
 | KPI with change | `.kpi`, `.delta` | `KanteKpi` |
 | Wide KPI with spark line | `.kpi` > `.spark` from 24rem content width on (container query on the `.kpi`): figures left, the line right; the value stays on one line | – |
@@ -788,13 +788,144 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
-### Fixed in Kante 1.59
+### Fixed in Kante 1.65
 
 A window that holds a Kante dialog goes down without a crash (found in lmix, whose detached pages are windows of their own with a removal question in each). When the garbage collector took such a window (made with `createObject(null)` and no longer held), the app crashed in `QQmlBind::~QQmlBind`: the dialog's Bindings are children of its content item, which Qt deletes inside the popup's destructor, and on their way out they gave the old background back to the half-deleted popup.
 
 | Change | Web | QML |
 |---|---|---|
-| Dialog goes with its window | – | `KanteDialog` and `KanteDialogSkin` give nothing back when they go (`Component.onDestruction` sets their Bindings to `RestoreNone` before Qt deletes them); a switch of style while they stand gives the platform's background, header and footer back as before. Test `qml/tests/tst_kante159.qml`: windows with a `KanteDialog`, a `QQC2.Dialog` or `Kirigami.Dialog` with `KanteDialogSkin`, a sheet, a popover and an inline message, open or closed, in every style and after a switch, collected by the garbage collector or destroyed. `KanteSheetSkin`, `KantePopupSkin` and `KanteMessageSkin` give back the opacity of the popup's background, which goes later; they were not affected |
+| Dialog goes with its window | – | `KanteDialog` and `KanteDialogSkin` give nothing back when they go (`Component.onDestruction` sets their Bindings to `RestoreNone` before Qt deletes them); a switch of style while they stand gives the platform's background, header and footer back as before. Test `qml/tests/tst_kante165.qml`: windows with a `KanteDialog`, a `QQC2.Dialog` or `Kirigami.Dialog` with `KanteDialogSkin`, a sheet, a popover and an inline message, open or closed, in every style and after a switch, collected by the garbage collector or destroyed. `KanteSheetSkin`, `KantePopupSkin` and `KanteMessageSkin` give back the opacity of the popup's background, which goes later; they were not affected |
+
+### Added in Kante 1.64
+
+From the review of 1.63 and from Mitori's technique map and exam mode: the heat grid keeps the focus where it was, frames level 0 more clearly and fills a width; the bar chart gets a scale that starts above 0.
+
+| Element | Web | QML |
+|---|---|---|
+| Focus in the heat grid | – | `KanteHeatGrid`: when the focused cell turns into a gap or goes away (new `cells`, `showEmpty: false`), the focus moves to the nearest drawn cell (same row, else same column, else the nearest), not to the first, and the view does not jump to the start; the same holds for the current cell without the focus (`nearestOf(row, column)`). When every cell turns into a gap while one has the focus, Tab goes on and Shift+Tab back (before, both went backwards), and the grid stays a Tab stop only until the focus leaves (no warning "Cannot set activeFocusOnTab to false"). A current cell the app sets onto a gap moves to a drawn one only while the focus is in the grid; without it, the app may set the row now and the column later without the cell being moved in between |
+| Level 0 frame | – | Level 0 and the cell without data are framed in `KanteStyle.frameColor` (before `ruleColor`), as the legend keys; measured on the page ground 1.53:1 dark and 1.36:1 Leinen (the rule had 1.44:1 and 1.27:1), on level 0 1.63:1 and 1.28:1 |
+| Row label font | – | `rowLabelFont` (default the small mono label font, as before), e.g. `KanteStyle.smallFont`, so long technique names stay readable on a phone; the row labels' width is measured in it |
+| Grid that fills its width | – | `fillWidth` (default false): the columns share the width beside the row labels, square cells as large as it allows and `cellSize` at least (narrower: `cellSize`, then the cells scroll if `scrollable`). Without a width set from outside the grid is as wide as its legend, if that is wider; a text wider than the cell widens the column and the cell is no longer square. For a fixed number of columns, e.g. Mitori's forms, 8 a row on a phone and 11 on a tablet: pad the rows with `null` and `showEmpty: false`. `cellSide` is the side the cells take |
+| Bar chart floor | – | `KanteBarChart`: `minValue` (default 0) is the floor of the scale: the axis, the grid lines, the bars and the goal line start there (a goal below it is not drawn); with `axis` and no `maxValue` the top is rounded up to a whole step above the floor. A stack loses its bottom part below the floor. `minBarHeight` (pixels, default 0) is the least height of a bar with a value, so a bar on the floor still shows (a value below the floor looks the same); the read-out says the real value. `heightOf(value)`, `barHeight(i)` and `yOf(value)` give the drawn sizes |
+
+How Mitori can use it. The technique map with level 0 in the legend and readable names:
+
+```qml
+KanteHeatGrid {
+    minValue: 0; maxValue: 4
+    showEmpty: false
+    columnLabelsVertical: true
+    rowLabelWidth: width * 0.4
+    rowLabelFont: KanteStyle.smallFont
+    legendLevels: [0, 1, 2, 3, 4]           // level 0 with its word, framed like its cells
+    legendLabels: ["0 not rated", "1 seen", "2 with help", "3 sure", "4 exam-ready"]
+    // …
+}
+```
+
+The forms of Shinki Toho, a fixed number a row that fills the width:
+
+```qml
+KanteHeatGrid {
+    readonly property int perRow: wide ? 11 : 8
+    width: parent.width
+    fillWidth: true                         // cells as large as the width allows
+    cellSize: KanteStyle.unit(22)           // at least
+    scrollable: false
+    showEmpty: false                        // the padding nulls are blank
+    minValue: 0; maxValue: 4
+    cells: rowsOf(forms, perRow)            // rows of perRow entries, the last padded with null
+}
+```
+
+The exam mode, the average per round on a scale from 1 to 4:
+
+```qml
+KanteBarChart {
+    values: rounds.map(r => r.average)      // the real averages, 1 to 4
+    minValue: 1
+    maxValue: 4
+    minBarHeight: KanteStyle.unit(3)        // a round with average 1 still shows
+    axis: true
+    axisTitle: qsTr("Average")
+}
+```
+
+### Added in Kante 1.63
+
+A heat grid with labels, built for two apps: Kontra's fretboard quiz (hits per string and fret, a percentage in each cell) and Mitori's technique map (a grid per group, techniques × attacks, each place the best level 0–4 of its techniques, blank where a technique does not answer an attack; 20 and more attacks on a phone).
+
+| Element | Web | QML |
+|---|---|---|
+| Heat grid with labels | – | `KanteHeatGrid`: `rowLabels` (top to bottom), `columnLabels` ("" leaves one out), `rowTitle` and `columnTitle` (e.g. "Saite", "Bund"); `cells` one list per row, an entry a number, `null` (no data) or `{value, label, tip, accessibleName}`. The value stands in the cell as a number (`showValues`, `formatter` or `unit`; `label` replaces it, `""` leaves the cell blank; screen readers still hear the value, as the word of its level in `legendLabels` or the number), so the colour is never the only sign; the number takes the ink that reads best on its level and, where none reaches 4.5:1, sits on a small plate of the ground. Levels 0 to 4 as `KanteStyle.levelColor(level, 4)`, the scale of `KanteHeatmap`, between `minValue` and `maxValue` (NaN: from the cells); with `minValue: 0`, `maxValue: 4` and whole values each value is its level; all values alike on the scale are level 0, and the legend then shows that one level. Level 0 (the sunken ground) has a fine rule frame, so it stays apart from the page ground and from a gap. No data is the ground with a rule frame and `emptyText` ("–"); `showEmpty: false` leaves a blank gap instead that takes no focus, no tap and no screen reader's attention, and the keys skip it; a grid of gaps only is no Tab stop, and a current cell the app sets onto a gap moves onto a drawn one before it takes the focus. `legend` below the grid, a `KanteLegend` that wraps when narrow: a key per level of `legendLevels` (default `[0, 1, 2, 3, 4]`, e.g. `[1, 2, 3, 4]` without level 0) with its value or `legendLabels[level]` (by level, so `legendLabels[0]` names level 0), `legendTitle` before them, `noDataText` after them when a cell has no data, with a framed key like the framed cell, or with `showEmpty: false` a blank key like the gap (`legendModel` holds the entries). A tooltip per cell on hover and on focus (`tip`, default "<row>, <column>: <text>"), the same text as the cell's accessible name unless `accessibleName` says otherwise. Row and column come from `rowNames` / `columnNames` (e.g. "Bund 1" where the label is ""), else from the labels; with neither the part is left out, never replaced by an index. `interactive` (default true): one Tab stop, arrows move, Home / End to the row's ends, Ctrl+Home / End to the first and last cell, Enter / Space or a click fire `activated(row, column)`; `currentRow`, `currentColumn`; right to left Left goes on. When the cells change, the current cell moves onto a cell that is there, so the focus stays on a cell. The focus ring is two lines, the focus colour outside the cell and the fill's ink (ground or strong text) inside its edge, so it stands out 3:1 on every level, also on level 4, which is filled with the focus colour. `KanteHeatmap` stays the unlabelled grid of days. The web has no labelled heat grid yet (`.heat`, `.heat-legend`) |
+| Wide heat grids | – | `KanteHeatGrid` on a narrow screen: `scrollable` (default true) lets the cells scroll sideways when the grid is narrower than they are, the row labels stay at the start side, a horizontal scroll bar shows (`scrolling` says when); the focused cell is scrolled into view, its ring included, and right to left the view starts at the first column on the right. `rowLabelWidth` caps the row labels (0: as wide as the longest; bind it to e.g. `width * 0.4` on a phone); longer names elide, the full name shows as a tooltip. `columnLabelsVertical` turns the column labels upright, reading upwards from one line above the cells, so long names allow narrow columns; they are as long as the longest name and never cut, unless `columnLabelMaxLength` caps them (then they elide, the full name as a tooltip). `columnTips` gives a column label a tooltip of its own (e.g. the Japanese name). `cellSize` is the smallest side of a cell (larger on a tablet) |
+| Blank legend key | – | `KanteLegend`: an item with `frame: false` draws its key without the frame, a blank key for a blank place (the gaps of a `KanteHeatGrid` with `showEmpty: false`); items without it keep their frame |
+
+How Mitori's technique map can use it, a grid per group:
+
+```qml
+KanteHeatGrid {
+    Layout.fillWidth: true
+    minValue: 0; maxValue: 4                // whole values are the levels
+    showEmpty: false                        // null: no such combination, a blank gap
+    columnLabelsVertical: true
+    rowLabelWidth: width * 0.4
+    cellSize: wide ? KanteStyle.unit(34) : KanteStyle.unit(26)
+    rowLabels: grid.rows.map(r => r.title)
+    columnLabels: grid.columns.map(c => c.extra ? c.title + " · " + c.extra : c.title)
+    columnTips: grid.columns.map(c => c.jp || "")
+    cells: grid.rows.map(r => r.cells.map(c => c.ids
+        ? { value: level(c), label: level(c) > 0 ? String(level(c)) : "", tip: tipOf(r, c) }
+        : null))
+    legendLevels: [1, 2, 3, 4]
+    legendLabels: ["", "1 seen", "2 practised", "3 sure", "4 ready"]
+    noDataText: "no such combination"
+    onActivated: (row, column) => openSheet(grid.rows[row].cells[column])
+}
+```
+
+### Fixed in Kante 1.61.1
+
+Taps through a sheet (found in Mitori): a `KanteListRow` under a modal popup also took the taps meant for the popup, when what the popup's tap landed on only watches the press (a `TapHandler`, as in `KanteLevelPicker`). In Mitori a rating in the technique sheet opened the row underneath as well.
+
+| Change | Web | QML |
+|---|---|---|
+| Rows under popups | – | `KanteListRow` takes no tap that lands on a popup drawn above it (a sheet, a dialog, a drawer); a row inside a popup yields only to popups drawn above its own (higher `z`, or the same `z` and opened later). Other items in the overlay (Kirigami's passive notifications, an app's toast) do not count. `underPopup(scenePoint)` |
+
+### Fixed in Kante 1.62.1
+
+| Change | Web | QML |
+|---|---|---|
+| Calendar heatmap edges | – | `KanteCalendarHeatmap` mirrors at the width it gets, so right to left the grid sits at the right edge also when a layout makes it wider than its implicit width; a single week names the month of its last drawn day (Monday 30 November: November, not December) |
+
+### Added in Kante 1.62
+
+| Element | Web | QML |
+|---|---|---|
+| Calendar heatmap | – | `KanteCalendarHeatmap`: days on a calendar grid, a column per week (`weeks`, newest on the right, ending with `endDate`), a row per weekday from `firstDayOfWeek` (the locale's). Labelled axes: weekday names on every second row, the month's short name above the week it begins in (the first column names the month of its last day when the next name is three weeks away or more). `levels` {"YYYY-MM-DD": 0..4} coloured as `KanteHeatmap` (`KanteStyle.levelColor`), `tips` {"YYYY-MM-DD": text} shown after the date as the tooltip on hover, or for three seconds after a tap (touch); screen readers hear the date in full (`Locale.LongFormat`). Mirrored with `LayoutMirroring` (newest week on the left). Pair it with a `KanteLegend` for the levels. Mitori's practice days |
+
+### Added in Kante 1.61
+
+| Element | Web | QML |
+|---|---|---|
+| Level colour | – | `KanteStyle.levelColor(level, count, base)`: the colour of a level 0..`count` (4) on a scale, as `KanteHeatmap` draws it (which now uses it): 0 (or no number) the sunken ground, then `base` (the focus colour unless given) in steps of 0.88 / `count` opacity, full at `count`. For shares by level, such as how many techniques of a grade sit at each rating in Mitori |
+| Legend | – | `KanteLegend`: a key and a word per item (`model` [{color, text, value}]), wrapping onto more lines when narrow (a long word under its key); the key `swatchSize`, square in the Kante style and round elsewhere like `markerRadius`; screen readers hear "value text". Every chart without axes needs one |
+| Part tooltips | – | `KanteProgressBar.parts`: a part's `text` ("5 sure") shows as its tooltip on hover and names it for screen readers |
+
+### Added in Kante 1.60
+
+| Element | Web | QML |
+|---|---|---|
+| Level dots | – | `KanteLevelDots`: a level as a row of dots, `value` of `count` (4) filled with the accent, the rest sunken and framed, such as how well a technique sits in Mitori's programme list. Small enough for a list row; the number of filled dots says it, not the colour alone. `names` gives screen readers the word per level (`names[0]` for none), else "3 / 4"; `dotSize` (8 px), square in the Kante styles, round in System |
+| Level picker | – | `KanteLevelPicker`: pick a level 1..`count` as a row of equal buttons, the number large and the word from `names` small under it, the chosen one filled with the accent (Mitori: "Wie sitzt die Technik?" 1 seen … 4 ready for the exam). Unlike `KanteSegmented` a tap on the chosen level sends `picked(level)` again (rating the same today is a new rating); presentational, the app sets `value`. Left / Right move the focus ring, Space or Enter pick; radio buttons "3 sure" for screen readers. Fills the width it gets, implicitly wide enough for its longest word; narrower, the words elide inside their buttons |
+
+### Added in Kante 1.59
+
+| Element | Web | QML |
+|---|---|---|
+| Launch tile | – | `KanteOptionTile` with `checkable: false` opens something instead of being chosen (Mitori's start menu): no chosen state, screen readers hear a button with name and hint (a radio button as before when checkable). `glyph`: a character in place of the icon, such as a kanji (技 for the programme), in the Japanese family and the icon's colour and size |
+| Transport for video | – | `KanteTransportBar` for a video player (Mitori): `metronomeVisible` and `countInVisible` false hide those toggles and their keys M and C; `speedSteps` (e.g. `[0.25, 0.5, 0.75, 1]`) shows fixed tempi as a segmented row in place of the spin box, + and − move to the next step, `speedLabel(step)` gives "25 %"; `frameStep` adds single-frame buttons back and on beside play/pause (a hollow triangle and a bar, unlike the solid rewind mark; keys , and .) that send `frameStepRequested(-1 | 1)`, names in `frameBackText` and `frameOnText`. + and − also move to the right step from a tempo between steps, and the segments keep showing the app's tempo after a click. Without these properties the bar is as before |
+| Transport right to left | – | Every `KanteTransportBar` keeps its order right to left (`LayoutMirroring`): rewind left, play, frame on right, tempi from slow to fast, as it runs along time like a timeline. Before, the order mirrored but the marks did not |
 
 ### Added in Kante 1.58
 
