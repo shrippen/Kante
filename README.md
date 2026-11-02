@@ -788,6 +788,61 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
+### Added in Kante 1.64
+
+From the review of 1.63 and from Mitori's technique map and exam mode: the heat grid keeps the focus where it was, frames level 0 more clearly and fills a width; the bar chart gets a scale that starts above 0.
+
+| Element | Web | QML |
+|---|---|---|
+| Focus in the heat grid | – | `KanteHeatGrid`: when the focused cell turns into a gap or goes away (new `cells`, `showEmpty: false`), the focus moves to the nearest drawn cell (same row, else same column, else the nearest), not to the first, and the view does not jump to the start; the same holds for the current cell without the focus (`nearestOf(row, column)`). When every cell turns into a gap while one has the focus, Tab goes on and Shift+Tab back (before, both went backwards), and the grid stays a Tab stop only until the focus leaves (no warning "Cannot set activeFocusOnTab to false"). A current cell the app sets onto a gap moves to a drawn one only while the focus is in the grid; without it, the app may set the row now and the column later without the cell being moved in between |
+| Level 0 frame | – | Level 0 and the cell without data are framed in `KanteStyle.frameColor` (before `ruleColor`), as the legend keys; measured on the page ground 1.53:1 dark and 1.36:1 Leinen (the rule had 1.44:1 and 1.27:1), on level 0 1.63:1 and 1.28:1 |
+| Row label font | – | `rowLabelFont` (default the small mono label font, as before), e.g. `KanteStyle.smallFont`, so long technique names stay readable on a phone; the row labels' width is measured in it |
+| Grid that fills its width | – | `fillWidth` (default false): the columns share the width beside the row labels, square cells as large as it allows and `cellSize` at least (narrower: `cellSize`, then the cells scroll if `scrollable`). Without a width set from outside the grid is as wide as its legend, if that is wider; a text wider than the cell widens the column and the cell is no longer square. For a fixed number of columns, e.g. Mitori's forms, 8 a row on a phone and 11 on a tablet: pad the rows with `null` and `showEmpty: false`. `cellSide` is the side the cells take |
+| Bar chart floor | – | `KanteBarChart`: `minValue` (default 0) is the floor of the scale: the axis, the grid lines, the bars and the goal line start there (a goal below it is not drawn); with `axis` and no `maxValue` the top is rounded up to a whole step above the floor. A stack loses its bottom part below the floor. `minBarHeight` (pixels, default 0) is the least height of a bar with a value, so a bar on the floor still shows (a value below the floor looks the same); the read-out says the real value. `heightOf(value)`, `barHeight(i)` and `yOf(value)` give the drawn sizes |
+
+How Mitori can use it. The technique map with level 0 in the legend and readable names:
+
+```qml
+KanteHeatGrid {
+    minValue: 0; maxValue: 4
+    showEmpty: false
+    columnLabelsVertical: true
+    rowLabelWidth: width * 0.4
+    rowLabelFont: KanteStyle.smallFont
+    legendLevels: [0, 1, 2, 3, 4]           // level 0 with its word, framed like its cells
+    legendLabels: ["0 not rated", "1 seen", "2 with help", "3 sure", "4 exam-ready"]
+    // …
+}
+```
+
+The forms of Shinki Toho, a fixed number a row that fills the width:
+
+```qml
+KanteHeatGrid {
+    readonly property int perRow: wide ? 11 : 8
+    width: parent.width
+    fillWidth: true                         // cells as large as the width allows
+    cellSize: KanteStyle.unit(22)           // at least
+    scrollable: false
+    showEmpty: false                        // the padding nulls are blank
+    minValue: 0; maxValue: 4
+    cells: rowsOf(forms, perRow)            // rows of perRow entries, the last padded with null
+}
+```
+
+The exam mode, the average per round on a scale from 1 to 4:
+
+```qml
+KanteBarChart {
+    values: rounds.map(r => r.average)      // the real averages, 1 to 4
+    minValue: 1
+    maxValue: 4
+    minBarHeight: KanteStyle.unit(3)        // a round with average 1 still shows
+    axis: true
+    axisTitle: qsTr("Average")
+}
+```
+
 ### Added in Kante 1.63
 
 A heat grid with labels, built for two apps: Kontra's fretboard quiz (hits per string and fret, a percentage in each cell) and Mitori's technique map (a grid per group, techniques × attacks, each place the best level 0–4 of its techniques, blank where a technique does not answer an attack; 20 and more attacks on a phone).

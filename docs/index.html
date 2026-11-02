@@ -131,6 +131,50 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.64.0">
+      <div class="release-head"><b class="release-version">1.64</b><time datetime="2026-11-02">2 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">The heat grid keeps the focus where it was and fills a width; bar charts can start their scale above zero.</p>
+        <p class="release-lead" lang="de">Das Wärmeraster behält den Fokus, wo er war, und füllt eine Breite; Balkendiagramme können ihre Skala über null beginnen.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li>Heat grids can fill their width: a fixed number of columns shares the room, with square cells as large as it allows. Built for Mitori's forms, eight a row on a phone and eleven on a tablet.</li>
+            <li>Bar charts can start their scale above zero, so an average from 1 to 4 has an axis from 1 to 4. A bar on the lowest value can keep a small height, so it still shows; the read-out says its real value. Built for Mitori's exam mode.</li>
+            <li>The row names of a heat grid can take another font, so long technique names stay readable on a phone.</li>
+          </ul>
+          <ul lang="de">
+            <li>Wärmeraster können ihre Breite füllen: Eine feste Zahl von Spalten teilt sich den Platz, mit quadratischen Zellen, so groß er es erlaubt. Gebaut für Mitoris Formen, acht je Reihe auf dem Handy und elf auf dem Tablet.</li>
+            <li>Balkendiagramme können ihre Skala über null beginnen, so hat ein Schnitt von 1 bis 4 eine Achse von 1 bis 4. Ein Balken auf dem kleinsten Wert kann eine kleine Höhe behalten und bleibt so sichtbar; die Ablesung nennt seinen echten Wert. Gebaut für Mitoris Prüfungsmodus.</li>
+            <li>Die Zeilennamen eines Wärmerasters können eine andere Schrift nehmen, so bleiben lange Technik-Namen auf dem Handy lesbar.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li>Level 0 of a heat grid and its legend key have the same, clearer frame, so level 0 stands apart from the page and from a blank place.</li>
+          </ul>
+          <ul lang="de">
+            <li>Stufe 0 eines Wärmerasters und ihr Legenden-Schlüssel haben denselben, deutlicheren Rahmen, so hebt sich Stufe 0 von der Seite und von einem leeren Platz ab.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>When the focused cell of a heat grid turned into a blank place, the focus jumped to the first cell and the view to the start; now it moves to the nearest cell.</li>
+            <li>When all cells turned blank while one had the focus, Tab went backwards and the app logged a warning; now Tab goes on.</li>
+            <li>A cell the app chose in two steps (first the row, then the column) was moved to the first cell in between when the grid did not have the focus; now it stays.</li>
+          </ul>
+          <ul lang="de">
+            <li>Wurde die Zelle mit dem Fokus zu einem leeren Platz, sprang der Fokus auf die erste Zelle und die Ansicht an den Anfang; jetzt geht er zur nächstgelegenen Zelle.</li>
+            <li>Wurden alle Zellen leer, während eine den Fokus hatte, ging Tab rückwärts und die App schrieb eine Warnung; jetzt geht Tab weiter.</li>
+            <li>Eine Zelle, die die App in zwei Schritten wählte (erst die Zeile, dann die Spalte), wurde dazwischen auf die erste Zelle gesetzt, wenn das Raster keinen Fokus hatte; jetzt bleibt sie.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.64-technique-map.png" alt="A narrow heat grid in dark Kante: technique names Ikkyo to Kote-gaeshi in a plain font down the side, attack names standing upright above the columns, cells with levels 1 to 4 in cyan shades, level 0 as a dark cell with a clear frame, blank places between them, a focused cell with its ring, a scroll bar; below the legend 0 nicht bewertet to 4 prüfungsreif and keine Kombination" loading="lazy"><figcaption><span lang="en">Techniques by attack: readable names, level 0 in the legend</span><span lang="de">Techniken je Angriff: lesbare Namen, Stufe 0 in der Legende</span></figcaption></figure>
+          <figure><img src="shots/release-1.64-forms-exam.png" alt="Left: twelve numbered square cells in two rows, eight in the first, filling the width, in cyan shades with level 0 framed, the legend Formen 0 to 4 below; right: a bar chart Schnitt with an axis from 1 to 4 and five bars, the first one on 1 a thin line" loading="lazy"><figcaption><span lang="en">Forms filling the width; the average per round from 1 to 4</span><span lang="de">Formen, die die Breite füllen; der Schnitt je Runde von 1 bis 4</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164"><span lang="en">All changes in 1.64 →</span><span lang="de">Alle Änderungen in 1.64 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.63.0">
       <div class="release-head"><b class="release-version">1.63</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -173,6 +217,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621"><span lang="en">All changes in 1.62.1 →</span><span lang="de">Alle Änderungen in 1.62.1 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.62.0">
       <div class="release-head"><b class="release-version">1.62</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -192,9 +239,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162"><span lang="en">All changes in 1.62 →</span><span lang="de">Alle Änderungen in 1.62 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.61.1">
       <div class="release-head"><b class="release-version">1.61.1</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -1165,7 +1209,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.63.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.64.0</a></p></div>
 </footer>
 
 <script>
