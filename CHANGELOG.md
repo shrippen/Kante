@@ -5,6 +5,54 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.64.0] — 2026-11-02
+
+### English
+
+The heat grid keeps the focus where it was and fills a width; bar charts can start their scale above zero.
+
+#### New
+- Heat grids can fill their width: a fixed number of columns shares the room, with square cells as large as it allows. Built for Mitori's forms, eight a row on a phone and eleven on a tablet.
+- Bar charts can start their scale above zero, so an average from 1 to 4 has an axis from 1 to 4. A bar on the lowest value can keep a small height, so it still shows; the read-out says its real value. Built for Mitori's exam mode.
+- The row names of a heat grid can take another font, so long technique names stay readable on a phone.
+
+#### Improved
+- Level 0 of a heat grid and its legend key have the same, clearer frame, so level 0 stands apart from the page and from a blank place.
+
+#### Fixed
+- When the focused cell of a heat grid turned into a blank place, the focus jumped to the first cell and the view to the start; now it moves to the nearest cell.
+- When all cells turned blank while one had the focus, Tab went backwards and the app logged a warning; now Tab goes on.
+- A cell the app chose in two steps (first the row, then the column) was moved to the first cell in between when the grid did not have the focus; now it stays.
+
+![Techniques by attack with readable names, level 0 in the legend with its word, a focused cell](https://shrippen.github.io/Kante/shots/release-1.64-technique-map.png)
+
+![Twelve forms filling the width, eight a row; beside them the average per round on an axis from 1 to 4](https://shrippen.github.io/Kante/shots/release-1.64-forms-exam.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164
+
+### Deutsch
+
+Das Wärmeraster behält den Fokus, wo er war, und füllt eine Breite; Balkendiagramme können ihre Skala über null beginnen.
+
+#### Neu
+- Wärmeraster können ihre Breite füllen: Eine feste Zahl von Spalten teilt sich den Platz, mit quadratischen Zellen, so groß er es erlaubt. Gebaut für Mitoris Formen, acht je Reihe auf dem Handy und elf auf dem Tablet.
+- Balkendiagramme können ihre Skala über null beginnen, so hat ein Schnitt von 1 bis 4 eine Achse von 1 bis 4. Ein Balken auf dem kleinsten Wert kann eine kleine Höhe behalten und bleibt so sichtbar; die Ablesung nennt seinen echten Wert. Gebaut für Mitoris Prüfungsmodus.
+- Die Zeilennamen eines Wärmerasters können eine andere Schrift nehmen, so bleiben lange Technik-Namen auf dem Handy lesbar.
+
+#### Verbessert
+- Stufe 0 eines Wärmerasters und ihr Legenden-Schlüssel haben denselben, deutlicheren Rahmen, so hebt sich Stufe 0 von der Seite und von einem leeren Platz ab.
+
+#### Behoben
+- Wurde die Zelle mit dem Fokus zu einem leeren Platz, sprang der Fokus auf die erste Zelle und die Ansicht an den Anfang; jetzt geht er zur nächstgelegenen Zelle.
+- Wurden alle Zellen leer, während eine den Fokus hatte, ging Tab rückwärts und die App schrieb eine Warnung; jetzt geht Tab weiter.
+- Eine Zelle, die die App in zwei Schritten wählte (erst die Zeile, dann die Spalte), wurde dazwischen auf die erste Zelle gesetzt, wenn das Raster keinen Fokus hatte; jetzt bleibt sie.
+
+![Techniken je Angriff mit lesbaren Namen, Stufe 0 mit ihrem Wort in der Legende, eine Zelle mit Fokus](https://shrippen.github.io/Kante/shots/release-1.64-technique-map.png)
+
+![Zwölf Formen, die die Breite füllen, acht je Reihe; daneben der Schnitt je Runde auf einer Achse von 1 bis 4](https://shrippen.github.io/Kante/shots/release-1.64-forms-exam.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164
+
 ## [1.63.0] — 2026-11-02
 
 ### English

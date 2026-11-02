@@ -677,8 +677,10 @@ TestCase {
         verify(cell.shown, "not a gap")
         verify(named(cell, "kanteHeatRing")[0].visible, "its ring shows")
         verify(g.focusable(g.currentRow, g.currentColumn))
+        // 1.64: the nearest drawn cell of the row, the one further on.
+        compare([g.currentRow, g.currentColumn], [0, 2])
         keyClick(Qt.Key_Right)
-        verify(g.cellAt(0, 2).activeFocus, "the next key moves on")
+        verify(g.cellAt(0, 3).activeFocus, "the next key moves on")
     }
 
     // Focus moves to a cell whose row with the old column would be a gap: it stays there.

@@ -281,8 +281,10 @@ Rectangle {
                     rowTitle: "Technik"
                     rowLabels: ["Ikkyo", "Irimi-nage", "Shiho-nage omote", "Kote-gaeshi"]
                     columnLabels: ["Ai-hanmi katate-dori", "Gyaku-hanmi katate-dori", "Shomen-uchi", "Yokomen-uchi", "Tsuki", "Ryote-dori", "Kata-dori", "Ushiro ryote-dori", "Morote-dori", "Mune-dori"]
-                    legendLevels: [1, 2, 3, 4]
-                    legendLabels: ["", "1 gesehen", "2 geübt", "3 sicher", "4 prüfungsreif"]
+                    // 1.64: level 0 in the legend with its word, framed like its cells.
+                    legendLevels: [0, 1, 2, 3, 4]
+                    legendLabels: ["0 nicht bewertet", "1 gesehen", "2 mit Hilfe", "3 sicher", "4 prüfungsreif"]
+                    rowLabelFont: KanteStyle.smallFont
                     noDataText: "keine Kombination"
                     accessibleName: "Techniken je Angriff"
                     cells: [
@@ -291,6 +293,42 @@ Rectangle {
                         [{ value: 3, label: "3" }, null, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 2, label: "2" }, { value: 1, label: "1" }, { value: 3, label: "3" }, null, { value: 0, label: "" }],
                         [null, { value: 1, label: "1" }, { value: 2, label: "2" }, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 3, label: "3" }, null, { value: 1, label: "1" }, { value: 2, label: "2" }]
                     ]
+                }
+                // 1.64: a fixed number of columns filling the width (Mitori's forms, 8 a row on a
+                // phone), and a bar chart on a scale from 1 (Mitori's exam mode, average per round).
+                RowLayout {
+                    spacing: KanteStyle.unit(20)
+                    KanteHeatGrid {
+                        objectName: "galleryFormGrid"
+                        Layout.preferredWidth: KanteStyle.unit(300)
+                        Layout.alignment: Qt.AlignTop
+                        fillWidth: true
+                        scrollable: false
+                        minValue: 0
+                        maxValue: 4
+                        showEmpty: false
+                        cellSize: KanteStyle.unit(22)
+                        legendLevels: [0, 1, 2, 3, 4]
+                        legendLabels: ["0", "1", "2", "3", "4"]
+                        noDataText: ""
+                        accessibleName: "Formen"
+                        cells: [
+                            [{ value: 4, label: "1" }, { value: 3, label: "2" }, { value: 3, label: "3" }, { value: 2, label: "4" }, { value: 2, label: "5" }, { value: 1, label: "6" }, { value: 0, label: "7" }, { value: 1, label: "8" }],
+                            [{ value: 2, label: "9" }, { value: 0, label: "10" }, { value: 0, label: "11" }, { value: 1, label: "12" }, null, null, null, null]
+                        ]
+                    }
+                    KanteBarChart {
+                        objectName: "galleryExamChart"
+                        Layout.preferredWidth: KanteStyle.unit(240)
+                        Layout.preferredHeight: KanteStyle.unit(120)
+                        values: [1, 2.25, 3.5, 2.75, 4]
+                        labels: ["5.10", "12.10", "19.10", "26.10", "2.11"]
+                        minValue: 1
+                        maxValue: 4
+                        minBarHeight: KanteStyle.unit(3)
+                        axis: true
+                        axisTitle: "Schnitt"
+                    }
                 }
                 RowLayout {
                     spacing: KanteStyle.unit(20)
