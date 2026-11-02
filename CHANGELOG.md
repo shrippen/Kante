@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.67.0] — 2026-11-03
+
+### English
+
+An app can offer Leinen as a choice of its own: Kante's light palette no longer depends on a light platform theme.
+
+#### New
+- `KanteStyle.preferLight` forces Leinen whatever the platform theme says, as `preferDark` forces dark (it wins when both are set). For Mitori's style setting, which offers Kante and Leinen side by side.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167
+
+### Deutsch
+
+Eine App kann Leinen als eigene Wahl anbieten: Kantes helle Palette hängt nicht mehr am hellen Plattform-Thema.
+
+#### Neu
+- `KanteStyle.preferLight` erzwingt Leinen, gleich was das Plattform-Thema sagt, so wie `preferDark` dunkel erzwingt (es gewinnt, wenn beide gesetzt sind). Für Mitoris Stilwahl, die Kante und Leinen nebeneinander anbietet.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167
+
 ## [1.66.0] — 2026-11-02
 
 ### English
