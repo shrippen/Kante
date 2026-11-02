@@ -247,6 +247,51 @@ Rectangle {
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
                     }
                 }
+                // 1.63: a labelled heat grid, hits per string and fret.
+                KanteHeatGrid {
+                    id: galleryHeatGrid
+                    objectName: "galleryHeatGrid"
+                    rowLabels: ["G", "D", "A", "E"]
+                    columnLabels: ["0", "1", "2", "3", "4", "5", "6", "7"]
+                    rowTitle: "Saite"
+                    columnTitle: "Bund"
+                    unit: " %"
+                    minValue: 0
+                    maxValue: 100
+                    legendTitle: "Treffer"
+                    accessibleName: "Treffer je Saite und Bund"
+                    cells: [
+                        [100, 90, 75, 60, null, 40, 20, 0],
+                        [95, 80, { value: 55, tip: "D, Bund 2: 11 von 20" }, 50, 35, null, 15, 5],
+                        [90, 85, 70, 45, 30, 25, 10, null],
+                        [100, 100, 65, 40, 25, 20, 0, 0]
+                    ]
+                }
+                // 1.63: Mitori's technique map, levels 0..4, upright attack names, blank where a
+                // technique does not answer an attack; narrow, so the cells scroll sideways.
+                KanteHeatGrid {
+                    objectName: "galleryTechniqueMap"
+                    Layout.preferredWidth: KanteStyle.unit(320)
+                    minValue: 0
+                    maxValue: 4
+                    showEmpty: false
+                    columnLabelsVertical: true
+                    rowLabelWidth: KanteStyle.unit(96)
+                    cellSize: KanteStyle.unit(26)
+                    rowTitle: "Technik"
+                    rowLabels: ["Ikkyo", "Irimi-nage", "Shiho-nage omote", "Kote-gaeshi"]
+                    columnLabels: ["Ai-hanmi katate-dori", "Gyaku-hanmi katate-dori", "Shomen-uchi", "Yokomen-uchi", "Tsuki", "Ryote-dori", "Kata-dori", "Ushiro ryote-dori", "Morote-dori", "Mune-dori"]
+                    legendLevels: [1, 2, 3, 4]
+                    legendLabels: ["", "1 gesehen", "2 geübt", "3 sicher", "4 prüfungsreif"]
+                    noDataText: "keine Kombination"
+                    accessibleName: "Techniken je Angriff"
+                    cells: [
+                        [{ value: 4, label: "4" }, { value: 3, label: "3" }, { value: 4, label: "4" }, { value: 2, label: "2" }, null, { value: 1, label: "1" }, { value: 3, label: "3" }, { value: 0, label: "" }, null, { value: 1, label: "1" }],
+                        [{ value: 2, label: "2" }, { value: 3, label: "3" }, { value: 1, label: "1" }, null, { value: 2, label: "2" }, { value: 0, label: "" }, null, { value: 1, label: "1" }, { value: 2, label: "2" }, null],
+                        [{ value: 3, label: "3" }, null, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 2, label: "2" }, { value: 1, label: "1" }, { value: 3, label: "3" }, null, { value: 0, label: "" }],
+                        [null, { value: 1, label: "1" }, { value: 2, label: "2" }, { value: 0, label: "" }, { value: 4, label: "4" }, null, { value: 3, label: "3" }, null, { value: 1, label: "1" }, { value: 2, label: "2" }]
+                    ]
+                }
                 RowLayout {
                     spacing: KanteStyle.unit(20)
                     KanteCurveEditor {
