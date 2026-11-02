@@ -210,7 +210,20 @@ QQC2.Dialog {
     }
     onAcceptTextChanged: applyAccept()
     onAcceptEnabledChanged: applyAccept()
-    onStandardButtonsChanged: Qt.callLater(applyAccept)
+    onStandardButtonsChanged: applyAcceptLater.start()
+    // After the event (the button box makes its buttons first). When the garbage collector
+    // takes the window, the dialog's functions are gone before the dialog itself and its
+    // Timer (Component.onDestruction comes later): a pending call found no applyAccept
+    // ("… is not a function").
+    Timer {
+        id: applyAcceptLater
+        interval: 0
+        onTriggered: {
+            if (typeof control.applyAccept === "function") {
+                control.applyAccept()
+            }
+        }
+    }
     Component.onCompleted: {
         applyAccept()
         placeFooterStart()
@@ -291,7 +304,7 @@ QQC2.Dialog {
     onFooterChanged: {
         kanteRestored(footer, kanteFooter)
         // The other footer has its own buttons: name and lock them too.
-        Qt.callLater(applyAccept)
+        applyAcceptLater.start()
     }
 
     // The dim behind the dialog is Kante's scrim role (best effort: only when the style
