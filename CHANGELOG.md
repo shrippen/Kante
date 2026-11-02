@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.62.0] — 2026-11-02
+
+### English
+
+Practice days on a calendar, with weekdays, months and a tooltip per day.
+
+#### New
+- `KanteCalendarHeatmap` shows days on a calendar grid: a column per week, weekday names at the side, the month's name above the week it begins in. Each day is coloured by its level like the heatmap; hovering it shows the date and a text, screen readers hear the same.
+
+![Twenty-six weeks of practice days in four shades of teal, weekdays at the left, months above, below a legend from 1–2 techniques to 10 and more](https://shrippen.github.io/Kante/shots/release-1.62-calendar.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162
+
+### Deutsch
+
+Übungstage auf einem Kalender, mit Wochentagen, Monaten und einem Tooltip je Tag.
+
+#### Neu
+- `KanteCalendarHeatmap` zeigt Tage auf einem Kalenderraster: eine Spalte je Woche, Wochentage an der Seite, der Monatsname über der Woche, in der er beginnt. Jeder Tag hat die Farbe seiner Stufe wie in der Heatmap; beim Darüberfahren zeigt er Datum und Text, Bildschirmleser hören dasselbe.
+
+![Sechsundzwanzig Wochen Übungstage in vier Abstufungen von Petrol, links die Wochentage, oben die Monate, darunter eine Legende von 1–2 Techniken bis 10 und mehr](https://shrippen.github.io/Kante/shots/release-1.62-calendar.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162
+
 ## [1.61.1] — 2026-11-02
 
 ### English

@@ -1075,6 +1075,25 @@ Rectangle {
                                         { color: KanteStyle.levelColor(0), value: 6, text: "offen" }]
                             }
                         }
+                        // 1.62, from Mitori: practice days on a calendar, with a legend.
+                        ColumnLayout {
+                            spacing: KanteStyle.unit(6)
+                            KanteCalendarHeatmap {
+                                weeks: 12
+                                levels: {
+                                    const l = {}
+                                    for (let i = 0; i < 84; i += 2) {
+                                        const d = new Date()
+                                        d.setDate(d.getDate() - i)
+                                        l[isoDay(d)] = 1 + i % 4
+                                    }
+                                    return l
+                                }
+                            }
+                            KanteLegend {
+                                model: [1, 2, 3, 4].map(l => ({ color: KanteStyle.levelColor(l), text: "Stufe " + l }))
+                            }
+                        }
                         KanteToast {
                             id: galleryToast
                             Layout.preferredWidth: KanteStyle.unit(340)
