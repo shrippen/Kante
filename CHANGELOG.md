@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.70.0] — 2026-11-03
+
+### English
+
+A dialog of its content's size measures its content.
+
+#### Fixed
+- `KanteDialog` with size Fit: the dialog takes its content's width and height. Its colour scope is a second child of the content, and Qt measures a popup's content only from a single child: the dialog was 0 wide, and a text without `contentHeight` ran into the buttons. The dialog now takes the size from the app's item; the scope stays where it is (it themes disabled items, 1.51). Found in Mitori (its own Shinki dialog had the same pattern).
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
+
+### Deutsch
+
+Ein Dialog in der Größe seines Inhalts misst seinen Inhalt.
+
+#### Behoben
+- `KanteDialog` mit Größe Fit: Der Dialog nimmt Breite und Höhe seines Inhalts. Sein Farb-Scope ist ein zweites Kind im Inhalt, und Qt misst den Inhalt eines Popups nur bei einem einzigen Kind: Der Dialog war 0 breit, und ein Text ohne `contentHeight` lief in die Knöpfe. Jetzt nimmt der Dialog die Größe vom Element der App; der Scope bleibt, wo er ist (er färbt deaktivierte Elemente, 1.51). Gefunden in Mitori (dessen Shinki-Dialog hatte dasselbe Muster).
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
+
 ## [1.69.0] — 2026-11-03
 
 ### English
