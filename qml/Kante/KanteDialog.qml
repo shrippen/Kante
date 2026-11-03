@@ -227,6 +227,7 @@ QQC2.Dialog {
     Component.onCompleted: {
         applyAccept()
         placeFooterStart()
+        Qt.callLater(() => { control.kanteBuilt = true })
     }
 
     KanteScope { id: kanteScope; target: control.contentItem }
@@ -243,11 +244,19 @@ QQC2.Dialog {
         }
         return null
     }
-    // As Qt: the content item's own size first (an app's layout), else its single item's.
-    contentWidth: contentItem && contentItem.implicitWidth > 0 ? contentItem.implicitWidth
-                                                                : (kanteContent ? kanteContent.implicitWidth : 0)
-    contentHeight: contentItem && contentItem.implicitHeight > 0 ? contentItem.implicitHeight
-                                                                  : (kanteContent ? kanteContent.implicitHeight : 0)
+    // As Qt: the content item's own size first (an app's layout), else its single item's. A size
+    // step fixes the width from the start (1.71): before the width Binding above takes over, a
+    // text that wraps at the content's width fed its width back (a binding loop in Mitori).
+    contentWidth: sizeWidth > 0 ? Math.min(sizeWidth, kanteRoomWidth * 0.9) - leftPadding - rightPadding
+                  : contentItem && contentItem.implicitWidth > 0 ? contentItem.implicitWidth
+                  : (kanteContent ? kanteContent.implicitWidth : 0)
+    // The height once the dialog is built (1.71): while Qt builds it, Kante's header and colours
+    // arrive and a text changes its height inside the dialog's own implicitHeight (a binding loop
+    // in Mitori).
+    property bool kanteBuilt: false
+    contentHeight: !kanteBuilt ? 0
+                   : contentItem && contentItem.implicitHeight > 0 ? contentItem.implicitHeight
+                   : (kanteContent ? kanteContent.implicitHeight : 0)
 
     // Torn down, the Bindings here give nothing back: the dialog goes anyway. They are
     // children of its content item, which Qt deletes inside the popup's destructor; a

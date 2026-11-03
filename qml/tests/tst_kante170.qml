@@ -6,7 +6,7 @@ import org.kde.kirigami as Kirigami
 import Kante
 
 /**
- * Kante 1.70, from Mitori's dialogs: a KanteDialog of the content's size (Fit) measures its
+ * Kante 1.70 and 1.71, from Mitori's dialogs: a KanteDialog of the content's size (Fit) measures its
  * content. The scope sat as a second child of the content, so the dialog's implicit content
  * size was 0 (Fit 0 wide, a text without contentHeight ran into the buttons). The dialog takes
  * its content size from the app's item now.
@@ -71,12 +71,12 @@ TestCase {
     function test_fitMeasuresOwnContentItem() {
         const dialog = createTemporaryObject(formDialogs, tc)
         compare(dialog.contentWidth, dialog.contentItem.implicitWidth)
-        compare(dialog.contentHeight, dialog.contentItem.implicitHeight)
+        tryCompare(dialog, "contentHeight", dialog.contentItem.implicitHeight)
     }
 
     function test_fitMeasuresContent() {
         const dialog = createTemporaryObject(dialogs, tc)
         verify(dialog.contentWidth > 0, "content width " + dialog.contentWidth)
-        verify(dialog.contentHeight > 0, "content height " + dialog.contentHeight)
+        tryVerify(() => dialog.contentHeight > 0, 1000, "content height " + dialog.contentHeight)
     }
 }

@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.71.0] — 2026-11-03
+
+### English
+
+A dialog with a wrapping text no longer reports a binding loop while it is built.
+
+#### Fixed
+- `KanteDialog` (1.70 measured its content): with a size step the content width is the step's from the start, and the content height follows once the dialog is built. While Qt built it, Kante's header and colours arrived and a wrapping text changed its height inside the dialog's own height: Mitori's question before deleting a notebook reported a binding loop.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171
+
+### Deutsch
+
+Ein Dialog mit umbrechendem Text meldet beim Aufbau keine Bindungsschleife mehr.
+
+#### Behoben
+- `KanteDialog` (1.70 misst seinen Inhalt): Mit einer Größenstufe ist die Inhaltsbreite von Anfang an die der Stufe, und die Inhaltshöhe folgt, sobald der Dialog aufgebaut ist. Während Qt ihn aufbaute, kamen Kantes Kopf und Farben an, und ein umbrechender Text änderte seine Höhe mitten in der Höhe des Dialogs: Mitoris Frage vor dem Löschen eines Notizbuchs meldete eine Bindungsschleife.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171
+
 ## [1.70.0] — 2026-11-03
 
 ### English
