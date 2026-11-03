@@ -138,10 +138,10 @@
         <p class="release-lead" lang="de">Ein Dialog in der Größe seines Inhalts misst seinen Inhalt.</p>
         <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
           <ul lang="en">
-            <li><code>KanteDialog</code> with size Fit: the dialog takes its content's width and height. Its colour scope sat as a second child of the content, so the content measured 0: the dialog was 0 wide, and a text without <code>contentHeight</code> ran into the buttons. Found in Mitori (its own Shinki dialog had the same pattern).</li>
+            <li><code>KanteDialog</code> with size Fit: the dialog takes its content's width and height. Its colour scope is a second child of the content, and Qt measures a popup's content only from a single child: the dialog was 0 wide, and a text without <code>contentHeight</code> ran into the buttons. The dialog now takes the size from the app's item; the scope stays where it is (it themes disabled items, 1.51). Found in Mitori (its own Shinki dialog had the same pattern).</li>
           </ul>
           <ul lang="de">
-            <li><code>KanteDialog</code> mit Größe Fit: Der Dialog nimmt Breite und Höhe seines Inhalts. Sein Farb-Scope stand als zweites Kind im Inhalt, der Inhalt maß darum 0: Der Dialog war 0 breit, und ein Text ohne <code>contentHeight</code> lief in die Knöpfe. Gefunden in Mitori (dessen Shinki-Dialog hatte dasselbe Muster).</li>
+            <li><code>KanteDialog</code> mit Größe Fit: Der Dialog nimmt Breite und Höhe seines Inhalts. Sein Farb-Scope ist ein zweites Kind im Inhalt, und Qt misst den Inhalt eines Popups nur bei einem einzigen Kind: Der Dialog war 0 breit, und ein Text ohne <code>contentHeight</code> lief in die Knöpfe. Jetzt nimmt der Dialog die Größe vom Element der App; der Scope bleibt, wo er ist (er färbt deaktivierte Elemente, 1.51). Gefunden in Mitori (dessen Shinki-Dialog hatte dasselbe Muster).</li>
           </ul>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170"><span lang="en">All changes in 1.70 →</span><span lang="de">Alle Änderungen in 1.70 →</span></a>

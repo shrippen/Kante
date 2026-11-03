@@ -794,7 +794,7 @@ A dialog of its content's size measures its content (found in Mitori).
 
 | Change | Web | QML |
 |---|---|---|
-| Dialog Fit | – | `KanteDialog`: the colour scope is a property (`kanteScope`), not a second child of the content, so `implicitContentWidth`/`Height` measure the content again. Test `qml/tests/tst_kante170.qml` |
+| Dialog Fit | – | `KanteDialog`: `contentWidth`/`contentHeight` follow the app's item (`kanteContent`), not Qt's implicit size, which a second child (the colour scope) voids. The scope stays in the content (disabled items, 1.51); a test opens a dialog with a disabled item. Test `qml/tests/tst_kante170.qml` |
 
 ### Fixed in Kante 1.69
 
