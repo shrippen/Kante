@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.70.0] — 2026-11-03
+
+### English
+
+A dialog of its content's size measures its content.
+
+#### Fixed
+- `KanteDialog` with size Fit: the dialog takes its content's width and height. Its colour scope sat as a second child of the content, so the content measured 0: the dialog was 0 wide, and a text without `contentHeight` ran into the buttons. Found in Mitori (its own Shinki dialog had the same pattern).
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
+
+### Deutsch
+
+Ein Dialog in der Größe seines Inhalts misst seinen Inhalt.
+
+#### Behoben
+- `KanteDialog` mit Größe Fit: Der Dialog nimmt Breite und Höhe seines Inhalts. Sein Farb-Scope stand als zweites Kind im Inhalt, der Inhalt maß darum 0: Der Dialog war 0 breit, und ein Text ohne `contentHeight` lief in die Knöpfe. Gefunden in Mitori (dessen Shinki-Dialog hatte dasselbe Muster).
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
+
 ## [1.69.0] — 2026-11-03
 
 ### English

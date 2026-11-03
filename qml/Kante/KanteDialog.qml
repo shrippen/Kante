@@ -229,7 +229,8 @@ QQC2.Dialog {
         placeFooterStart()
     }
 
-    KanteScope { target: control.contentItem }
+    // A property, not a child: a second item in the content voids its implicit size (Fit, 1.70).
+    readonly property Item kanteScope: KanteScope { target: control.contentItem }
 
     // Torn down, the Bindings here give nothing back: the dialog goes anyway. They are
     // children of its content item, which Qt deletes inside the popup's destructor; a

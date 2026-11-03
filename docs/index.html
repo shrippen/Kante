@@ -131,6 +131,22 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.70.0">
+      <div class="release-head"><b class="release-version">1.70</b><time datetime="2026-11-03">3 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A dialog of its content's size measures its content.</p>
+        <p class="release-lead" lang="de">Ein Dialog in der Größe seines Inhalts misst seinen Inhalt.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteDialog</code> with size Fit: the dialog takes its content's width and height. Its colour scope sat as a second child of the content, so the content measured 0: the dialog was 0 wide, and a text without <code>contentHeight</code> ran into the buttons. Found in Mitori (its own Shinki dialog had the same pattern).</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteDialog</code> mit Größe Fit: Der Dialog nimmt Breite und Höhe seines Inhalts. Sein Farb-Scope stand als zweites Kind im Inhalt, der Inhalt maß darum 0: Der Dialog war 0 breit, und ein Text ohne <code>contentHeight</code> lief in die Knöpfe. Gefunden in Mitori (dessen Shinki-Dialog hatte dasselbe Muster).</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170"><span lang="en">All changes in 1.70 →</span><span lang="de">Alle Änderungen in 1.70 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.69.0">
       <div class="release-head"><b class="release-version">1.69</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -163,6 +179,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168"><span lang="en">All changes in 1.68 →</span><span lang="de">Alle Änderungen in 1.68 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.67.0">
       <div class="release-head"><b class="release-version">1.67</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -179,9 +198,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167"><span lang="en">All changes in 1.67 →</span><span lang="de">Alle Änderungen in 1.67 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.66.0">
       <div class="release-head"><b class="release-version">1.66</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -1289,7 +1305,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.69.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.70.0</a></p></div>
 </footer>
 
 <script>
