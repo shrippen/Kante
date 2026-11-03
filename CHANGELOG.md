@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.68.0] — 2026-11-03
+
+### English
+
+A heading that may wrap shows its whole text in Kante too.
+
+#### Fixed
+- `KanteHeading` with `wrapMode` breaks a long title into lines in Kante and Kante Light; before, Kante drew it on one line and cut it off with “…”. Found in Mitori (long comment titles).
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168
+
+### Deutsch
+
+Eine Überschrift, die umbrechen darf, zeigt auch in Kante ihren ganzen Text.
+
+#### Behoben
+- `KanteHeading` mit `wrapMode` bricht einen langen Titel in Kante und Kante Light in Zeilen um; bisher zeichnete Kante ihn einzeilig und schnitt ihn mit „…“ ab. Gefunden in Mitori (lange Titel der Kommentare).
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168
+
 ## [1.67.0] — 2026-11-03
 
 ### English
