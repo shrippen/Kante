@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import QtTest
 import org.kde.kirigami as Kirigami
 import Kante
@@ -53,6 +54,24 @@ TestCase {
         tryVerify(() => Qt.colorEqual(dialog.off.ink, KanteStyle.disabledTextColor), 2000,
                   "disabled text " + dialog.off.ink + ", not " + KanteStyle.disabledTextColor)
         dialog.close()
+    }
+
+    // A dialog with its own content item (a form as a layout): the layout's size, all of it.
+    Component {
+        id: formDialogs
+        KanteDialog {
+            contentItem: ColumnLayout {
+                Label { text: "A" }
+                Label { text: "A much longer line than the first one" }
+                Label { text: "B" }
+            }
+        }
+    }
+
+    function test_fitMeasuresOwnContentItem() {
+        const dialog = createTemporaryObject(formDialogs, tc)
+        compare(dialog.contentWidth, dialog.contentItem.implicitWidth)
+        compare(dialog.contentHeight, dialog.contentItem.implicitHeight)
     }
 
     function test_fitMeasuresContent() {

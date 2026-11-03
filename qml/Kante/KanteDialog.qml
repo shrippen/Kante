@@ -243,8 +243,11 @@ QQC2.Dialog {
         }
         return null
     }
-    contentWidth: kanteContent ? kanteContent.implicitWidth : 0
-    contentHeight: kanteContent ? kanteContent.implicitHeight : 0
+    // As Qt: the content item's own size first (an app's layout), else its single item's.
+    contentWidth: contentItem && contentItem.implicitWidth > 0 ? contentItem.implicitWidth
+                                                                : (kanteContent ? kanteContent.implicitWidth : 0)
+    contentHeight: contentItem && contentItem.implicitHeight > 0 ? contentItem.implicitHeight
+                                                                  : (kanteContent ? kanteContent.implicitHeight : 0)
 
     // Torn down, the Bindings here give nothing back: the dialog goes anyway. They are
     // children of its content item, which Qt deletes inside the popup's destructor; a
