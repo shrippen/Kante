@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.69.0] — 2026-11-03
+
+### English
+
+A chip that is one choice of a set keeps the app's choice.
+
+#### Fixed
+- `KanteChip` with `choice`: a tap only reports (`clicked`), `checked` stays the app's binding. Before, a tap toggled the chip itself and broke the binding: an old choice stayed marked, and a second tap on the chosen chip cleared it. Found in Mitori (grade chips).
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169
+
+### Deutsch
+
+Ein Chip, der eine Wahl aus einer Reihe ist, behält die Wahl der App.
+
+#### Behoben
+- `KanteChip` mit `choice`: Ein Tipp meldet nur (`clicked`), `checked` bleibt die Bindung der App. Bisher schaltete ein Tipp den Chip selbst um und brach die Bindung: Eine alte Wahl blieb markiert, und ein zweiter Tipp auf den gewählten Chip hob sie auf. Gefunden in Mitori (Grad-Chips).
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169
+
 ## [1.68.0] — 2026-11-03
 
 ### English

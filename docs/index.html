@@ -131,6 +131,22 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.69.0">
+      <div class="release-head"><b class="release-version">1.69</b><time datetime="2026-11-03">3 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A chip that is one choice of a set keeps the app's choice.</p>
+        <p class="release-lead" lang="de">Ein Chip, der eine Wahl aus einer Reihe ist, behält die Wahl der App.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteChip</code> with <code>choice</code>: a tap only reports (<code>clicked</code>), <code>checked</code> stays the app's binding. Before, a tap toggled the chip itself and broke the binding: an old choice stayed marked, and a second tap on the chosen chip cleared it. Found in Mitori (grade chips).</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteChip</code> mit <code>choice</code>: Ein Tipp meldet nur (<code>clicked</code>), <code>checked</code> bleibt die Bindung der App. Bisher schaltete ein Tipp den Chip selbst um und brach die Bindung: Eine alte Wahl blieb markiert, und ein zweiter Tipp auf den gewählten Chip hob sie auf. Gefunden in Mitori (Grad-Chips).</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169"><span lang="en">All changes in 1.69 →</span><span lang="de">Alle Änderungen in 1.69 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.68.0">
       <div class="release-head"><b class="release-version">1.68</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -163,6 +179,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167"><span lang="en">All changes in 1.67 →</span><span lang="de">Alle Änderungen in 1.67 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.66.0">
       <div class="release-head"><b class="release-version">1.66</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -179,9 +198,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166"><span lang="en">All changes in 1.66 →</span><span lang="de">Alle Änderungen in 1.66 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.65.0">
       <div class="release-head"><b class="release-version">1.65</b><time datetime="2026-11-02">2 Nov 2026</time></div>
       <div class="release-body">
@@ -1273,7 +1289,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.68.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.69.0</a></p></div>
 </footer>
 
 <script>
