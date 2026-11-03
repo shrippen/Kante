@@ -131,6 +131,22 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.71.0">
+      <div class="release-head"><b class="release-version">1.71</b><time datetime="2026-11-03">3 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A dialog with a wrapping text no longer reports a binding loop while it is built.</p>
+        <p class="release-lead" lang="de">Ein Dialog mit umbrechendem Text meldet beim Aufbau keine Bindungsschleife mehr.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteDialog</code> (1.70 measured its content): the content height follows once the dialog is built. While Qt built it, Kante's header and colours arrived and a wrapping text changed its height inside the dialog's own height: Mitori's question before deleting a notebook reported a binding loop.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteDialog</code> (1.70 misst seinen Inhalt): Die Inhaltshöhe folgt, sobald der Dialog aufgebaut ist. Während Qt ihn aufbaute, kamen Kantes Kopf und Farben an, und ein umbrechender Text änderte seine Höhe mitten in der Höhe des Dialogs: Mitoris Frage vor dem Löschen eines Notizbuchs meldete eine Bindungsschleife.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171"><span lang="en">All changes in 1.71 →</span><span lang="de">Alle Änderungen in 1.71 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.70.0">
       <div class="release-head"><b class="release-version">1.70</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -163,6 +179,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169"><span lang="en">All changes in 1.69 →</span><span lang="de">Alle Änderungen in 1.69 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.68.0">
       <div class="release-head"><b class="release-version">1.68</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -179,9 +198,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168"><span lang="en">All changes in 1.68 →</span><span lang="de">Alle Änderungen in 1.68 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.67.0">
       <div class="release-head"><b class="release-version">1.67</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -1305,7 +1321,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.70.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.71.0</a></p></div>
 </footer>
 
 <script>
