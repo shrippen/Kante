@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.72.0] — 2026-11-03
+
+### English
+
+A suggestion under a field: the app offers values, the user picks one with a click.
+
+#### New
+- A field can show a second line with suggestions, small below it (“Vorschlag: Hosting, Software”), as Paperless-ngx does. A click on a value puts it into the field, and the app hears it as if the user had chosen it. Nothing is filled in on its own: what a learned model guesses stays a suggestion until the user takes it. Built for Andon's VAT check.
+
+![Three fields with a suggestion line below each: Kategorie with Hosting, EÜR-Zeile with Arbeitsmittel taken and two more values, Lieferant with two suppliers](https://shrippen.github.io/Kante/shots/release-1.72-field-suggest.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-172
+
+### Deutsch
+
+Ein Vorschlag unter einem Feld: Die App bietet Werte an, der Nutzer nimmt einen mit einem Klick.
+
+#### Neu
+- Ein Feld kann eine zweite Zeile mit Vorschlägen zeigen, klein darunter („Vorschlag: Hosting, Software“), wie Paperless-ngx. Ein Klick auf einen Wert setzt ihn ins Feld, und die App erfährt es, als hätte der Nutzer ihn gewählt. Nichts wird von selbst ausgefüllt: Was ein gelerntes Modell rät, bleibt ein Vorschlag, bis der Nutzer ihn nimmt. Gebaut für Andons USt-Prüfung.
+
+![Drei Felder mit je einer Vorschlagszeile darunter: Kategorie mit Hosting, EÜR-Zeile mit übernommenem Arbeitsmittel und zwei weiteren Werten, Lieferant mit zwei Lieferanten](https://shrippen.github.io/Kante/shots/release-1.72-field-suggest.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-172
+
 ## [1.71.0] — 2026-11-03
 
 ### English
