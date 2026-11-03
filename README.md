@@ -794,7 +794,7 @@ A dialog with a wrapping text no longer reports a binding loop while it is built
 
 | Change | Web | QML |
 |---|---|---|
-| Dialog content size | – | `KanteDialog`: with a size step `contentWidth` is the step's width less the padding; `contentHeight` follows the content once the dialog is built (`kanteBuilt`, set after `Component.onCompleted`). The loop showed in Mitori (Kirigami page, Material); a test here waits for the height |
+| Dialog content size | – | `KanteDialog`: `contentHeight` follows the content once the dialog is built (`kanteBuilt`, set after `Component.onCompleted`). The loop showed in Mitori (Kirigami page, Material); a test here waits for the height |
 
 ### Fixed in Kante 1.70
 
