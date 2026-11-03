@@ -22,6 +22,24 @@
     });
   }
 
+  // Suggestion under a field (1.72): a click on a value puts it into the field named by the
+  // line's data-suggest-for (an id), as if typed: input and change bubble, so the app's own
+  // handlers run. The value is data-value, else the button's text; a select takes it only if
+  // one of its options has it. A missing or disabled field stays as it is.
+  function suggest(btn) {
+    var line = btn.closest('.field-suggest[data-suggest-for]');
+    var f = line && d.getElementById(line.getAttribute('data-suggest-for'));
+    if (!f || f.disabled || !/^(INPUT|TEXTAREA|SELECT)$/.test(f.tagName)) return;
+    var v = btn.hasAttribute('data-value') ? btn.getAttribute('data-value') : btn.textContent.trim();
+    if (f.tagName === 'SELECT' && ![].some.call(f.options, function (o) { return o.value === v; })) return;
+    f.value = v;
+    f.dispatchEvent(new Event('input', { bubbles: true }));
+    f.dispatchEvent(new Event('change', { bubbles: true }));
+    [].forEach.call(line.querySelectorAll('.field-suggest-pick'), function (b) {
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+  }
+
   d.addEventListener('DOMContentLoaded', function () {
     mark();
 
@@ -31,6 +49,11 @@
         h.lang = lb.getAttribute('data-lang');
         try { localStorage.setItem(KEY, h.lang); } catch (x) {}
         mark();
+        return;
+      }
+      var sp = e.target.closest && e.target.closest('.field-suggest-pick');
+      if (sp) {
+        suggest(sp);
         return;
       }
       var cb = e.target.closest && e.target.closest('.copy-btn');

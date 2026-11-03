@@ -228,6 +228,15 @@ section>h2{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;tex
 <span class="cap">.topic-icon[data-topic]</span>
 </section>
 
+<section id="field-suggest"><h2>1.72 · Vorschlag unter dem Feld</h2>
+<div class="g3">
+ <div class="field"><label for="sg-cat">Kategorie</label><select class="select" id="sg-cat"><option value="">–</option><option value="c1">Technik</option><option value="c2">Hosting</option><option value="c5">Software</option></select><p class="field-suggest" data-suggest-for="sg-cat"><span>Vorschlag:</span> <button type="button" class="field-suggest-pick" data-value="c2">Hosting</button></p></div>
+ <div class="field"><label for="sg-euer">EÜR-Zeile</label><select class="select" id="sg-euer"><option value="">–</option><option value="e1" selected>Arbeitsmittel</option><option value="e2">Miete</option><option value="e3">Telekommunikation</option></select><p class="field-suggest" data-suggest-for="sg-euer"><span>Vorschlag:</span> <button type="button" class="field-suggest-pick" data-value="e1" aria-pressed="true">Arbeitsmittel</button>, <button type="button" class="field-suggest-pick" data-value="e3" aria-pressed="false">Telekommunikation</button>, <button type="button" class="field-suggest-pick" data-value="e2" aria-pressed="false">Miete</button></p></div>
+ <div class="field"><label for="sg-sup">Lieferant</label><input class="input" id="sg-sup"><p class="field-suggest" data-suggest-for="sg-sup"><span>Vorschlag:</span> <button type="button" class="field-suggest-pick">Kabelwerk Studiobedarf</button>, <button type="button" class="field-suggest-pick">Netzhafen Hosting GmbH</button></p></div>
+</div>
+<span class="cap">.field-suggest[data-suggest-for] · .field-suggest-pick (aria-pressed nach dem Klick)</span>
+</section>
+
 <!-- 7 Detail dialog -->
 <section id="detail"><h2>7 · Detail-Dialog (1.14)</h2>
 <div style="display:grid;gap:1.2rem">
