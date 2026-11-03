@@ -25,20 +25,37 @@
   // Suggestion under a field (1.72): a click on a value puts it into the field named by the
   // line's data-suggest-for (an id), as if typed: input and change bubble, so the app's own
   // handlers run. The value is data-value, else the button's text; a select takes it only if
-  // one of its options has it. A missing or disabled field stays as it is.
+  // one of its options has it. A missing, disabled (also by its fieldset) or read-only field
+  // stays as it is. A line without data-suggest-for is the app's own: Kante leaves it alone.
+  function pickValue(btn) {
+    return btn.hasAttribute('data-value') ? btn.getAttribute('data-value') : btn.textContent.trim();
+  }
+
   function suggest(btn) {
     var line = btn.closest('.field-suggest[data-suggest-for]');
     var f = line && d.getElementById(line.getAttribute('data-suggest-for'));
-    if (!f || f.disabled || !/^(INPUT|TEXTAREA|SELECT)$/.test(f.tagName)) return;
-    var v = btn.hasAttribute('data-value') ? btn.getAttribute('data-value') : btn.textContent.trim();
+    if (!f || !/^(INPUT|TEXTAREA|SELECT)$/.test(f.tagName)) return;
+    if (f.readOnly || f.matches(':disabled')) return;
+    var v = pickValue(btn);
     if (f.tagName === 'SELECT' && ![].some.call(f.options, function (o) { return o.value === v; })) return;
     f.value = v;
     f.dispatchEvent(new Event('input', { bubbles: true }));
     f.dispatchEvent(new Event('change', { bubbles: true }));
-    [].forEach.call(line.querySelectorAll('.field-suggest-pick'), function (b) {
-      b.setAttribute('aria-pressed', String(b === btn));
+  }
+
+  // The picks follow the field, whoever changed it: the one equal to its value is
+  // aria-pressed="true" (shown as taken), the others "false". E.g. typing over a taken
+  // "Hosting" turns it back into a link.
+  function markPicks(e) {
+    var f = e.target;
+    if (!f.id || !/^(INPUT|TEXTAREA|SELECT)$/.test(f.tagName)) return;
+    var sel = '.field-suggest[data-suggest-for="' + (window.CSS && CSS.escape ? CSS.escape(f.id) : f.id) + '"] .field-suggest-pick';
+    [].forEach.call(d.querySelectorAll(sel), function (b) {
+      b.setAttribute('aria-pressed', String(pickValue(b) === f.value));
     });
   }
+  d.addEventListener('input', markPicks);
+  d.addEventListener('change', markPicks);
 
   d.addEventListener('DOMContentLoaded', function () {
     mark();
