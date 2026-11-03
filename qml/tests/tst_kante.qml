@@ -26,6 +26,22 @@ TestCase {
         KanteStyle.kind = KanteStyle.Kind.System
         KanteStyle.materialStyle = false
         KanteStyle.preferDark = false
+        KanteStyle.preferLight = false
+    }
+
+    // An app with a style setting picks Leinen or dark whatever the platform theme says
+    // (Kante 1.67, Mitori's "Kante" and "Leinen"); preferDark wins when both are set.
+    function test_preferLightForcesLeinen() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        verify(!KanteStyle.light)
+        KanteStyle.preferDark = false
+        compare(typeof KanteStyle.preferLight, "boolean", "a property of KanteStyle")
+        KanteStyle.preferLight = true
+        verify(KanteStyle.light)
+        compare(KanteStyle.textColor, KantePalette.light.text)
+        KanteStyle.preferDark = true
+        verify(!KanteStyle.light)
     }
 
     function test_systemForwardsPlatformTheme() {
