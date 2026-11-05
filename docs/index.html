@@ -131,6 +131,24 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.74.3">
+      <div class="release-head"><b class="release-version">1.74.3</b><time datetime="2026-11-05">5 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Tiles answer to Enter, and long hints stay readable.</p>
+        <p class="release-lead" lang="de">Kacheln reagieren auf Enter, lange Hinweise bleiben lesbar.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteOptionTile</code>: Return and Enter did nothing, only Space chose a tile. <code>KanteTile</code> also takes the keypad's Enter now.</li>
+            <li><code>KanteOptionTile</code>: title and hint were cut after one line. They now show in up to two lines.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteOptionTile</code>: Return und Enter taten nichts, nur die Leertaste wählte eine Kachel. <code>KanteTile</code> nimmt jetzt auch Enter vom Ziffernblock.</li>
+            <li><code>KanteOptionTile</code>: Titel und Hinweis wurden nach einer Zeile abgeschnitten. Sie zeigen jetzt bis zu zwei Zeilen.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1743"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.74.2">
       <div class="release-head"><b class="release-version">1.74.2</b><time datetime="2026-11-05">5 Nov 2026</time></div>
       <div class="release-body">
@@ -168,6 +186,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1741"><span lang="en">All changes in 1.74.1 →</span><span lang="de">Alle Änderungen in 1.74.1 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.74.0">
       <div class="release-head"><b class="release-version">1.74</b><time datetime="2026-11-05">5 Nov 2026</time></div>
       <div class="release-body">
@@ -189,9 +210,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-174"><span lang="en">All changes in 1.74 →</span><span lang="de">Alle Änderungen in 1.74 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.73.0">
       <div class="release-head"><b class="release-version">1.73</b><time datetime="2026-11-05">5 Nov 2026</time></div>
       <div class="release-body">
@@ -1429,7 +1447,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.74.2</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.74.3</a></p></div>
 </footer>
 
 <script>

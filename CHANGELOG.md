@@ -5,6 +5,28 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.74.3] — 2026-11-05
+
+### English
+
+Tiles answer to Enter, and long hints stay readable.
+
+#### Fixed
+- `KanteOptionTile`: Return and Enter did nothing, only Space chose a tile. `KanteTile` also takes the keypad's Enter now.
+- `KanteOptionTile`: title and hint were cut after one line. They now show in up to two lines.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1743
+
+### Deutsch
+
+Kacheln reagieren auf Enter, lange Hinweise bleiben lesbar.
+
+#### Behoben
+- `KanteOptionTile`: Return und Enter taten nichts, nur die Leertaste wählte eine Kachel. `KanteTile` nimmt jetzt auch Enter vom Ziffernblock.
+- `KanteOptionTile`: Titel und Hinweis wurden nach einer Zeile abgeschnitten. Sie zeigen jetzt bis zu zwei Zeilen.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1743
+
 ## [1.74.2] — 2026-11-05
 
 ### English
