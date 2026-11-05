@@ -792,7 +792,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 Found by Mitori's performance test (five years of practice days on one page).
 
-`KanteCalendarHeatmap`: one tooltip and one pair of handlers for all days, the dates from one list `cells`; `cellAt(x, y)` and `hoveredIndex` are new. A year: about 90 ms before, about 15 ms now.
+`KanteCalendarHeatmap`: one tooltip and one pair of handlers for all days, the dates from one list `cells`; `cellAt(x, y)` and `hoveredIndex` are new. A year: about 95 ms before, about 47 ms now.
 
 ### Fixed in Kante 1.74.1
 

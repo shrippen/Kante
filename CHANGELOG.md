@@ -9,19 +9,19 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 
 ### English
 
-Calendars with many days open six times faster.
+Calendars with many days open twice as fast.
 
 #### Improved
-- `KanteCalendarHeatmap`: a year of days took about 90 ms to create, each day with its own handlers, tooltip and date calculations. The days now share one tooltip and one pair of handlers and read their dates from one list: about 15 ms. A page with several years opens noticeably sooner on a phone. It looks and behaves as before, and screen readers still hear each day.
+- `KanteCalendarHeatmap`: a year of days took about 90 ms to create, each day with its own handlers, tooltip and date calculations. The days now share one tooltip and one pair of handlers and read their dates from one list: about 47 ms. A page with several years opens noticeably sooner on a phone. It looks and behaves as before, and screen readers still hear each day.
 
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
 
 ### Deutsch
 
-Kalender mit vielen Tagen öffnen sechsmal schneller.
+Kalender mit vielen Tagen öffnen doppelt so schnell.
 
 #### Verbessert
-- `KanteCalendarHeatmap`: Ein Jahr Tage brauchte beim Erstellen etwa 90 ms, jeder Tag mit eigenen Handlern, eigenem Tooltip und eigenen Datumsrechnungen. Die Tage teilen sich jetzt einen Tooltip und ein Paar Handler und lesen ihr Datum aus einer Liste: etwa 15 ms. Eine Seite mit mehreren Jahren öffnet auf dem Telefon spürbar früher. Aussehen und Verhalten bleiben gleich, Screenreader hören weiter jeden Tag.
+- `KanteCalendarHeatmap`: Ein Jahr Tage brauchte beim Erstellen etwa 90 ms, jeder Tag mit eigenen Handlern, eigenem Tooltip und eigenen Datumsrechnungen. Die Tage teilen sich jetzt einen Tooltip und ein Paar Handler und lesen ihr Datum aus einer Liste: etwa 47 ms. Eine Seite mit mehreren Jahren öffnet auf dem Telefon spürbar früher. Aussehen und Verhalten bleiben gleich, Screenreader hören weiter jeden Tag.
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
 

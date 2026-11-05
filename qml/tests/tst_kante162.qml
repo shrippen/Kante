@@ -150,7 +150,48 @@ TestCase {
         compare(cells.length, 7)
         verify(cells[0].Accessible.name.indexOf("3 techniques") > 0, cells[0].Accessible.name)
         verify(cells[0].visible && !cells[1].visible)
-        verify(Qt.colorEqual(cells[0].color, KanteStyle.levelColor(4, 4)))
+        compare(String(cells[0].color), String(KanteStyle.levelColor(4, 4)))
+    }
+
+    // Levels 1–3 are translucent over a ground that may be too: the same colour as two layers.
+    function test_levelColoursAreTheTwoLayers() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 1, firstDayOfWeek: Locale.Monday })
+        for (const l of [1, 2, 3]) {
+            const u = KanteStyle.sunkenColor, c = KanteStyle.levelColor(l, 4), got = h.levelColors[l]
+            const rest = u.a * (1 - c.a), a = c.a + rest
+            fuzzyCompare(got.r, (c.r * c.a + u.r * rest) / a, 0.01)
+            fuzzyCompare(got.g, (c.g * c.a + u.g * rest) / a, 0.01)
+            fuzzyCompare(got.b, (c.b * c.a + u.b * rest) / a, 0.01)
+            fuzzyCompare(got.a, a, 0.01)
+        }
+    }
+
+    // Fading out it still names its day, at its day.
+    function test_tipStaysWhileFading() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday,
+                         tips: { "2026-11-02": "3 techniques" } })
+        mouseMove(h, h.labelWidth + h.step + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        tryCompare(h, "hoveredIndex", 7)
+        mouseMove(h, 1, 1)
+        tryCompare(h, "hoveredIndex", -1)
+        const tip = findChild(h, "dayTip")
+        verify(tip.QQC2.ToolTip.text.indexOf("3 techniques") > 0, tip.QQC2.ToolTip.text)
+        compare(tip.x, h.labelWidth + h.step)
+    }
+
+    function test_tapShowsItAtOnce() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        mouseClick(h, h.labelWidth + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        compare(findChild(h, "dayTip").QQC2.ToolTip.delay, 0)
+    }
+
+    function test_fewerWeeksAfterATap() {
+        failOnWarning(/undefined/)
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 4, firstDayOfWeek: Locale.Monday })
+        mouseClick(h, h.labelWidth + 2 * h.step + h.cellSize / 2, h.labelHeight + h.step + h.cellSize / 2)
+        compare(h.tappedIndex, 15)
+        h.weeks = 1
+        compare(h.tappedIndex, -1)
     }
 
     function test_rightToLeft() {
