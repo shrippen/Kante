@@ -205,6 +205,7 @@ Item {
         onTriggered: heat.hoverWaited = true
     }
     TapHandler {
+        longPressThreshold: 0      // a resting finger taps too
         onTapped: eventPoint => {
             const i = heat.cellAt(eventPoint.position.x, eventPoint.position.y)
             heat.tappedIndex = i

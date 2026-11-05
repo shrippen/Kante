@@ -181,7 +181,7 @@ TestCase {
 
     // By touch: right after the finger lifts, however long it rested.
     function test_tapShowsItAtOnce_data() {
-        return [{ tag: "short", hold: 20 }, { tag: "resting", hold: 150 }]
+        return [{ tag: "short", hold: 20 }, { tag: "resting", hold: 150 }, { tag: "long", hold: 900 }]
     }
     function test_tapShowsItAtOnce(data) {
         const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
