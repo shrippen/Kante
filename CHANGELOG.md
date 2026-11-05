@@ -19,6 +19,8 @@ Everything sits where it should: buttons centred, icons in their colour on every
 - Icons in buttons, chips, tabs, menus and tiles stayed dark on the dark ground on Android and in an AppImage: `Kirigami.Icon` colours a mask only with the Plasma theme. The new `KanteIcon` colours them on every platform.
 - `KanteTextField`: Material floated the placeholder above a focused field, across the frame and cut off at the edge of a bar. It now stays inside the box, and a long one is shortened. This also holds for `KanteDateField`.
 
+![Controls in Leinen: transport bar with centred symbols and label, a note line with its placeholder in the field, a search field](https://shrippen.github.io/Kante/shots/release-1.73-mittig.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-173
 
 ### Deutsch
@@ -32,6 +34,8 @@ Alles sitzt, wo es soll: Knöpfe mittig, Symbole auf jeder Plattform in ihrer Fa
 - `KanteButton`: Symbol und Text saßen unter den Material-Controls (Android, AppImage) 2 px zu tief, weil der Inhalt dem ungleichen Polster des Stils folgte. Sie stehen jetzt in der Mitte.
 - Symbole in Knöpfen, Chips, Tabs, Menüs und Kacheln blieben auf Android und im AppImage dunkel auf dem dunklen Grund: `Kirigami.Icon` färbt eine Maske nur mit dem Plasma-Thema. Das neue `KanteIcon` färbt sie auf jeder Plattform.
 - `KanteTextField`: Material ließ den Platzhalter im fokussierten Feld über den Rahmen schweben, am Rand einer Leiste abgeschnitten. Er bleibt jetzt im Feld, ein langer wird gekürzt. Das gilt auch für `KanteDateField`.
+
+![Bedienelemente in Leinen: Transportleiste mit mittigen Symbolen und Text, Notizzeile mit dem Platzhalter im Feld, ein Suchfeld](https://shrippen.github.io/Kante/shots/release-1.73-mittig.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-173
 

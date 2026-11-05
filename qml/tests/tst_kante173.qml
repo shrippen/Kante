@@ -98,6 +98,13 @@ TestCase {
         compare(String(url.source), "qrc:/x.svg")
     }
 
+    // No test loaded the gallery: a typo in it went unseen.
+    function test_gallery_loads() {
+        const gallery = Qt.createComponent(Qt.resolvedUrl("../demo/Gallery.qml"), Component.PreferSynchronous)
+        tryVerify(() => gallery.status !== Component.Loading)
+        compare(gallery.status, Component.Ready, gallery.errorString())
+    }
+
     function test_slider_track_colour() {
         const slider = createTemporaryObject(sliderScene, stage())
         const track = findChild(slider, "kanteSliderTrack")
