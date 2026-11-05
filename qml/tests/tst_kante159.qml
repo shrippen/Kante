@@ -254,6 +254,7 @@ TestCase {
     }
     function test_optionTileWraps() {
         const t = createTemporaryObject(enterTile, tc)
+        waitForItemPolished(t.contentItem)
         const labels = []
         const walk = c => {
             if (c.text !== undefined && c.lineCount !== undefined && c.text.length > 0) {
@@ -266,7 +267,7 @@ TestCase {
         walk(t.contentItem)
         verify(labels.length >= 2)
         for (const l of labels) {
-            verify(l.lineCount >= 2, l.text + ": " + l.lineCount)
+            tryVerify(() => l.lineCount >= 2, 1000, l.text + ": " + l.lineCount + " at " + l.width)
             compare(l.maximumLineCount, 2)
         }
     }
