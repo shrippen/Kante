@@ -31,6 +31,15 @@ QQC2.AbstractButton {
     autoExclusive: true
     hoverEnabled: true
     focusPolicy: Qt.StrongFocus
+    Keys.onReturnPressed: tile.toggleOrClick()
+    Keys.onEnterPressed: tile.toggleOrClick()
+    // As Space does: a radio tile stays chosen, a plain one just reports.
+    function toggleOrClick() {
+        if (checkable) {
+            checked = autoExclusive || !checked
+        }
+        clicked()
+    }
     padding: KanteStyle.unit(10)
 
     implicitWidth: Math.max(KanteStyle.unit(116), implicitContentWidth + leftPadding + rightPadding)
@@ -114,6 +123,8 @@ QQC2.AbstractButton {
             text: tile.text
             font.weight: Font.DemiBold
             color: KanteStyle.strongTextColor
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
             elide: Text.ElideRight
         }
         QQC2.Label {
@@ -122,6 +133,8 @@ QQC2.AbstractButton {
             text: tile.hint
             font: KanteStyle.smallFont
             color: KanteStyle.mutedTextColor
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
             elide: Text.ElideRight
         }
     }

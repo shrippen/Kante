@@ -236,4 +236,38 @@ TestCase {
         compare(metroSpy.count, 1)
         compare(speedSpy.signalArguments[0][0], 1.05)
     }
+
+    // 1.74.3: Enter chooses a tile as Space does; a long hint shows in two lines, not cut.
+    Component {
+        id: enterTile
+        KanteOptionTile { width: 160; text: "Eine lange Überschrift für die Kachel"; hint: "Ein Hinweis, der nicht in eine Zeile passt und trotzdem lesbar bleibt" }
+    }
+    function test_optionTileEnter() {
+        const t = createTemporaryObject(enterTile, tc)
+        verify(t)
+        t.forceActiveFocus()
+        keyClick(Qt.Key_Return)
+        verify(t.checked)
+        t.checked = false
+        keyClick(Qt.Key_Enter)
+        verify(t.checked)
+    }
+    function test_optionTileWraps() {
+        const t = createTemporaryObject(enterTile, tc)
+        const labels = []
+        const walk = c => {
+            if (c.text !== undefined && c.lineCount !== undefined && c.text.length > 0) {
+                labels.push(c)
+            }
+            for (let i = 0; i < c.children.length; ++i) {
+                walk(c.children[i])
+            }
+        }
+        walk(t.contentItem)
+        verify(labels.length >= 2)
+        for (const l of labels) {
+            verify(l.lineCount >= 2, l.text + ": " + l.lineCount)
+            compare(l.maximumLineCount, 2)
+        }
+    }
 }
