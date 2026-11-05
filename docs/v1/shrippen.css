@@ -1535,6 +1535,7 @@ button.list-row{width:100%;border:0;border-bottom:1px solid var(--bg1);backgroun
 .compare td:first-child{color:var(--fg3);overflow-wrap:normal}
 .compare td.compare-to{min-width:10rem;color:var(--fg0)}
 .compare td.compare-to .input,.compare td.compare-to .select{width:100%;min-height:var(--h-s);padding-block:0;font-size:.8rem}
+.compare .field-suggest{overflow-wrap:break-word}
 .compare td[data-differs] .field-suggest-pick:not([aria-pressed="true"],:hover){color:var(--warn)}
 .compare-state{margin-left:.35rem;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;white-space:nowrap}
 .compare-state[data-state="ok"]{color:var(--aqua)}
