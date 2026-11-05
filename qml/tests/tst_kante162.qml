@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Window
+import QtQuick.Controls as QQC2
 import QtTest
 import Kante
 
@@ -103,6 +104,53 @@ TestCase {
         compare(h.tappedIndex, 7)
         verify(h.tipOf(h.dayAt(1, 0), Locale.LongFormat).indexOf("3 techniques") > 0)
         tryCompare(h, "tappedIndex", -1, 5000)
+    }
+
+    // 1.74.2: one tooltip and one pair of handlers for all days (a year in a few milliseconds).
+    function test_hoverShowsTheDay() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday,
+                         tips: { "2026-11-02": "3 techniques" } })
+        mouseMove(h, h.labelWidth + h.step + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        tryCompare(h, "hoveredIndex", 7)
+        const tip = findChild(h, "dayTip")
+        tryVerify(() => tip.QQC2.ToolTip.text.indexOf("3 techniques") > 0)
+        compare(tip.x, h.labelWidth + h.step, "at its day")
+        // Between the days and on a day still to come: none.
+        mouseMove(h, h.labelWidth + h.cellSize + h.spacing / 2, h.labelHeight + 1)
+        tryCompare(h, "hoveredIndex", -1)
+        mouseMove(h, h.labelWidth + h.step + h.cellSize / 2, h.labelHeight + h.step + h.cellSize / 2)
+        compare(h.cellAt(h.labelWidth + h.step + 1, h.labelHeight + h.step + 1), -1, "3 Nov is still to come")
+    }
+
+    function test_tapRightToLeft() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        h.LayoutMirroring.enabled = true
+        mouseClick(h, h.width - h.labelWidth - h.step - h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        compare(h.tappedIndex, 7)
+    }
+
+    function test_tapBesideADayClears() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        mouseClick(h, h.labelWidth + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        compare(h.tappedIndex, 0)
+        mouseClick(h, 1, 1)
+        compare(h.tappedIndex, -1)
+    }
+
+    // Every day still has its own name for a screen reader, and its level's colour.
+    function test_cellsKeepTheirName() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 1, firstDayOfWeek: Locale.Monday,
+                         levels: { "2026-11-02": 4 }, tips: { "2026-11-02": "3 techniques" } })
+        const cells = []
+        for (let i = 0; i < h.children.length; i++) {
+            if (h.children[i].Accessible.role === Accessible.StaticText) {
+                cells.push(h.children[i])
+            }
+        }
+        compare(cells.length, 7)
+        verify(cells[0].Accessible.name.indexOf("3 techniques") > 0, cells[0].Accessible.name)
+        verify(cells[0].visible && !cells[1].visible)
+        verify(Qt.colorEqual(cells[0].color, KanteStyle.levelColor(4, 4)))
     }
 
     function test_rightToLeft() {
