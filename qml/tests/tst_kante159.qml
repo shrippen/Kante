@@ -252,6 +252,23 @@ TestCase {
         keyClick(Qt.Key_Enter)
         verify(t.checked)
     }
+    // Enter leaves a binding on `checked` alive, as Space does.
+    property string choice: "a"
+    Component {
+        id: boundTile
+        KanteOptionTile { text: "B"; checked: tc.choice === "b"; onClicked: tc.choice = "b" }
+    }
+    function test_optionTileEnterKeepsBinding() {
+        tc.choice = "a"
+        const t = createTemporaryObject(boundTile, tc)
+        t.forceActiveFocus()
+        keyClick(Qt.Key_Return)
+        compare(tc.choice, "b")
+        tc.choice = "a"
+        verify(!t.checked)
+        tc.choice = "b"
+        verify(t.checked, "the binding is alive")
+    }
     function test_optionTileWraps() {
         const t = createTemporaryObject(enterTile, tc)
         waitForItemPolished(t.contentItem)

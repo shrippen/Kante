@@ -11,7 +11,7 @@ import "."
  * Use it where the choice needs to be seen at once; a combo box hides it.
  *   icon.name / icon.source  the icon (drawn in the text colour, focus colour when chosen)
  *   text      the name
- *   hint      one short line under it ("Capture, webcam")
+ *   hint      up to two lines under it ("Capture, webcam")
  *   checked   chosen; tiles of one group are `autoExclusive` (default true)
  *   glyph     (1.59) a character in place of the icon, such as a kanji (技 for "programme" in
  *             Mitori's start menu): drawn in the Japanese family, in the icon's colour
@@ -31,15 +31,9 @@ QQC2.AbstractButton {
     autoExclusive: true
     hoverEnabled: true
     focusPolicy: Qt.StrongFocus
-    Keys.onReturnPressed: tile.toggleOrClick()
-    Keys.onEnterPressed: tile.toggleOrClick()
-    // As Space does: a radio tile stays chosen, a plain one just reports.
-    function toggleOrClick() {
-        if (checkable) {
-            checked = autoExclusive || !checked
-        }
-        clicked()
-    }
+    // As Space does (checked, toggled, clicked; a binding on `checked` stays).
+    Keys.onReturnPressed: tile.click()
+    Keys.onEnterPressed: tile.click()
     padding: KanteStyle.unit(10)
 
     implicitWidth: Math.max(KanteStyle.unit(116), implicitContentWidth + leftPadding + rightPadding)
