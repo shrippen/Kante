@@ -792,7 +792,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 Found by running real plasmoids against 1.73.0.
 
-`KanteIcon`: in a layout on Plasma icons came out grey and soft, because the theme's file was picked before the size was known. It now picks after the size is set, and again at a new size. `KanteButton`: under the desktop style (padding 0) icon and label ran to the edge; it now keeps at least 8 px on each side, styles with their own padding are unchanged.
+`KanteIcon`: in a layout on Plasma icons came out grey and soft, because the theme's file was picked before the size was known. It now picks after the size is set, and again at a new size. `KanteButton`: under the desktop style (padding 0) icon and label ran to the edge; it now keeps at least 8 px on each side, styles with at least that much padding are unchanged, Fusion (4 px) gets a little wider.
 
 ### Added in Kante 1.73
 
@@ -800,7 +800,7 @@ Everything sits where it should: buttons centred, icons in their colour on every
 
 | Element | QML |
 |---|---|
-| Icon in one colour | `KanteIcon` (`iconSource`, `color`): used by every Kante component that shows a symbol |
+| Icon in one colour | `KanteIcon` (`iconSource`, `color`; a theme name needs a width and a height): used by every Kante component that shows a symbol |
 | Track colour | `KanteSliderSkin.trackColor` |
 
 Fixed: `KanteButton`: icon and label sat 2 px too low under the Material controls (Android, AppImage), because the content followed the style's uneven padding. They now stand in the middle. Icons in buttons, chips, tabs, menus and tiles stayed dark on the dark ground on Android and in an AppImage: `Kirigami.Icon` colours a mask only with the Plasma theme. The new `KanteIcon` colours them on every platform. `KanteTextField`: Material floated the placeholder above a focused field, across the frame and cut off at the edge of a bar. It now stays inside the box, and a long one is shortened. This also holds for `KanteDateField`.

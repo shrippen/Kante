@@ -132,13 +132,27 @@ TestCase {
     }
 
     function test_icon_picks_again_at_a_new_size() {
-        const icon = createTemporaryObject(iconScene, stage())
-        icon.width = 32
-        icon.height = 32
-        compare(icon.name, "go-next")
-        compare(icon.sourceSize.width, 32)
-        icon.iconSource = "qrc:/x.svg"
-        compare(icon.name, "", "a url is no theme name")
+        const row = createTemporaryObject(iconInLayoutScene, stage())
+        tryCompare(row.icon, "sizeAtName", 22)
+        row.icon.Layout.preferredWidth = 32
+        row.icon.Layout.preferredHeight = 32
+        tryCompare(row.icon, "sizeAtName", 32)
+        row.icon.iconSource = "qrc:/x.svg"
+        compare(row.icon.name, "", "a url is no theme name")
+    }
+
+    function test_narrow_button_keeps_its_margin() {
+        const button = createTemporaryObject(unpaddedButtonScene, stage(), { width: 120 })
+        waitForRendering(button)
+        let content = null
+        for (let i = 0; i < button.children.length; i++) {
+            if (button.children[i].toString().indexOf("RowLayout") >= 0) {
+                content = button.children[i]
+            }
+        }
+        verify(content, "the drawn content")
+        verify(content.x >= KanteStyle.unit(8) - 0.5, "left " + content.x)
+        verify(content.x + content.width <= 120 - KanteStyle.unit(8) + 0.5, "right " + (content.x + content.width))
     }
 
     function test_button_keeps_a_margin_without_padding() {
