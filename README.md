@@ -795,7 +795,7 @@ A workbench that keeps the receipt in view (Andon: the VAT bench, where each ope
 | Element | CSS | Note |
 |---------|-----|------|
 | Wide bench | `.bench.is-wide` | A narrower list, for a desk with a document |
-| Desk with a document | `.bench-doc` > `.bench-main` + `.bench-side` | Fields left, document right; the side stays in view while the fields scroll. Stacks in a desk under 52rem; below that the fields scroll sideways rather than sit under the document |
+| Desk with a document | `.bench-doc` > `.bench-main` + `.bench-side` | Fields left, document right; the side stays in view while the fields scroll. Stacks in a desk under 44rem; above that a table too wide for its column scrolls sideways rather than run under the document |
 | Document | `.doc-view` | An `iframe` or `img` filling the side; also an empty placeholder |
 | Comparison | `table.compare`, `td.compare-to` | One row per field: its sources, then the value it will hold. A value in a source cell is a `.field-suggest-pick` in a `.field-suggest[data-suggest-for]`, so a click takes it |
 | State of a row | `.compare-state[data-state="ok\|missing\|auto"]`, `td[data-differs]` | Set, missing, or set by the service; a source that differs from the others is marked |
