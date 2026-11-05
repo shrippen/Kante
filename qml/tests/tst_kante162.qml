@@ -179,10 +179,17 @@ TestCase {
         compare(tip.x, h.labelWidth + h.step)
     }
 
+    // By touch: at once, with no hover before it.
     function test_tapShowsItAtOnce() {
         const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
-        mouseClick(h, h.labelWidth + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
-        compare(findChild(h, "dayTip").QQC2.ToolTip.delay, 0)
+        const x = h.labelWidth + h.cellSize / 2, y = h.labelHeight + h.cellSize / 2
+        const touch = touchEvent(h)
+        touch.press(0, h, x, y).commit()
+        wait(20)
+        touch.release(0, h, x, y).commit()
+        compare(h.tappedIndex, 0)
+        const tip = findChild(h, "dayTip")
+        tryVerify(() => tip.QQC2.ToolTip.toolTip.visible, 100, "not after the hover's 300 ms")
     }
 
     function test_fewerWeeksAfterATap() {

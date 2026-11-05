@@ -12,7 +12,7 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 Calendars with many days open twice as fast.
 
 #### Improved
-- `KanteCalendarHeatmap`: a year of days took about 90 ms to create, each day with its own handlers, tooltip and date calculations. The days now share one tooltip and one pair of handlers and read their dates from one list: about 47 ms. A page with several years opens noticeably sooner on a phone. It looks and behaves as before, and screen readers still hear each day.
+- `KanteCalendarHeatmap`: a year of days took about 95 ms to create, each day with its own handlers, tooltip and date calculations. The days now share one tooltip and one pair of handlers and read their dates from one list: about 47 ms. A page with several years opens noticeably sooner on a phone. It looks and behaves as before, and screen readers still hear each day.
 
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
 
