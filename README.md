@@ -1403,3 +1403,15 @@ https://img.shields.io/badge/<label>-<value>-<valueColor>?labelColor=1c1c20
 ## License
 
 MIT, see [LICENSE](LICENSE). Exceptions: `kimai/knust` and `kimai/kit` are GPL-3.0-or-later, the fonts are under the SIL Open Font License 1.1.
+
+### Added in Kante 1.74
+
+A workbench that keeps the receipt in view (Andon: the VAT bench, where each open bank line becomes a finished expense). The fields stand beside the document, and each field shows what its sources say.
+
+| Element | CSS | Note |
+|---------|-----|------|
+| Wide bench | `.bench.is-wide` | A narrower list, for a desk with a document |
+| Desk with a document | `.bench-doc` > `.bench-main` + `.bench-side` | Fields left, document right; the side stays in view while the fields scroll. Stacks in a narrow desk |
+| Document | `.doc-view` | An `iframe` or `img` filling the side; also an empty placeholder |
+| Comparison | `table.compare`, `td.compare-to` | One row per field: its sources, then the value it will hold. A value in a source cell is a `.field-suggest-pick` in a `.field-suggest[data-suggest-for]`, so a click takes it |
+| State of a row | `.compare-state[data-state="ok\|missing\|auto"]`, `td[data-differs]` | Set, missing, or set by the service; a source that differs from the others is marked |
