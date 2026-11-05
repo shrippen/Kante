@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Layouts
 import QtQuick.Window
 import QtTest
 import Kante
@@ -60,6 +61,7 @@ TestCase {
 
     function init() {
         KanteStyle.kind = KanteStyle.Kind.Kante
+        failOnWarning(/Binding loop/)   // the runner only prints it; the apps' tests fail on it
     }
 
     function test_button_content_in_the_middle() {
@@ -96,6 +98,114 @@ TestCase {
         const url = createTemporaryObject(iconScene, stage(), { iconSource: "qrc:/x.svg" })
         compare(url.name, "")
         compare(String(url.source), "qrc:/x.svg")
+    }
+
+    Component {
+        id: iconInLayoutScene
+        RowLayout {
+            property alias icon: laidOutIcon
+            KanteIcon {
+                id: laidOutIcon
+                property real sizeAtName: -1
+                onNameChanged: if (name !== "") sizeAtName = sourceSize.height
+                iconSource: "go-next"
+                Layout.preferredWidth: 22
+                Layout.preferredHeight: 22
+            }
+        }
+    }
+    Component {
+        id: unpaddedButtonScene
+        KanteButton {
+            text: "A label longer than any style's minimum width"
+            padding: 0      // the desktop style (Plasma): its native button draws the margin itself
+        }
+    }
+
+    // 1.74.1: IconImage picks the theme's file when the name is set. Set before the layout has sized
+    // it, a scaled file for the wrong size stayed: on Plasma grey and soft, seen only on the screen.
+    function test_icon_named_once_its_size_is_known() {
+        const row = createTemporaryObject(iconInLayoutScene, stage())
+        tryCompare(row.icon, "sizeAtName", 22)
+        compare(row.icon.name, "go-next")
+        compare(row.icon.sourceSize.width, 22)
+    }
+
+    function test_icon_picks_again_at_a_new_size() {
+        const row = createTemporaryObject(iconInLayoutScene, stage())
+        tryCompare(row.icon, "sizeAtName", 22)
+        row.icon.Layout.preferredWidth = 32
+        row.icon.Layout.preferredHeight = 32
+        tryCompare(row.icon, "sizeAtName", 32)
+        row.icon.iconSource = "qrc:/x.svg"
+        compare(row.icon.name, "", "a url is no theme name")
+    }
+
+    Component {
+        id: narrowIconScene
+        KanteButton {
+            width: 28
+            padding: 0
+            icon.name: "go-next"
+            display: QQC2.AbstractButton.IconOnly
+        }
+    }
+
+    function test_narrow_icon_button_keeps_the_symbol_in_the_middle() {
+        // padding: 0 does not lower every style's side padding (Material keeps 16): the middle holds anyway
+        for (const props of [{}, { display: QQC2.AbstractButton.TextBesideIcon, text: "" }]) {
+            const button = createTemporaryObject(narrowIconScene, stage(), props)
+            waitForRendering(button)
+            const symbol = findIcon(button)
+            verify(symbol, "the symbol")
+            const left = symbol.mapToItem(button, 0, 0).x
+            const right = button.width - (left + symbol.width)
+            verify(Math.abs(left - right) < 1, "left " + left + ", right " + right)
+            verify(left >= 0, "inside the button: " + left)
+        }
+    }
+
+    function findIcon(item) {
+        for (let i = 0; i < item.children.length; i++) {
+            const child = item.children[i]
+            if (child.iconSource !== undefined && child.visible) {
+                return child
+            }
+            const inner = findIcon(child)
+            if (inner) {
+                return inner
+            }
+        }
+        return null
+    }
+
+    function test_narrow_button_keeps_its_margin() {
+        const button = createTemporaryObject(unpaddedButtonScene, stage(), { width: 120 })
+        waitForRendering(button)
+        let content = null
+        for (let i = 0; i < button.children.length; i++) {
+            if (button.children[i].toString().indexOf("RowLayout") >= 0) {
+                content = button.children[i]
+            }
+        }
+        verify(content, "the drawn content")
+        verify(content.x >= KanteStyle.unit(8) - 0.5, "left " + content.x)
+        verify(content.x + content.width <= 120 - KanteStyle.unit(8) + 0.5, "right " + (content.x + content.width))
+    }
+
+    function test_button_keeps_a_margin_without_padding() {
+        const button = createTemporaryObject(unpaddedButtonScene, stage())
+        waitForRendering(button)
+        let content = null
+        for (let i = 0; i < button.children.length; i++) {
+            if (button.children[i].toString().indexOf("RowLayout") >= 0) {
+                content = button.children[i]
+            }
+        }
+        verify(content, "the drawn content")
+        const margin = (button.implicitWidth - content.implicitWidth) / 2
+        verify(margin >= KanteStyle.unit(8) - 0.5, "margin " + margin)
+        verify(content.x >= KanteStyle.unit(8) - 0.5, "left " + content.x)
     }
 
     Component {
