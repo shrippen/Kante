@@ -788,11 +788,23 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
-### Fixed in Kante 1.73.1
+### Fixed in Kante 1.74.1
 
 Found by running real plasmoids against 1.73.0.
 
 `KanteIcon`: in a layout on Plasma icons came out grey and soft, because the theme's file was picked before the size was known. It now picks after the size is set, and again at a new size. `KanteButton`: under the desktop style (padding 0) icon and label ran to the edge; it now keeps at least 8 px on each side, styles with at least that much padding are unchanged, Fusion (4 px) gets a little wider.
+
+### Added in Kante 1.74
+
+A workbench that keeps the receipt in view (Andon: the VAT bench, where each open bank line becomes a finished expense). The fields stand beside the document, and each field shows what its sources say.
+
+| Element | CSS | Note |
+|---------|-----|------|
+| Wide bench | `.bench.is-wide` | A narrower list, for a desk with a document |
+| Desk with a document | `.bench-doc` > `.bench-main` + `.bench-side` | Fields left, document right; the side stays in view while the fields scroll. Stacks in a desk under 44rem; above that a table too wide for its column scrolls sideways rather than run under the document |
+| Document | `.doc-view` | An `iframe` or `img` filling the side; also an empty placeholder |
+| Comparison | `table.compare`, `td.compare-to` | One row per field: its sources, then the value it will hold. A value in a source cell is a `.field-suggest-pick` in a `.field-suggest[data-suggest-for]`, so a click takes it |
+| State of a row | `.compare-state[data-state="ok\|missing\|auto"]`, `td[data-differs]` | Set, missing, or set by the service; a source that differs from the others is marked; the value already in the field takes `aria-pressed="true"` from the app, Kante only marks clicks |
 
 ### Added in Kante 1.73
 

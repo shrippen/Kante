@@ -5,7 +5,7 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
-## [1.73.1] — 2026-11-05
+## [1.74.1] — 2026-11-05
 
 ### English
 
@@ -15,9 +15,9 @@ Symbols sharp again on Plasma, and buttons with a margin under the desktop style
 - Icons drawn by `KanteIcon` came out grey and soft in a layout on Plasma: 1.73.0 asked the theme for the file before the size was known and scaled the wrong one. It now picks after the size is set, and again at a new size.
 - `KanteButton`: icon and label ran to the edge under the desktop style (Plasma, plasmoids), whose padding is 0. The button now keeps a margin of at least 8 px on each side; styles with at least that much padding look as before, Fusion (4 px) gets a little wider.
 
-![Buttons with an icon and label, the upper row with 1.73.0: a grey, soft floppy disk and text against the edge; the lower row with 1.73.1: sharp symbols and a margin](https://shrippen.github.io/Kante/shots/release-1.73.1-symbole.png)
+![Buttons with an icon and label, the upper row with 1.73.0: a grey, soft floppy disk and text against the edge; the lower row with 1.74.1: sharp symbols and a margin](https://shrippen.github.io/Kante/shots/release-1.74.1-symbole.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1731
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1741
 
 ### Deutsch
 
@@ -27,9 +27,35 @@ Symbole auf Plasma wieder scharf, und Knöpfe mit Rand unter dem Desktop-Stil.
 - Symbole aus `KanteIcon` wurden in einem Layout auf Plasma grau und weich: 1.73.0 fragte das Thema nach der Datei, bevor die Größe feststand, und skalierte die falsche. Es wählt jetzt, nachdem die Größe gesetzt ist, und bei einer neuen Größe erneut.
 - `KanteButton`: Symbol und Text liefen unter dem Desktop-Stil (Plasma, Plasmoids), dessen Polster 0 ist, bis an den Rand. Der Knopf behält jetzt mindestens 8 px je Seite; Stile mit mindestens so viel Polster sehen aus wie vorher, Fusion (4 px) wird etwas breiter.
 
-![Knöpfe mit Symbol und Text, obere Reihe mit 1.73.0: graue, weiche Diskette und Text am Rand; untere Reihe mit 1.73.1: scharfe Symbole und ein Rand](https://shrippen.github.io/Kante/shots/release-1.73.1-symbole.png)
+![Knöpfe mit Symbol und Text, obere Reihe mit 1.73.0: graue, weiche Diskette und Text am Rand; untere Reihe mit 1.74.1: scharfe Symbole und ein Rand](https://shrippen.github.io/Kante/shots/release-1.74.1-symbole.png)
 
-Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1731
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1741
+
+## [1.74.0] — 2026-11-05
+
+### English
+
+A workbench that keeps the receipt in view, with each field's sources side by side.
+
+#### New
+- The workbench's desk can hold a document beside its fields. The document stays in view while the fields scroll, so the fields can be checked against the paper at any time.
+- A comparison table shows one row per field: what each source says, then the value it will hold. A click on a value takes it, and a source that differs from the others stands out.
+
+![A workbench with a list, a comparison of date and category from bank, receipt and suggestion, and a document area on the right](https://shrippen.github.io/Kante/shots/release-1.74-bench-doc.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-174
+
+### Deutsch
+
+Eine Werkbank, die den Beleg im Blick behält, mit den Quellen jedes Felds nebeneinander.
+
+#### Neu
+- Der Arbeitsbereich der Werkbank kann ein Dokument neben seinen Feldern zeigen. Es bleibt stehen, während die Felder scrollen, sodass sich jedes Feld jederzeit am Papier prüfen lässt.
+- Eine Vergleichstabelle zeigt je Feld eine Zeile: was jede Quelle sagt, dann den Wert, den das Feld bekommt. Ein Klick auf einen Wert übernimmt ihn, und eine abweichende Quelle fällt auf.
+
+![Eine Werkbank mit Liste, einem Vergleich von Datum und Kategorie aus Bank, Beleg und Vorschlag und einem Dokumentbereich rechts](https://shrippen.github.io/Kante/shots/release-1.74-bench-doc.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-174
 
 ## [1.73.0] — 2026-11-05
 

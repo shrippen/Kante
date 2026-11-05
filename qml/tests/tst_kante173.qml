@@ -122,7 +122,7 @@ TestCase {
         }
     }
 
-    // 1.73.1: IconImage picks the theme's file when the name is set. Set before the layout has sized
+    // 1.74.1: IconImage picks the theme's file when the name is set. Set before the layout has sized
     // it, a scaled file for the wrong size stayed: on Plasma grey and soft, seen only on the screen.
     function test_icon_named_once_its_size_is_known() {
         const row = createTemporaryObject(iconInLayoutScene, stage())
