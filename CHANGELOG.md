@@ -21,7 +21,7 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kant
 Kalender mit vielen Tagen öffnen doppelt so schnell.
 
 #### Verbessert
-- `KanteCalendarHeatmap`: Ein Jahr Tage brauchte beim Erstellen etwa 90 ms, jeder Tag mit eigenen Handlern, eigenem Tooltip und eigenen Datumsrechnungen. Die Tage teilen sich jetzt einen Tooltip und ein Paar Handler und lesen ihr Datum aus einer Liste: etwa 47 ms. Eine Seite mit mehreren Jahren öffnet auf dem Telefon spürbar früher. Aussehen und Verhalten bleiben gleich, Screenreader hören weiter jeden Tag.
+- `KanteCalendarHeatmap`: Ein Jahr Tage brauchte beim Erstellen etwa 95 ms, jeder Tag mit eigenen Handlern, eigenem Tooltip und eigenen Datumsrechnungen. Die Tage teilen sich jetzt einen Tooltip und ein Paar Handler und lesen ihr Datum aus einer Liste: etwa 47 ms. Eine Seite mit mehreren Jahren öffnet auf dem Telefon spürbar früher. Aussehen und Verhalten bleiben gleich, Screenreader hören weiter jeden Tag.
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
 

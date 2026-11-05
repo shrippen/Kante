@@ -179,17 +179,32 @@ TestCase {
         compare(tip.x, h.labelWidth + h.step)
     }
 
-    // By touch: at once, with no hover before it.
-    function test_tapShowsItAtOnce() {
+    // By touch: right after the finger lifts, however long it rested.
+    function test_tapShowsItAtOnce_data() {
+        return [{ tag: "short", hold: 20 }, { tag: "resting", hold: 150 }]
+    }
+    function test_tapShowsItAtOnce(data) {
         const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
         const x = h.labelWidth + h.cellSize / 2, y = h.labelHeight + h.cellSize / 2
         const touch = touchEvent(h)
         touch.press(0, h, x, y).commit()
-        wait(20)
+        wait(data.hold)
         touch.release(0, h, x, y).commit()
         compare(h.tappedIndex, 0)
         const tip = findChild(h, "dayTip")
-        tryVerify(() => tip.QQC2.ToolTip.toolTip.visible, 100, "not after the hover's 300 ms")
+        tryVerify(() => tip.QQC2.ToolTip.toolTip.visible, 60, "not after the hover's 300 ms")
+    }
+
+    // With a mouse it waits a moment, so that passing over the days stays quiet.
+    function test_hoverWaits() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        mouseMove(h, h.labelWidth + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        tryCompare(h, "hoveredIndex", 0)
+        const tip = findChild(h, "dayTip")
+        verify(!tip.QQC2.ToolTip.visible)
+        tryVerify(() => tip.QQC2.ToolTip.visible, 1000)
+        mouseMove(h, 1, 1)
+        tryCompare(h, "hoverWaited", false)
     }
 
     function test_fewerWeeksAfterATap() {
