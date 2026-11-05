@@ -61,6 +61,7 @@ TestCase {
 
     function init() {
         KanteStyle.kind = KanteStyle.Kind.Kante
+        failOnWarning(/Binding loop/)   // the runner only prints it; the apps' tests fail on it
     }
 
     function test_button_content_in_the_middle() {
@@ -128,6 +129,16 @@ TestCase {
         tryCompare(row.icon, "sizeAtName", 22)
         compare(row.icon.name, "go-next")
         compare(row.icon.sourceSize.width, 22)
+    }
+
+    function test_icon_picks_again_at_a_new_size() {
+        const icon = createTemporaryObject(iconScene, stage())
+        icon.width = 32
+        icon.height = 32
+        compare(icon.name, "go-next")
+        compare(icon.sourceSize.width, 32)
+        icon.iconSource = "qrc:/x.svg"
+        compare(icon.name, "", "a url is no theme name")
     }
 
     function test_button_keeps_a_margin_without_padding() {

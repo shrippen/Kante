@@ -792,7 +792,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 Found by running real plasmoids against 1.73.0.
 
-`KanteIcon`: in a layout on Plasma icons came out grey and soft, because the theme's file was picked before the size was known. The name now follows the size. `KanteButton`: under the desktop style (padding 0) icon and label ran to the edge; it now keeps at least 8 px on each side, styles with their own padding are unchanged.
+`KanteIcon`: in a layout on Plasma icons came out grey and soft, because the theme's file was picked before the size was known. It now picks after the size is set, and again at a new size. `KanteButton`: under the desktop style (padding 0) icon and label ran to the edge; it now keeps at least 8 px on each side, styles with their own padding are unchanged.
 
 ### Added in Kante 1.73
 
