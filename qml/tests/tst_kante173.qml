@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Layouts
 import QtQuick.Window
 import QtTest
 import Kante
@@ -96,6 +97,52 @@ TestCase {
         const url = createTemporaryObject(iconScene, stage(), { iconSource: "qrc:/x.svg" })
         compare(url.name, "")
         compare(String(url.source), "qrc:/x.svg")
+    }
+
+    Component {
+        id: iconInLayoutScene
+        RowLayout {
+            property alias icon: laidOutIcon
+            KanteIcon {
+                id: laidOutIcon
+                property real sizeAtName: -1
+                onNameChanged: if (name !== "") sizeAtName = sourceSize.height
+                iconSource: "go-next"
+                Layout.preferredWidth: 22
+                Layout.preferredHeight: 22
+            }
+        }
+    }
+    Component {
+        id: unpaddedButtonScene
+        KanteButton {
+            text: "A label longer than any style's minimum width"
+            padding: 0      // the desktop style (Plasma): its native button draws the margin itself
+        }
+    }
+
+    // 1.73.1: IconImage picks the theme's file when the name is set. Set before the layout has sized
+    // it, a scaled file for the wrong size stayed: on Plasma grey and soft, seen only on the screen.
+    function test_icon_named_once_its_size_is_known() {
+        const row = createTemporaryObject(iconInLayoutScene, stage())
+        tryCompare(row.icon, "sizeAtName", 22)
+        compare(row.icon.name, "go-next")
+        compare(row.icon.sourceSize.width, 22)
+    }
+
+    function test_button_keeps_a_margin_without_padding() {
+        const button = createTemporaryObject(unpaddedButtonScene, stage())
+        waitForRendering(button)
+        let content = null
+        for (let i = 0; i < button.children.length; i++) {
+            if (button.children[i].toString().indexOf("RowLayout") >= 0) {
+                content = button.children[i]
+            }
+        }
+        verify(content, "the drawn content")
+        const margin = (button.implicitWidth - content.implicitWidth) / 2
+        verify(margin >= KanteStyle.unit(8) - 0.5, "margin " + margin)
+        verify(content.x >= KanteStyle.unit(8) - 0.5, "left " + content.x)
     }
 
     Component {

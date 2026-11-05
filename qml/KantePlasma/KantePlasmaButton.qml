@@ -188,7 +188,9 @@ PlasmaComponents3.Button {
         target: control
         property: "implicitWidth"
         value: Math.max(control.implicitBackgroundWidth + control.leftInset + control.rightInset,
-                        kanteContent.implicitWidth + control.leftPadding + control.rightPadding)
+                        kanteContent.implicitWidth
+                        // The desktop style's padding is 0, its native button draws its own margin.
+                        + Math.max(control.leftPadding + control.rightPadding, 2 * KanteStyle.unit(8)))
         when: control.drawn
         restoreMode: Binding.RestoreBindingOrValue
     }

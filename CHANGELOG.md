@@ -5,6 +5,32 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.73.1] — 2026-11-05
+
+### English
+
+Symbols sharp again on Plasma, and buttons with a margin under the desktop style.
+
+#### Fixed
+- Icons drawn by `KanteIcon` came out grey and soft in a layout on Plasma: 1.73.0 asked the theme for the file before the size was known and scaled the wrong one. The name now follows the size.
+- `KanteButton`: icon and label ran to the edge under the desktop style (Plasma, plasmoids), whose padding is 0. The button now keeps a margin of at least 8 px on each side; styles with their own padding look as before.
+
+![Buttons with an icon and label, the upper row with 1.73.0: a grey, soft floppy disk and text against the edge; the lower row with 1.73.1: sharp symbols and a margin](https://shrippen.github.io/Kante/shots/release-1.73.1-symbole.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1731
+
+### Deutsch
+
+Symbole auf Plasma wieder scharf, und Knöpfe mit Rand unter dem Desktop-Stil.
+
+#### Behoben
+- Symbole aus `KanteIcon` wurden in einem Layout auf Plasma grau und weich: 1.73.0 fragte das Thema nach der Datei, bevor die Größe feststand, und skalierte die falsche. Der Name folgt jetzt der Größe.
+- `KanteButton`: Symbol und Text liefen unter dem Desktop-Stil (Plasma, Plasmoids), dessen Polster 0 ist, bis an den Rand. Der Knopf behält jetzt mindestens 8 px je Seite; Stile mit eigenem Polster sehen aus wie vorher.
+
+![Knöpfe mit Symbol und Text, obere Reihe mit 1.73.0: graue, weiche Diskette und Text am Rand; untere Reihe mit 1.73.1: scharfe Symbole und ein Rand](https://shrippen.github.io/Kante/shots/release-1.73.1-symbole.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1731
+
 ## [1.73.0] — 2026-11-05
 
 ### English

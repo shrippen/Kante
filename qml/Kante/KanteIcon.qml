@@ -12,7 +12,9 @@ IconImage {
     property var iconSource: ""
     readonly property bool isUrl: /^[a-z]+:|^\//.test(String(iconSource))
 
-    name: isUrl ? "" : String(iconSource)
+    // IconImage picks the theme's file for its size once, when the name is set. In a layout the
+    // size comes later: without this it keeps the file for size 0 and scales that one, grey and soft.
+    name: isUrl || sourceSize.width <= 0 || sourceSize.height <= 0 ? "" : String(iconSource)
     source: isUrl ? iconSource : ""
     sourceSize.width: width
     sourceSize.height: height

@@ -131,6 +131,27 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.73.1">
+      <div class="release-head"><b class="release-version">1.73.1</b><time datetime="2026-11-05">5 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Symbols sharp again on Plasma, and buttons with a margin under the desktop style.</p>
+        <p class="release-lead" lang="de">Symbole auf Plasma wieder scharf, und Knöpfe mit Rand unter dem Desktop-Stil.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>Icons drawn by <code>KanteIcon</code> came out grey and soft in a layout on Plasma: 1.73.0 asked the theme for the file before the size was known and scaled the wrong one. The name now follows the size.</li>
+            <li><code>KanteButton</code>: icon and label ran to the edge under the desktop style (Plasma, plasmoids), whose padding is 0. The button now keeps a margin of at least 8 px on each side; styles with their own padding look as before.</li>
+          </ul>
+          <ul lang="de">
+            <li>Symbole aus <code>KanteIcon</code> wurden in einem Layout auf Plasma grau und weich: 1.73.0 fragte das Thema nach der Datei, bevor die Größe feststand, und skalierte die falsche. Der Name folgt jetzt der Größe.</li>
+            <li><code>KanteButton</code>: Symbol und Text liefen unter dem Desktop-Stil (Plasma, Plasmoids), dessen Polster 0 ist, bis an den Rand. Der Knopf behält jetzt mindestens 8 px je Seite; Stile mit eigenem Polster sehen aus wie vorher.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.73.1-symbole.png" alt="Buttons with an icon and label, the upper row with 1.73.0: a grey, soft floppy disk and text against the edge; the lower row with 1.73.1: sharp symbols and a margin" loading="lazy"></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1731"><span lang="en">All changes in 1.73.1 →</span><span lang="de">Alle Änderungen in 1.73.1 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.73.0">
       <div class="release-head"><b class="release-version">1.73</b><time datetime="2026-11-05">5 Nov 2026</time></div>
       <div class="release-body">
@@ -181,6 +202,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-172"><span lang="en">All changes in 1.72 →</span><span lang="de">Alle Änderungen in 1.72 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.71.0">
       <div class="release-head"><b class="release-version">1.71</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -197,9 +221,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171"><span lang="en">All changes in 1.71 →</span><span lang="de">Alle Änderungen in 1.71 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.70.0">
       <div class="release-head"><b class="release-version">1.70</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -1371,7 +1392,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.73.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.73.1</a></p></div>
 </footer>
 
 <script>
