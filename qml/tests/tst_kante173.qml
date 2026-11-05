@@ -98,6 +98,32 @@ TestCase {
         compare(String(url.source), "qrc:/x.svg")
     }
 
+    Component {
+        id: skinnedFieldScene
+        QQC2.TextField {
+            height: 60
+            placeholderText: "Hint"
+            KanteFieldSkin { control: parent }
+        }
+    }
+    Component {
+        id: skinnedAreaScene
+        QQC2.TextArea {
+            height: 100
+            placeholderText: "Hint"
+            KanteFieldSkin { control: parent }
+        }
+    }
+
+    function test_skin_placeholder_place() {
+        const field = createTemporaryObject(skinnedFieldScene, stage())
+        const inField = findChild(field, "kantePlaceholder")
+        verify(Math.abs(inField.y + inField.height / 2 - 30) < 1, "a line in its middle: " + inField.y)
+        const area = createTemporaryObject(skinnedAreaScene, stage())
+        const inArea = findChild(area, "kantePlaceholder")
+        compare(inArea.y, area.topPadding, "a text area from the top")
+    }
+
     // No test loaded the gallery: a typo in it went unseen.
     function test_gallery_loads() {
         const gallery = Qt.createComponent(Qt.resolvedUrl("../demo/Gallery.qml"), Component.PreferSynchronous)
