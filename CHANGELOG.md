@@ -5,6 +5,32 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.74.0] — 2026-11-05
+
+### English
+
+A workbench that keeps the receipt in view, with each field's sources side by side.
+
+#### New
+- The workbench's desk can hold a document beside its fields. The document stays in view while the fields scroll, so the fields can be checked against the paper at any time.
+- A comparison table shows one row per field: what each source says, then the value it will hold. A click on a value takes it, and a source that differs from the others stands out.
+
+![A workbench with a list, a comparison of date and category from bank, receipt and suggestion, and a document area on the right](https://shrippen.github.io/Kante/shots/release-1.74-bench-doc.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-174
+
+### Deutsch
+
+Eine Werkbank, die den Beleg im Blick behält, mit den Quellen jedes Felds nebeneinander.
+
+#### Neu
+- Der Arbeitsbereich der Werkbank kann ein Dokument neben seinen Feldern zeigen. Es bleibt stehen, während die Felder scrollen, sodass sich jedes Feld jederzeit am Papier prüfen lässt.
+- Eine Vergleichstabelle zeigt je Feld eine Zeile: was jede Quelle sagt, dann den Wert, den das Feld bekommt. Ein Klick auf einen Wert übernimmt ihn, und eine abweichende Quelle fällt auf.
+
+![Eine Werkbank mit Liste, einem Vergleich von Datum und Kategorie aus Bank, Beleg und Vorschlag und einem Dokumentbereich rechts](https://shrippen.github.io/Kante/shots/release-1.74-bench-doc.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-174
+
 ## [1.73.0] — 2026-11-05
 
 ### English
