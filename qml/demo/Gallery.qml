@@ -1030,6 +1030,7 @@ Rectangle {
                                         text: "Schieben"
                                         iconRoom: true
                                         trailing: [
+                                            KanteIcon { width: 22; height: 22; iconSource: "go-next"; color: KanteStyle.accentColor },
                                             KanteToolButton { text: "◀"; checkable: true; focusPolicy: Qt.NoFocus },
                                             KanteToolButton { text: "▶"; checkable: true; checked: true; focusPolicy: Qt.NoFocus }
                                         ]

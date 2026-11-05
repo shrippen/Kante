@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Window
 import QtTest
 import org.kde.kirigami as Kirigami
 import Kante
@@ -207,14 +208,18 @@ TestCase {
     // Material floats the placeholder above a filled field; Kante draws its own
     // frame, so a filled field shows no placeholder. System keeps the style's.
     function test_placeholderOnlyWhenEmpty() {
-        var c = createTemporaryObject(placeholderComponent, tc)
+        var c = createTemporaryObject(placeholderComponent, tc.Window.contentItem)
         compare(c.field.placeholderText, "09:00")
         KanteStyle.kind = KanteStyle.Kind.Kante
-        compare(c.field.placeholderText, "")
-        compare(c.area.placeholderText, "")
+        // Kante draws it inside the box (1.73): only while empty; the style's own is not seen.
+        const inField = findChild(c.field, "kantePlaceholder")
+        const inArea = findChild(c.area, "kantePlaceholder")
+        verify(!inField.visible && !inArea.visible)
+        compare(c.field.placeholderTextColor.a, 0)
         c.field.text = ""
-        compare(c.field.placeholderText, "09:00")
+        verify(inField.visible)
         KanteStyle.kind = KanteStyle.Kind.System
+        verify(!inField.visible)
         compare(c.area.placeholderText, "Note")
     }
 
