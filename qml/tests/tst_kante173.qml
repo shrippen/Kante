@@ -141,6 +141,30 @@ TestCase {
         compare(row.icon.name, "", "a url is no theme name")
     }
 
+    Component {
+        id: narrowIconScene
+        KanteButton {
+            width: 28
+            padding: 0
+            icon.name: "go-next"
+            display: QQC2.AbstractButton.IconOnly
+        }
+    }
+
+    function test_narrow_icon_button_keeps_the_symbol_in_the_middle() {
+        const button = createTemporaryObject(narrowIconScene, stage())
+        waitForRendering(button)
+        let content = null
+        for (let i = 0; i < button.children.length; i++) {
+            if (button.children[i].toString().indexOf("RowLayout") >= 0) {
+                content = button.children[i]
+            }
+        }
+        verify(content, "the drawn content")
+        verify(Math.abs(content.x + content.width / 2 - 14) < 0.75, "centre " + (content.x + content.width / 2))
+        verify(content.width >= content.implicitWidth, "not squeezed: " + content.width)
+    }
+
     function test_narrow_button_keeps_its_margin() {
         const button = createTemporaryObject(unpaddedButtonScene, stage(), { width: 120 })
         waitForRendering(button)
