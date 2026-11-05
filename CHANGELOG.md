@@ -13,7 +13,7 @@ Symbols sharp again on Plasma, and buttons with a margin under the desktop style
 
 #### Fixed
 - Icons drawn by `KanteIcon` came out grey and soft in a layout on Plasma: 1.73.0 asked the theme for the file before the size was known and scaled the wrong one. It now picks after the size is set, and again at a new size.
-- `KanteButton`: icon and label ran to the edge under the desktop style (Plasma, plasmoids), whose padding is 0. The button now keeps a margin of at least 8 px on each side; styles with at least that much padding look as before, Fusion (4 px) gets a little wider.
+- `KanteButton`: icon and label ran to the edge under the desktop style (Plasma, plasmoids), whose padding is 0. A button with a label now keeps at least 8 px on each side, a lone symbol stays in the middle even on a narrow button; styles with at least that much padding look as before, Fusion (4 px) gets a little wider.
 
 ![Buttons with an icon and label, the upper row with 1.73.0: a grey, soft floppy disk and text against the edge; the lower row with 1.74.1: sharp symbols and a margin](https://shrippen.github.io/Kante/shots/release-1.74.1-symbole.png)
 
@@ -25,7 +25,7 @@ Symbole auf Plasma wieder scharf, und Knöpfe mit Rand unter dem Desktop-Stil.
 
 #### Behoben
 - Symbole aus `KanteIcon` wurden in einem Layout auf Plasma grau und weich: 1.73.0 fragte das Thema nach der Datei, bevor die Größe feststand, und skalierte die falsche. Es wählt jetzt, nachdem die Größe gesetzt ist, und bei einer neuen Größe erneut.
-- `KanteButton`: Symbol und Text liefen unter dem Desktop-Stil (Plasma, Plasmoids), dessen Polster 0 ist, bis an den Rand. Der Knopf behält jetzt mindestens 8 px je Seite; Stile mit mindestens so viel Polster sehen aus wie vorher, Fusion (4 px) wird etwas breiter.
+- `KanteButton`: Symbol und Text liefen unter dem Desktop-Stil (Plasma, Plasmoids), dessen Polster 0 ist, bis an den Rand. Ein Knopf mit Text behält jetzt mindestens 8 px je Seite, ein einzelnes Symbol bleibt auch im schmalen Knopf mittig; Stile mit mindestens so viel Polster sehen aus wie vorher, Fusion (4 px) wird etwas breiter.
 
 ![Knöpfe mit Symbol und Text, obere Reihe mit 1.73.0: graue, weiche Diskette und Text am Rand; untere Reihe mit 1.74.1: scharfe Symbole und ein Rand](https://shrippen.github.io/Kante/shots/release-1.74.1-symbole.png)
 

@@ -152,17 +152,31 @@ TestCase {
     }
 
     function test_narrow_icon_button_keeps_the_symbol_in_the_middle() {
-        const button = createTemporaryObject(narrowIconScene, stage())
-        waitForRendering(button)
-        let content = null
-        for (let i = 0; i < button.children.length; i++) {
-            if (button.children[i].toString().indexOf("RowLayout") >= 0) {
-                content = button.children[i]
+        // padding: 0 does not lower every style's side padding (Material keeps 16): the middle holds anyway
+        for (const props of [{}, { display: QQC2.AbstractButton.TextBesideIcon, text: "" }]) {
+            const button = createTemporaryObject(narrowIconScene, stage(), props)
+            waitForRendering(button)
+            const symbol = findIcon(button)
+            verify(symbol, "the symbol")
+            const left = symbol.mapToItem(button, 0, 0).x
+            const right = button.width - (left + symbol.width)
+            verify(Math.abs(left - right) < 1, "left " + left + ", right " + right)
+            verify(left >= 0, "inside the button: " + left)
+        }
+    }
+
+    function findIcon(item) {
+        for (let i = 0; i < item.children.length; i++) {
+            const child = item.children[i]
+            if (child.iconSource !== undefined && child.visible) {
+                return child
+            }
+            const inner = findIcon(child)
+            if (inner) {
+                return inner
             }
         }
-        verify(content, "the drawn content")
-        verify(Math.abs(content.x + content.width / 2 - 14) < 0.75, "centre " + (content.x + content.width / 2))
-        verify(content.width >= content.implicitWidth, "not squeezed: " + content.width)
+        return null
     }
 
     function test_narrow_button_keeps_its_margin() {
