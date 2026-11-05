@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Window
+import QtQuick.Controls as QQC2
 import QtTest
 import Kante
 
@@ -103,6 +104,116 @@ TestCase {
         compare(h.tappedIndex, 7)
         verify(h.tipOf(h.dayAt(1, 0), Locale.LongFormat).indexOf("3 techniques") > 0)
         tryCompare(h, "tappedIndex", -1, 5000)
+    }
+
+    // 1.74.2: one tooltip and one pair of handlers for all days (a year in a few milliseconds).
+    function test_hoverShowsTheDay() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday,
+                         tips: { "2026-11-02": "3 techniques" } })
+        mouseMove(h, h.labelWidth + h.step + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        tryCompare(h, "hoveredIndex", 7)
+        const tip = findChild(h, "dayTip")
+        tryVerify(() => tip.QQC2.ToolTip.text.indexOf("3 techniques") > 0)
+        compare(tip.x, h.labelWidth + h.step, "at its day")
+        // Between the days and on a day still to come: none.
+        mouseMove(h, h.labelWidth + h.cellSize + h.spacing / 2, h.labelHeight + 1)
+        tryCompare(h, "hoveredIndex", -1)
+        mouseMove(h, h.labelWidth + h.step + h.cellSize / 2, h.labelHeight + h.step + h.cellSize / 2)
+        compare(h.cellAt(h.labelWidth + h.step + 1, h.labelHeight + h.step + 1), -1, "3 Nov is still to come")
+    }
+
+    function test_tapRightToLeft() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        h.LayoutMirroring.enabled = true
+        mouseClick(h, h.width - h.labelWidth - h.step - h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        compare(h.tappedIndex, 7)
+    }
+
+    function test_tapBesideADayClears() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        mouseClick(h, h.labelWidth + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        compare(h.tappedIndex, 0)
+        mouseClick(h, 1, 1)
+        compare(h.tappedIndex, -1)
+    }
+
+    // Every day still has its own name for a screen reader, and its level's colour.
+    function test_cellsKeepTheirName() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 1, firstDayOfWeek: Locale.Monday,
+                         levels: { "2026-11-02": 4 }, tips: { "2026-11-02": "3 techniques" } })
+        const cells = []
+        for (let i = 0; i < h.children.length; i++) {
+            if (h.children[i].Accessible.role === Accessible.StaticText) {
+                cells.push(h.children[i])
+            }
+        }
+        compare(cells.length, 7)
+        verify(cells[0].Accessible.name.indexOf("3 techniques") > 0, cells[0].Accessible.name)
+        verify(cells[0].visible && !cells[1].visible)
+        compare(String(cells[0].color), String(KanteStyle.levelColor(4, 4)))
+    }
+
+    // Levels 1–3 are translucent over a ground that may be too: the same colour as two layers.
+    function test_levelColoursAreTheTwoLayers() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 1, firstDayOfWeek: Locale.Monday })
+        for (const l of [1, 2, 3]) {
+            const u = KanteStyle.sunkenColor, c = KanteStyle.levelColor(l, 4), got = h.levelColors[l]
+            const rest = u.a * (1 - c.a), a = c.a + rest
+            fuzzyCompare(got.r, (c.r * c.a + u.r * rest) / a, 0.01)
+            fuzzyCompare(got.g, (c.g * c.a + u.g * rest) / a, 0.01)
+            fuzzyCompare(got.b, (c.b * c.a + u.b * rest) / a, 0.01)
+            fuzzyCompare(got.a, a, 0.01)
+        }
+    }
+
+    // Fading out it still names its day, at its day.
+    function test_tipStaysWhileFading() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday,
+                         tips: { "2026-11-02": "3 techniques" } })
+        mouseMove(h, h.labelWidth + h.step + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        tryCompare(h, "hoveredIndex", 7)
+        mouseMove(h, 1, 1)
+        tryCompare(h, "hoveredIndex", -1)
+        const tip = findChild(h, "dayTip")
+        verify(tip.QQC2.ToolTip.text.indexOf("3 techniques") > 0, tip.QQC2.ToolTip.text)
+        compare(tip.x, h.labelWidth + h.step)
+    }
+
+    // By touch: right after the finger lifts, however long it rested.
+    function test_tapShowsItAtOnce_data() {
+        return [{ tag: "short", hold: 20 }, { tag: "resting", hold: 150 }, { tag: "long", hold: 900 }]
+    }
+    function test_tapShowsItAtOnce(data) {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        const x = h.labelWidth + h.cellSize / 2, y = h.labelHeight + h.cellSize / 2
+        const touch = touchEvent(h)
+        touch.press(0, h, x, y).commit()
+        wait(data.hold)
+        touch.release(0, h, x, y).commit()
+        compare(h.tappedIndex, 0)
+        const tip = findChild(h, "dayTip")
+        tryVerify(() => tip.QQC2.ToolTip.toolTip.visible, 60, "not after the hover's 300 ms")
+    }
+
+    // With a mouse it waits a moment, so that passing over the days stays quiet.
+    function test_hoverWaits() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday })
+        mouseMove(h, h.labelWidth + h.cellSize / 2, h.labelHeight + h.cellSize / 2)
+        tryCompare(h, "hoveredIndex", 0)
+        const tip = findChild(h, "dayTip")
+        verify(!tip.QQC2.ToolTip.visible)
+        tryVerify(() => tip.QQC2.ToolTip.visible, 1000)
+        mouseMove(h, 1, 1)
+        tryCompare(h, "hoverWaited", false)
+    }
+
+    function test_fewerWeeksAfterATap() {
+        failOnWarning(/undefined/)
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 4, firstDayOfWeek: Locale.Monday })
+        mouseClick(h, h.labelWidth + 2 * h.step + h.cellSize / 2, h.labelHeight + h.step + h.cellSize / 2)
+        compare(h.tappedIndex, 15)
+        h.weeks = 1
+        compare(h.tappedIndex, -1)
     }
 
     function test_rightToLeft() {

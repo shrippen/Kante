@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.74.2] — 2026-11-05
+
+### English
+
+Calendars with many days open twice as fast.
+
+#### Improved
+- `KanteCalendarHeatmap`: a year of days took about 95 ms to create, each day with its own handlers, tooltip and date calculations. The days now share one tooltip and one pair of handlers and read their dates from one list: about 47 ms. A page with several years opens noticeably sooner on a phone. It looks and behaves as before, and screen readers still hear each day.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
+
+### Deutsch
+
+Kalender mit vielen Tagen öffnen doppelt so schnell.
+
+#### Verbessert
+- `KanteCalendarHeatmap`: Ein Jahr Tage brauchte beim Erstellen etwa 95 ms, jeder Tag mit eigenen Handlern, eigenem Tooltip und eigenen Datumsrechnungen. Die Tage teilen sich jetzt einen Tooltip und ein Paar Handler und lesen ihr Datum aus einer Liste: etwa 47 ms. Eine Seite mit mehreren Jahren öffnet auf dem Telefon spürbar früher. Aussehen und Verhalten bleiben gleich, Screenreader hören weiter jeden Tag.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
+
 ## [1.74.1] — 2026-11-05
 
 ### English
