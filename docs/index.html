@@ -131,6 +131,34 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.73.0">
+      <div class="release-head"><b class="release-version">1.73</b><time datetime="2026-11-05">5 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Everything sits where it should: buttons centred, icons in their colour on every platform, placeholders inside the field.</p>
+        <p class="release-lead" lang="de">Alles sitzt, wo es soll: Knöpfe mittig, Symbole auf jeder Plattform in ihrer Farbe, Platzhalter im Feld.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteSliderSkin.trackColor</code>: the colour of the track, for a slider on a dark stage where the sunken default does not show.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteSliderSkin.trackColor</code>: die Farbe der Spur, für einen Schieber auf einer dunklen Bühne, auf der die vertiefte Vorgabe nicht zu sehen ist.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteButton</code>: icon and label sat 2 px too low under the Material controls (Android, AppImage), because the content followed the style's uneven padding. They now stand in the middle.</li>
+            <li>Icons in buttons, chips, tabs, menus and tiles stayed dark on the dark ground on Android and in an AppImage: <code>Kirigami.Icon</code> colours a mask only with the Plasma theme. The new <code>KanteIcon</code> colours them on every platform.</li>
+            <li><code>KanteTextField</code>: Material floated the placeholder above a focused field, across the frame and cut off at the edge of a bar. It now stays inside the box, and a long one is shortened. This also holds for <code>KanteDateField</code>.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteButton</code>: Symbol und Text saßen unter den Material-Controls (Android, AppImage) 2 px zu tief, weil der Inhalt dem ungleichen Polster des Stils folgte. Sie stehen jetzt in der Mitte.</li>
+            <li>Symbole in Knöpfen, Chips, Tabs, Menüs und Kacheln blieben auf Android und im AppImage dunkel auf dem dunklen Grund: <code>Kirigami.Icon</code> färbt eine Maske nur mit dem Plasma-Thema. Das neue <code>KanteIcon</code> färbt sie auf jeder Plattform.</li>
+            <li><code>KanteTextField</code>: Material ließ den Platzhalter im fokussierten Feld über den Rahmen schweben, am Rand einer Leiste abgeschnitten. Er bleibt jetzt im Feld, ein langer wird gekürzt. Das gilt auch für <code>KanteDateField</code>.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-173"><span lang="en">All changes in 1.72 →</span><span lang="de">Alle Änderungen in 1.72 →</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.72.0">
       <div class="release-head"><b class="release-version">1.72</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -166,6 +194,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171"><span lang="en">All changes in 1.71 →</span><span lang="de">Alle Änderungen in 1.71 →</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.70.0">
       <div class="release-head"><b class="release-version">1.70</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -182,9 +213,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170"><span lang="en">All changes in 1.70 →</span><span lang="de">Alle Änderungen in 1.70 →</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.69.0">
       <div class="release-head"><b class="release-version">1.69</b><time datetime="2026-11-03">3 Nov 2026</time></div>
       <div class="release-body">
@@ -1340,7 +1368,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.72.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.73.0</a></p></div>
 </footer>
 
 <script>
