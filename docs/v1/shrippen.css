@@ -1531,9 +1531,9 @@ button.list-row{width:100%;border:0;border-bottom:1px solid var(--bg1);backgroun
 .doc-view{display:block;width:100%;height:calc(100dvh - 12rem);min-height:24rem;border:1px solid var(--bg2);background:var(--bg-hard);object-fit:contain}
 /* A document read in its own page, in a .doc-view frame: pages to scroll, marks on what the fields hold.
    <body class="doc-reader"><div class="doc-reader-bar">…</div><div class="doc-pages"><div class="doc-page"><canvas></canvas><i class="doc-mark"></i></div></div></body>
-   A page's width and a mark's box are set by script. */
+   A page's width and a mark's box are set by script: left, top, width, height in percent of the page. */
 .doc-reader{display:flex;flex-direction:column;height:100dvh;margin:0;background:var(--bg-hard)}
-.doc-reader-bar{display:flex;align-items:center;gap:.4rem;padding:.3rem .5rem;border-bottom:1px solid var(--bg2)}
+.doc-reader-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;padding:.3rem .5rem;border-bottom:1px solid var(--bg2)}
 .doc-reader-bar>:last-child{margin-left:auto}
 .doc-pages{flex:1;min-height:0;overflow:auto;padding:.5rem}
 .doc-page{position:relative;margin:0 auto .5rem;max-width:none}
