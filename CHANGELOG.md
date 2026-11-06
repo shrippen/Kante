@@ -5,6 +5,32 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.75.0] — 2026-11-06
+
+### English
+
+A document can show where the fields' values stand.
+
+#### New
+- `.doc-reader`, `.doc-pages`, `.doc-page`: the page a `.doc-view` frame shows, a bar and the pages to scroll, for apps that draw a document themselves.
+- `.doc-mark`: a mark on a page in the theme's primary colour, so what a field holds can be found in the document at a glance.
+
+![A receipt in its frame with a bar on top, amount and date marked](https://shrippen.github.io/Kante/shots/release-1.75-doc-mark.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-175
+
+### Deutsch
+
+Ein Dokument kann zeigen, wo die Werte der Felder stehen.
+
+#### Neu
+- `.doc-reader`, `.doc-pages`, `.doc-page`: die Seite, die ein `.doc-view`-Rahmen zeigt, eine Leiste und die Seiten zum Scrollen, für Apps, die ein Dokument selbst zeichnen.
+- `.doc-mark`: eine Markierung auf einer Seite in der Primärfarbe des Themes, damit sich der Wert eines Felds im Dokument auf einen Blick findet.
+
+![Ein Beleg im Rahmen mit Leiste oben, Betrag und Datum markiert](https://shrippen.github.io/Kante/shots/release-1.75-doc-mark.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-175
+
 ## [1.74.3] — 2026-11-05
 
 ### English
