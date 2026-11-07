@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.75.1] — 2026-11-07
+
+### English
+
+Calendars with many days open faster and follow a new width at once.
+
+#### Improved
+- `KanteCalendarHeatmap`: each day was an item of its own with its name for screen readers, 1800 of them on Mitori's page of five years. The days are now drawn as one shape, and a screen reader hears a week at a time, every day of it with its date and tip. The page opened in 744 ms, now in about 525 ms with this alone; a new width moves no items any more, which made a calendar that fits its weeks to the width slow. It looks the same.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1751
+
+### Deutsch
+
+Kalender mit vielen Tagen öffnen schneller und folgen einer neuen Breite sofort.
+
+#### Verbessert
+- `KanteCalendarHeatmap`: Jeder Tag war ein eigenes Element mit eigenem Namen für Screenreader, 1800 davon auf Mitoris Seite mit fünf Jahren. Die Tage werden jetzt als eine Form gezeichnet, und ein Screenreader hört eine Woche auf einmal, jeden Tag darin mit Datum und Tooltip-Text. Die Seite öffnete in 744 ms, jetzt allein dadurch in etwa 525 ms; eine neue Breite verschiebt keine Elemente mehr, das machte einen Kalender langsam, der seine Wochen an die Breite anpasst. Er sieht gleich aus.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1751
+
 ## [1.75.0] — 2026-11-06
 
 ### English
