@@ -797,6 +797,12 @@ A document read in its own page, with marks on what the fields hold.
 | Document page | `.doc-reader` > `.doc-reader-bar` + `.doc-pages` > `.doc-page` > `canvas`/`img` | The page a `.doc-view` frame shows: a bar and the pages to scroll |
 | Mark in a document | `.doc-mark` | What a field holds, marked on a `.doc-page`; its box is set by script |
 
+### Fixed in Kante 1.75.1
+
+Found by Mitori's performance test (five years of practice days on one page).
+
+`KanteCalendarHeatmap`: the days are drawn as one `Shape`, a path per level (`levelPaths`), not a `Rectangle` per day; `cellLevels` holds each day's level in the order of `cells`. Screen readers hear a week at a time: an item per column, named with the week's days in full and their tips (`weekName(week)`). Mitori's page of five years: 744 ms before, about 525 ms with this alone; a new size draws the paths anew instead of moving 1800 items.
+
 ### Fixed in Kante 1.74.3
 
 Found by Mitori's QA round (keyboard, English).

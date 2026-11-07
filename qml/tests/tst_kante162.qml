@@ -137,20 +137,70 @@ TestCase {
         compare(h.tappedIndex, -1)
     }
 
-    // Every day still has its own name for a screen reader, and its level's colour.
-    function test_cellsKeepTheirName() {
-        const h = make({ endDate: new Date(2026, 10, 2), weeks: 1, firstDayOfWeek: Locale.Monday,
-                         levels: { "2026-11-02": 4 }, tips: { "2026-11-02": "3 techniques" } })
-        const cells = []
+    function accessibleWeeks(h) {
+        const weeks = []
         for (let i = 0; i < h.children.length; i++) {
             if (h.children[i].Accessible.role === Accessible.StaticText) {
-                cells.push(h.children[i])
+                weeks.push(h.children[i])
             }
         }
-        compare(cells.length, 7)
-        verify(cells[0].Accessible.name.indexOf("3 techniques") > 0, cells[0].Accessible.name)
-        verify(cells[0].visible && !cells[1].visible)
-        compare(String(cells[0].color), String(KanteStyle.levelColor(4, 4)))
+        return weeks
+    }
+
+    // 1.75.1: a screen reader hears a week at a time, every drawn day of it with its date and tip.
+    function test_weeksNameTheirDays() {
+        const h = make({ endDate: new Date(2026, 10, 3), weeks: 2, firstDayOfWeek: Locale.Monday,
+                         tips: { "2026-11-02": "3 techniques", "2026-11-01": "no practice" } })
+        const weeks = accessibleWeeks(h)
+        compare(weeks.length, 2)
+        const last = weeks[1].Accessible.name
+        const monday = new Date(2026, 10, 2).toLocaleDateString(Qt.locale(), Locale.LongFormat)
+        const tuesday = new Date(2026, 10, 3).toLocaleDateString(Qt.locale(), Locale.LongFormat)
+        verify(last.indexOf(monday + " · 3 techniques") === 0, last)
+        verify(last.indexOf(tuesday) > 0, "a day without a tip names its date: " + last)
+        verify(last.indexOf(new Date(2026, 10, 4).toLocaleDateString(Qt.locale(), Locale.LongFormat)) < 0,
+               "not a day still to come: " + last)
+        verify(weeks[0].Accessible.name.indexOf("no practice") > 0, weeks[0].Accessible.name)
+        // Each over its column.
+        compare(weeks[1].x, h.labelWidth + h.step)
+        compare(weeks[1].height, 7 * h.step - h.spacing)
+    }
+
+    // 1.75.1: each drawn day in its level's colour, empty after the last day; mirrored too.
+    function test_daysInTheirColour() {
+        const h = make({ endDate: new Date(2026, 10, 2), weeks: 2, firstDayOfWeek: Locale.Monday,
+                         levels: { "2026-11-02": 4, "2026-10-26": 2 } })
+        const at = (week, row) => [Math.floor(h.lead(h.labelWidth + week * h.step, h.cellSize) + h.cellSize / 2),
+                                   Math.floor(h.labelHeight + row * h.step + h.cellSize / 2)]
+        const check = level => {
+            waitForRendering(h)
+            const image = grabImage(h)
+            const colour = (week, row) => image.pixel(...at(week, row))
+            // The window under the grid: the empty label beside the last row.
+            const ground = image.pixel(Math.floor(h.lead(1, 1)), at(0, 6)[1])
+            const same = (got, want, what) => {
+                for (const c of ["r", "g", "b"]) {
+                    fuzzyCompare(got[c], want[c] * want.a + ground[c] * (1 - want.a), 0.02, what + " " + c)
+                }
+            }
+            same(colour(1, 0), h.levelColors[level], "2 Nov, level " + level)
+            same(colour(0, 0), h.levelColors[2], "26 Oct, level 2")
+            same(colour(0, 1), h.levelColors[0], "27 Oct, none")
+            same(colour(1, 1), Qt.rgba(0, 0, 0, 0), "3 Nov is still to come")
+        }
+        check(4)
+        h.LayoutMirroring.enabled = true
+        check(4)
+        // A new level draws the day anew.
+        h.levels = { "2026-11-02": 1, "2026-10-26": 2 }
+        check(1)
+    }
+
+    // 1.75.1: a year is not an item per day (five years on a page took 300 ms in Mitori): an item
+    // per week for screen readers, the labels, the tooltip.
+    function test_yearIsFewItems() {
+        const h = make({ endDate: new Date(2026, 11, 31), weeks: 53 })
+        verify(h.children.length < 2 * 53, h.children.length + " items")
     }
 
     // Levels 1–3 are translucent over a ground that may be too: the same colour as two layers.
