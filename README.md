@@ -796,6 +796,12 @@ A strip over a whole piece, for Kontra's song map (LH-FOR-06).
 |---------|-----|------|
 | Song map | `KanteSongMap` | One column per bar, its height the value (a hit rate over the last runs), colour on the `KanteHeatGrid` scale; a bar without data is a dashed mark, never a zero. Tooltip and accessible name say the number (`tips`, default "Takt 5: 82 %"). Drag over bars, or Shift with the arrows and Enter, to choose a range (`rangeChosen(from, to)`, e.g. the loop); the range is tinted and underlined. A long piece keeps bars `minBarWidth` wide and scrolls. Between runs, not while playing. |
 
+### Fixed in Kante 1.76.1
+
+Found by the review of Kante #129.
+
+`KanteSongMap`: mirrored and too long for its width, the view starts at bar 1 (`contentX` at the right end); another number of bars places it at bar 1 again (new values with as many bars keep it, so fresh results do not move the view), a new width or direction keeps its distance from bar 1 (`viewFromStart`); with the focus the current bar stays in view. A shorter piece cuts `selectionFrom`/`selectionTo` at its last bar, or sets both to -1 when no bar of the range is left; neither emits `rangeChosen`.
+
 ### Added in Kante 1.75
 
 A document read in its own page, with marks on what the fields hold.

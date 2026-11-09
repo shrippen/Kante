@@ -182,4 +182,63 @@ TestCase {
         compare(m.currentIndex, 6)
         verify(b[6].x > b[7].x)
     }
+    // Review #129 (1.76.1): mirrored and scrolling, the view starts at bar 1 (on the right).
+    function test_mirrored_long_song_starts_at_bar_one() {
+        const m = make()
+        const many = []
+        for (let i = 0; i < 64; i++) {
+            many.push(i % 5 / 4)
+        }
+        m.width = 100
+        m.values = many
+        m.LayoutMirroring.enabled = true
+        waitForRendering(m)
+        const flick = m.children.filter(c => c.contentWidth !== undefined)[0]
+        verify(m.stripWidth > m.width)
+        const first = m.barX(0)
+        verify(first >= flick.contentX && first + m.barWidth <= flick.contentX + flick.width,
+               "bar 1 at x " + first + ", view " + flick.contentX + ".." + (flick.contentX + flick.width))
+        // Unmirrored again: bar 1 on the left, in view.
+        m.LayoutMirroring.enabled = false
+        compare(flick.contentX, 0)
+    }
+
+    // Review #130 (1.76.1): a new width keeps the view where it was, counted from bar 1.
+    function test_a_new_width_keeps_the_scroll() {
+        const m = make()
+        const many = []
+        for (let i = 0; i < 64; i++) {
+            many.push(i % 5 / 4)
+        }
+        m.width = 100
+        m.values = many
+        waitForRendering(m)
+        const flick = m.children.filter(c => c.contentWidth !== undefined)[0]
+        flick.contentX = 200
+        m.width = 101
+        compare(flick.contentX, 200)
+        // Mirrored, the same distance from bar 1 on the right.
+        m.LayoutMirroring.enabled = true
+        const fromStart = m.stripWidth - m.width - flick.contentX
+        flick.contentX = m.stripWidth - m.width - 150
+        m.width = 120
+        compare(m.stripWidth - m.width - flick.contentX, 150)
+        verify(fromStart >= 0)
+    }
+
+    // Review #129 (1.76.1): a shorter piece cuts the range to its bars, or clears it.
+    function test_a_shorter_piece_fits_the_range() {
+        const m = make()
+        m.selectionFrom = 1
+        m.selectionTo = 5
+        m.values = [1, 0.5, 0.25]
+        compare(m.selectionFrom, 1)
+        compare(m.selectionTo, 2)
+        m.selectionFrom = 2
+        m.selectionTo = 2
+        m.values = [1, 0.5]
+        compare(m.selectionFrom, -1)
+        compare(m.selectionTo, -1)
+        verify(!m.selected(0) && !m.selected(1))
+    }
 }
