@@ -30,8 +30,9 @@ import "."
  *
  * The height carries the value and the tooltip says it as a number, so the colour is never
  * the only sign. A narrow strip on a long song keeps each bar at least `minBarWidth` wide
- * and scrolls sideways; the focused bar is scrolled into view, otherwise the view starts at
- * bar 1 (mirrored: at the right end).
+ * and scrolls sideways; the focused bar is scrolled into view. Otherwise the view starts at
+ * bar 1 (mirrored: at the right end) and keeps its distance from bar 1 (`viewFromStart`) on a
+ * new width or direction; another number of bars starts at bar 1 again.
  */
 FocusScope {
     id: strip
