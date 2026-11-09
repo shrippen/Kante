@@ -20,14 +20,18 @@ import "."
  *   barText     the word for a bar in the default tips ("Takt"); noDataText when null
  *   formatter   function (value) -> string; default a share as whole percent ("82 %")
  *   minValue, maxValue   the scale (default 0 and 1)
- *   selectionFrom, selectionTo   the chosen range (bar indices, -1: none), drawn framed
+ *   selectionFrom, selectionTo   the chosen range (bar indices, -1: none), drawn framed.
+ *               A shorter piece cuts the range at its last bar, or clears it (-1) when no
+ *               bar of it is left, without rangeChosen: a loop bound to it never names a
+ *               bar that does not exist
  *   interactive Tab focuses the current bar; Left / Right move, Home / End go to the ends,
  *               Shift with them extends the range from the anchor, Enter / Space choose it
  *               (rangeChosen); a press and drag over bars chooses the range dragged
  *
  * The height carries the value and the tooltip says it as a number, so the colour is never
  * the only sign. A narrow strip on a long song keeps each bar at least `minBarWidth` wide
- * and scrolls sideways; the focused bar is scrolled into view.
+ * and scrolls sideways; the focused bar is scrolled into view, otherwise the view starts at
+ * bar 1 (mirrored: at the right end).
  */
 FocusScope {
     id: strip
@@ -70,11 +74,18 @@ FocusScope {
     readonly property int highIndex: Math.max(selectionFrom, selectionTo)
     readonly property bool mirrored: LayoutMirroring.enabled
 
-    // A shorter piece: focus and anchor stay on bars that exist.
+    // A shorter piece: focus, anchor and range stay on bars that exist.
+    // E.g. range 1..5, then 3 bars: 1..2; range 2..2, then 2 bars: none (-1).
     onCountChanged: {
         currentIndex = Math.max(0, Math.min(currentIndex, count - 1))
         anchorIndex = -1
+        fitRange()
     }
+
+    // A new size, length or direction: the focused bar stays in view, else bar 1 shows.
+    onStripWidthChanged: placeView()
+    onWidthChanged: placeView()
+    onMirroredChanged: placeView()
 
     implicitWidth: stripWidth
     implicitHeight: barHeight + labelHeight + (flick.contentWidth > flick.width ? KanteStyle.unit(8) : 0)
@@ -141,6 +152,26 @@ FocusScope {
         }
         currentIndex = next
         keepInView()
+    }
+    function fitRange() {
+        if (selectionFrom < 0 || selectionTo < 0) {
+            return
+        }
+        if (lowIndex >= count) {
+            selectionFrom = -1
+            selectionTo = -1
+            return
+        }
+        selectionFrom = Math.min(selectionFrom, count - 1)
+        selectionTo = Math.min(selectionTo, count - 1)
+    }
+    function placeView() {
+        if (activeFocus) {
+            keepInView()
+            return
+        }
+        // Mirrored, bar 1 stands at the right end of the strip.
+        flick.contentX = mirrored ? Math.max(0, stripWidth - width) : 0
     }
     function keepInView() {
         const left = barX(currentIndex)

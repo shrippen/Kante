@@ -131,6 +131,24 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.76.1">
+      <div class="release-head"><b class="release-version">1.76.1</b><time datetime="2026-11-09">9 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A long song map starts at bar 1 in right-to-left layouts, and a shorter song keeps a fitting range.</p>
+        <p class="release-lead" lang="de">Eine lange Liedkarte beginnt auch bei Schrift von rechts nach links bei Takt 1, und ein kürzeres Lied behält einen passenden Bereich.</p>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteSongMap</code>, right to left and too long for its width: the view started at the end of the piece, so the last bars showed. It now starts at bar 1, also after a new width or a new piece, unless a bar has the focus.</li>
+            <li><code>KanteSongMap</code>: when the piece got shorter, the chosen range stayed, for example bars 6 to 8 of a piece with two bars, and a loop bound to it named bars that do not exist. The range now ends at the last bar, or is cleared when none of its bars is left.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteSongMap</code>, von rechts nach links und zu lang für seine Breite: Die Ansicht begann am Ende des Stücks, man sah die letzten Takte. Sie beginnt jetzt bei Takt 1, auch nach einer neuen Breite oder einem neuen Stück, außer ein Takt hat den Fokus.</li>
+            <li><code>KanteSongMap</code>: Wurde das Stück kürzer, blieb der gewählte Bereich, etwa Takt 6 bis 8 bei einem Stück mit zwei Takten, und eine daran gebundene Schleife nannte Takte, die es nicht gibt. Der Bereich endet jetzt am letzten Takt oder wird geleert, wenn keiner seiner Takte bleibt.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.76.0">
       <div class="release-head"><b class="release-version">1.76.0</b><time datetime="2026-11-09">9 Nov 2026</time></div>
       <div class="release-body">
@@ -166,6 +184,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1751"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.75.0">
       <div class="release-head"><b class="release-version">1.75.0</b><time datetime="2026-11-06">6 Nov 2026</time></div>
       <div class="release-body">
@@ -187,9 +208,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-175"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.74.3">
       <div class="release-head"><b class="release-version">1.74.3</b><time datetime="2026-11-05">5 Nov 2026</time></div>
       <div class="release-body">
@@ -1503,7 +1521,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.76.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.76.1</a></p></div>
 </footer>
 
 <script>
