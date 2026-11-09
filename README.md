@@ -800,7 +800,7 @@ A strip over a whole piece, for Kontra's song map (LH-FOR-06).
 
 Found by the review of Kante #129.
 
-`KanteSongMap`: mirrored and too long for its width, the view starts at bar 1 (`contentX` at the right end); a new width, length or direction places it again, unless the strip has the focus (then the current bar stays in view). A shorter piece cuts `selectionFrom`/`selectionTo` at its last bar, or sets both to -1 when no bar of the range is left; neither emits `rangeChosen`.
+`KanteSongMap`: mirrored and too long for its width, the view starts at bar 1 (`contentX` at the right end); a new piece places it at bar 1 again, a new width or direction keeps its distance from bar 1 (`viewFromStart`); with the focus the current bar stays in view. A shorter piece cuts `selectionFrom`/`selectionTo` at its last bar, or sets both to -1 when no bar of the range is left; neither emits `rangeChosen`.
 
 ### Added in Kante 1.75
 

@@ -80,9 +80,15 @@ FocusScope {
         currentIndex = Math.max(0, Math.min(currentIndex, count - 1))
         anchorIndex = -1
         fitRange()
+        // Another piece starts at bar 1.
+        viewFromStart = 0
     }
 
-    // A new size, length or direction: the focused bar stays in view, else bar 1 shows.
+    /** How far the view is scrolled away from bar 1, in either direction. */
+    property real viewFromStart: 0
+
+    // A new size, length or direction: the focused bar stays in view, else the view keeps its
+    // distance from bar 1 (bar 1 shows on a new piece).
     onStripWidthChanged: placeView()
     onWidthChanged: placeView()
     onMirroredChanged: placeView()
@@ -171,7 +177,9 @@ FocusScope {
             return
         }
         // Mirrored, bar 1 stands at the right end of the strip.
-        flick.contentX = mirrored ? Math.max(0, stripWidth - width) : 0
+        const room = Math.max(0, stripWidth - width)
+        const away = Math.max(0, Math.min(viewFromStart, room))
+        flick.contentX = mirrored ? room - away : away
     }
     function keepInView() {
         const left = barX(currentIndex)
@@ -213,6 +221,8 @@ FocusScope {
     Flickable {
         id: flick
         anchors.fill: parent
+        onContentXChanged: strip.viewFromStart = strip.mirrored
+            ? Math.max(0, strip.stripWidth - strip.width) - contentX : contentX
         contentWidth: strip.stripWidth
         contentHeight: height
         clip: true

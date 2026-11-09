@@ -203,6 +203,29 @@ TestCase {
         compare(flick.contentX, 0)
     }
 
+    // Review #130 (1.76.1): a new width keeps the view where it was, counted from bar 1.
+    function test_a_new_width_keeps_the_scroll() {
+        const m = make()
+        const many = []
+        for (let i = 0; i < 64; i++) {
+            many.push(i % 5 / 4)
+        }
+        m.width = 100
+        m.values = many
+        waitForRendering(m)
+        const flick = m.children.filter(c => c.contentWidth !== undefined)[0]
+        flick.contentX = 200
+        m.width = 101
+        compare(flick.contentX, 200)
+        // Mirrored, the same distance from bar 1 on the right.
+        m.LayoutMirroring.enabled = true
+        const fromStart = m.stripWidth - m.width - flick.contentX
+        flick.contentX = m.stripWidth - m.width - 150
+        m.width = 120
+        compare(m.stripWidth - m.width - flick.contentX, 150)
+        verify(fromStart >= 0)
+    }
+
     // Review #129 (1.76.1): a shorter piece cuts the range to its bars, or clears it.
     function test_a_shorter_piece_fits_the_range() {
         const m = make()

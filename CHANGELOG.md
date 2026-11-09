@@ -12,7 +12,7 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 A long song map starts at bar 1 in right-to-left layouts, and a shorter song keeps a fitting range.
 
 #### Fixed
-- `KanteSongMap`, right to left and too long for its width: the view started at the end of the piece, so the last bars showed. It now starts at bar 1, also after a new width or a new piece, unless a bar has the focus.
+- `KanteSongMap`, right to left and too long for its width: the view started at the end of the piece, so the last bars showed. It now starts at bar 1, also with a new piece; a new width keeps the view where it was, counted from bar 1.
 - `KanteSongMap`: when the piece got shorter, the chosen range stayed, for example bars 6 to 8 of a piece with two bars, and a loop bound to it named bars that do not exist. The range now ends at the last bar, or is cleared when none of its bars is left.
 
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761
@@ -22,7 +22,7 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kant
 Eine lange Liedkarte beginnt auch bei Schrift von rechts nach links bei Takt 1, und ein kürzeres Lied behält einen passenden Bereich.
 
 #### Behoben
-- `KanteSongMap`, von rechts nach links und zu lang für seine Breite: Die Ansicht begann am Ende des Stücks, man sah die letzten Takte. Sie beginnt jetzt bei Takt 1, auch nach einer neuen Breite oder einem neuen Stück, außer ein Takt hat den Fokus.
+- `KanteSongMap`, von rechts nach links und zu lang für seine Breite: Die Ansicht begann am Ende des Stücks, man sah die letzten Takte. Sie beginnt jetzt bei Takt 1, auch bei einem neuen Stück; eine neue Breite lässt die Ansicht, wo sie war, gezählt von Takt 1.
 - `KanteSongMap`: Wurde das Stück kürzer, blieb der gewählte Bereich, etwa Takt 6 bis 8 bei einem Stück mit zwei Takten, und eine daran gebundene Schleife nannte Takte, die es nicht gibt. Der Bereich endet jetzt am letzten Takt oder wird geleert, wenn keiner seiner Takte bleibt.
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761
