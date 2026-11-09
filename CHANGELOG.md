@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.76.2] — 2026-11-09
+
+### English
+
+Apps with many items under a KanteScope no longer stand still when a view fills.
+
+#### Improved
+- `KanteScope` looked at an item once for every child it got. When a list or a staff made hundreds of items at once, it went through all of them hundreds of times. Kontra's notation view stood still for 2.7 s when it opened and for up to a second on the next line while playing. Now each item is looked at once: opening takes 17 ms and the next line 10 ms.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762
+
+### Deutsch
+
+Apps mit vielen Elementen unter einem KanteScope stehen nicht mehr still, wenn sich eine Ansicht füllt.
+
+#### Verbessert
+- `KanteScope` sah sich ein Element für jedes Kind, das es bekam, einmal an. Legte eine Liste oder ein Notensystem Hunderte Elemente auf einmal an, ging es alle Hunderte Male durch. Kontras Notenansicht stand beim Öffnen 2,7 s still und beim Spielen in der nächsten Zeile bis zu einer Sekunde. Jetzt wird jedes Element einmal angesehen: Das Öffnen dauert 17 ms, die nächste Zeile 10 ms.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762
+
 ## [1.76.1] — 2026-11-09
 
 ### English
