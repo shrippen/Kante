@@ -140,4 +140,46 @@ TestCase {
         const flick = m.children.filter(c => c.contentWidth !== undefined)[0]
         verify(flick.contentX > 0)
     }
+
+    // Review #129: a shorter piece keeps focus and anchor inside it.
+    function test_a_shorter_piece_keeps_the_focus_inside() {
+        const m = make()
+        m.forceActiveFocus()
+        keyClick(Qt.Key_End)
+        keyClick(Qt.Key_Left, Qt.ShiftModifier)
+        m.values = [1, 0.5]
+        compare(m.currentIndex, 1)
+        compare(m.anchorIndex, -1)
+        keyClick(Qt.Key_Return)
+        compare(chosen.signalArguments[0][0], 1)
+        compare(chosen.signalArguments[0][1], 1)
+    }
+
+    // Review #129: Enter after a drag keeps the dragged range.
+    function test_enter_after_a_drag_keeps_the_range() {
+        const m = make()
+        const step = m.barWidth + m.spacing
+        mousePress(m, step * 2 + 2, 20)
+        mouseMove(m, step * 5 + 2, 20)
+        mouseRelease(m, step * 5 + 2, 20)
+        m.forceActiveFocus()
+        keyClick(Qt.Key_Return)
+        compare(chosen.count, 2)
+        compare(chosen.signalArguments[1][0], 2)
+        compare(chosen.signalArguments[1][1], 5)
+    }
+
+    // Review #129: mirrored, the bars run from the right, Right moves to the left neighbour on screen.
+    function test_mirrored_bars_follow_the_keys() {
+        const m = make()
+        m.LayoutMirroring.enabled = true
+        waitForRendering(m)
+        const b = bars(m)
+        verify(b[0].x > b[1].x)
+        m.forceActiveFocus()
+        keyClick(Qt.Key_End)
+        keyClick(Qt.Key_Right)
+        compare(m.currentIndex, 6)
+        verify(b[6].x > b[7].x)
+    }
 }
