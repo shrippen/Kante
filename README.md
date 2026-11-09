@@ -802,6 +802,12 @@ Found by the review of Kante #129.
 
 `KanteSongMap`: mirrored and too long for its width, the view starts at bar 1 (`contentX` at the right end); another number of bars places it at bar 1 again (new values with as many bars keep it, so fresh results do not move the view), a new width or direction keeps its distance from bar 1 (`viewFromStart`); with the focus the current bar stays in view. A shorter piece cuts `selectionFrom`/`selectionTo` at its last bar, or sets both to -1 when no bar of the range is left; neither emits `rangeChosen`.
 
+### Fixed in Kante 1.76.2
+
+Found by Kontra's benchmark of 9.11.2026.
+
+`KanteScope` queues an item with new children once until its sweep, not once per child (`pending`). While Kontra's notation view opened, 5250 entries stood in the queue, and one sweep looked at 1.4 million children: the app stood still for 2.7 s, and for 0.8 s on the next line. Now 17 ms and 10 ms.
+
 ### Added in Kante 1.75
 
 A document read in its own page, with marks on what the fields hold.
