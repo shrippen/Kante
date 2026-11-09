@@ -131,6 +131,25 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.76.0">
+      <div class="release-head"><b class="release-version">1.76.0</b><time datetime="2026-11-09">9 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A strip over a whole song shows where it goes well and where to practise.</p>
+        <p class="release-lead" lang="de">Ein Streifen über ein ganzes Lied zeigt, wo es gut läuft und wo Übung fehlt.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteSongMap</code>: one column per bar of a piece, its height the bar's value, for example the hit rate over the last runs, so weak bars stand out as low columns. The tooltip and screen readers say the number ("Takt 5: 82 %"); a bar not played yet is a dashed mark, not a zero. Dragging over bars, or Shift with the arrows and then Enter, chooses a range, for example the loop to practise; the range is tinted and underlined. A long piece scrolls sideways. Made for Kontra's song map.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteSongMap</code>: eine Säule je Takt eines Stücks, ihre Höhe der Wert des Takts, etwa die Trefferquote der letzten Durchläufe, so fallen schwache Takte als niedrige Säulen auf. Tooltip und Screenreader nennen die Zahl („Takt 5: 82 %“); ein Takt, der noch nicht gespielt wurde, ist eine gestrichelte Marke, keine Null. Ziehen über Takte, oder Umschalt mit den Pfeilen und dann Enter, wählt einen Bereich, etwa die Schleife zum Üben; der Bereich ist getönt und unterstrichen. Ein langes Stück scrollt seitwärts. Gemacht für Kontras Liedkarte.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.76-song-map.png" alt="A song map in dark Kante: sixteen bars as cyan columns of different heights, bars 5 to 8 tinted and underlined as the chosen loop, bar 6 in the focus ring, bar 7 a dashed mark for not played yet; bar numbers 1, 4, 8, 12 and 16 below" loading="lazy"><figcaption><span lang="en">Sixteen bars, bars 5 to 8 chosen as the loop, one bar not played yet</span><span lang="de">Sechzehn Takte, Takte 5 bis 8 als Schleife gewählt, ein Takt noch nicht gespielt</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-176"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.75.1">
       <div class="release-head"><b class="release-version">1.75.1</b><time datetime="2026-11-07">7 Nov 2026</time></div>
       <div class="release-body">
@@ -168,6 +187,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-175"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.74.3">
       <div class="release-head"><b class="release-version">1.74.3</b><time datetime="2026-11-05">5 Nov 2026</time></div>
       <div class="release-body">
@@ -186,9 +208,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1743"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.74.2">
       <div class="release-head"><b class="release-version">1.74.2</b><time datetime="2026-11-05">5 Nov 2026</time></div>
       <div class="release-body">
@@ -1484,7 +1503,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.75.1</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.76.0</a></p></div>
 </footer>
 
 <script>

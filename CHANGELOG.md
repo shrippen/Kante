@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.76.0] — 2026-11-09
+
+### English
+
+A strip over a whole song shows where it goes well and where to practise.
+
+#### New
+- `KanteSongMap`: one column per bar of a piece, its height the bar's value, for example the hit rate over the last runs, so weak bars stand out as low columns. The tooltip and screen readers say the number ("Takt 5: 82 %"); a bar not played yet is a dashed mark, not a zero. Dragging over bars, or Shift with the arrows and then Enter, chooses a range, for example the loop to practise; the range is tinted and underlined. A long piece scrolls sideways. Made for Kontra's song map.
+
+![A song map: sixteen bars as columns of different heights, bars 5 to 8 chosen as the loop, one bar not played yet](https://shrippen.github.io/Kante/shots/release-1.76-song-map.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-176
+
+### Deutsch
+
+Ein Streifen über ein ganzes Lied zeigt, wo es gut läuft und wo Übung fehlt.
+
+#### Neu
+- `KanteSongMap`: eine Säule je Takt eines Stücks, ihre Höhe der Wert des Takts, etwa die Trefferquote der letzten Durchläufe, so fallen schwache Takte als niedrige Säulen auf. Tooltip und Screenreader nennen die Zahl („Takt 5: 82 %“); ein Takt, der noch nicht gespielt wurde, ist eine gestrichelte Marke, keine Null. Ziehen über Takte, oder Umschalt mit den Pfeilen und dann Enter, wählt einen Bereich, etwa die Schleife zum Üben; der Bereich ist getönt und unterstrichen. Ein langes Stück scrollt seitwärts. Gemacht für Kontras Liedkarte.
+
+![Eine Liedkarte: sechzehn Takte als Säulen verschiedener Höhe, Takte 5 bis 8 als Schleife gewählt, ein Takt noch nicht gespielt](https://shrippen.github.io/Kante/shots/release-1.76-song-map.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-176
+
 ## [1.75.1] — 2026-11-07
 
 ### English

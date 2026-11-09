@@ -247,6 +247,15 @@ Rectangle {
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
                     }
                 }
+                // 1.76: a song map, hit rate per bar over the last runs; bars 5–8 chosen as the loop.
+                KanteSongMap {
+                    objectName: "gallerySongMap"
+                    Layout.preferredWidth: KanteStyle.unit(480)
+                    accessibleName: "Liedkarte"
+                    values: [1, 0.95, 0.9, 0.8, 0.45, 0.3, null, 0.6, 0.85, 1, 0.9, 0.95, 0.7, 0.5, 0.8, 1]
+                    selectionFrom: 4
+                    selectionTo: 7
+                }
                 // 1.63: a labelled heat grid, hits per string and fret.
                 KanteHeatGrid {
                     id: galleryHeatGrid
