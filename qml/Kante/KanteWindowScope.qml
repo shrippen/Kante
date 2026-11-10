@@ -15,7 +15,7 @@ import "."
  * them: in Kante they showed the platform's colours (Android Material: #fffbfe). The bars
  * get a scope of their own, as their child:
  *
- *   window ── pageStack ── page ── globalToolBarItem ── KanteBarScope    (each page)
+ *   window ── pageStack ── page ── globalToolBarItem ── KanteBarScope    (each page, layers too)
  *                      └── PageRowGlobalToolBarUI ───── KanteBarScope    (the stack)
  *
  * The bar sits on the page ground (`KanteStyle.backgroundColor`), the web nav's ground
@@ -71,6 +71,21 @@ Item {
         Item {
             required property var modelData
             readonly property Item bar: modelData ? modelData.globalToolBarItem : null
+
+            onBarChanged: root.themeBar(bar)
+            Component.onCompleted: root.themeBar(bar)
+        }
+    }
+
+    // Pages on the layers (modal pages) have a bar of their own too. The page of a layer is read
+    // again whenever the depth changes.
+    Repeater {
+        model: root.stack ? root.stack.layers.depth : 0
+
+        Item {
+            required property int index
+            readonly property var page: root.stack.layers.depth > index ? root.stack.layers.get(index) : null
+            readonly property Item bar: page ? (page.globalToolBarItem ?? null) : null
 
             onBarChanged: root.themeBar(bar)
             Component.onCompleted: root.themeBar(bar)

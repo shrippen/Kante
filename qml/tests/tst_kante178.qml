@@ -95,6 +95,31 @@ TestCase {
         }
     }
 
+    // A page on the layers (a modal page over the page row) has a bar of its own.
+    function test_layers_bars_data() {
+        return [
+            { tag: "ToolBar", style: Kirigami.ApplicationHeaderStyle.ToolBar },
+            { tag: "Titles", style: Kirigami.ApplicationHeaderStyle.Titles }
+        ]
+    }
+
+    function test_layers_bars(data) {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        const win = createTemporaryObject(windowComponent, tc)
+        win.pageStack.globalToolBar.style = data.style
+        verifyBars(win, data.tag + " before layer")
+        win.pageStack.layers.push(win.second)
+        tryCompare(win.pageStack.layers, "depth", 2)
+        verifyBars(win, data.tag + " layer")
+        win.pageStack.layers.pop()
+        tryCompare(win.pageStack.layers, "depth", 1)
+        verifyBars(win, data.tag + " layer popped")
+        win.pageStack.layers.push(win.second)
+        tryCompare(win.pageStack.layers, "depth", 2)
+        verifyBars(win, data.tag + " layer again")
+    }
+
     // Kante off: the bars show the platform's Header colours again, not the window's.
     function test_bars_back_to_platform() {
         KanteStyle.kind = KanteStyle.Kind.System

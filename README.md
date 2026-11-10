@@ -804,7 +804,7 @@ Kirigami.ApplicationWindow {
 }
 ```
 
-Why: Kirigami's bars set the `Header` colour set themselves, which stops them inheriting from the window, so a `KanteScope` on `contentItem` never reached them. Kirigami names no hook for the bars: a page's is `Page.globalToolBarItem`, the page stack's is a Loader inside the `PageRow` that no property names (found from `pageStack.globalToolBar.leftHandleAnchor` upwards). `KanteBarScope` is the scope of one bar; `KanteWindowScope` creates it as the bar's child, so both go together (a scope made by a Loader died before the bar of a page that slides out after a pop). Test `qml/tests/tst_kante178.qml`: bars in the three styles, Kante and Leinen, first, pushed and popped page, and back to the platform's colours.
+Pages on `pageStack.layers` (modal pages) get a scope too. Why: Kirigami's bars set the `Header` colour set themselves, which stops them inheriting from the window, so a `KanteScope` on `contentItem` never reached them. Kirigami names no hook for the bars: a page's is `Page.globalToolBarItem`, the page stack's is a Loader inside the `PageRow` that no property names (found from `pageStack.globalToolBar.leftHandleAnchor` upwards). `KanteBarScope` is the scope of one bar; `KanteWindowScope` creates it as the bar's child, so both go together (a scope made by a Loader died before the bar of a page that slides out after a pop). Test `qml/tests/tst_kante178.qml`: bars in the three styles, Kante and Leinen, first, pushed and popped page, and back to the platform's colours.
 
 Bar ground: the page ground (`KanteStyle.backgroundColor`), like the web nav (`.nav` on `--bg-void`), not the window role `dialogColor` that `KanteScope` gives its target. The page and its bar are one surface, set apart by the rule below.
 
