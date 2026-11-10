@@ -208,8 +208,31 @@ Item {
     }
 
     function targetEnabled() {
-        if (applied && target && !target.enabled) {
+        if (!applied || !target) {
+            return
+        }
+        if (!target.enabled) {
             sweep(target)
+            return
+        }
+        unwatchAll()
+    }
+
+    // Enabled again: the items are let go (the ones dressed keep their roles). The next time
+    // the target is disabled, the sweep looks at them again.
+    function unwatchAll() {
+        const table = watched
+        watched = {}
+        watchedCount = 0
+        watchedKept = 0
+        pending = []
+        for (const key in table) {
+            const item = table[key]
+            if (!alive(item)) {
+                continue
+            }
+            item.enabledChanged.disconnect(item, itemEnabled)
+            item.childrenChanged.disconnect(item, itemGrown)
         }
     }
 

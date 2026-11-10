@@ -100,7 +100,7 @@ TestCase {
 
     // The bar scopes only dress the bar itself: its children inherit its colours. A scope that
     // watched the bar's subtree (every item, enabled and children signals) made a change of
-    // style slower by the number of bars and items (Mitori: +75 ms CPU in Debug).
+    // style slower by the number of bars and items (Mitori: about 100 ms CPU in Debug, 815 against 705).
     function test_bar_scopes_watch_nothing() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         KanteStyle.preferDark = true
@@ -131,6 +131,15 @@ TestCase {
             bar.enabled = true
         }
         verifyBars(win, "enabled again")
+        // Enabled again, the scopes let go of the items they swept while it was disabled.
+        for (const scope of findAll(win.pageStack, c => c.objectName === "kanteBarScope")) {
+            compare(scope.watchedCount, 0, "items the scope of " + scope.target + " watches")
+        }
+        // And the next time it is disabled, the ground is right again.
+        for (const bar of bars(win)) {
+            bar.enabled = false
+        }
+        verifyBars(win, "disabled again")
     }
 
     Component {
