@@ -21,6 +21,7 @@ A list row and a path node fit a window 533 px wide; Kirigami's toolbars take Ka
 
 ![A narrow list row: title and wrapped subtitle, the time and two buttons in a line below](https://shrippen.github.io/Kante/shots/release-1.78-narrow-row.png)
 ![A path node with a sentence under its title and meta line](https://shrippen.github.io/Kante/shots/release-1.78-path-text.png)
+![A Kirigami window in dark Kante: the toolbar with page title and an action on the page ground, a rule below it](https://shrippen.github.io/Kante/shots/release-1.78-window-bar.png)
 
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
 
@@ -38,6 +39,7 @@ Eine Listenzeile und ein Pfad-Knoten passen in ein 533 px schmales Fenster; Kiri
 
 ![Eine schmale Listenzeile: Titel und umbrochener Untertitel, darunter in einer Zeile die Zeit und zwei Knöpfe](https://shrippen.github.io/Kante/shots/release-1.78-narrow-row.png)
 ![Ein Pfad-Knoten mit einem Satz unter Titel und Meta-Zeile](https://shrippen.github.io/Kante/shots/release-1.78-path-text.png)
+![Ein Kirigami-Fenster in dunklem Kante: die Werkzeugleiste mit Seitentitel und einer Aktion auf dem Seitengrund, darunter eine Linie](https://shrippen.github.io/Kante/shots/release-1.78-window-bar.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
 

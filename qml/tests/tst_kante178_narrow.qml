@@ -200,7 +200,7 @@ TestCase {
 
     // ---- Gallery ----
 
-    function test_gallery_shows_all_three() {
+    function test_gallery_shows_both() {
         const component = Qt.createComponent(Qt.resolvedUrl("../demo/Gallery.qml"), Component.PreferSynchronous)
         tryVerify(() => component.status !== Component.Loading)
         compare(component.status, Component.Ready, component.errorString())
