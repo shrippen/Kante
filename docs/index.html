@@ -134,16 +134,26 @@
     <li class="release" id="v1.78.0">
       <div class="release-head"><b class="release-version">1.78.0</b><time datetime="2026-11-10">10 Nov 2026</time></div>
       <div class="release-body">
-        <p class="release-lead" lang="en">A list row and a path node fit a window 533 px wide.</p>
-        <p class="release-lead" lang="de">Eine Listenzeile und ein Pfad-Knoten passen in ein 533 px schmales Fenster.</p>
+        <p class="release-lead" lang="en">A list row and a path node fit a window 533 px wide; Kirigami's toolbars take Kante's colours.</p>
+        <p class="release-lead" lang="de">Eine Listenzeile und ein Pfad-Knoten passen in ein 533 px schmales Fenster; Kirigamis Werkzeugleisten nehmen Kantes Farben an.</p>
         <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
           <ul lang="en">
             <li><code>KanteListRow</code>: when the texts would get less than <code>minTextWidth</code> (opt-in, default 0 = never), the meta figure and the trailing items move to a second line under the texts and title and subtitle wrap. Before, the buttons were pushed out of a narrow row. Wide rows look the same; <code>stacked</code> tells the state.</li>
             <li><code>KantePath</code>: an entry may carry <code>text</code>, a sentence under title and meta that wraps and is never cut.</li>
+            <li><code>KanteWindowScope { window: root }</code>: put into a <code>Kirigami.ApplicationWindow</code> in place of <code>KanteScope</code> on its <code>contentItem</code>.</li>
           </ul>
           <ul lang="de">
             <li><code>KanteListRow</code>: bekäme der Text weniger als <code>minTextWidth</code> (opt-in, Standard 0 = nie), rücken Meta-Angabe und Trailing-Elemente in eine zweite Zeile unter den Text, und Titel und Untertitel umbrechen. Vorher wurden die Knöpfe aus einer schmalen Zeile geschoben. Breite Zeilen sehen gleich aus; <code>stacked</code> nennt den Zustand.</li>
             <li><code>KantePath</code>: ein Eintrag kann <code>text</code> tragen, einen Satz unter Titel und Meta, der umbricht und nie abgeschnitten wird.</li>
+            <li><code>KanteWindowScope { window: root }</code>: in ein <code>Kirigami.ApplicationWindow</code> statt <code>KanteScope</code> auf dessen <code>contentItem</code>.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>The global toolbars of a <code>Kirigami.ApplicationWindow</code> (page bars, the page stack's bar, every bar style, pages on <code>layers</code> too) showed the platform's colours with Kante on, e.g. Material's <code>#fffbfe</code> on Android. <code>KanteWindowScope</code> themes them; with Kante off they get the platform's colours back.</li>
+          </ul>
+          <ul lang="de">
+            <li>Die globalen Werkzeugleisten eines <code>Kirigami.ApplicationWindow</code> (Seitenleisten, die Leiste des Seitenstapels, jeder Leistenstil, auch Seiten auf <code>layers</code>) zeigten mit Kante die Farben der Plattform, z. B. Materials <code>#fffbfe</code> unter Android. <code>KanteWindowScope</code> färbt sie; ist Kante aus, bekommen sie die Farben der Plattform zurück.</li>
           </ul>
         </div>
         <div class="release-shots">

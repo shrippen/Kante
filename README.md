@@ -323,6 +323,7 @@ QQC2.RadioButton { KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape
 | `KanteFocusFollow` | Keeps the keyboard focus in view in a Flickable (1.49) |
 | `KanteFocusTrap` | Keeps Tab and Shift+Tab inside a sheet or overlay in the page while it is shown; the page behind is disabled or hidden, the focus goes back to `returnTo` (1.51) |
 | `KanteScope` | Hands the Kante colours to an item's `Kirigami.Theme`, so plain controls below follow, disabled ones included (1.51). Popups need their own; `popup` themes a popup's or drawer's ground with its content |
+| `KanteWindowScope` | A `Kirigami.ApplicationWindow`'s whole colours: a `KanteScope` on its `contentItem` plus a scope on each global toolbar (1.78) |
 | `KanteCard` | Card with the cut corner and an optional accent bar (`chamfer`, `barColor`) |
 | `KanteButton`, `KanteToolButton`, `KanteTextField`, `KanteHeading`, `KanteDialog` | Wrappers: the platform control in System; in Kante square, uppercase Rajdhani, sunken fields, accent-filled primary (`emphasis`) |
 | `KanteCheckSkin`, `KanteFieldSkin`, `KanteSliderSkin`, `KantePopupSkin`, `KanteMessageSkin`, `KanteDialogSkin`, `KantePageTitle` | Skins placed *inside* an existing control (check box, radio button, switch, combo/spin box, text area, slider, menu, `Kirigami.InlineMessage`, Kirigami dialog, page header). `KanteSliderSkin` follows the slider's `orientation`: with `Qt.Vertical` (a fader) the track runs along the height, filled from the bottom |
@@ -796,6 +797,27 @@ For Kaiwa in a window 533 px wide: a list row and a path node that keep their co
 |---------|-----|------|
 | List row, narrow | `KanteListRow` | With `minTextWidth` set (default 0: never stack; e.g. `KanteStyle.unit(160)`), when the texts would get less than it, the meta figure and the `trailing` items move to a second line under the texts, left-aligned with them, and title and subtitle wrap instead of eliding; the row grows. `stacked` (read-only) says which state it is in. Wide rows look as before. The focus rules of 1.51 hold in both states: the items keep their place in the Tab order. A row without meta and `trailing` never stacks |
 | Path node with a sentence | `KantePath` | An entry of `model` may carry `text`: a third line under title and meta in the body font, wrapped, never elided; the node grows with it. A screen reader hears it after the meta line |
+
+Found in Mitori on Android: with Kante on, Kirigami's toolbar at the top of the window showed the platform's colours (Material: `#fffbfe`).
+
+| Element | QML | Note |
+|---------|-----|------|
+| Window scope | `KanteWindowScope { window: root }` | Put it into a `Kirigami.ApplicationWindow` instead of `KanteScope { target: root.contentItem }`. It themes the content and the global toolbars of every bar style (ToolBar, Titles, Breadcrumb), on each page and on the page stack's bar. With Kante off the bars have Kirigami's Header colours again. |
+
+```qml
+Kirigami.ApplicationWindow {
+    id: root
+    KanteWindowScope { window: root }
+}
+```
+
+Pages on `pageStack.layers` (modal pages) get a scope too. Why: Kirigami's bars set the `Header` colour set themselves, which stops them inheriting from the window, so a `KanteScope` on `contentItem` never reached them. Kirigami names no hook for the bars: a page's is `Page.globalToolBarItem`, the page stack's is a Loader inside the `PageRow` that no property names (found from `pageStack.globalToolBar.leftHandleAnchor` upwards). `KanteBarScope` is the scope of one bar; `KanteWindowScope` creates it as the bar's child, so both go together (a scope made by a Loader died before the bar of a page that slides out after a pop). Test `qml/tests/tst_kante178.qml`: bars in the three styles, Kante and Leinen, first, pushed and popped page, and back to the platform's colours.
+
+Bar ground: the page ground (`KanteStyle.backgroundColor`), like the web nav (`.nav` on `--bg-void`), not the window role `dialogColor` that `KanteScope` gives its target. The page and its bar are one surface, set apart by the rule below.
+
+`KanteScope` got two properties for this: `backgroundRole` (KanteStyle role of the target's `backgroundColor`, default `dialogColor`) and `restorePlatform` (Kante off gives the platform's colours back, for a target with a colour set of its own).
+
+Not themed: the thin separators Kirigami sets to `Header` inside the bars (they keep the platform's line colour). With `KanteStyle.materialStyle` the scope stays off, as `KanteScope` does.
 
 ### Added in Kante 1.77
 
