@@ -56,6 +56,9 @@ TestCase {
         }
         return out
     }
+    function findAll(item, pred) {
+        return allItems(item).filter(pred)
+    }
     function bars(win) {
         return allItems(win.pageStack).filter(c => c.visible && c.background
                                               && c.maximumHeight !== undefined && c.separatorVisible !== undefined)
@@ -92,6 +95,23 @@ TestCase {
             win.pageStack.pop()
             verifyBars(win, data.tag + (dark ? " dark" : " Leinen") + " popped")
             win.destroy()
+        }
+    }
+
+    // The bar scopes only dress the bar itself: its children inherit its colours. A scope that
+    // watched the bar's subtree (every item, enabled and children signals) made a change of
+    // style slower by the number of bars and items (Mitori: +75 ms CPU in Debug).
+    function test_bar_scopes_watch_nothing() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        const win = createTemporaryObject(windowComponent, tc)
+        win.pageStack.globalToolBar.style = Kirigami.ApplicationHeaderStyle.ToolBar
+        win.pageStack.push(win.second)
+        verifyBars(win, "bars")
+        const scopes = findAll(win.pageStack, c => c.objectName === "kanteBarScope")
+        verify(scopes.length >= 2, "a scope on each bar: " + scopes.length)
+        for (const scope of scopes) {
+            compare(scope.watchedCount, 0, "items the scope of " + scope.target + " watches")
         }
     }
 

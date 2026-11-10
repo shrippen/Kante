@@ -35,6 +35,12 @@ Item {
      * target with a colour set of its own that does not inherit (Kirigami's toolbar, Header).
      */
     property bool restorePlatform: false
+    /**
+     * On: only the target is themed, the items below are not watched for disabled ones (no
+     * sweep, no connections). For a target whose children inherit its colours anyway and that
+     * is made often (a Kirigami bar on each page).
+     */
+    property bool shallow: false
     readonly property var theme: target ? target.Kirigami.Theme : null
     readonly property Item ground: popup && popup.background ? popup.background : null
     readonly property var groundTheme: ground ? ground.Kirigami.Theme : null
@@ -73,7 +79,9 @@ Item {
         }
         applied = KanteStyle.themed
         if (applied) {
-            sweep(target)
+            if (!shallow) {
+                sweep(target)
+            }
             return
         }
         undress()
@@ -311,7 +319,7 @@ Item {
     }
     // After the event: the themes below take the window's colours first.
     function resweep() {
-        if (applied && windowRoot) {
+        if (applied && windowRoot && !shallow) {
             sweep(target)
         }
     }

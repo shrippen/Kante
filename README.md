@@ -817,6 +817,8 @@ Bar ground: the page ground (`KanteStyle.backgroundColor`), like the web nav (`.
 
 `KanteScope` got two properties for this: `backgroundRole` (KanteStyle role of the target's `backgroundColor`, default `dialogColor`) and `restorePlatform` (Kante off gives the platform's colours back, for a target with a colour set of its own).
 
+The bar scopes are `shallow` (`KanteScope.shallow`, 1.78.1): they dress the bar only and do not watch its items (27 per page bar), whose colours follow the bar's. A disabled item in a bar keeps the platform's disabled colour. Watching them made a change of style in Mitori about 100 ms CPU slower (Debug, alternating runs: 815 ms against 705 ms with shallow scopes and 676 ms without bar scopes). Test `tst_kante178.qml` `test_bar_scopes_watch_nothing`.
+
 Not themed: the thin separators Kirigami sets to `Header` inside the bars (they keep the platform's line colour). With `KanteStyle.materialStyle` the scope stays off, as `KanteScope` does.
 
 ### Added in Kante 1.77
