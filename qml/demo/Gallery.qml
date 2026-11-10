@@ -1202,6 +1202,33 @@ Rectangle {
             }
 
             Section {
+                title: "1.78 · fensterbereich: leisten von kirigami"
+                // The gallery is no ApplicationWindow: the bar's ground as KanteWindowScope gives it, and the use.
+                Rectangle {
+                    objectName: "galleryWindowBar"
+                    Layout.fillWidth: true
+                    implicitHeight: KanteStyle.unit(40)
+                    color: KanteStyle.backgroundColor
+                    Rectangle {
+                        anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
+                        height: 1
+                        color: KanteStyle.ruleColor
+                    }
+                    QQC2.Label {
+                        anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: KanteStyle.unit(12) }
+                        text: "Seitentitel"
+                        font: KanteStyle.titleFont(KanteStyle.defaultFont.pointSize * 1.35)
+                        color: KanteStyle.strongTextColor
+                    }
+                }
+                QQC2.Label {
+                    text: "Kirigami.ApplicationWindow { id: root; KanteWindowScope { window: root } }"
+                    font: KanteStyle.monoFont(KanteStyle.defaultFont.pointSize * 0.9)
+                    color: KanteStyle.mutedTextColor
+                }
+            }
+
+            Section {
                 title: "1.77 · ladeanzeige"
                 RowLayout {
                     spacing: KanteStyle.unit(6)
