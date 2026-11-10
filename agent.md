@@ -51,7 +51,7 @@ Three kinds of release, each in this order. The release log format (all three): 
 6. Gitea release, notes only, no files: `tools/release-notes.sh X.Y.Z kimai/knust/CHANGELOG.md > notes.md && tea releases create --login git.arianw.de --repo shrippen/Kante --tag knust-vX.Y.Z --title "Knust X.Y.Z" --note-file notes.md`.
 7. GitHub: the tag starts `.github/workflows/knust-release.yml` (version check, PHP lint, palette check, zip, release with the same notes, `KnustBundle-X.Y.Z.zip` attached). Check the run (`gh run list -R shrippen/Kante -w knust-release.yml`) and the zip on the release.
 8. No `versions.json` entry: `build-versions.py` skips `knust-v*` tags and pages inside another repo.
-9. Live Kimai (regis.lan): deploy `kimai/knust/` as `KnustBundle/` the way `../CLAUDE.md` ("Kimai-Plugins deployen") says, with its excludes, rights, console as `www-data` (`kimai:reload -n`, `kimai:bundle:knust:install`) and checks.
+9. Live Kimai (regis.lan): deploy `kimai/knust/` as `KnustBundle/` the way the skill `kimai-deploy` (`../regeln/skills/kimai-deploy/SKILL.md`) says, with its excludes, rights, console as `www-data` (`kimai:reload -n`, `kimai:bundle:knust:install`) and checks.
 10. Done when https://shrippen.github.io/Kante/knust/ shows the release in `#changes` and the footer, and the live Kimai runs it.
 
 **Kit version** (no tag, no release, no landing page):
