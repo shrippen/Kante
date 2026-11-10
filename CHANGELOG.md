@@ -14,6 +14,7 @@ A list row and a path node fit a window 533 px wide.
 #### New
 - `KanteListRow`: when the texts would get less than `minTextWidth` (opt-in, default 0 = never), the meta figure and the trailing items move to a second line under the texts and title and subtitle wrap. Before, the buttons were pushed out of a narrow row. Wide rows look the same; `stacked` tells the state.
 - `KantePath`: an entry may carry `text`, a sentence under title and meta that wraps and is never cut.
+
 ![A narrow list row: title and wrapped subtitle, the time and two buttons in a line below](https://shrippen.github.io/Kante/shots/release-1.78-narrow-row.png)
 ![A path node with a sentence under its title and meta line](https://shrippen.github.io/Kante/shots/release-1.78-path-text.png)
 
@@ -26,6 +27,7 @@ Eine Listenzeile und ein Pfad-Knoten passen in ein 533 px schmales Fenster.
 #### Neu
 - `KanteListRow`: bekäme der Text weniger als `minTextWidth` (opt-in, Standard 0 = nie), rücken Meta-Angabe und Trailing-Elemente in eine zweite Zeile unter den Text, und Titel und Untertitel umbrechen. Vorher wurden die Knöpfe aus einer schmalen Zeile geschoben. Breite Zeilen sehen gleich aus; `stacked` nennt den Zustand.
 - `KantePath`: ein Eintrag kann `text` tragen, einen Satz unter Titel und Meta, der umbricht und nie abgeschnitten wird.
+
 ![Eine schmale Listenzeile: Titel und umbrochener Untertitel, darunter in einer Zeile die Zeit und zwei Knöpfe](https://shrippen.github.io/Kante/shots/release-1.78-narrow-row.png)
 ![Ein Pfad-Knoten mit einem Satz unter Titel und Meta-Zeile](https://shrippen.github.io/Kante/shots/release-1.78-path-text.png)
 
