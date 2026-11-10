@@ -2,4 +2,4 @@
 
 ## Repository rule
 
-- See the repository rule in [`agent.md`](../../agent.md) at the root of Kante.
+- See `RULES.md` (Repository) and [`agent.md`](../../agent.md) at the root of Kante.
