@@ -989,20 +989,6 @@ Rectangle {
                         }
                         RowLayout {
                             spacing: KanteStyle.unit(6)
-                            KanteButton {
-                                id: galleryBusyToggle
-                                checkable: true
-                                text: checked ? "Weiter laden" : "Anhalten"
-                            }
-                            KanteBusyIndicator {
-                                objectName: "galleryBusyIndicator"
-                                running: !galleryBusyToggle.checked
-                                Layout.preferredWidth: KanteStyle.unit(24)
-                                Layout.preferredHeight: KanteStyle.unit(24)
-                            }
-                        }
-                        RowLayout {
-                            spacing: KanteStyle.unit(6)
                             Text { text: "Speichern"; color: KanteStyle.textColor; font: KanteStyle.defaultFont }
                             KanteKeycap { text: "Strg+S" }
                             Text { text: "Abbrechen"; color: KanteStyle.textColor; font: KanteStyle.defaultFont }
@@ -1211,6 +1197,24 @@ Rectangle {
                             actionShortcut: "Strg+Z"
                             life: 8000
                         }
+                    }
+                }
+            }
+
+            Section {
+                title: "1.77 · ladeanzeige"
+                RowLayout {
+                    spacing: KanteStyle.unit(6)
+                    KanteButton {
+                        id: galleryBusyToggle
+                        checkable: true
+                        text: checked ? "Weiter laden" : "Anhalten"
+                    }
+                    KanteBusyIndicator {
+                        objectName: "galleryBusyIndicator"
+                        running: !galleryBusyToggle.checked
+                        Layout.preferredWidth: KanteStyle.unit(24)
+                        Layout.preferredHeight: KanteStyle.unit(24)
                     }
                 }
             }
