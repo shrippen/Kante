@@ -133,6 +133,69 @@ TestCase {
         verifyBars(win, "enabled again")
     }
 
+    Component {
+        id: actionWindowComponent
+        Kirigami.ApplicationWindow {
+            id: win
+            width: 800
+            height: 600
+            visible: true
+            property alias first: firstAction
+            property alias later: laterAction
+            KanteWindowScope { window: win }
+            Kirigami.Action {
+                id: laterAction
+                text: "Later"
+                enabled: false
+            }
+            pageStack.initialPage: Kirigami.Page {
+                id: page
+                title: "First"
+                actions: [
+                    Kirigami.Action { id: firstAction; text: "One" },
+                    Kirigami.Action { text: "Two"; enabled: false }
+                ]
+                property var more: [firstAction, laterAction]
+            }
+        }
+    }
+
+    function actionButtons(win) {
+        return allItems(win.pageStack).filter(c => c.visible && c.checkable !== undefined && c.hovered !== undefined
+                                              && c.action !== undefined && c.text !== "")
+    }
+
+    function verifyDisabledButtons(win, label) {
+        const buttons = actionButtons(win).filter(b => !b.enabled)
+        verify(buttons.length > 0, label + ": a disabled button")
+        // The scope dresses a new or newly disabled item after the event.
+        for (const b of buttons) {
+            tryVerify(() => Qt.colorEqual(b.Kirigami.Theme.textColor, KanteStyle.disabledTextColor), 2000,
+                      label + ": " + b.text + " text " + b.Kirigami.Theme.textColor + ", expected " + KanteStyle.disabledTextColor)
+        }
+    }
+
+    // Not the bar scope's work (it is shallow): the scope on contentItem reaches the bar's items. Both
+    // together keep a disabled button in Kante's colours.
+    // A disabled button in an enabled bar has a colour table of its own in the platform's
+    // colours: made disabled, disabled later, made late (ActionToolBar builds its buttons late).
+    function test_disabled_button_in_bar() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        const win = createTemporaryObject(actionWindowComponent, tc)
+        win.pageStack.globalToolBar.style = Kirigami.ApplicationHeaderStyle.ToolBar
+        tryVerify(() => actionButtons(win).length >= 2, 2000, "buttons: " + actionButtons(win).length)
+        verifyDisabledButtons(win, "made disabled")
+
+        win.first.enabled = false
+        tryVerify(() => actionButtons(win).filter(b => !b.enabled).length >= 2, 2000)
+        verifyDisabledButtons(win, "disabled later")
+
+        win.pageStack.currentItem.actions = [win.first, win.later]
+        tryVerify(() => actionButtons(win).some(b => b.text === "Later"), 2000)
+        verifyDisabledButtons(win, "made late")
+    }
+
     // A page on the layers (a modal page over the page row) has a bar of its own.
     function test_layers_bars_data() {
         return [
