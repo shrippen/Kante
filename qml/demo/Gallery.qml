@@ -1228,6 +1228,7 @@ Rectangle {
                         objectName: "galleryNarrowRow"
                         Layout.preferredWidth: KanteStyle.unit(240)
                         Layout.alignment: Qt.AlignTop
+                        minTextWidth: KanteStyle.unit(160)
                         text: "An der Konbini"
                         subtitle: "N5-03 · zwei von vier Szenarien"
                         meta: "02:14"
@@ -1236,19 +1237,6 @@ Rectangle {
                             KanteButton { text: "Üben"; size: KanteButton.Size.Small }
                             KanteButton { text: "Löschen"; size: KanteButton.Size.Small }
                         }
-                    }
-                    // Labelled axes, tooltips and a legend.
-                    KanteHeatmap {
-                        objectName: "galleryHeatmapAxes"
-                        Layout.alignment: Qt.AlignTop
-                        columns: 7
-                        levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4, 2, 1, 0, 3, 4, 2]
-                        rowLabels: ["Woche 1", "", "Woche 3"]
-                        columnLabels: ["M", "D", "M", "D", "F", "S", "S"]
-                        tips: levels.map((l, i) => "Tag " + (i + 1) + ": " + l + " von 4")
-                        legendLess: "weniger"
-                        legendMore: "mehr"
-                        Accessible.name: "Übungstage der letzten drei Wochen"
                     }
                     KantePath {
                         objectName: "galleryPathText"

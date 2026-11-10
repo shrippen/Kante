@@ -790,12 +790,11 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 ### Added in Kante 1.78
 
-For Kaiwa in a window 533 px wide: a row, a chart and a path node that keep their content when space runs out. All opt-in; without the new properties nothing changes.
+For Kaiwa in a window 533 px wide: a list row and a path node that keep their content when space runs out. Both opt-in: without `minTextWidth` and `text` nothing changes.
 
 | Element | QML | Note |
 |---------|-----|------|
-| List row, narrow | `KanteListRow` | When the texts would get less than `minTextWidth` (default 160 units), the meta figure and the `trailing` items move to a second line under the texts, left-aligned with them, and title and subtitle wrap instead of eliding; the row grows. `stacked` (read-only) says which state it is in. Wide rows look as before. The focus rules of 1.51 hold in both states: the items keep their place in the Tab order. A row without meta and `trailing` never stacks |
-| Heat map with axes | `KanteHeatmap` | `rowLabels` (one string per row, left of the rows; "" leaves a row unlabelled), `columnLabels` (one per column, above the columns, centred on them; keep them within `cellSize`), `tips` (one per cell: a tooltip on hover, and the cell's accessible name), `legendLess` / `legendMore` ("weniger" / "mehr": one line under the grid with the five level swatches between the texts, shown when either is set). Set `Accessible.name` on the chart itself. The root is an `Item` now, no longer a `Grid`: `levels`, `cellSize`, `columns`, `spacing` and `levelColor()` stay, other `Grid` properties (`rows`, `flow`) are gone |
+| List row, narrow | `KanteListRow` | With `minTextWidth` set (default 0: never stack; e.g. `KanteStyle.unit(160)`), when the texts would get less than it, the meta figure and the `trailing` items move to a second line under the texts, left-aligned with them, and title and subtitle wrap instead of eliding; the row grows. `stacked` (read-only) says which state it is in. Wide rows look as before. The focus rules of 1.51 hold in both states: the items keep their place in the Tab order. A row without meta and `trailing` never stacks |
 | Path node with a sentence | `KantePath` | An entry of `model` may carry `text`: a third line under title and meta in the body font, wrapped, never elided; the node grows with it. A screen reader hears it after the meta line |
 
 ### Added in Kante 1.77

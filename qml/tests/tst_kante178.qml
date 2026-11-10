@@ -5,8 +5,7 @@ import Kante
 
 /**
  * Kante 1.78, for a window 533 px wide (Kaiwa): the list row puts its meta figure and trailing
- * items under the texts when the row is narrow; the heat map takes row and column labels, a
- * legend and tooltips; a path node takes a sentence.
+ * items under the texts when the row is narrow; a path node takes a sentence.
  * Run: tools/check-qml.sh (qmltestrunner, offscreen).
  */
 TestCase {
@@ -32,6 +31,7 @@ TestCase {
             KanteListRow {
                 id: row
                 width: parent.width
+                minTextWidth: KanteStyle.unit(160)
                 text: "Ein recht langer Titel der Zeile"
                 subtitle: "Und eine ebenso lange Unterzeile"
                 meta: "02:14"
@@ -102,6 +102,22 @@ TestCase {
         }
     }
 
+    Component {
+        id: defaultRow
+        KanteListRow {
+            width: 120
+            text: "Ein recht langer Titel der Zeile"
+            meta: "02:14"
+            trailing: KanteButton { text: "Üben" }
+        }
+    }
+
+    function test_default_row_never_stacks() {
+        const row = createTemporaryObject(defaultRow, stage())
+        compare(row.minTextWidth, 0)
+        verify(!row.stacked, "no stacking without minTextWidth, however narrow")
+    }
+
     function test_row_without_tail_never_stacks() {
         const row = createTemporaryObject(plainRow, stage())
         verify(!row.stacked)
@@ -127,139 +143,6 @@ TestCase {
             keyClick(Qt.Key_Backtab, Qt.ShiftModifier)
             verify(focused() === scene.row, width + ": back to the row, focus on " + focused())
         }
-    }
-
-    // ---- KanteHeatmap ----
-
-    Component {
-        id: heatBare
-        KanteHeatmap { columns: 5; levels: [0, 1, 2, 3, 4, 0, 1, 2, 3, 4] }
-    }
-    Component {
-        id: heatFull
-        KanteHeatmap {
-            columns: 5
-            levels: [0, 1, 2, 3, 4, 0, 1, 2, 3, 4]
-            rowLabels: ["Mo", ""]
-            columnLabels: ["a", "b", "c", "d", "e"]
-            tips: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9"]
-            legendLess: "weniger"
-            legendMore: "mehr"
-        }
-    }
-
-    function test_heatmap_bare_size() {
-        const heat = createTemporaryObject(heatBare, stage())
-        const cell = heat.cellSize
-        compare(heat.implicitWidth, 5 * cell + 4 * heat.spacing)
-        compare(heat.implicitHeight, 2 * cell + heat.spacing)
-        compare(heat.levelColor(4), KanteStyle.levelColor(4, 4))
-    }
-
-    function test_heatmap_labels_and_legend_add_room() {
-        const bare = createTemporaryObject(heatBare, stage())
-        const full = createTemporaryObject(heatFull, stage())
-        verify(full.implicitWidth > bare.implicitWidth, "row labels take room on the left")
-        verify(full.implicitHeight > bare.implicitHeight + full.cellSize, "column labels and legend take room")
-    }
-
-    function labelTexts(item, found) {
-        for (let i = 0; i < item.children.length; i++) {
-            const kid = item.children[i]
-            if (kid instanceof Text && kid.visible) {
-                found.push(kid.text)
-            }
-            labelTexts(kid, found)
-        }
-        return found
-    }
-
-    function test_heatmap_draws_the_labels() {
-        const texts = labelTexts(createTemporaryObject(heatFull, stage()), [])
-        for (const wanted of ["Mo", "a", "e", "weniger", "mehr"]) {
-            verify(texts.indexOf(wanted) >= 0, wanted + " in " + texts)
-        }
-        const bare = labelTexts(createTemporaryObject(heatBare, stage()), [])
-        compare(bare.length, 0, "no text without labels")
-    }
-
-    // A header row, then per row its label and its cells, in this order.
-    function test_heatmap_labels_sit_around_the_cells() {
-        const heat = createTemporaryObject(heatFull, stage())
-        let rowLabel = null
-        let columnLabel = null
-        let cell = null
-        function find(item) {
-            for (let i = 0; i < item.children.length; i++) {
-                const kid = item.children[i]
-                if (kid instanceof Text && kid.text === "Mo") {
-                    rowLabel = kid
-                }
-                if (kid instanceof Text && kid.text === "a") {
-                    columnLabel = kid
-                }
-                if (kid.hasOwnProperty("tip") && kid.tip === "t0") {
-                    cell = kid
-                }
-                find(kid)
-            }
-        }
-        find(heat)
-        verify(rowLabel && columnLabel && cell)
-        const label = rowLabel.mapToItem(heat, 0, 0)
-        const above = columnLabel.mapToItem(heat, 0, 0)
-        const at = cell.mapToItem(heat, 0, 0)
-        verify(label.x + rowLabel.width <= at.x, "row label left of the cell")
-        verify(above.y + columnLabel.height <= at.y, "column label above the cell")
-        verify(Math.abs(label.y + rowLabel.height / 2 - (at.y + cell.height / 2)) <= 1, "row label level with its row")
-    }
-
-    function test_heatmap_legend_needs_a_text() {
-        const heat = createTemporaryObject(heatBare, stage())
-        verify(!heat.hasLegend)
-        heat.legendMore = "mehr"
-        verify(heat.hasLegend)
-    }
-
-    function test_heatmap_tip_on_hover() {
-        const heat = createTemporaryObject(heatFull, stage())
-        // The third cell of the first row: skip the header row and the row label.
-        const x = heat.width - 1
-        let cell = null
-        function find(item) {
-            for (let i = 0; i < item.children.length; i++) {
-                const kid = item.children[i]
-                if (kid.hasOwnProperty("tip") && kid.tip === "t4") {
-                    cell = kid
-                }
-                find(kid)
-            }
-        }
-        find(heat)
-        verify(cell, "cell with tip t4")
-        mouseMove(heat, cell.mapToItem(heat, 0, 0).x + 2, cell.mapToItem(heat, 0, 0).y + 2)
-        tryVerify(() => cell.QQC2.ToolTip.visible, 2000)
-        compare(cell.QQC2.ToolTip.text, "t4")
-        mouseMove(heat, -50, -50)
-        tryVerify(() => !cell.QQC2.ToolTip.visible, 2000)
-    }
-
-    function test_heatmap_without_tips_has_no_tooltip() {
-        const heat = createTemporaryObject(heatBare, stage())
-        verify(heat.tips.length === 0)
-        function visibleTips(item) {
-            for (let i = 0; i < item.children.length; i++) {
-                const kid = item.children[i]
-                if (kid.hasOwnProperty("tip") && kid.tip !== "") {
-                    return true
-                }
-                if (visibleTips(kid)) {
-                    return true
-                }
-            }
-            return false
-        }
-        verify(!visibleTips(heat))
     }
 
     // ---- KantePath ----
@@ -324,7 +207,6 @@ TestCase {
         const gallery = component.createObject(null)
         verify(gallery)
         verify(findChild(gallery, "galleryNarrowRow"), "a narrow list row")
-        verify(findChild(gallery, "galleryHeatmapAxes"), "a heat map with labels")
         verify(findChild(gallery, "galleryPathText"), "a path with a sentence")
         gallery.destroy()
     }
