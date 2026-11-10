@@ -808,6 +808,14 @@ Found by Kontra's benchmark of 9.11.2026.
 
 `KanteScope` queues an item with new children once until its sweep, not once per child (`pending`). While Kontra's notation view opened, 5250 entries stood in the queue, and one sweep looked at 1.4 million children: the app stood still for 2.7 s, and for 0.8 s on the next line. Now 17 ms and 10 ms.
 
+### Fixed in Kante 1.76.3
+
+Found by Plasmai's benchmarks (widget: objects created at start; app: pages five to eight times slower than with Kante 1.27).
+
+`KanteButton` (and the generated `KantePlasmaButton`): the `KanteLoader` shown while `busy` sits in a `Loader` that is active while `busy` only; before, every button built it and hid it. Plasmai's widget: 2860 of 20650 objects at start.
+
+`KanteIcon`: an `IconImage` without `name` and `source` looks up an empty name in the icon theme on every change, uncached (~6.5 ms on Plasma; offscreen and in the tests it costs nothing, so it went unseen). `source` is a transparent placeholder (`blank`) unless `iconSource` is a url, and `pick()` runs once per new size (`Qt.callLater`, skipped for the same name and size). Buttons on Plasma: ~9 ms each before, ~1 ms now; `KanteDateField` 50 → 22 ms.
+
 ### Added in Kante 1.75
 
 A document read in its own page, with marks on what the fields hold.

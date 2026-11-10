@@ -78,6 +78,24 @@ TestCase {
         verify(Math.abs(centre - button.height / 2) < 0.75, "centre " + centre + " of " + button.height)
     }
 
+    // Kante 1.76.1: a button builds its three hopping squares while busy only. Every button
+    // carried them hidden: 2860 of 20650 objects at the start of the Plasmai widget.
+    function test_button_builds_its_loader_while_busy() {
+        function loaders(item) {
+            let n = item.size !== undefined && item.running !== undefined && item.color !== undefined ? 1 : 0
+            for (let i = 0; i < item.children.length; i++) {
+                n += loaders(item.children[i])
+            }
+            return n
+        }
+        const b = createTemporaryObject(buttonScene, stage())
+        compare(loaders(b), 0, "idle: no loader")
+        b.busy = true
+        compare(loaders(b), 1, "busy: the loader")
+        b.busy = false
+        compare(loaders(b), 0, "done: gone again")
+    }
+
     function test_placeholder_inside_the_field() {
         const field = createTemporaryObject(fieldScene, stage())
         field.forceActiveFocus()
@@ -107,7 +125,8 @@ TestCase {
             KanteIcon {
                 id: laidOutIcon
                 property real sizeAtName: -1
-                onNameChanged: if (name !== "") sizeAtName = sourceSize.height
+                property int picks: 0
+                onNameChanged: if (name !== "") { sizeAtName = sourceSize.height; picks++ }
                 iconSource: "go-next"
                 Layout.preferredWidth: 22
                 Layout.preferredHeight: 22
@@ -139,6 +158,34 @@ TestCase {
         tryCompare(row.icon, "sizeAtName", 32)
         row.icon.iconSource = "qrc:/x.svg"
         compare(row.icon.name, "", "a url is no theme name")
+    }
+
+    // 1.76.1: every set name is a lookup in the icon theme, ~16 ms on Plasma; a layout settles
+    // width and height one after the other, and each change looked the icon up again.
+    function test_icon_picks_once_per_new_size() {
+        const row = createTemporaryObject(iconInLayoutScene, stage())
+        tryCompare(row.icon, "sizeAtName", 22)
+        wait(50)
+        const before = row.icon.picks
+        row.icon.Layout.preferredWidth = 32
+        row.icon.Layout.preferredHeight = 32
+        tryCompare(row.icon, "sizeAtName", 32)
+        wait(50)
+        compare(row.icon.picks - before, 1, "one lookup for width and height")
+        row.icon.Layout.preferredWidth = 32
+        wait(50)
+        compare(row.icon.picks - before, 1, "the same size: no lookup")
+    }
+
+    // 1.76.1: an IconImage without name and source looks up "" in the icon theme, uncached,
+    // ~6.5 ms each on Plasma: buttons were ten times slower to create than before 1.73.
+    function test_icon_never_without_a_source() {
+        const icon = createTemporaryObject(iconScene, stage(), { width: 0, height: 0 })
+        compare(icon.name, "", "no size: no theme name")
+        verify(String(icon.source) !== "", "a placeholder instead")
+        const row = createTemporaryObject(iconInLayoutScene, stage())
+        tryCompare(row.icon, "sizeAtName", 22)
+        verify(String(row.icon.source) !== "", "a named icon keeps it as fallback")
     }
 
     Component {
