@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checks the release list `#changes` of the landing pages (agent.md, release steps).
+"""Checks the release list `#changes` of the landing pages (RELEASE.md).
 
   - At most three entries in view; the older ones in one `details.changelog-more`, not two
     (a merge of two release branches once left a second one inside the first).

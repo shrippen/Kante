@@ -1,6 +1,6 @@
 # Review guide
 
-Every PR is reviewed before it is merged (rule in `agent.md`): by PR-Agent
+Every PR is reviewed before it is merged (rule in `RULES.md`, procedure in the skill `pr-review`): by PR-Agent
 (owner, 22.10.2026); a new Claude agent checks the **Wichtig** of earlier
 rounds, and reviews when PR-Agent fails. The
 reviewer knows nothing of the session that wrote the change: it gets the
@@ -48,7 +48,7 @@ plugins take Knust and the kit. A bug here shows up in every project:
 
 ## What the owner confirms here
 
-"What is published" (rule in `agent.md`) means here: a release (Kante
+"What is published" (rule in `RULES.md`) means here: a release (Kante
 version, a `knust-v*` tag, a kit version), a change to the release
 workflows, a new public page under `docs/`. A `docs/v1/` rebuilt from the
 sources does not count: it is checked as code like any other change.
@@ -74,5 +74,5 @@ sources does not count: it is checked as code like any other change.
 - In a later round: say for each open **Wichtig** of the last round whether
   it is fixed, or whether its answer is accepted, with the reason. PR-Agent
   sees no earlier round: it reports only its own findings with their labels,
-  and a new Claude agent closes the open ones (`agent.md`).
+  and a new Claude agent closes the open ones (skill `pr-review`).
 - Findings in German, code names as they are.
