@@ -115,6 +115,24 @@ TestCase {
         }
     }
 
+    // A bar that is disabled (the bar of the page below a pushed one, Mitori) has a colour table
+    // of its own in the platform's colours: its ground still is Kante's.
+    function test_disabled_bar() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = false
+        const win = createTemporaryObject(windowComponent, tc)
+        win.pageStack.globalToolBar.style = Kirigami.ApplicationHeaderStyle.ToolBar
+        verifyBars(win, "bars")
+        for (const bar of bars(win)) {
+            bar.enabled = false
+        }
+        verifyBars(win, "disabled bars")
+        for (const bar of bars(win)) {
+            bar.enabled = true
+        }
+        verifyBars(win, "enabled again")
+    }
+
     // A page on the layers (a modal page over the page row) has a bar of its own.
     function test_layers_bars_data() {
         return [

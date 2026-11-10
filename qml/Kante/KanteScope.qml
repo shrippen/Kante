@@ -36,9 +36,10 @@ Item {
      */
     property bool restorePlatform: false
     /**
-     * On: only the target is themed, the items below are not watched for disabled ones (no
-     * sweep, no connections). For a target whose children inherit its colours anyway and that
-     * is made often (a Kirigami bar on each page).
+     * On: the items below the target are not watched while it is enabled (no sweep, one
+     * connection). Only when the target is disabled they are swept: a disabled item has a colour
+     * table of its own, so the whole subtree needs the roles then. For a target that is made
+     * often and is disabled rarely (a Kirigami bar on each page).
      */
     property bool shallow: false
     readonly property var theme: target ? target.Kirigami.Theme : null
@@ -81,6 +82,8 @@ Item {
         if (applied) {
             if (!shallow) {
                 sweep(target)
+            } else {
+                watchTarget()
             }
             return
         }
@@ -195,6 +198,19 @@ Item {
         item.childrenChanged.disconnect(item, itemGrown)
         item.enabledChanged.connect(item, itemEnabled)
         item.childrenChanged.connect(item, itemGrown)
+    }
+
+    // Shallow: only the target's own `enabled` is watched; a disabled target is swept.
+    function watchTarget() {
+        target.enabledChanged.disconnect(scope, targetEnabled)
+        target.enabledChanged.connect(scope, targetEnabled)
+        targetEnabled()
+    }
+
+    function targetEnabled() {
+        if (applied && target && !target.enabled) {
+            sweep(target)
+        }
     }
 
     // Called with the item as `this`. The scope may go before the items (a popup torn down).
@@ -319,7 +335,7 @@ Item {
     }
     // After the event: the themes below take the window's colours first.
     function resweep() {
-        if (applied && windowRoot && !shallow) {
+        if (applied && windowRoot && (!shallow || !target.enabled)) {
             sweep(target)
         }
     }
