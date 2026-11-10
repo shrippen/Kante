@@ -10,7 +10,7 @@
 #      (tools/check-tokens.py); the landing pages' release lists (tools/check-changes.py); Knust's palette check (kimai/knust/bin/check-palette.sh), Knust test (kimai/knust/tests/assets.php)
 #   5. QML module test: qml/tests, if qmltestrunner is installed (tools/check-qml.sh)
 #   6. Kimai plugin kit: assets.html.twig from kit.css/kit.js, self test (kimai/kit/bin/lint.sh)
-#   7. Knust plugin zip: dist/KnustBundle-<version>.zip from the committed files (tools/knust-zip.sh)
+#   7. Knust plugin zip: dist/KnustBundle-<version>.zip from the committed files (tools/knust-zip.sh, checked by tools/knust-zip.test.sh)
 #   8. Union style (spike): union/ styles and KDE colour schemes from palette.json (tools/build-union.py),
 #      checked against Union's property list (tools/check-union.py)
 #   9. Claude Design upload: ds-bundle/ (.design-sync/make-bundle.py, gitignored)
@@ -46,7 +46,7 @@ if command -v php >/dev/null; then php kimai/knust/tests/assets.php; else echo "
 tools/check-qml.sh
 kimai/kit/bin/build-assets.sh >/dev/null
 kimai/kit/bin/lint.sh
-tools/knust-zip.sh
+tools/knust-zip.test.sh
 python3 tools/build-union.py
 python3 tools/check-union.py
 python3 .design-sync/make-bundle.py
