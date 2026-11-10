@@ -1,6 +1,6 @@
 # Rule for every shrippen project: GUIs come from Kante
 
-This is the one rule about GUIs that applies to **all** shrippen repositories. Copy the block below into each project's `agent.md` (or `CLAUDE.md`). The source of truth is this file in [Kante](https://github.com/shrippen/Kante/blob/main/AGENT-RULE.md); if the two differ, this file wins.
+This is the one rule about GUIs that applies to **all** shrippen repositories. The block below reaches each project as the section "GUI rule" of its `RULES.md`: after a change here, copy the block to `rules/gui-kante.md` in the rules repository (`shrippen/regeln`) and run its `tools/sync-rules.sh --all`. The source of truth is this file in [Kante](https://github.com/shrippen/Kante/blob/main/AGENT-RULE.md); if the two differ, this file wins.
 
 ```markdown
 ## GUI rule
