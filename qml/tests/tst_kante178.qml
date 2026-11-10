@@ -1,0 +1,133 @@
+import QtQuick
+import QtQuick.Controls as QQC2
+import QtTest
+import org.kde.kirigami as Kirigami
+import Kante
+
+/**
+ * Kante 1.78, from Mitori on Android: Kirigami's global toolbar of an ApplicationWindow
+ * (a page's bar, the page stack's bar) sets the Header colour set itself and so never took
+ * the colours of a KanteScope on the window's contentItem: it showed the platform's. A
+ * KanteWindowScope themes the bars too, in every bar style, on the first page and a pushed
+ * one, and gives them back to the platform when Kante is switched off.
+ * Run: tools/check-qml.sh.
+ */
+TestCase {
+    id: tc
+    name: "Kante178"
+    when: windowShown
+
+    property int kindBefore: KanteStyle.Kind.System
+    property bool darkBefore: false
+    function init() {
+        kindBefore = KanteStyle.kind
+        darkBefore = KanteStyle.preferDark
+        failOnWarning(/TypeError/)
+    }
+    function cleanup() {
+        KanteStyle.kind = kindBefore
+        KanteStyle.preferDark = darkBefore
+    }
+
+    Component {
+        id: windowComponent
+        Kirigami.ApplicationWindow {
+            id: win
+            width: 800
+            height: 600
+            visible: true
+            property Component second: Kirigami.Page {
+                title: "Second"
+            }
+            KanteWindowScope { window: win }
+            pageStack.initialPage: Kirigami.Page {
+                title: "First"
+            }
+        }
+    }
+
+    // The bars are the items of the page stack with a ground of their own: each page's
+    // ToolBarPageHeader and the stack's PageRowGlobalToolBarUI.
+    function allItems(item) {
+        let out = []
+        for (let i = 0; i < item.children.length; i++) {
+            out.push(item.children[i])
+            out = out.concat(allItems(item.children[i]))
+        }
+        return out
+    }
+    function bars(win) {
+        return allItems(win.pageStack).filter(c => c.visible && c.background
+                                              && c.maximumHeight !== undefined && c.separatorVisible !== undefined)
+    }
+
+    function verifyBars(win, label) {
+        tryVerify(() => bars(win).length > 0, 2000, label + ": no bar")
+        tryVerify(() => bars(win).every(b => Qt.colorEqual(b.background.color, KanteStyle.backgroundColor)), 2000,
+                  label + ": ground " + bars(win).map(b => b.background.color) + ", expected " + KanteStyle.backgroundColor)
+        for (const b of bars(win)) {
+            verify(Qt.colorEqual(b.Kirigami.Theme.textColor, KanteStyle.textColor),
+                   label + ": text " + b.Kirigami.Theme.textColor + ", expected " + KanteStyle.textColor)
+        }
+    }
+
+    function test_bars_data() {
+        return [
+            { tag: "ToolBar", style: Kirigami.ApplicationHeaderStyle.ToolBar },
+            { tag: "Titles", style: Kirigami.ApplicationHeaderStyle.Titles },
+            { tag: "Breadcrumb", style: Kirigami.ApplicationHeaderStyle.Breadcrumb }
+        ]
+    }
+
+    function test_bars(data) {
+        for (const dark of [true, false]) {
+            KanteStyle.kind = KanteStyle.Kind.Kante
+            KanteStyle.preferDark = dark
+            const win = createTemporaryObject(windowComponent, tc)
+            verify(win, "window")
+            win.pageStack.globalToolBar.style = data.style
+            verifyBars(win, data.tag + (dark ? " dark" : " Leinen") + " first page")
+            win.pageStack.push(win.second)
+            verifyBars(win, data.tag + (dark ? " dark" : " Leinen") + " pushed page")
+            win.pageStack.pop()
+            verifyBars(win, data.tag + (dark ? " dark" : " Leinen") + " popped")
+            win.destroy()
+        }
+    }
+
+    // Kante off: the bars show the platform's Header colours again, not the window's.
+    function test_bars_back_to_platform() {
+        KanteStyle.kind = KanteStyle.Kind.System
+        const win = createTemporaryObject(windowComponent, tc)
+        win.pageStack.globalToolBar.style = Kirigami.ApplicationHeaderStyle.ToolBar
+        tryVerify(() => bars(win).length > 0, 2000)
+        const header = createTemporaryObject(probeComponent, win.contentItem)
+        const platform = header.Kirigami.Theme.backgroundColor
+        tryVerify(() => bars(win).every(b => Qt.colorEqual(b.background.color, platform)), 2000, "System before")
+
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        tryVerify(() => bars(win).every(b => Qt.colorEqual(b.background.color, KanteStyle.backgroundColor)), 2000, "Kante")
+        KanteStyle.kind = KanteStyle.Kind.System
+        tryVerify(() => bars(win).every(b => Qt.colorEqual(b.background.color, platform)), 2000,
+                  "System after: " + bars(win).map(b => b.background.color) + ", expected " + platform)
+    }
+
+    // A new element is shown in the gallery.
+    function test_gallery_shows_the_window_scope() {
+        const component = Qt.createComponent(Qt.resolvedUrl("../demo/Gallery.qml"), Component.PreferSynchronous)
+        tryVerify(() => component.status !== Component.Loading)
+        compare(component.status, Component.Ready, component.errorString())
+        const gallery = component.createObject(null)
+        verify(gallery)
+        verify(findChild(gallery, "galleryWindowBar"), "the window bar in the gallery")
+        gallery.destroy()
+    }
+
+    Component {
+        id: probeComponent
+        Item {
+            Kirigami.Theme.colorSet: Kirigami.Theme.Header
+            Kirigami.Theme.inherit: false
+        }
+    }
+}

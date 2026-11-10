@@ -323,6 +323,7 @@ QQC2.RadioButton { KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape
 | `KanteFocusFollow` | Keeps the keyboard focus in view in a Flickable (1.49) |
 | `KanteFocusTrap` | Keeps Tab and Shift+Tab inside a sheet or overlay in the page while it is shown; the page behind is disabled or hidden, the focus goes back to `returnTo` (1.51) |
 | `KanteScope` | Hands the Kante colours to an item's `Kirigami.Theme`, so plain controls below follow, disabled ones included (1.51). Popups need their own; `popup` themes a popup's or drawer's ground with its content |
+| `KanteWindowScope` | A `Kirigami.ApplicationWindow`'s whole colours: a `KanteScope` on its `contentItem` plus a scope on each global toolbar (1.78) |
 | `KanteCard` | Card with the cut corner and an optional accent bar (`chamfer`, `barColor`) |
 | `KanteButton`, `KanteToolButton`, `KanteTextField`, `KanteHeading`, `KanteDialog` | Wrappers: the platform control in System; in Kante square, uppercase Rajdhani, sunken fields, accent-filled primary (`emphasis`) |
 | `KanteCheckSkin`, `KanteFieldSkin`, `KanteSliderSkin`, `KantePopupSkin`, `KanteMessageSkin`, `KanteDialogSkin`, `KantePageTitle` | Skins placed *inside* an existing control (check box, radio button, switch, combo/spin box, text area, slider, menu, `Kirigami.InlineMessage`, Kirigami dialog, page header). `KanteSliderSkin` follows the slider's `orientation`: with `Qt.Vertical` (a fader) the track runs along the height, filled from the bottom |
@@ -787,6 +788,29 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Key geometry | – | `KanteKeyLayout` (non-visual, shared by keyboard and lane): `low`, `high` (MIDI, 60 = middle C), `width`; `noteNames` (12 names from C, default C, C♯, D, E♭, E, F, F♯, G, A♭, A, B♭, B; the app sets its language, e.g. German H for B), `middleCOctave` (4: MIDI 60 is C4). Piano proportions: white keys equally wide (`whiteWidth`), black keys 0.58 wide and 0.63 long, set off the boundary as on a real keyboard. `x(m)`, `keyWidth(m)`, `isBlack(m)`, `nameOf(m)` ("E1"), `keyAt(px, blackLevel)`, `count`. A range that starts or ends on a black key starts or ends at its edge |
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
+
+### Added in Kante 1.78
+
+Found in Mitori on Android: with Kante on, Kirigami's toolbar at the top of the window showed the platform's colours (Material: `#fffbfe`).
+
+| Element | QML | Note |
+|---------|-----|------|
+| Window scope | `KanteWindowScope { window: root }` | Put it into a `Kirigami.ApplicationWindow` instead of `KanteScope { target: root.contentItem }`. It themes the content and the global toolbars of every bar style (ToolBar, Titles, Breadcrumb), on each page and on the page stack's bar. With Kante off the bars have Kirigami's Header colours again. |
+
+```qml
+Kirigami.ApplicationWindow {
+    id: root
+    KanteWindowScope { window: root }
+}
+```
+
+Why: Kirigami's bars set the `Header` colour set themselves, which stops them inheriting from the window, so a `KanteScope` on `contentItem` never reached them. Kirigami names no hook for the bars: a page's is `Page.globalToolBarItem`, the page stack's is a Loader inside the `PageRow` that no property names (found from `pageStack.globalToolBar.leftHandleAnchor` upwards). `KanteBarScope` is the scope of one bar; `KanteWindowScope` creates it as the bar's child, so both go together (a scope made by a Loader died before the bar of a page that slides out after a pop). Test `qml/tests/tst_kante178.qml`: bars in the three styles, Kante and Leinen, first, pushed and popped page, and back to the platform's colours.
+
+Bar ground: the page ground (`KanteStyle.backgroundColor`), like the web nav (`.nav` on `--bg-void`), not the window role `dialogColor` that `KanteScope` gives its target. The page and its bar are one surface, set apart by the rule below.
+
+`KanteScope` got two properties for this: `backgroundRole` (KanteStyle role of the target's `backgroundColor`, default `dialogColor`) and `restorePlatform` (Kante off gives the platform's colours back, for a target with a colour set of its own).
+
+Not themed: the thin separators Kirigami sets to `Header` inside the bars (they keep the platform's line colour). With `KanteStyle.materialStyle` the scope stays off, as `KanteScope` does.
 
 ### Added in Kante 1.77
 
