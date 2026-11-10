@@ -5,6 +5,44 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.78.0] — 2026-11-10
+
+### English
+
+A list row and a path node fit a window 533 px wide; Kirigami's toolbars take Kante's colours.
+
+#### New
+- `KanteListRow`: when the texts would get less than `minTextWidth` (opt-in, default 0 = never), the meta figure and the trailing items move to a second line under the texts and title and subtitle wrap. Before, the buttons were pushed out of a narrow row. Wide rows look the same; `stacked` tells the state.
+- `KantePath`: an entry may carry `text`, a sentence under title and meta that wraps and is never cut.
+- `KanteWindowScope { window: root }`: put into a `Kirigami.ApplicationWindow` in place of `KanteScope` on its `contentItem`.
+
+#### Fixed
+- The global toolbars of a `Kirigami.ApplicationWindow` (page bars, the page stack's bar, every bar style, pages on `layers` too) showed the platform's colours with Kante on, e.g. Material's `#fffbfe` on Android. `KanteWindowScope` themes them; with Kante off they get the platform's colours back.
+
+![A narrow list row: title and wrapped subtitle, the time and two buttons in a line below](https://shrippen.github.io/Kante/shots/release-1.78-narrow-row.png)
+![A path node with a sentence under its title and meta line](https://shrippen.github.io/Kante/shots/release-1.78-path-text.png)
+![A Kirigami window in dark Kante: the toolbar with page title and an action on the page ground, a rule below it](https://shrippen.github.io/Kante/shots/release-1.78-window-bar.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
+
+### Deutsch
+
+Eine Listenzeile und ein Pfad-Knoten passen in ein 533 px schmales Fenster; Kirigamis Werkzeugleisten nehmen Kantes Farben an.
+
+#### Neu
+- `KanteListRow`: bekäme der Text weniger als `minTextWidth` (opt-in, Standard 0 = nie), rücken Meta-Angabe und Trailing-Elemente in eine zweite Zeile unter den Text, und Titel und Untertitel umbrechen. Vorher wurden die Knöpfe aus einer schmalen Zeile geschoben. Breite Zeilen sehen gleich aus; `stacked` nennt den Zustand.
+- `KantePath`: ein Eintrag kann `text` tragen, einen Satz unter Titel und Meta, der umbricht und nie abgeschnitten wird.
+- `KanteWindowScope { window: root }`: in ein `Kirigami.ApplicationWindow` statt `KanteScope` auf dessen `contentItem`.
+
+#### Behoben
+- Die globalen Werkzeugleisten eines `Kirigami.ApplicationWindow` (Seitenleisten, die Leiste des Seitenstapels, jeder Leistenstil, auch Seiten auf `layers`) zeigten mit Kante die Farben der Plattform, z. B. Materials `#fffbfe` unter Android. `KanteWindowScope` färbt sie; ist Kante aus, bekommen sie die Farben der Plattform zurück.
+
+![Eine schmale Listenzeile: Titel und umbrochener Untertitel, darunter in einer Zeile die Zeit und zwei Knöpfe](https://shrippen.github.io/Kante/shots/release-1.78-narrow-row.png)
+![Ein Pfad-Knoten mit einem Satz unter Titel und Meta-Zeile](https://shrippen.github.io/Kante/shots/release-1.78-path-text.png)
+![Ein Kirigami-Fenster in dunklem Kante: die Werkzeugleiste mit Seitentitel und einer Aktion auf dem Seitengrund, darunter eine Linie](https://shrippen.github.io/Kante/shots/release-1.78-window-bar.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
+
 ## [1.77.0] — 2026-11-10
 
 ### English

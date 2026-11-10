@@ -732,7 +732,7 @@ The conversation components for Kaiwa, the Japanese conversation trainer: you ta
 | Diff | `.diff del`, `.diff ins` | `KanteDiffText`: `parts` [{text, kind: same\|removed\|added}]; removed struck through with a 2 px negative line, added on the focus tint with a 2 px underline; read out as "gestrichen を, neu が" |
 | Hint card | `.hint-card` (1.13) | `KanteHintCard`, its QML twin: `tier` (None, Red triangle, Yellow diamond, Blue square, Green check, Primary), `tierText`, `meta`, `titleText` or `titleItem` (a KanteDiffText), `text`, actions as children; `compact` is the one-line row. Kaiwa's severities (D-4): blocks understanding Red, wrong Yellow, unnatural Blue, style None |
 | Pitch curve | `svg.pitch` (`.grid`, `.target`, `.actual`, `.kernel`, `.miss`) | `KantePitchCurve`: `morae`, `target` (1 high, 0 low per mora), `kernel` (−1 flat), `actual` (the learner's pitch 0..1, any sample count; info colour, D-5), `missAt`; square markers; `summary` names the fall in words ("Abfall nach は, abweichend bei し") for the legend and screen readers |
-| Learning path | `.path > .node[data-state]` | `KantePath` (D-6): `model` [{title, meta, state: done\|current\|open\|review\|locked}]: bar and sign per state (check, filled square, hollow square and "offen" for unlocked but not chosen, diamond indented as a side branch, none and "gesperrt"); unlocked nodes fire `activated(index)` by click, Enter or Space. `KanteSteps` stays for wizards |
+| Learning path | `.path > .node[data-state]` | `KantePath` (D-6): `model` [{title, meta, text (1.78, a sentence under them), state: done\|current\|open\|review\|locked}]: bar and sign per state (check, filled square, hollow square and "offen" for unlocked but not chosen, diamond indented as a side branch, none and "gesperrt"); unlocked nodes fire `activated(index)` by click, Enter or Space. `KanteSteps` stays for wizards |
 | Goal meter | `.goalbar > i.on` | `KanteGoalMeter` (D-7): `value` 0..1 as `segments` (5) stacked bottom to top, `label` beside (the streak), sized for a panel (`stackHeight`) |
 
 ### Added in Kante 1.26
@@ -790,6 +790,13 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
 ### Added in Kante 1.78
+
+For Kaiwa in a window 533 px wide: a list row and a path node that keep their content when space runs out. Both opt-in: without `minTextWidth` and `text` nothing changes.
+
+| Element | QML | Note |
+|---------|-----|------|
+| List row, narrow | `KanteListRow` | With `minTextWidth` set (default 0: never stack; e.g. `KanteStyle.unit(160)`), when the texts would get less than it, the meta figure and the `trailing` items move to a second line under the texts, left-aligned with them, and title and subtitle wrap instead of eliding; the row grows. `stacked` (read-only) says which state it is in. Wide rows look as before. The focus rules of 1.51 hold in both states: the items keep their place in the Tab order. A row without meta and `trailing` never stacks |
+| Path node with a sentence | `KantePath` | An entry of `model` may carry `text`: a third line under title and meta in the body font, wrapped, never elided; the node grows with it. A screen reader hears it after the meta line |
 
 Found in Mitori on Android: with Kante on, Kirigami's toolbar at the top of the window showed the platform's colours (Material: `#fffbfe`).
 

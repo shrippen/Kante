@@ -131,6 +131,39 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.78.0">
+      <div class="release-head"><b class="release-version">1.78.0</b><time datetime="2026-11-10">10 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A list row and a path node fit a window 533 px wide; Kirigami's toolbars take Kante's colours.</p>
+        <p class="release-lead" lang="de">Eine Listenzeile und ein Pfad-Knoten passen in ein 533 px schmales Fenster; Kirigamis Werkzeugleisten nehmen Kantes Farben an.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteListRow</code>: when the texts would get less than <code>minTextWidth</code> (opt-in, default 0 = never), the meta figure and the trailing items move to a second line under the texts and title and subtitle wrap. Before, the buttons were pushed out of a narrow row. Wide rows look the same; <code>stacked</code> tells the state.</li>
+            <li><code>KantePath</code>: an entry may carry <code>text</code>, a sentence under title and meta that wraps and is never cut.</li>
+            <li><code>KanteWindowScope { window: root }</code>: put into a <code>Kirigami.ApplicationWindow</code> in place of <code>KanteScope</code> on its <code>contentItem</code>.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteListRow</code>: bekäme der Text weniger als <code>minTextWidth</code> (opt-in, Standard 0 = nie), rücken Meta-Angabe und Trailing-Elemente in eine zweite Zeile unter den Text, und Titel und Untertitel umbrechen. Vorher wurden die Knöpfe aus einer schmalen Zeile geschoben. Breite Zeilen sehen gleich aus; <code>stacked</code> nennt den Zustand.</li>
+            <li><code>KantePath</code>: ein Eintrag kann <code>text</code> tragen, einen Satz unter Titel und Meta, der umbricht und nie abgeschnitten wird.</li>
+            <li><code>KanteWindowScope { window: root }</code>: in ein <code>Kirigami.ApplicationWindow</code> statt <code>KanteScope</code> auf dessen <code>contentItem</code>.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li>The global toolbars of a <code>Kirigami.ApplicationWindow</code> (page bars, the page stack's bar, every bar style, pages on <code>layers</code> too) showed the platform's colours with Kante on, e.g. Material's <code>#fffbfe</code> on Android. <code>KanteWindowScope</code> themes them; with Kante off they get the platform's colours back.</li>
+          </ul>
+          <ul lang="de">
+            <li>Die globalen Werkzeugleisten eines <code>Kirigami.ApplicationWindow</code> (Seitenleisten, die Leiste des Seitenstapels, jeder Leistenstil, auch Seiten auf <code>layers</code>) zeigten mit Kante die Farben der Plattform, z. B. Materials <code>#fffbfe</code> unter Android. <code>KanteWindowScope</code> färbt sie; ist Kante aus, bekommen sie die Farben der Plattform zurück.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.78-narrow-row.png" alt="A narrow list row in dark Kante: title and wrapped subtitle, below them the time and two buttons, Üben and Löschen" loading="lazy"><figcaption><span lang="en">A row 240 units wide: the buttons move under the texts</span><span lang="de">Eine Zeile 240 Einheiten breit: die Knöpfe rücken unter den Text</span></figcaption></figure>
+          <figure><img src="shots/release-1.78-path-text.png" alt="A path node in dark Kante: title, meta line and a wrapped sentence under them" loading="lazy"><figcaption><span lang="en">A path node with a sentence</span><span lang="de">Ein Pfad-Knoten mit einem Satz</span></figcaption></figure>
+          <figure><img src="shots/release-1.78-window-bar.png" alt="A Kirigami window in dark Kante: the toolbar with page title and an action on the page ground, a rule below it" loading="lazy"><figcaption><span lang="en">Kirigami's toolbar with KanteWindowScope</span><span lang="de">Kirigamis Werkzeugleiste mit KanteWindowScope</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.77.0">
       <div class="release-head"><b class="release-version">1.77.0</b><time datetime="2026-11-10">10 Nov 2026</time></div>
       <div class="release-body">
@@ -173,6 +206,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1763"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.76.2">
       <div class="release-head"><b class="release-version">1.76.2</b><time datetime="2026-11-09">9 Nov 2026</time></div>
       <div class="release-body">
@@ -189,9 +225,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.76.1">
       <div class="release-head"><b class="release-version">1.76.1</b><time datetime="2026-11-09">9 Nov 2026</time></div>
       <div class="release-body">
@@ -1579,7 +1612,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.77.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.78.0</a></p></div>
 </footer>
 
 <script>
