@@ -56,6 +56,9 @@ TestCase {
         }
         return out
     }
+    function findAll(item, pred) {
+        return allItems(item).filter(pred)
+    }
     function bars(win) {
         return allItems(win.pageStack).filter(c => c.visible && c.background
                                               && c.maximumHeight !== undefined && c.separatorVisible !== undefined)
@@ -93,6 +96,113 @@ TestCase {
             verifyBars(win, data.tag + (dark ? " dark" : " Leinen") + " popped")
             win.destroy()
         }
+    }
+
+    // The bar scopes only dress the bar itself: its children inherit its colours. A scope that
+    // watched the bar's subtree (every item, enabled and children signals) made a change of
+    // style slower by the number of bars and items (Mitori: about 100 ms CPU in Debug, 815 against 705).
+    function test_bar_scopes_watch_nothing() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        const win = createTemporaryObject(windowComponent, tc)
+        win.pageStack.globalToolBar.style = Kirigami.ApplicationHeaderStyle.ToolBar
+        win.pageStack.push(win.second)
+        verifyBars(win, "bars")
+        const scopes = findAll(win.pageStack, c => c.objectName === "kanteBarScope")
+        verify(scopes.length >= 2, "a scope on each bar: " + scopes.length)
+        for (const scope of scopes) {
+            compare(scope.watchedCount, 0, "items the scope of " + scope.target + " watches")
+        }
+    }
+
+    // A bar that is disabled (the bar of the page below a pushed one, Mitori) has a colour table
+    // of its own in the platform's colours: its ground still is Kante's.
+    function test_disabled_bar() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = false
+        const win = createTemporaryObject(windowComponent, tc)
+        win.pageStack.globalToolBar.style = Kirigami.ApplicationHeaderStyle.ToolBar
+        verifyBars(win, "bars")
+        for (const bar of bars(win)) {
+            bar.enabled = false
+        }
+        verifyBars(win, "disabled bars")
+        for (const bar of bars(win)) {
+            bar.enabled = true
+        }
+        verifyBars(win, "enabled again")
+        // Enabled again, the scopes let go of the items they swept while it was disabled.
+        for (const scope of findAll(win.pageStack, c => c.objectName === "kanteBarScope")) {
+            compare(scope.watchedCount, 0, "items the scope of " + scope.target + " watches")
+        }
+        // And the next time it is disabled, the ground is right again.
+        for (const bar of bars(win)) {
+            bar.enabled = false
+        }
+        verifyBars(win, "disabled again")
+    }
+
+    Component {
+        id: actionWindowComponent
+        Kirigami.ApplicationWindow {
+            id: win
+            width: 800
+            height: 600
+            visible: true
+            property alias first: firstAction
+            property alias later: laterAction
+            KanteWindowScope { window: win }
+            Kirigami.Action {
+                id: laterAction
+                text: "Later"
+                enabled: false
+            }
+            pageStack.initialPage: Kirigami.Page {
+                id: page
+                title: "First"
+                actions: [
+                    Kirigami.Action { id: firstAction; text: "One" },
+                    Kirigami.Action { text: "Two"; enabled: false }
+                ]
+                property var more: [firstAction, laterAction]
+            }
+        }
+    }
+
+    function actionButtons(win) {
+        return allItems(win.pageStack).filter(c => c.visible && c.checkable !== undefined && c.hovered !== undefined
+                                              && c.action !== undefined && c.text !== "")
+    }
+
+    function verifyDisabledButtons(win, label) {
+        const buttons = actionButtons(win).filter(b => !b.enabled)
+        verify(buttons.length > 0, label + ": a disabled button")
+        // The scope dresses a new or newly disabled item after the event.
+        for (const b of buttons) {
+            tryVerify(() => Qt.colorEqual(b.Kirigami.Theme.textColor, KanteStyle.disabledTextColor), 2000,
+                      label + ": " + b.text + " text " + b.Kirigami.Theme.textColor + ", expected " + KanteStyle.disabledTextColor)
+        }
+    }
+
+    // Not the bar scope's work (it is shallow): the scope on contentItem reaches the bar's items. Both
+    // together keep a disabled button in Kante's colours.
+    // A disabled button in an enabled bar has a colour table of its own in the platform's
+    // colours: made disabled, disabled later, made late (ActionToolBar builds its buttons late).
+    function test_disabled_button_in_bar() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.preferDark = true
+        const win = createTemporaryObject(actionWindowComponent, tc)
+        win.pageStack.globalToolBar.style = Kirigami.ApplicationHeaderStyle.ToolBar
+        tryVerify(() => actionButtons(win).length >= 2, 2000, "buttons: " + actionButtons(win).length)
+        verifyDisabledButtons(win, "made disabled")
+
+        win.first.enabled = false
+        tryVerify(() => actionButtons(win).filter(b => !b.enabled).length >= 2, 2000)
+        verifyDisabledButtons(win, "disabled later")
+
+        win.pageStack.currentItem.actions = [win.first, win.later]
+        tryVerify(() => actionButtons(win).some(b => b.text === "Later"), 2000)
+        verifyDisabledButtons(win, "made late")
     }
 
     // A page on the layers (a modal page over the page row) has a bar of its own.
