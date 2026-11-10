@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.78.0] — 2026-11-10
+
+### English
+
+A list row, a heat map and a path node fit a window 533 px wide.
+
+#### New
+- `KanteListRow`: when the texts would get less than `minTextWidth` (160 units), the meta figure and the trailing items move to a second line under the texts and title and subtitle wrap. Before, the buttons were pushed out of a narrow row. Wide rows look the same; `stacked` tells the state.
+- `KanteHeatmap`: `rowLabels`, `columnLabels`, a legend (`legendLess`, `legendMore` with the five level swatches) and a tooltip per cell (`tips`), so a chart has axes and a key. Without them it looks the same.
+- `KantePath`: an entry may carry `text`, a sentence under title and meta that wraps and is never cut.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
+
+### Deutsch
+
+Eine Listenzeile, eine Wärmekarte und ein Pfad-Knoten passen in ein 533 px schmales Fenster.
+
+#### Neu
+- `KanteListRow`: bekäme der Text weniger als `minTextWidth` (160 Einheiten), rücken Meta-Angabe und Trailing-Elemente in eine zweite Zeile unter den Text, und Titel und Untertitel umbrechen. Vorher wurden die Knöpfe aus einer schmalen Zeile geschoben. Breite Zeilen sehen gleich aus; `stacked` nennt den Zustand.
+- `KanteHeatmap`: `rowLabels`, `columnLabels`, eine Legende (`legendLess`, `legendMore` mit den fünf Stufenfeldern) und ein Tooltip je Feld (`tips`), damit ein Diagramm Achsen und eine Erklärung hat. Ohne sie sieht sie gleich aus.
+- `KantePath`: ein Eintrag kann `text` tragen, einen Satz unter Titel und Meta, der umbricht und nie abgeschnitten wird.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
+
 ## [1.77.0] — 2026-11-10
 
 ### English

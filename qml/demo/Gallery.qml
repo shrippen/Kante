@@ -1220,6 +1220,49 @@ Rectangle {
             }
 
             Section {
+                title: "1.78 · schmales fenster"
+                RowLayout {
+                    spacing: KanteStyle.unit(24)
+                    // A list row 240 px wide: meta and the two buttons go under the texts.
+                    KanteListRow {
+                        objectName: "galleryNarrowRow"
+                        Layout.preferredWidth: KanteStyle.unit(240)
+                        Layout.alignment: Qt.AlignTop
+                        text: "An der Konbini"
+                        subtitle: "N5-03 · zwei von vier Szenarien"
+                        meta: "02:14"
+                        trailing: Row {
+                            spacing: KanteStyle.unit(6)
+                            KanteButton { text: "Üben"; size: KanteButton.Size.Small }
+                            KanteButton { text: "Löschen"; size: KanteButton.Size.Small }
+                        }
+                    }
+                    // Labelled axes, tooltips and a legend.
+                    KanteHeatmap {
+                        objectName: "galleryHeatmapAxes"
+                        Layout.alignment: Qt.AlignTop
+                        columns: 7
+                        levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4, 2, 1, 0, 3, 4, 2]
+                        rowLabels: ["Woche 1", "", "Woche 3"]
+                        columnLabels: ["M", "D", "M", "D", "F", "S", "S"]
+                        tips: levels.map((l, i) => "Tag " + (i + 1) + ": " + l + " von 4")
+                        legendLess: "weniger"
+                        legendMore: "mehr"
+                        Accessible.name: "Übungstage der letzten drei Wochen"
+                    }
+                    KantePath {
+                        objectName: "galleryPathText"
+                        Layout.alignment: Qt.AlignTop
+                        width: KanteStyle.unit(280)
+                        model: [
+                            { title: "An der Konbini", meta: "N5-03", state: "current", text: "Du kaufst einen Kaffee und fragst nach dem Preis." },
+                            { title: "Im Café", meta: "N5-04", state: "open" }
+                        ]
+                    }
+                }
+            }
+
+            Section {
                 objectName: "section156"
                 title: "1.56 · linien, marker, tönungen (kurrent)"
                 // An hour grid drawn by hand from the roles only: grid lines, free time, a planned
