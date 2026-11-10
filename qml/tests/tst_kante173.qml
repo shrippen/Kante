@@ -78,7 +78,7 @@ TestCase {
         verify(Math.abs(centre - button.height / 2) < 0.75, "centre " + centre + " of " + button.height)
     }
 
-    // Kante 1.76.1: a button builds its three hopping squares while busy only. Every button
+    // Kante 1.76.3: a button builds its three hopping squares while busy only. Every button
     // carried them hidden: 2860 of 20650 objects at the start of the Plasmai widget.
     function test_button_builds_its_loader_while_busy() {
         function loaders(item) {
@@ -160,7 +160,7 @@ TestCase {
         compare(row.icon.name, "", "a url is no theme name")
     }
 
-    // 1.76.1: every set name is a lookup in the icon theme, ~16 ms on Plasma; a layout settles
+    // 1.76.3: every set name is a lookup in the icon theme, several ms on Plasma; a layout settles
     // width and height one after the other, and each change looked the icon up again.
     function test_icon_picks_once_per_new_size() {
         const row = createTemporaryObject(iconInLayoutScene, stage())
@@ -177,7 +177,24 @@ TestCase {
         compare(row.icon.picks - before, 1, "the same size: no lookup")
     }
 
-    // 1.76.1: an IconImage without name and source looks up "" in the icon theme, uncached,
+    // 1.76.3: a url icon is drawn at the item's size, also after a new one (review of PR #133:
+    // the key of a url was always "", so pick() stopped before it set sourceSize).
+    function test_url_icon_takes_its_size() {
+        const svg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><rect width='8' height='8'/></svg>"
+        const row = createTemporaryObject(iconInLayoutScene, stage())
+        tryCompare(row.icon, "sizeAtName", 22)
+        row.icon.iconSource = svg
+        tryCompare(row.icon.sourceSize, "width", 22)
+        row.icon.Layout.preferredWidth = 48
+        row.icon.Layout.preferredHeight = 48
+        tryCompare(row.icon.sourceSize, "width", 48)
+        compare(row.icon.sourceSize.height, 48)
+        compare(row.icon.name, "", "a url is no theme name")
+        const icon = createTemporaryObject(iconScene, stage(), { iconSource: svg, width: 48, height: 48 })
+        tryCompare(icon.sourceSize, "width", 48)
+    }
+
+    // 1.76.3: an IconImage without name and source looks up "" in the icon theme, uncached,
     // ~6.5 ms each on Plasma: buttons were ten times slower to create than before 1.73.
     function test_icon_never_without_a_source() {
         const icon = createTemporaryObject(iconScene, stage(), { width: 0, height: 0 })

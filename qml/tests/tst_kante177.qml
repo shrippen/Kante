@@ -72,6 +72,19 @@ TestCase {
         }
     }
 
+    // A new component is shown in the gallery (review of PR #133: it was missing there).
+    function test_gallery_shows_the_busy_indicator() {
+        const component = Qt.createComponent(Qt.resolvedUrl("../demo/Gallery.qml"), Component.PreferSynchronous)
+        tryVerify(() => component.status !== Component.Loading)
+        compare(component.status, Component.Ready, component.errorString())
+        const gallery = component.createObject(null)
+        verify(gallery)
+        const busy = findChild(gallery, "galleryBusyIndicator")
+        verify(busy, "a KanteBusyIndicator in the gallery")
+        verify(busy.running && busy.indicator, "it spins there")
+        gallery.destroy()
+    }
+
     function test_busy_indicator_is_built_while_running_only() {
         const busy = createTemporaryObject(busyScene, tc.Window.contentItem, { running: false })
         compare(indicators(busy).length, 0, "nothing built while stopped")
