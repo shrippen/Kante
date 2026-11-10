@@ -131,6 +131,30 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.77.0">
+      <div class="release-head"><b class="release-version">1.77.0</b><time datetime="2026-11-10">10 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A busy indicator that has stopped no longer keeps the window drawing.</p>
+        <p class="release-lead" lang="de">Eine Ladeanzeige, die angehalten hat, lässt das Fenster nicht mehr weiterzeichnen.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteBusyIndicator</code>: the platform's busy indicator, there only while it runs; stop it to hide it. With the Android style (Material) an indicator fades out when it stops, but a hidden one never finishes that fade, and the window then drew 90 frames a second for as long as it was open. In the Plasmai app on a phone that was half a processor core spent while nothing happened.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteBusyIndicator</code>: die Ladeanzeige der Plattform, nur da, solange sie läuft; anhalten blendet sie aus. Im Android-Stil (Material) blendet eine Anzeige beim Anhalten aus, aber eine versteckte beendet dieses Ausblenden nie, und das Fenster zeichnete dann 90 Bilder in der Sekunde, solange es offen war. In der Plasmai-App auf dem Handy war das ein halber Prozessorkern, während nichts geschah.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KantePullToRefresh</code> uses it, so it no longer carries a stopped indicator before and after each refresh.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KantePullToRefresh</code> nutzt sie und trägt vor und nach jedem Aktualisieren keine angehaltene Anzeige mehr mit sich.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.76.3">
       <div class="release-head"><b class="release-version">1.76.3</b><time datetime="2026-11-10">10 Nov 2026</time></div>
       <div class="release-body">
@@ -165,6 +189,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.76.1">
       <div class="release-head"><b class="release-version">1.76.1</b><time datetime="2026-11-09">9 Nov 2026</time></div>
       <div class="release-body">
@@ -183,9 +210,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.76.0">
       <div class="release-head"><b class="release-version">1.76.0</b><time datetime="2026-11-09">9 Nov 2026</time></div>
       <div class="release-body">
@@ -1555,7 +1579,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.76.3</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.77.0</a></p></div>
 </footer>
 
 <script>

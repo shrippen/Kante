@@ -5,6 +5,32 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.77.0] — 2026-11-10
+
+### English
+
+A busy indicator that has stopped no longer keeps the window drawing.
+
+#### New
+- `KanteBusyIndicator`: the platform's busy indicator, there only while it runs; stop it to hide it. With the Android style (Material) an indicator fades out when it stops, but a hidden one never finishes that fade, and the window then drew 90 frames a second for as long as it was open. In the Plasmai app on a phone that was half a processor core spent while nothing happened.
+
+#### Fixed
+- `KantePullToRefresh` uses it, so it no longer carries a stopped indicator before and after each refresh.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
+
+### Deutsch
+
+Eine Ladeanzeige, die angehalten hat, lässt das Fenster nicht mehr weiterzeichnen.
+
+#### Neu
+- `KanteBusyIndicator`: die Ladeanzeige der Plattform, nur da, solange sie läuft; anhalten blendet sie aus. Im Android-Stil (Material) blendet eine Anzeige beim Anhalten aus, aber eine versteckte beendet dieses Ausblenden nie, und das Fenster zeichnete dann 90 Bilder in der Sekunde, solange es offen war. In der Plasmai-App auf dem Handy war das ein halber Prozessorkern, während nichts geschah.
+
+#### Behoben
+- `KantePullToRefresh` nutzt sie und trägt vor und nach jedem Aktualisieren keine angehaltene Anzeige mehr mit sich.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
+
 ## [1.76.3] — 2026-11-10
 
 ### English
