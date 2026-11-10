@@ -5,6 +5,54 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.77.0] — 2026-11-10
+
+### English
+
+A busy indicator that has stopped no longer keeps the window drawing.
+
+#### New
+- `KanteBusyIndicator`: the platform's busy indicator, there only while it runs; stop it to hide it. With the Android style (Material) an indicator fades out when it stops, but a hidden one never finishes that fade, and the window then drew 90 frames a second for as long as it was open. In the Plasmai app on a phone that was half a processor core spent while nothing happened.
+
+#### Fixed
+- `KantePullToRefresh` uses it, so it no longer carries a stopped indicator before and after each refresh.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
+
+### Deutsch
+
+Eine Ladeanzeige, die angehalten hat, lässt das Fenster nicht mehr weiterzeichnen.
+
+#### Neu
+- `KanteBusyIndicator`: die Ladeanzeige der Plattform, nur da, solange sie läuft; anhalten blendet sie aus. Im Android-Stil (Material) blendet eine Anzeige beim Anhalten aus, aber eine versteckte beendet dieses Ausblenden nie, und das Fenster zeichnete dann 90 Bilder in der Sekunde, solange es offen war. In der Plasmai-App auf dem Handy war das ein halber Prozessorkern, während nichts geschah.
+
+#### Behoben
+- `KantePullToRefresh` nutzt sie und trägt vor und nach jedem Aktualisieren keine angehaltene Anzeige mehr mit sich.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
+
+## [1.76.3] — 2026-11-10
+
+### English
+
+Buttons, fields and pickers with icons are built up to ten times faster on Plasma.
+
+#### Improved
+- `KanteButton` and `KantePlasmaButton`: every button carried its three hopping squares hidden, though at most a few are busy at a time. They are now built while `busy` only. In the Plasmai widget they were 2860 of the 20650 objects created at its start. It looks the same.
+- `KanteIcon`: before its size was known, and on every new width or height, the icon had no name and no file. Qt then looks up an empty name in the icon theme, uncached, about 6.5 ms each on Plasma, and a layout changes the size several times. Buttons took 9 ms each to create instead of 1 ms as before 1.73, pages of the Plasmai app with date and time fields opened five to eight times slower. A transparent placeholder stands in until the icon is picked, and a new size picks once, after width and height. It looks the same.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1763
+
+### Deutsch
+
+Knöpfe, Felder und Auswahllisten mit Symbolen entstehen auf Plasma bis zu zehnmal schneller.
+
+#### Verbessert
+- `KanteButton` und `KantePlasmaButton`: Jeder Knopf trug seine drei hüpfenden Quadrate versteckt mit sich, obwohl höchstens wenige gleichzeitig beschäftigt sind. Sie entstehen jetzt nur während `busy`. Im Plasmai-Widget waren das 2860 der 20650 Objekte beim Start. Es sieht gleich aus.
+- `KanteIcon`: Bevor seine Größe feststand und bei jeder neuen Breite oder Höhe hatte das Symbol weder Namen noch Datei. Qt sucht dann einen leeren Namen im Symbolthema, ohne Cache, auf Plasma etwa 6,5 ms je Mal, und ein Layout ändert die Größe mehrmals. Ein Knopf brauchte 9 ms statt 1 ms wie vor 1.73, Seiten der Plasmai-App mit Datums- und Zeitfeldern öffneten fünf- bis achtmal langsamer. Ein durchsichtiger Platzhalter steht da, bis das Symbol gewählt ist, und eine neue Größe wählt einmal, nach Breite und Höhe. Es sieht gleich aus.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1763
+
 ## [1.76.2] — 2026-11-09
 
 ### English
