@@ -9,10 +9,13 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 
 ### English
 
-A dialog's reject button can be named after what it does: "Keep going" instead of Cancel.
+A dialog's reject button can be named after what it does: "Keep going" instead of Cancel; Kirigami's toolbars cost less on a change of style.
 
 #### New
 - `KanteDialog.rejectText`: names the reject button (Cancel, No, Close or Abort) like `acceptText` names the accept button, e.g. "Keep going" under "Discard the round?", where Cancel could mean aborting the round or the question. Every style, also after a switch at run time and a language change; "" gives the standard text back. `rejectButton()` returns the button.
+
+#### Improved
+- The scopes of Kirigami's toolbars (`KanteWindowScope`, 1.78) no longer watch the items of an enabled bar: a change of style in Mitori takes about 100 ms less CPU. New `KanteScope.shallow` for such a scope.
 
 ![A dialog in dark Kante: "Discard the round?" with the buttons Keep going and Discard](https://shrippen.github.io/Kante/shots/release-1.79-reject-text.png)
 
@@ -20,10 +23,13 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kant
 
 ### Deutsch
 
-Der Ablehnen-Knopf eines Dialogs lässt sich nach dem benennen, was er tut: „Weitermachen“ statt Abbrechen.
+Der Ablehnen-Knopf eines Dialogs lässt sich nach dem benennen, was er tut: „Weitermachen“ statt Abbrechen; Kirigamis Werkzeugleisten kosten beim Stilwechsel weniger.
 
 #### Neu
 - `KanteDialog.rejectText`: benennt den Ablehnen-Knopf (Cancel, No, Close oder Abort) wie `acceptText` den Annehmen-Knopf, z. B. „Weitermachen“ unter „Runde verwerfen?“, wo „Abbrechen“ die Runde oder die Frage meinen könnte. Jeder Stil, auch nach einem Wechsel zur Laufzeit und nach einem Sprachwechsel; "" gibt den Standardtext zurück. `rejectButton()` gibt den Knopf zurück.
+
+#### Verbessert
+- Die Scopes der Kirigami-Werkzeugleisten (`KanteWindowScope`, 1.78) beobachten die Elemente einer aktiven Leiste nicht mehr: ein Stilwechsel in Mitori braucht rund 100 ms weniger CPU. Neu `KanteScope.shallow` für einen solchen Scope.
 
 ![Ein Dialog in dunklem Kante: „Discard the round?“ mit den Knöpfen Keep going und Discard](https://shrippen.github.io/Kante/shots/release-1.79-reject-text.png)
 
