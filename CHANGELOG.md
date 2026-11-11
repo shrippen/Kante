@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.79.0] — 2026-11-11
+
+### English
+
+A dialog's reject button can be named after what it does: "Keep going" instead of Cancel.
+
+#### New
+- `KanteDialog.rejectText`: names the reject button (Cancel, No, Close or Abort) like `acceptText` names the accept button, e.g. "Keep going" under "Discard the round?", where Cancel could mean aborting the round or the question. Every style, also after a switch at run time and a language change; "" gives the standard text back. `rejectButton()` returns the button.
+
+![A dialog in dark Kante: "Discard the round?" with the buttons Keep going and Discard](https://shrippen.github.io/Kante/shots/release-1.79-reject-text.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-179
+
+### Deutsch
+
+Der Ablehnen-Knopf eines Dialogs lässt sich nach dem benennen, was er tut: „Weitermachen“ statt Abbrechen.
+
+#### Neu
+- `KanteDialog.rejectText`: benennt den Ablehnen-Knopf (Cancel, No, Close oder Abort) wie `acceptText` den Annehmen-Knopf, z. B. „Weitermachen“ unter „Runde verwerfen?“, wo „Abbrechen“ die Runde oder die Frage meinen könnte. Jeder Stil, auch nach einem Wechsel zur Laufzeit und nach einem Sprachwechsel; "" gibt den Standardtext zurück. `rejectButton()` gibt den Knopf zurück.
+
+![Ein Dialog in dunklem Kante: „Discard the round?“ mit den Knöpfen Keep going und Discard](https://shrippen.github.io/Kante/shots/release-1.79-reject-text.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-179
+
 ## [1.78.0] — 2026-11-10
 
 ### English

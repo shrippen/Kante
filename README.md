@@ -789,6 +789,14 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
+### Added in Kante 1.79
+
+From Mitori: "Discard the round?" with Cancel is ambiguous (abort the round, or cancel the question?). The reject button can be named like the accept button.
+
+| Element | QML | Note |
+|---------|-----|------|
+| Dialog reject button | `KanteDialog` | `rejectText` names the reject button (Cancel, No, Close or Abort, the first of them the footer has) after what it does ("Keep going" for "Discard the round?"); "": the standard text. Works as `acceptText`: the footer of every style, also after a switch at run time, and after the button box sets its standard texts again (a language change). `rejectButton()` returns the button shown now. Both names together: `acceptText: "Discard"`, `rejectText: "Keep going"` |
+
 ### Added in Kante 1.78
 
 For Kaiwa in a window 533 px wide: a list row and a path node that keep their content when space runs out. Both opt-in: without `minTextWidth` and `text` nothing changes.
@@ -1274,6 +1282,7 @@ From lmix (QA of its Mix page, 25.10.2026): the page needs a size the operator d
 | Option tile | – | `KanteOptionTile`: one of several kinds as a tile (`icon`, `text`, `hint`), checkable and `autoExclusive`. Chosen: selection tint with a 2 px focus-colour frame; hover tint 1; keyboard focus ring; cut corner in Kante and Kante Light. Radio button with name and hint for screen readers |
 | Toast action | `.toast` action (1.11) | `KanteToast.actionText` ("Undo") puts a button at the right; a click emits `actionTriggered()` and hides the toast. `actionShortcut` shows a `KanteKeycap` beside it (the app handles the key) |
 | Dialog accept button | – | `KanteDialog.acceptText` names the accept button after what it does ("Add input" instead of OK), `acceptEnabled` locks it while the form is incomplete; both hold for the footer of every style, also after a switch at run time. `acceptButton()` returns the button shown now |
+| Dialog reject button | – | `KanteDialog.rejectText` (1.79) names the reject button (Cancel, No, Close, Abort) after what it does ("Keep going"), as `acceptText` does for the accept button; every style, also after a switch at run time and a language change. `rejectButton()` returns the button shown now |
 
 ### Changed in Kante 1.43
 
