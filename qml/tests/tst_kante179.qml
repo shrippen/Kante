@@ -30,6 +30,7 @@ TestCase {
             title: "Discard the round?"
             standardButtons: QQC2.Dialog.Ok | QQC2.Dialog.Cancel
             rejectText: "Keep going"
+            QQC2.Label { text: "Content" }
         }
     }
 
@@ -39,6 +40,7 @@ TestCase {
             title: "Remove bus?"
             standardButtons: QQC2.Dialog.Yes | QQC2.Dialog.No
             rejectText: "Keep it"
+            QQC2.Label { text: "Content" }
         }
     }
 
