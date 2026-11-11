@@ -140,26 +140,24 @@
           <ul lang="en">
             <li><code>.pill[data-state="ok|warn|bad|run|off"]</code>: a sign (✓ ! ✕ ▶ –) before the word, in the state's colour. Colour-blind readers and monochrome prints tell a failed run from a good one. Existing <code>ok</code>, <code>warn</code> and <code>off</code> pills get the sign too. <code>.status[data-state="run"]</code> is the matching status light.</li>
             <li><code>svg.ticks</code>: the last runs as a strip, oldest left. Ok is a short column, failed a full one, warn and running hollow, a run that did not come dotted. Hover shows a read-out per run.</li>
-            <li>Lane chart marks <code>.ev</code>: circle for ok, square for failed, hollow for planned, dashed for a window without a run. The bars of a duration chart (<code>rect.ev.is-bar</code>) differ by width: ok narrow, failed wide. Legends <code>.legend.is-ticks</code> and <code>.legend.is-bars</code> show the same shapes.</li>
+            <li>Lane chart marks <code>.ev</code>: circle for ok, square for failed, hollow for planned, dashed for a window without a run. The bars of a duration chart (<code>rect.ev.is-bar</code>) differ by width: ok narrow, failed wide. A linked mark shows keyboard focus as a 4 px stroke in the focus colour on the mark itself, also on a stretched chart; on a hollow mark it replaces the stroke. Legends <code>.legend.is-ticks</code> and <code>.legend.is-bars</code> show the same shapes.</li>
           </ul>
           <ul lang="de">
             <li><code>.pill[data-state="ok|warn|bad|run|off"]</code>: ein Zeichen (✓ ! ✕ ▶ –) vor dem Wort, in der Farbe des Zustands. Auch bei Farbenblindheit und im Schwarzweißdruck ist ein fehlgeschlagener Lauf zu erkennen. Vorhandene Pills <code>ok</code>, <code>warn</code> und <code>off</code> bekommen das Zeichen auch. <code>.status[data-state="run"]</code> ist die passende Statusleuchte.</li>
             <li><code>svg.ticks</code>: die letzten Läufe als Streifen, der älteste links. Ok ist eine kurze Säule, fehlgeschlagen eine volle, warn und laufend hohl, ein ausgebliebener Lauf gepunktet. Beim Überfahren zeigt eine Anzeige den Lauf.</li>
-            <li>Lane-Chart-Marken <code>.ev</code>: Kreis für ok, Quadrat für fehlgeschlagen, hohl für geplant, gestrichelt für ein Fenster ohne Lauf. Die Balken eines Dauer-Diagramms (<code>rect.ev.is-bar</code>) unterscheiden sich in der Breite: ok schmal, fehlgeschlagen breit. Die Legenden <code>.legend.is-ticks</code> und <code>.legend.is-bars</code> zeigen dieselben Formen.</li>
+            <li>Lane-Chart-Marken <code>.ev</code>: Kreis für ok, Quadrat für fehlgeschlagen, hohl für geplant, gestrichelt für ein Fenster ohne Lauf. Die Balken eines Dauer-Diagramms (<code>rect.ev.is-bar</code>) unterscheiden sich in der Breite: ok schmal, fehlgeschlagen breit. Eine verlinkte Marke zeigt den Tastaturfokus als 4-px-Strich in der Fokusfarbe an der Marke selbst, auch in einem gestreckten Diagramm; bei einer hohlen Marke ersetzt er deren Strich. Die Legenden <code>.legend.is-ticks</code> und <code>.legend.is-bars</code> zeigen dieselben Formen.</li>
           </ul>
         </div>
         <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
           <ul lang="en">
-            <li>A linked chart mark shows keyboard focus as a thick stroke on the mark. Before, a stretched chart drew the outline as a block beside it.</li>
-            <li><code>.stage</code> sets <code>--danger</code>, <code>--warn</code> and <code>--info</code> for dark ground, so the states read there too.</li>
+            <li><code>.stage</code> sets <code>--danger</code>, <code>--warn</code> and <code>--info</code> for dark ground, so marks and strips read there too.</li>
           </ul>
           <ul lang="de">
-            <li>Eine verlinkte Diagramm-Marke zeigt den Tastaturfokus als dicken Strich an der Marke. Vorher zeichnete ein gestrecktes Diagramm den Rahmen als Block daneben.</li>
-            <li><code>.stage</code> setzt <code>--danger</code>, <code>--warn</code> und <code>--info</code> für dunklen Grund, damit die Zustände auch dort lesbar sind.</li>
+            <li><code>.stage</code> setzt <code>--danger</code>, <code>--warn</code> und <code>--info</code> für dunklen Grund, damit Marken und Streifen auch dort lesbar sind.</li>
           </ul>
         </div>
         <div class="release-shots">
-          <figure><img src="shots/release-1.80-run-states.png" alt="Pills, result strip, lane chart and duration bars with legends in dark Kante" loading="lazy"><figcaption><span lang="en">Run states in shape, sign and word</span><span lang="de">Laufzustände in Form, Zeichen und Wort</span></figcaption></figure>
+          <figure><img src="shots/release-1.80-run-states.png" alt="Pills, result strip, lane chart with a focused mark and duration bars with legends in dark Kante" loading="lazy"><figcaption><span lang="en">Run states in shape, sign and word</span><span lang="de">Laufzustände in Form, Zeichen und Wort</span></figcaption></figure>
         </div>
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>

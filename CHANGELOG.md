@@ -14,13 +14,12 @@ The state of a run shows in shape, sign and word, not by colour alone: pills, a 
 #### New
 - `.pill[data-state="ok|warn|bad|run|off"]`: a sign (✓ ! ✕ ▶ –) before the word, in the state's colour. Colour-blind readers and monochrome prints tell a failed run from a good one. Existing `ok`, `warn` and `off` pills get the sign too. `.status[data-state="run"]` is the matching status light.
 - `svg.ticks`: the last runs as a strip, oldest left. Ok is a short column, failed a full one, warn and running hollow, a run that did not come dotted. Hover shows a read-out per run.
-- Lane chart marks `.ev`: circle for ok, square for failed, hollow for planned, dashed for a window without a run. The bars of a duration chart (`rect.ev.is-bar`) differ by width: ok narrow, failed wide. Legends `.legend.is-ticks` and `.legend.is-bars` show the same shapes.
+- Lane chart marks `.ev`: circle for ok, square for failed, hollow for planned, dashed for a window without a run. The bars of a duration chart (`rect.ev.is-bar`) differ by width: ok narrow, failed wide. A linked mark shows keyboard focus as a 4 px stroke in the focus colour on the mark itself, also on a stretched chart; on a hollow mark it replaces the stroke. Legends `.legend.is-ticks` and `.legend.is-bars` show the same shapes.
 
 #### Improved
-- A linked chart mark shows keyboard focus as a thick stroke on the mark. Before, a stretched chart drew the outline as a block beside it.
-- `.stage` sets `--danger`, `--warn` and `--info` for dark ground, so the states read there too.
+- `.stage` sets `--danger`, `--warn` and `--info` for dark ground, so marks and strips read there too.
 
-![Pills, result strip, lane chart and duration bars with legends in dark Kante](https://shrippen.github.io/Kante/shots/release-1.80-run-states.png)
+![Pills, result strip, lane chart with a focused mark and duration bars with legends in dark Kante](https://shrippen.github.io/Kante/shots/release-1.80-run-states.png)
 
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180
 
@@ -31,13 +30,12 @@ Der Zustand eines Laufs zeigt sich in Form, Zeichen und Wort, nicht nur in der F
 #### Neu
 - `.pill[data-state="ok|warn|bad|run|off"]`: ein Zeichen (✓ ! ✕ ▶ –) vor dem Wort, in der Farbe des Zustands. Auch bei Farbenblindheit und im Schwarzweißdruck ist ein fehlgeschlagener Lauf zu erkennen. Vorhandene Pills `ok`, `warn` und `off` bekommen das Zeichen auch. `.status[data-state="run"]` ist die passende Statusleuchte.
 - `svg.ticks`: die letzten Läufe als Streifen, der älteste links. Ok ist eine kurze Säule, fehlgeschlagen eine volle, warn und laufend hohl, ein ausgebliebener Lauf gepunktet. Beim Überfahren zeigt eine Anzeige den Lauf.
-- Lane-Chart-Marken `.ev`: Kreis für ok, Quadrat für fehlgeschlagen, hohl für geplant, gestrichelt für ein Fenster ohne Lauf. Die Balken eines Dauer-Diagramms (`rect.ev.is-bar`) unterscheiden sich in der Breite: ok schmal, fehlgeschlagen breit. Die Legenden `.legend.is-ticks` und `.legend.is-bars` zeigen dieselben Formen.
+- Lane-Chart-Marken `.ev`: Kreis für ok, Quadrat für fehlgeschlagen, hohl für geplant, gestrichelt für ein Fenster ohne Lauf. Die Balken eines Dauer-Diagramms (`rect.ev.is-bar`) unterscheiden sich in der Breite: ok schmal, fehlgeschlagen breit. Eine verlinkte Marke zeigt den Tastaturfokus als 4-px-Strich in der Fokusfarbe an der Marke selbst, auch in einem gestreckten Diagramm; bei einer hohlen Marke ersetzt er deren Strich. Die Legenden `.legend.is-ticks` und `.legend.is-bars` zeigen dieselben Formen.
 
 #### Verbessert
-- Eine verlinkte Diagramm-Marke zeigt den Tastaturfokus als dicken Strich an der Marke. Vorher zeichnete ein gestrecktes Diagramm den Rahmen als Block daneben.
-- `.stage` setzt `--danger`, `--warn` und `--info` für dunklen Grund, damit die Zustände auch dort lesbar sind.
+- `.stage` setzt `--danger`, `--warn` und `--info` für dunklen Grund, damit Marken und Streifen auch dort lesbar sind.
 
-![Pills, Ergebnisstreifen, Lane-Diagramm und Dauer-Balken mit Legenden in dunklem Kante](https://shrippen.github.io/Kante/shots/release-1.80-run-states.png)
+![Pills, Ergebnisstreifen, Lane-Diagramm mit fokussierter Marke und Dauer-Balken mit Legenden in dunklem Kante](https://shrippen.github.io/Kante/shots/release-1.80-run-states.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180
 
