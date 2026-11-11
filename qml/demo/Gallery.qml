@@ -163,6 +163,16 @@ Rectangle {
                     KanteLamp { rhythm: KanteLamp.Rhythm.Breathe }
                     KanteLamp { rhythm: KanteLamp.Rhythm.Tick }
                     KanteOdometer { value: 42 }
+                    KanteOdometer {
+                        id: liveOdo
+                        pace: KanteOdometer.Pace.Live
+                        Timer {
+                            interval: 250
+                            running: true
+                            repeat: true
+                            onTriggered: liveOdo.value = (liveOdo.value + 1) % 100
+                        }
+                    }
                     KanteHud { fullText: "// kader v0.4.0 · analyse läuft"; typing: true }
                 }
             }
