@@ -795,10 +795,10 @@ From Jidoka (scripts on a schedule): the state of a run in colour, sign and word
 
 | Element | Web | QML |
 |---|---|---|
-| Pill by result | `.pill[data-state="ok\|warn\|bad\|run\|off"]`: ✓, !, ✕, ▶ (breathes) and – before the word, in the colour of the same state as `.status` | – |
+| Pill by result | `.pill[data-state="ok\|warn\|bad\|run\|off"]` (existing uses of `ok`, `warn`, `off` now show colour and sign too, e.g. Andon `editor.html`, Leuchtfeuer `app.js`): ✓, !, ✕, ▶ (breathes) and – before the word, in the colour of the same state as `.status` | – |
 | Status light, running | `.status[data-state="run"]` (info colour) | – |
-| Result strip | `svg.ticks` (`viewBox="0 0 <n> 1"`, `preserveAspectRatio="none"`) > one `rect[data-state="ok\|warn\|bad\|run\|off\|miss"]` per run, oldest left; `miss` is hollow and dashed (a run that did not come); a shorter rect (`y`, `height`) marks a lesser failure; `data-tip="Label · value"` per rect gives the read-out inside a `.chart-wrap[data-readout]` with `.readout`. Legend: `.legend i[data-state]` | – |
-| Lane chart marks | In an `svg.chart`: `.ev[data-state="ok\|warn\|bad\|run"]` (circle, rect, bar), `.ev.is-plan` (hollow: planned), `.ev.is-late` (dashed: window without a run), `<a data-tip>` around a mark links it, `text.lane-name` names a row; with `.grid`, `.now` and an hour axis in text. `.ev` also colours the bars of a duration chart. Legend: `.legend i.is-round`, `i.is-plan`, `i.is-late` | – |
+| Result strip | `svg.ticks` (`viewBox="0 0 <n> 1"`, `preserveAspectRatio="none"`) > one `rect[data-state="ok\|warn\|bad\|run\|off\|miss"]` per run, oldest left; `miss` is hollow and dashed (a run that did not come); shape carries the state as well as colour: ok plain, bad filled with a light outline, warn hollow, run hollow dashed, miss hollow dotted; `data-tip="Label · value"` per rect gives the read-out inside a `.chart-wrap[data-readout]` with `.readout`. Legend: `.legend i[data-state]` | – |
+| Lane chart marks | In an `svg.chart`: `.ev[data-state="ok\|warn\|bad\|run"]` (circle, rect, bar), `.ev.is-plan` (hollow: planned), `.ev.is-late` (dashed: window without a run), `<a data-tip>` around a mark links it, `text.lane-name` names a row; with `.grid`, `.now` and an hour axis in text. `.ev` also colours the bars of a duration chart, with the same shapes (ok plain, bad light outline, warn hollow, run dashed hollow); the focus of a linked mark is the `--focus` outline, hover is a stroke. Legend: `.legend i.is-round`, `i.is-plan`, `i.is-late` | – |
 
 ### Added in Kante 1.79
 
