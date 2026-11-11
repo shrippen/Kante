@@ -344,7 +344,7 @@ Everything from the web catalogue that makes sense in an app, with the same shap
 | `KanteCheckSkin` | box with a drawn tick, diamond with snapping core, snapping switch | A15, A18 |
 | `KanteTabBar`, `KanteSegmented`, `KanteSteps` | notched tabs with counters, segmented control, process steps | yellow tab slides (A11) |
 | `KantePill`, `KanteCounter`, `KanteSticker`, `KanteLamp`, `KanteHud` | status, counts, paper labels, status lamp, HUD line | breathing / ticking lamp (A16), teleprinter (A07) |
-| `KanteOdometer` | mechanical counter | reels roll (A06) |
+| `KanteOdometer` | mechanical counter | reels roll (A06); `pace: Live` for a value that changes often: all reels at once, `KanteStyle.duration` |
 | `KanteProgressBar`, `KanteLoader`, `KanteSkeleton`, `KanteHazard` | bar, segment display, indeterminate stripes, three squares, placeholder | marching stripes (A08), segments switch on like lamps (A10) |
 | `KanteCallout`, `KanteToast`, `KanteBanner`, `KanteEmptyState` | notes, toasts, status banner, empty / offline / plugin-missing state | toast slides in with a life line (A14) |
 | `KanteTile`, `KanteRunner` | image tile with tier bar, selection, focus brackets; running light around a working surface | A21 |
