@@ -5,6 +5,42 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.80.0] — 2026-11-11
+
+### English
+
+The state of a run shows in shape, sign and word, not by colour alone: pills, a strip of the last runs and a lane chart of runs over a day.
+
+#### New
+- `.pill[data-state="ok|warn|bad|run|off"]`: a sign (✓ ! ✕ ▶ –) before the word, in the state's colour. Colour-blind readers and monochrome prints tell a failed run from a good one. Existing `ok`, `warn` and `off` pills get the sign too. `.status[data-state="run"]` is the matching status light.
+- `svg.ticks`: the last runs as a strip, oldest left. Ok is a short column, failed a full one, warn and running hollow, a run that did not come dotted. Hover shows a read-out per run.
+- Lane chart marks `.ev`: circle for ok, square for failed, hollow for planned, dashed for a window without a run. The bars of a duration chart (`rect.ev.is-bar`) differ by width: ok narrow, failed wide. Legends `.legend.is-ticks` and `.legend.is-bars` show the same shapes.
+
+#### Improved
+- A linked chart mark shows keyboard focus as a thick stroke on the mark. Before, a stretched chart drew the outline as a block beside it.
+- `.stage` sets `--danger`, `--warn` and `--info` for dark ground, so the states read there too.
+
+![Pills, result strip, lane chart and duration bars with legends in dark Kante](https://shrippen.github.io/Kante/shots/release-1.80-run-states.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180
+
+### Deutsch
+
+Der Zustand eines Laufs zeigt sich in Form, Zeichen und Wort, nicht nur in der Farbe: Pills, ein Streifen der letzten Läufe und ein Lane-Diagramm der Läufe über einen Tag.
+
+#### Neu
+- `.pill[data-state="ok|warn|bad|run|off"]`: ein Zeichen (✓ ! ✕ ▶ –) vor dem Wort, in der Farbe des Zustands. Auch bei Farbenblindheit und im Schwarzweißdruck ist ein fehlgeschlagener Lauf zu erkennen. Vorhandene Pills `ok`, `warn` und `off` bekommen das Zeichen auch. `.status[data-state="run"]` ist die passende Statusleuchte.
+- `svg.ticks`: die letzten Läufe als Streifen, der älteste links. Ok ist eine kurze Säule, fehlgeschlagen eine volle, warn und laufend hohl, ein ausgebliebener Lauf gepunktet. Beim Überfahren zeigt eine Anzeige den Lauf.
+- Lane-Chart-Marken `.ev`: Kreis für ok, Quadrat für fehlgeschlagen, hohl für geplant, gestrichelt für ein Fenster ohne Lauf. Die Balken eines Dauer-Diagramms (`rect.ev.is-bar`) unterscheiden sich in der Breite: ok schmal, fehlgeschlagen breit. Die Legenden `.legend.is-ticks` und `.legend.is-bars` zeigen dieselben Formen.
+
+#### Verbessert
+- Eine verlinkte Diagramm-Marke zeigt den Tastaturfokus als dicken Strich an der Marke. Vorher zeichnete ein gestrecktes Diagramm den Rahmen als Block daneben.
+- `.stage` setzt `--danger`, `--warn` und `--info` für dunklen Grund, damit die Zustände auch dort lesbar sind.
+
+![Pills, Ergebnisstreifen, Lane-Diagramm und Dauer-Balken mit Legenden in dunklem Kante](https://shrippen.github.io/Kante/shots/release-1.80-run-states.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180
+
 ## [1.79.0] — 2026-11-11
 
 ### English
