@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kante 1.80 for Jidoka</title>
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+</head>
+<body>
+<main style="max-width:60rem;margin:0 auto;padding:1.5rem 1rem;display:flex;flex-direction:column;gap:1.2rem">
+<h1>Kante 1.80: run states</h1>
+<h2>Pill by result</h2>
+<p><span class="pill" data-state="ok">ok</span> <span class="pill" data-state="warn">missed</span> <span class="pill" data-state="bad">failed</span> <span class="pill" data-state="run">running</span> <span class="pill" data-state="off">paused</span></p>
+<h2>Result strip</h2>
+<div class="chart-wrap" data-readout style="max-width:24rem">
+<svg class="ticks" viewBox="0 0 16 1" preserveAspectRatio="none" role="img" aria-label="Last runs">
+<rect data-state="ok" x="0" y="0" width=".8" height="1" data-tip="#1 · 06:00 · ok · 3 s"/>
+<rect data-state="ok" x="1" y="0" width=".8" height="1" data-tip="#2 · 07:00 · ok · 3 s"/>
+<rect data-state="bad" x="2" y="0" width=".8" height="1" data-tip="#3 · 08:00 · failed · 1 s"/>
+<rect data-state="bad" x="3" y=".4" width=".8" height=".6" data-tip="#4 · 09:00 · timed out · 30 min"/>
+<rect data-state="run" x="4" y="0" width=".8" height="1" data-tip="#5 · 10:00 · running"/>
+<rect data-state="miss" x="5" y="0" width=".8" height="1" data-tip="missed"/>
+</svg><div class="readout"></div></div>
+<ul class="legend"><li><i data-state="ok"></i>ok</li><li><i data-state="bad"></i>failed</li><li><i data-state="run"></i>running</li><li><i data-state="miss"></i>missed</li></ul>
+<h2>Lane marks</h2>
+<div class="chart-wrap" data-readout>
+<svg class="chart" viewBox="0 0 400 60" role="img" aria-label="Runs over a day">
+<line class="grid" x1="100" x2="100" y1="0" y2="50"/><line class="grid" x1="250" x2="250" y1="0" y2="50"/>
+<a href="#" data-tip="#1 · 06:00 · ok"><text class="lane-name" x="0" y="20">job</text><circle class="ev" data-state="ok" cx="100" cy="20" r="5.5"/></a>
+<a href="#" data-tip="#2 · 12:00 · failed"><rect class="ev" data-state="bad" x="244" y="14" width="11" height="11"/></a>
+<circle class="ev is-plan" cx="330" cy="20" r="4"/>
+<rect class="ev is-late" x="150" y="10" width="60" height="20"/><text class="is-late" x="154" y="24">! overdue</text>
+<line class="now" x1="280" x2="280" y1="0" y2="50"/>
+</svg><div class="readout"></div></div>
+</main>
+<script src="../../docs/v1/shrippen.js"></script>
+</body>
+</html>
