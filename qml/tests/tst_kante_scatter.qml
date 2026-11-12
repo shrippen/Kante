@@ -387,6 +387,43 @@ TestCase {
         compare(c.levelScale.start, 0)
     }
 
+    function test_integerLevels() {
+        // Default: fractional keys for views 3..5.
+        compare(texts(legendOf([3, 5], { minValue: 3, exactLevelStart: true })), "3.0–3.5 | 3.5–4.0 | 4.0–4.5 | 4.5–5.0")
+        // Three integers: three levels, no fractions, the top colours.
+        const c = legendOf([3, 4, 5], { integerLevels: true, exactLevelStart: true })
+        compare(texts(c), "3 | 4 | 5")
+        compare(c.levelOf(3), 2)
+        compare(c.levelOf(4), 3)
+        compare(c.levelOf(5), 4)
+        compare(c.legendModel[0].color, KanteStyle.levelColor(2, 4, c.scaleColor))
+        compare(c.legendModel[2].color, KanteStyle.levelColor(c.levelOf(5), 4, c.scaleColor))
+        // Default start rounding keeps whole numbers too.
+        compare(texts(legendOf([3, 5], { integerLevels: true })), "3 | 4 | 5")
+        // A single value: one key (as without the option); fixed end 4: two.
+        const one = legendOf([3], { integerLevels: true })
+        compare(texts(one), "3")
+        compare(one.levelOf(3), 4)
+        const two = legendOf([3], { integerLevels: true, minValue: 3, maxValue: 4 })
+        compare(texts(two), "3 | 4")
+        compare(two.levelOf(3), 3)
+        compare(two.levelOf(4), 4)
+        // Wide range: whole steps, each key ends on its last integer.
+        const w = legendOf([3, 60], { integerLevels: true, exactLevelStart: true })
+        compare(texts(w), "3–22 | 23–42 | 43–62 | 63–82")
+        compare(w.levelOf(22), 1)
+        compare(w.levelOf(23), 2)
+        // All three options: the open top starts at or below 60.
+        const a = legendOf([3, 60, 100], { integerLevels: true, exactLevelStart: true, openTopLevel: true,
+                                           minValue: 3, maxValue: 60 })
+        compare(texts(a), "3–12 | 13–22 | 23–32 | ≥ 33")
+        compare(a.levelOf(32), 3)
+        compare(a.levelOf(33), 4)
+        compare(a.levelOf(100), 4)
+        // Open top on few integers.
+        compare(texts(legendOf([3, 5], { integerLevels: true, openTopLevel: true })), "3 | 4 | ≥ 5")
+    }
+
     function test_bigMarkHit() {
         const c = createTemporaryObject(chartComponent, stage(),
                                         { points: [{ x: 0, y: 0, shape: "triangle", size: 8 }, { x: 10, y: 10 }] })
