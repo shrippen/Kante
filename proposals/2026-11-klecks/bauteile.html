@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kante for Klecks</title>
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+</head>
+<body>
+<main style="max-width:60rem;margin:0 auto;padding:1.5rem 1rem;display:flex;flex-direction:column;gap:1.2rem">
+<h1>Kante for Klecks: four QML gaps</h1>
+<p>Klecks (a desktop app that sorts video frames) built these four locally. They are QML only; the web has <code>.drop</code> and <code>.steps</code> already. Live: <code>qml/demo/Gallery.qml</code> (sections navigation, data and lists, surfaces); tests: <code>qml/tests/tst_kante_klecks.qml</code>.</p>
+<div class="table-wrap"><table class="table">
+<thead><tr><th>Component</th><th>API</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td><code>KanteLineChart</code></td><td><code>thresholds</code> [{value, color, series, label}], <code>xStart</code>, <code>xEnd</code>, <code>xTitle</code>, <code>yTitle</code></td><td>Dashed reference lines; axis captions with room kept by the chart (<code>padTop</code>, <code>padBottom</code>)</td></tr>
+<tr><td><code>KanteFileDrop</code></td><td><code>hint</code>, <code>chooseText</code>, <code>dropped(urls)</code>, <code>chooseRequested()</code>, <code>dragOver</code></td><td>Files from outside the app; <code>KanteDropZone</code> stays the tile placeholder</td></tr>
+<tr><td><code>KanteTile</code></td><td><code>source</code>, <code>placeholder</code>, <code>captioned</code></td><td>Image or neutral placeholder; name and figure optional</td></tr>
+<tr><td><code>KanteSteps</code></td><td><code>clickable</code>, <code>activated(index)</code>, <code>errors</code></td><td>Steps as buttons; a failed step in the negative colour with an exclamation mark</td></tr>
+</tbody></table></div>
+</main>
+<script src="../../docs/v1/shrippen.js"></script>
+</body>
+</html>

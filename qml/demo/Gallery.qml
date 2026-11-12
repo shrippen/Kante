@@ -110,6 +110,8 @@ Rectangle {
                 KanteSteps { model: ["Einlesen", "Erkennen", "Prüfen", "Übergeben"]; current: 2 }
                 // A skipped step shows a dash, not the check (1.49).
                 KanteSteps { model: ["Instrument", "Eingang", "Latenz", "Fertig"]; current: 3; skipped: [2] }
+                // Clickable steps, one failed (an error shows in shape and colour).
+                KanteSteps { model: ["Einlesen", "Erkennen", "Prüfen", "Übergeben"]; current: 2; clickable: true; errors: [1] }
                 // Page bar at the window's foot: busy dots by kind, a picture area (stage) and an action at the right end.
                 KantePageBar {
                     Layout.fillWidth: true
@@ -238,6 +240,9 @@ Rectangle {
                     KanteTile { name: "Jellyfin"; figure: "OK"; stale: true; staleText: "seit 12 min"; Rectangle { anchors.fill: parent; color: "#3c3836" } }
                     KanteTile { name: "Editiermodus"; figure: ""; editing: true; Rectangle { anchors.fill: parent; color: "#3c3836" } }
                     KanteTile { name: "Aufgenommen"; figure: ""; picked: true; Rectangle { anchors.fill: parent; color: "#3c3836" } }
+                    KanteTile { name: "Ohne Bild"; figure: "—" }
+                    KanteTile { Layout.preferredWidth: KanteStyle.unit(120); placeholder: true }
+                    KanteFileDrop { Layout.preferredWidth: KanteStyle.unit(260); Layout.preferredHeight: KanteStyle.unit(84); hint: "Dateien hierher ziehen"; chooseText: "Auswählen" }
                     KanteDropZone { Layout.preferredWidth: KanteStyle.unit(100); Layout.preferredHeight: KanteStyle.unit(70) }
                     KanteDropZone { kind: KanteDropZone.Kind.Cell; Layout.preferredWidth: KanteStyle.unit(100); Layout.preferredHeight: KanteStyle.unit(70) }
                     KanteLiveText { text: "1 687" }
@@ -252,6 +257,8 @@ Rectangle {
                     KanteBarChart { Layout.preferredWidth: KanteStyle.unit(240); Layout.preferredHeight: KanteStyle.unit(110); values: [3, 5, 2, 6, 4]; labels: ["MO", "DI", "MI", "DO", "FR"]; goal: 4.5; highlight: 3 }
                     KanteBarChart { Layout.preferredWidth: KanteStyle.unit(200); Layout.preferredHeight: KanteStyle.unit(110); values: [[2, 1], [3, 2], [1, 3]]; labels: ["A", "B", "C"] }
                     KanteLineChart { Layout.preferredWidth: KanteStyle.unit(240); Layout.preferredHeight: KanteStyle.unit(110); series: [[1, 3, 2, 5, 4], [2, 2, 3, 3, 4]]; labels: ["MO", "DI", "MI", "DO", "FR"]; unit: " h"; axis: true }
+                    // Threshold line and axis captions, laid out by the chart.
+                    KanteLineChart { Layout.preferredWidth: KanteStyle.unit(260); Layout.preferredHeight: KanteStyle.unit(140); series: [[1, 3, 2, 5, 4, 6]]; unit: " px"; axis: true; thresholds: [{ value: 4, series: 1, label: "Schwelle" }]; xStart: "Bild 1"; xEnd: "Bild 6"; xTitle: "Zeit"; yTitle: "Schärfe" }
                     ColumnLayout {
                         KanteSparkline { values: [1, 3, 2, 5, 4, 6] }
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
