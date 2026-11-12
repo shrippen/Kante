@@ -203,7 +203,7 @@ Item {
     // Wide enough for the widest key a line can start with (with the naturals of a change).
     readonly property real headerWidth: sp * (4.2 + maxHeaderKey(barList) * 1.1 + 3.0)
     readonly property int perSystem: barsPerSystem > 0 ? barsPerSystem
-        : Math.max(1, Math.floor((layoutSize.width - headerWidth) / Math.max(1, minBarWidth)))
+        : Math.max(1, Math.floor((layoutSize.width - headerWidth) / Math.max(1, layoutMinBarWidth)))
     readonly property int firstBar: Math.max(0, Math.floor(currentBar / perSystem) * perSystem)
     readonly property real barWidth: (layoutSize.width - headerWidth) / perSystem
     /** Any bar with a section: then a row for the rehearsal marks on top (1.50). */
@@ -220,9 +220,9 @@ Item {
     implicitHeight: Math.ceil(systemHeight * Math.max(1, systems))
 
     /**
-     * Wait after the last size change before laying out again (1.82), in ms: while a window
-     * is dragged the drawn lines stay, then they move to their new place once. 0 (default):
-     * at once.
+     * Wait after the last change of size, spacing or bar width before laying out again
+     * (1.82), in ms: while a window is dragged the drawn lines stay, then they move to their
+     * new place once. 0 (default): at once.
      */
     property int settleMs: 0
     /** The size the layout uses: the item's, taken over at once or `settleMs` after it changed. */
@@ -230,9 +230,13 @@ Item {
     /** The spacing the layout uses: `staffSpace`, taken over with the size (a new spacing that
      *  comes with a resize, e.g. a presentation going full screen, lays out once). */
     property real layoutSpacing: staffSpace
+    /** The bar width the layout uses: `minBarWidth`, taken over with the size too (it may
+     *  follow the spacing, e.g. `staffSpace * 18`). */
+    property real layoutMinBarWidth: minBarWidth
     function takeSize() {
         layoutSize = Qt.size(width, height)
         layoutSpacing = staffSpace
+        layoutMinBarWidth = minBarWidth
     }
     function sizeChanged() {
         if (settleMs <= 0 || layoutSize.width <= 0) {
@@ -244,6 +248,7 @@ Item {
     onWidthChanged: sizeChanged()
     onHeightChanged: sizeChanged()
     onStaffSpaceChanged: sizeChanged()
+    onMinBarWidthChanged: sizeChanged()
     // The first lines at once: a staff shows its notes from the first frame.
     Component.onCompleted: {
         takeSize()

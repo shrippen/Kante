@@ -256,9 +256,15 @@ TestCase {
 
     // A new spacing waits like a new size (Kontra 12.11.: the presentation scaled the spacing
     // at once and went full screen a moment later, two layouts and a jump from 3 to 4 lines).
+    // The bar width may follow the spacing too (Kontra binds it to the same scale; the bass
+    // staff's default is staffSpace * 18): it waits as well (review #159).
+    Component { id: tabScaledComponent; KanteTabStaff { width: 1500; height: 800; systems: 3; lineSpacing: 14; minBarWidth: lineSpacing * 14 } }
+    Component { id: bassDefaultComponent; KanteBassStaff { width: 1500; height: 800; systems: 3; staffSpace: 10 } }
     function test_spacingSettlesWithSize_data() {
         return [{ tag: "tab", comp: tabComponent, notes: tabNotes(16), key: "lineSpacing", to: 21 },
-                { tag: "notation", comp: bassComponent, notes: midiNotes(16), key: "staffSpace", to: 15 }]
+                { tag: "notation", comp: bassComponent, notes: midiNotes(16), key: "staffSpace", to: 15 },
+                { tag: "tab, bar width by spacing", comp: tabScaledComponent, notes: tabNotes(16), key: "lineSpacing", to: 21 },
+                { tag: "notation, default bar width", comp: bassDefaultComponent, notes: midiNotes(16), key: "staffSpace", to: 15 }]
     }
     function test_spacingSettlesWithSize(row) {
         const staff = createTemporaryObject(row.comp, tc, { bars: bars(16), notes: row.notes, settleMs: 120 })
