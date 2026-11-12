@@ -264,6 +264,40 @@ Rectangle {
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
                     }
                 }
+                // Scatter chart as a top view map: the walls coloured by view count, the table in the
+                // middle grey (no count), the cameras as triangles looking at it; same unit on both axes.
+                KanteScatterChart {
+                    objectName: "galleryScatter"
+                    Layout.preferredWidth: KanteStyle.unit(480)
+                    Layout.preferredHeight: KanteStyle.unit(320)
+                    equalAspect: true
+                    unit: "m"
+                    xTitle: "Ost"
+                    yTitle: "Nord"
+                    valueKey: "views"
+                    valueTitle: "Ansichten"
+                    seriesNames: ["", "Kameras"]
+                    pointColor: KanteStyle.dataColor(5)
+                    accessibleName: "Draufsicht"
+                    points: {
+                        const out = []
+                        // A room of 6 × 4 m: points along the walls and a table in the middle.
+                        for (let i = 0; i < 3000; i++) {
+                            const t = i * 0.618034 % 1
+                            const side = i % 5
+                            const jitter = ((i * 7919) % 100) / 100 - 0.5
+                            const x = side < 2 ? t * 6 - 3 : side < 4 ? (side === 2 ? -3 : 3) + jitter * 0.2 : jitter * 1.2
+                            const y = side < 2 ? (side === 0 ? -2 : 2) + jitter * 0.2 : side < 4 ? t * 4 - 2 : (t - 0.5) * 0.8
+                            out.push(side === 4 ? { x: x, y: y } : { x: x, y: y, views: 2 + (i * 13) % 15 })
+                        }
+                        for (let k = 0; k < 8; k++) {
+                            const a = k / 8 * 2 * Math.PI
+                            out.push({ x: Math.cos(a) * 1.8, y: Math.sin(a) * 1.3, series: 1, shape: "triangle",
+                                       angle: a * 180 / Math.PI + 180, label: "Kamera " + (k + 1) })
+                        }
+                        return out
+                    }
+                }
                 // 1.76: a song map, hit rate per bar over the last runs; bars 5–8 chosen as the loop.
                 KanteSongMap {
                     objectName: "gallerySongMap"
@@ -635,13 +669,14 @@ Rectangle {
                 // 1.24: how states show (0 Full, 1 Quiet for a play mode, 2 Off)
                 property int marks: 0
                 readonly property var riff: {
-                    var n = [], t = 0
-                    var beats = [1, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0.5, 2, 1.5, 0.5, 1, 1, 4]
-                    var midi = [40, 43, 45, 47, 45, 43, 40, 43, 45, 50, 52, 50, 47, 45, 40]
-                    var str = [0, 0, 1, 1, 1, 0, 0, 0, 1, 2, 2, 2, 1, 1, 0]
-                    var fret = [0, 3, 0, 2, 0, 3, 0, 3, 0, 0, 2, 0, 2, 0, 0]
-                    var st = ["hit", "offpitch", "early", "hit", "wrong", "late", "missed"]
-                    for (var i = 0; i < beats.length; i++) {
+                    const n = []
+                    let t = 0
+                    const beats = [1, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0.5, 2, 1.5, 0.5, 1, 1, 4]
+                    const midi = [40, 43, 45, 47, 45, 43, 40, 43, 45, 50, 52, 50, 47, 45, 40]
+                    const str = [0, 0, 1, 1, 1, 0, 0, 0, 1, 2, 2, 2, 1, 1, 0]
+                    const fret = [0, 3, 0, 2, 0, 3, 0, 3, 0, 0, 2, 0, 2, 0, 0]
+                    const st = ["hit", "offpitch", "early", "hit", "wrong", "late", "missed"]
+                    for (let i = 0; i < beats.length; i++) {
                         n.push({ time: t, duration: beats[i] * 0.6, beats: beats[i], midi: midi[i], string: str[i], fret: fret[i],
                                  state: i < st.length ? st[i] : "pending", tied: false, cents: i === 1 ? 32 : undefined })
                         t += beats[i] * 0.6
@@ -652,7 +687,7 @@ Rectangle {
                 Timer {
                     interval: 16; repeat: true; running: practice.playing
                     onTriggered: {
-                        var p = practice.position + interval / 1000 * practice.speed
+                        const p = practice.position + interval / 1000 * practice.speed
                         practice.position = practice.looping && p > 4.8 ? 2.4 : (p > 12 ? 0 : p)
                     }
                 }
@@ -711,8 +746,9 @@ Rectangle {
                 KanteFretboard {
                     Layout.fillWidth: true
                     markers: {
-                        var lane = practice.riff, out = [{ string: 0, fret: 5, role: "root", label: "A" }, { string: 1, fret: 7, role: "scale" }, { string: 2, fret: 5, role: "scale" }]
-                        for (var i = 0; i < lane.length; i++) {
+                        const lane = practice.riff
+                        const out = [{ string: 0, fret: 5, role: "root", label: "A" }, { string: 1, fret: 7, role: "scale" }, { string: 2, fret: 5, role: "scale" }]
+                        for (let i = 0; i < lane.length; i++) {
                             if (lane[i].time > practice.position) {
                                 out.push({ string: lane[i].string, fret: lane[i].fret, role: "next" })
                                 if (i > 0) out.push({ string: lane[i - 1].string, fret: lane[i - 1].fret, role: "current", label: "1" })
@@ -755,8 +791,8 @@ Rectangle {
                 title: "1.28 · kontra-wünsche 2: segmente aus, hilfe, zahlenfeld, volta"
                 // Eight bars of quarter notes at 100 bpm: |: 1 2 3 [1. 4 :| ] [2. 5 6 ] 7 8
                 readonly property var quarters: {
-                    var n = []
-                    for (var i = 0; i < 32; i++) {
+                    const n = []
+                    for (let i = 0; i < 32; i++) {
                         n.push({ time: i * 0.6, duration: 0.6, beats: 1, string: i % 4, fret: (i * 3) % 5 })
                     }
                     return n
@@ -801,13 +837,13 @@ Rectangle {
                 // hammer-on and pull-off; the first half played, each technique judged.
                 property real position: 1.3
                 readonly property var line: {
-                    var spec = [[0, 0, "slap", "played"], [2, 7, "pop", "played"], [0, 0, "ghost", "other"],
+                    const spec = [[0, 0, "slap", "played"], [2, 7, "pop", "played"], [0, 0, "ghost", "other"],
                                 [0, 3, "", ""], [0, 5, "slide", "played"], [1, 2, "", ""], [1, 4, "hammer", "unheard"],
                                 [1, 2, "pull", ""], [0, 0, "slap", ""], [2, 9, "pop", ""], [0, 0, "ghost", ""], [1, 0, "", ""]]
-                    var tuning = [28, 33, 38, 43]
-                    var n = []
-                    for (var i = 0; i < spec.length; i++) {
-                        var played = i * 0.3 < techDemo.position
+                    const tuning = [28, 33, 38, 43]
+                    const n = []
+                    for (let i = 0; i < spec.length; i++) {
+                        const played = i * 0.3 < techDemo.position
                         n.push({ time: i * 0.3, duration: 0.27, beats: 0.5, string: spec[i][0], fret: spec[i][1],
                                  midi: tuning[spec[i][0]] + spec[i][1], technique: spec[i][2],
                                  techniqueResult: played ? spec[i][3] : "", state: played ? "hit" : "pending" })
@@ -868,10 +904,10 @@ Rectangle {
                 // A funk line in E at 120 bpm (an eighth is 0.25 s), the first bars played.
                 property real position: 1.6
                 readonly property var line: {
-                    var midi = [28, 28, 40, 31, 33, 34, 35, 28, 38, 40, 43, 45, 47, 40, 28, 31]
-                    var st = ["hit", "hit", "early", "hit", "wrong", "offpitch", "late"]
-                    var n = []
-                    for (var i = 0; i < midi.length; i++) {
+                    const midi = [28, 28, 40, 31, 33, 34, 35, 28, 38, 40, 43, 45, 47, 40, 28, 31]
+                    const st = ["hit", "hit", "early", "hit", "wrong", "offpitch", "late"]
+                    const n = []
+                    for (let i = 0; i < midi.length; i++) {
                         n.push({ time: i * 0.25, duration: 0.22, midi: midi[i], state: i < st.length ? st[i] : "pending",
                                  cents: i === 5 ? 28 : undefined })
                     }

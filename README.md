@@ -368,7 +368,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Chip (entity, filter) | `.chip`, `.chip-x`, `.chips-row` | `KanteChip` |
 | Swatch with origin ring | `.swatch[data-src]`, `.swatch-grid` | `KanteSwatch` |
 | Table: numbers, group row, total | `.table .num`, `.group-row`, `tfoot` | – |
-| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteSparkline`, `KanteHeatmap`, `KanteHeatGrid` |
+| Charts | `.chart`, `.spark`, `.uptime`, `.legend`, `.heat` | `KanteBarChart`, `KanteLineChart`, `KanteScatterChart`, `KanteSparkline`, `KanteHeatmap`, `KanteHeatGrid` |
 | Month grid | `.cal` | `KanteCalendarGrid` |
 | KPI with change | `.kpi`, `.delta` | `KanteKpi` |
 | Wide KPI with spark line | `.kpi` > `.spark` from 24rem content width on (container query on the `.kpi`): figures left, the line right; the value stays on one line | – |
@@ -791,7 +791,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 ### Next release (unreleased)
 
-From Klecks (a desktop app that sorts video frames): four things its screens built locally. All generic.
+From Klecks (a desktop app that sorts video frames): what its screens built locally. All generic.
 
 | Element | Web | QML |
 |---|---|---|
@@ -801,6 +801,8 @@ From Klecks (a desktop app that sorts video frames): four things its screens bui
 | Tile image and placeholder | – | `KanteTile.source` (image url, scaled to fill and cropped) and `placeholder` (default true): while no image is on screen (no `source`, loading, failed) the stage shows a sunken field with a picture sign. `content` still goes on top. `name` and `figure` are optional: with both empty (`captioned` false) the caption row is left out and the tile is only as high as its stage plus the bar |
 | Clickable steps | – | `KanteSteps.clickable` (default false) and `activated(index)`: click, Return, Enter or Space; the steps take Tab, show a frame under the pointer and focus brackets |
 | Failed steps | – | `KanteSteps.errors`: indexes of failed steps, passed, current or upcoming: negative bar, an exclamation mark on a filled negative square, label in the negative colour, a current step's outline negative; no done check. Screen readers hear "Fehler" (`stateNames.error`) |
+| Tile image size | – | `KanteTile.sourceSize` goes to the image's `sourceSize`: a big photo is decoded at that size (e.g. `Qt.size(360, 240)`), not at its own. Unset: full size, as before |
+| Scatter chart | – | `KanteScatterChart`: `points` `[{ x, y, series, shape, label, size, angle }]` on an x / y plane, all in one Canvas (batched by shape and colour, 20 000 points stay cheap; only the hovered or focused point gets a ring and a tooltip). `shape` `"dot"` (default; square in the Kante style, round elsewhere), `"triangle"` (turned by `angle`, degrees counter-clockwise from +x, default 90: up; e.g. a camera's view direction) or `"cross"`; `size` scales the mark (`pointSize` at 1; a cross 1.5, a triangle 2.5 times). Colour: `valueKey` (a field of the points) on four levels of `KanteStyle.levelColor` from `scaleColor` (focus colour) between `minValue` and `maxValue` (NaN: from the points); else `series` → `KanteStyle.dataColor(series)`; else `pointColor` (`dataColor(0)`). Dots lie under crosses under triangles, each by ascending level. `equalAspect`: one unit as long on both axes (a map, a top view), the shorter axis grows around its centre, both tick at the same step. Axes: ends rounded out to 1-2-2.5-5 steps (`xMin`, `xMax`, `yMin`, `yMax` fix them; NaN: from the points), a grid line and a label per tick, `xTitle`, `yTitle` with `xUnit`, `yUnit` (`unit` sets both) in brackets ("Ost (m)"). `legend` (default on when it has entries): a `KanteLegend` below, a key per `seriesNames` entry ("" leaves one out), then one per level, bounds on a round step from a multiple of it, the top bound reaching the highest value, so a top level can stay empty ("0–5", "5–10"; `levelOf` cuts at the same bounds; a single value takes the top level); `legendModel` for a legend of one's own. Tooltip on hover and on focus, also the accessible description (`tipOf(i)`): `label`, the coordinates with unit ("x 1,27 m · y 3,40 m"), `valueTitle` and the value. `interactive` (default true): Tab focuses a point (`currentIndex`), the arrows go to the nearest point in their direction, Home / End to the first and last point inside the plot, Enter / Space or a click fire `activated(index)`; at the edge the focus stays. `xOf(v)`, `yOf(v)`, `pointAt(x, y)` and `axes` give the drawn geometry. The x axis is not mirrored right to left |
 
 ### Added in Kante 1.80
 

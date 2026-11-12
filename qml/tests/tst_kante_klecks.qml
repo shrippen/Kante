@@ -4,7 +4,7 @@ import Kante
 
 /**
  * From Klecks: threshold lines and axis captions in `KanteLineChart`, `KanteFileDrop`, the image
- * and placeholder of `KanteTile`, clickable steps and error steps in `KanteSteps`.
+ * and placeholder of `KanteTile` (and its `sourceSize`), clickable steps and error steps in `KanteSteps`.
  * Run: tools/check-qml.sh.
  */
 TestCase {
@@ -204,6 +204,21 @@ TestCase {
         verify(!placeholderOf(t).visible)
         t.source = ""
         verify(placeholderOf(t).visible)
+    }
+
+    function test_tileSourceSize() {
+        const icon = Qt.resolvedUrl("../../docs/icon.svg")
+        const t = createTemporaryObject(tileComponent, stage(), { source: icon, sourceSize: Qt.size(24, 24) })
+        const img = findChild(t, "kanteTileImage")
+        tryVerify(function () { return img.shown })
+        // Decoded at the size asked for, not at the file's size.
+        compare(img.sourceSize, Qt.size(24, 24))
+        verify(img.implicitWidth <= 24 && img.implicitHeight <= 24, img.implicitWidth + " x " + img.implicitHeight)
+        // Unset: the file's own size.
+        const full = createTemporaryObject(tileComponent, stage(), { source: icon })
+        const fullImg = findChild(full, "kanteTileImage")
+        tryVerify(function () { return fullImg.shown })
+        verify(fullImg.implicitWidth > 24, "natural width " + fullImg.implicitWidth)
     }
 
     function test_tileBrokenSourceKeepsPlaceholder() {
