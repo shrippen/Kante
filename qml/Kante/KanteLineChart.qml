@@ -39,7 +39,7 @@ Item {
     /**
      * Horizontal reference lines: [{ value, color, series, label }]. `color` is the line's colour,
      * `series` (an index) takes that series' colour instead; neither: the accent colour, as the
-     * goal line of `KanteBarChart`. `label` (optional) is written above the line at the right end.
+     * goal line of `KanteBarChart`. `label` (optional) is written above the line at the right end, below it when there is no room above.
      * A line above the scale is not drawn; without `maxValue` the scale grows to hold it.
      */
     property var thresholds: []
