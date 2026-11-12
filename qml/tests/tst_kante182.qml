@@ -220,4 +220,37 @@ TestCase {
         compare(marksIn(staff, []).filter(function (m) { return m.moving }).length, 1)
     }
 
+    // Right after it was made the staff's room still settles (a page opening, Kontra 12.11.:
+    // the first line showed squeezed, then grew and slid down). Changes then come at once;
+    // only later ones move.
+    function test_firstMomentStandsStill_data() {
+        return [{ tag: "tab", comp: tabComponent, notes: tabNotes(8), key: "lineSpacing", to: 11 },
+                { tag: "notation", comp: bassComponent, notes: midiNotes(8), key: "staffSpace", to: 8 }]
+    }
+    function test_firstMomentStandsStill(row) {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = true
+        const staff = createTemporaryObject(row.comp, tc, { bars: bars(8), notes: row.notes })
+        staff[row.key] = row.to
+        tryVerify(function () { return lineItems(staff).length > 0 })
+        waitForRendering(staff)
+        compare(lineItems(staff)[0].zoom, 1, "the first line grew in")
+    }
+
+    // A new spacing (a row came above, Kontra 12.11.) moves a line up or down only: the width
+    // stays, nothing slides sideways.
+    function test_newSpacingOnlyUpDown_data() {
+        return [{ tag: "tab", comp: tabComponent, notes: tabNotes(8), key: "lineSpacing", to: 11 },
+                { tag: "notation", comp: bassComponent, notes: midiNotes(8), key: "staffSpace", to: 8 }]
+    }
+    function test_newSpacingOnlyUpDown(row) {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = true
+        const staff = createTemporaryObject(row.comp, tc, { bars: bars(8), notes: row.notes })
+        tryVerify(function () { return lineItems(staff).length > 0 && staff.grown })
+        const line = lineItems(staff)[0]
+        staff[row.key] = row.to
+        tryVerify(function () { return line.zoom !== 1 }, 500, "the line moves")
+        compare(line.transform[0].xScale, 1, "the line slid sideways")
+    }
 }
