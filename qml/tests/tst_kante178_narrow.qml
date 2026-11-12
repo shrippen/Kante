@@ -49,6 +49,35 @@ TestCase {
         KanteListRow { width: 600; text: "Ein recht langer Titel der Zeile"; subtitle: "Und eine ebenso lange Unterzeile" }
     }
 
+    Component {
+        id: longRow
+        KanteListRow {
+            width: 240
+            text: "Jûyon-ban · Wakigamae no Uchiotoshi"
+            subtitle: "十四番 脇構えの打ち落とし · Seigan · Wakigamae → Migi-gote"
+            leadingText: "14"
+            trailing: KanteButton { text: "▶" }
+        }
+    }
+
+    // `overflow` Wrap (1.81, Mitori's tablet list cut long names): the texts take the lines
+    // they need, nothing is cut, the row grows; the trailing items stay beside them.
+    function test_long_texts_wrap_on_request() {
+        const row = createTemporaryObject(longRow, stage())
+        const title = findChild(row, "listRowText")
+        const second = findChild(row, "listRowSubtitle")
+        verify(title.truncated, "Elide by default")
+        const oneLine = row.implicitHeight
+
+        row.overflow = KanteListRow.Overflow.Wrap
+        verify(!title.truncated, "the name whole")
+        verify(!second.truncated, "the second line whole")
+        verify(title.lineCount > 1, "the name wraps: " + title.lineCount)
+        verify(second.lineCount > 1, "the second line wraps: " + second.lineCount)
+        tryVerify(() => row.implicitHeight > oneLine, 1000, "taller: " + row.implicitHeight + " vs " + oneLine)
+        verify(!row.stacked, "the trailing items stay beside the texts")
+    }
+
     function test_wide_row_stays_in_one_line() {
         const scene = createTemporaryObject(rowScene, stage())
         const row = scene.row
