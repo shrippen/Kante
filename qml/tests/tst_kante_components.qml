@@ -429,6 +429,51 @@ TestCase {
     }
 
     Component {
+        id: longTitleComponent
+        KanteSettingRow {
+            // Longest German mixer titles of Kontra, the control as wide as its button
+            title: "Bass über Kontra hören, Klang zurücksetzen"
+            width: KanteStyle.unit(380)
+            Rectangle { width: KanteStyle.unit(150); height: KanteStyle.unit(32) }
+        }
+    }
+
+    function test_settingRowLongTitle() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(longTitleComponent, tc)
+        verify(!r.narrow)
+        var ctl = r.control[0]
+        var right = ctl.mapToItem(r, ctl.width, 0).x
+        verify(right <= r.width, "control ends at " + right + ", row is " + r.width)
+        var left = ctl.mapToItem(r, 0, 0).x
+        var t = findChild(r, "settingTitle")
+        var titleRight = t.mapToItem(r, t.width, 0).x
+        verify(titleRight <= left, "title ends at " + titleRight + ", control starts at " + left)
+    }
+
+    Component {
+        id: markedComponent
+        KanteSettingRow {
+            title: "Schwelle"
+            modified: true
+            width: KanteStyle.unit(600)
+            Rectangle { width: KanteStyle.unit(150); height: KanteStyle.unit(32) }
+        }
+    }
+
+    // The mark stands right after the title's text ("Schwelle ■"), not at the column's edge.
+    function test_settingRowMarkAfterTitle() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(markedComponent, tc)
+        var t = findChild(r, "settingTitle")
+        var mark = findChild(r, "settingMark")
+        var textEnd = t.mapToItem(r, t.contentWidth, 0).x
+        var markX = mark.mapToItem(r, 0, 0).x
+        verify(markX - textEnd <= KanteStyle.unit(12),
+               "mark at " + markX + ", title text ends at " + textEnd)
+    }
+
+    Component {
         id: calendarComponent
         KanteCalendarGrid { year: 2026; month: 10; holidays: [3]; absences: [3, 13]; selectedDay: 5 }
     }
