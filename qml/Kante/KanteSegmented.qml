@@ -10,7 +10,8 @@ import "."
  * icon names and `tooltips` an optional list of hints (needed for icon-only segments).
  * `disabledIndexes` (Kante 1.28) lists segments that cannot be chosen, e.g. [2]: muted and
  * struck through (not colour alone), no click, arrow keys skip them, screen readers hear
- * them as unavailable. Their tooltip still shows, so it can say why.
+ * them as unavailable. Their tooltip still shows, so it can say why. With `enabled: false` the
+ * whole control is dimmed like the other controls and takes no click or key.
  */
 FocusScope {
     id: seg
@@ -25,6 +26,7 @@ FocusScope {
     implicitHeight: KanteStyle.heightMedium
     implicitWidth: row.implicitWidth
     activeFocusOnTab: true
+    opacity: enabled ? 1 : 0.5
 
     Keys.onLeftPressed: select(nextEnabled(-1))
     Keys.onRightPressed: select(nextEnabled(1))
