@@ -193,8 +193,10 @@ Item {
      * exactly these bounds and `levelOf` uses them. The scale may reach past the highest
      * value, so a top level can stay empty. Without a fixed end, one value (or all equal)
      * takes the top level and the legend shows only that value. `exactLevelStart` starts the
-     * first level at the lowest value itself; `openTopLevel` only changes the top key's text
-     * (`levelOf` always puts values above the last bound on the top level). `integerLevels`
+     * first level at the lowest value itself. `openTopLevel` writes the top key as "≥ n" and
+     * shrinks the step until that start is not above the highest value, so all bounds and
+     * `levelOf` change with it (`levelOf` always puts values above the last bound on the top
+     * level). `integerLevels`
      * works on whole numbers: `count` levels (at most `levels`), a step of at least 1, a
      * level key ends on the integer before the next level's start.
      */
