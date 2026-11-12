@@ -92,6 +92,41 @@ TestCase {
         verify(long.childrenRect.width <= 80.5, "a long word wraps inside (" + long.childrenRect.width + ")")
     }
 
+    // Mitori's heatmap legend on a 360 px phone: four keys on the first line, "10 and more" alone
+    // on the second. Wrapped lines are balanced instead (here 2 + 3: the first two words are long).
+    Component {
+        id: fiveComponent
+        KanteLegend {
+            model: [{ color: KanteStyle.levelColor(0), text: "no practice" },
+                    { color: KanteStyle.levelColor(1), text: "1–2 techniques" },
+                    { color: KanteStyle.levelColor(2), text: "3–5" },
+                    { color: KanteStyle.levelColor(3), text: "6–9" },
+                    { color: KanteStyle.levelColor(4), text: "10 and more" }]
+        }
+    }
+    function lineCounts(list) {
+        var counts = {}
+        for (var i = 0; i < list.length; i++) {
+            counts[list[i].y] = (counts[list[i].y] || 0) + 1
+        }
+        return Object.keys(counts).sort((a, b) => a - b).map(y => counts[y])
+    }
+    function test_legendBalancesLines() {
+        var probe = createTemporaryObject(fiveComponent, stage(), { width: 2000 })
+        var it = items(probe)
+        var four = it[3].x + it[3].width
+        var legend = createTemporaryObject(fiveComponent, stage(), { width: four + 2 })
+        var counts = lineCounts(items(legend))
+        compare(counts.length, 2, "no more lines: " + counts)
+        verify(counts[1] > 1, "no item alone on the last line: " + counts)
+        legend.width = 2000
+        legend.forceLayout()
+        compare(lineCounts(items(legend)), [5], "wide: one line")
+        legend.width = 60
+        legend.forceLayout()
+        compare(lineCounts(items(legend)), [1, 1, 1, 1, 1], "narrow: one item per line")
+    }
+
     Component {
         id: partsComponent
         KanteProgressBar {
