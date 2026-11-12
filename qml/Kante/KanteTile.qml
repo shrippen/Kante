@@ -29,6 +29,8 @@ FocusScope {
     property string figure: ""
     /** Image shown in the stage; "" for none. */
     property url source: ""
+    /** Size `source` is decoded at (Image.sourceSize), e.g. Qt.size(360, 240) for a big photo; unset: full size. */
+    property size sourceSize
     /** The stage shows the placeholder while `source` is not an image on screen. */
     property bool placeholder: true
     readonly property bool captioned: name !== "" || figure !== ""
@@ -116,6 +118,7 @@ FocusScope {
             readonly property bool shown: status === Image.Ready
             anchors.fill: parent
             source: tile.source
+            sourceSize: tile.sourceSize
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             visible: shown
