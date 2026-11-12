@@ -97,6 +97,8 @@ QtObject {{
     readonly property int chamfer: {shape['chamfer']}
     readonly property int chamferSmall: {shape['chamferSmall']}
     readonly property int cutSmall: {shape['cutSmall']}
+    // Blur radius (px at a grid unit of 18) behind a glass panel.
+    readonly property int glassBlur: {shape['glassBlur']}
     // Control heights (small, medium, large).
     readonly property int heightSmall: {shape['heights']['small']}
     readonly property int heightMedium: {shape['heights']['medium']}

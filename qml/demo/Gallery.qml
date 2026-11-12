@@ -1331,6 +1331,39 @@ Rectangle {
             }
 
             Section {
+                objectName: "section183"
+                title: "1.83 · glasebene"
+                // A layer that slides in over content and blurs what is under it.
+                Item {
+                    Layout.preferredWidth: KanteStyle.unit(420)
+                    Layout.preferredHeight: KanteStyle.unit(200)
+                    clip: true
+                    Row {
+                        id: glassPage
+                        anchors.fill: parent
+                        Repeater {
+                            model: [KanteStyle.dataColor(0), KanteStyle.dataColor(1), KanteStyle.dataColor(2), KanteStyle.dataColor(3)]
+                            Rectangle { width: glassPage.width / 4; height: glassPage.height; color: modelData }
+                        }
+                    }
+                    KanteGlassPanel {
+                        id: glassDemo
+                        blurSource: glassPage
+                        open: glassToggle.checked
+                        accessibleName: "Glasebene"
+                        anchors { left: parent.left; right: parent.right; top: parent.top }
+                        QQC2.Label { text: "Mixer"; color: KanteStyle.strongTextColor }
+                    }
+                    QQC2.CheckBox {
+                        id: glassToggle
+                        anchors { right: parent.right; bottom: parent.bottom }
+                        text: "offen"
+                        checked: true
+                    }
+                }
+            }
+
+            Section {
                 objectName: "section156"
                 title: "1.56 · linien, marker, tönungen (kurrent)"
                 // An hour grid drawn by hand from the roles only: grid lines, free time, a planned
