@@ -29,7 +29,8 @@ import "."
  *   xTitle, yTitle, xUnit, yUnit   axis names; the unit follows the title in brackets and the
  *               numbers in the tooltip ("1,2 m"); `unit` sets both units
  *   legend      a KanteLegend under the chart (default true when it has entries):
- *               a key per series name, then one per level ("1–5") after `valueTitle`
+ *               a key per series name, then one per level ("1–5") after `valueTitle`;
+ *               when all points have one value (no fixed end), only that value ("5")
  *   interactive Tab focuses a point; the arrows go to the nearest point in their direction,
  *               Home / End to the first and last point of `points`, Enter / Space or a click
  *               fire activated(index)
@@ -178,7 +179,8 @@ Item {
      * The value levels: `levels` steps of a nice size from a multiple of the step, grown to
      * the next nice step until the top bound reaches the highest value. The legend shows
      * exactly these bounds and `levelOf` uses them. The scale may reach past the highest
-     * value, so a top level can stay empty.
+     * value, so a top level can stay empty. Without a fixed end, one value (or all equal)
+     * takes the top level and the legend shows only that value.
      */
     readonly property var levelScale: {
         const low = valueRange.low
@@ -210,6 +212,14 @@ Item {
             return out
         }
         const digits = decimalsOf(levelStep)
+        if (!isFinite(minValue) && !isFinite(maxValue) && !(valueRange.high > valueRange.low)) {
+            // All points have one value: no ranges to tell apart, just that value in its
+            // colour, written as the tooltip writes it. A fixed end keeps the level keys.
+            const v = valueRange.high
+            out.push({ color: KanteStyle.levelColor(levelOf(v), levels, scaleColor),
+                       text: numberText(v, Number.isInteger(v) ? 0 : 2) })
+            return out
+        }
         for (let k = 1; k <= levels; k++) {
             const lo = levelScale.start + (k - 1) * levelStep
             const hi = levelScale.start + k * levelStep
