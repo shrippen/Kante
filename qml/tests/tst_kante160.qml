@@ -140,6 +140,21 @@ TestCase {
         }
     }
 
+    // A small phone (Mitori at 360 px: the picker 344 px wide): the words show whole. Without
+    // room for the letter spacing they set tight; only narrower still they elide.
+    function test_smallPhoneShowsWholeWords() {
+        var picker = createTemporaryObject(pickerComponent, stage(), { width: 344, names: ["offen", "gesehen", "mit Hilfe", "sicher", "prüfungsreif"] })
+        waitForRendering(picker)
+        var c = cells(picker)
+        for (var i = 0; i < c.length; i++) {
+            var word = c[i].children[0].children[1]
+            verify(!word.truncated, "word " + (i + 1) + " whole: " + word.text)
+        }
+        verify(picker.tight, "set tight")
+        picker.width = 600
+        verify(!picker.tight, "with room: the letter spacing back")
+    }
+
     // Right to left: the arrow keys stay within 1..count.
     Component {
         id: mirroredPicker
