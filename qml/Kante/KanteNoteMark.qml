@@ -61,18 +61,29 @@ Item {
         Translate { x: mark.shake }
     ]
 
-    onNoteStateChanged: {
+    /**
+     * Runs the motion of the current state: a pulse for "hit", a shake for "wrong" and
+     * "missed", nothing for the rest or without KanteStyle.animate. A live mark does it
+     * itself when its state changes; a lane that creates the mark in its state (a
+     * Loader) calls it for a note changed while playing.
+     */
+    function play() {
         pulseAnim.stop()
         shakeAnim.stop()
         pulse = 1
         shake = 0
-        if (!live || !KanteStyle.animate) {
+        if (!KanteStyle.animate) {
             return
         }
         if (noteState === "hit") {
             pulseAnim.start()
         } else if (noteState === "wrong" || noteState === "missed") {
             shakeAnim.start()
+        }
+    }
+    onNoteStateChanged: {
+        if (live) {
+            play()
         }
     }
     NumberAnimation {

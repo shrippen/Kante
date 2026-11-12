@@ -35,7 +35,7 @@ import "."
  * Right to left (LayoutMirroring, as Kirigami's window sets it for an RTL language) the
  * start is on the right: the own buttons stand there, the standard buttons on the left.
  * Motion (with KanteStyle.animate): it fades and scales in (0 -> 1, 0.96 -> 1, `duration`)
- * and fades out (`durationFast`); without it, as before: instant.
+ * and fades out (`durationFast`); without it the style's own transitions stay.
  * Since 1.55 `acceptText` also holds when the button box sets its standard texts again
  * (a language change, also the one at start with the app's translations): it read "OK"
  * in German before.
@@ -43,9 +43,22 @@ import "."
 QQC2.Dialog {
     id: control
 
-    // Gentle in, quicker out; none when KanteStyle.animate is off (reduced motion, System).
-    enter: KanteStyle.animate ? kanteEnter : null
-    exit: KanteStyle.animate ? kanteExit : null
+    // Gentle in, quicker out. Without KanteStyle.animate (reduced motion, System) the
+    // style's own transitions stay as they were.
+    Binding {
+        target: control
+        property: "enter"
+        value: control.kanteEnter
+        when: KanteStyle.animate
+        restoreMode: control.kanteRestore
+    }
+    Binding {
+        target: control
+        property: "exit"
+        value: control.kanteExit
+        when: KanteStyle.animate
+        restoreMode: control.kanteRestore
+    }
     readonly property Transition kanteEnter: Transition {
         NumberAnimation { property: "opacity"; from: 0; to: 1; duration: KanteStyle.duration; easing.type: Easing.OutCubic }
         NumberAnimation { property: "scale"; from: 0.96; to: 1; duration: KanteStyle.duration; easing.type: Easing.OutCubic }
