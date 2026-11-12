@@ -104,6 +104,25 @@ TestCase {
         verify(a.enabled)
     }
 
+    function test_segmentedWhollyDisabledLooksDisabled() {
+        // enabled: false (e.g. while the app is busy): dimmed like other controls, no click.
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        // The app's own opacity stays its own; the parts are dimmed.
+        var s = createTemporaryObject(segComponent, stage(), { disabledIndexes: [], opacity: 0.8 })
+        var spy = createTemporaryObject(spyComponent, tc, { target: s, signalName: "activated" })
+        var row = findChild(s, function (x) { return x instanceof Row })
+        compare(row.opacity, 1)
+        s.enabled = false
+        compare(row.opacity, 0.5)
+        compare(s.opacity, 0.8)
+        waitForRendering(s)
+        mouseClick(segmentsOf(s)[3])
+        compare(s.currentIndex, 0)
+        compare(spy.count, 0)
+        s.enabled = true
+        compare(row.opacity, 1)
+    }
+
     Component { id: spyComponent; SignalSpy {} }
 
     // ── Info tip ─────────────────────────────────────────────────────
