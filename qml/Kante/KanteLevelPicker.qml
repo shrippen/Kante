@@ -33,9 +33,10 @@ FocusScope {
     readonly property real cellWidth: Math.max(KanteStyle.unit(56), widestWord + KanteStyle.unit(12))
     // The widest word in pixels (measured below).
     property real widestWord: 0
-    // The room a word has in its button, and whether the words set tight to fit it.
+    // The room a word has in its button, and whether the words set tight to fit it (Kante's
+    // labels only: the platform's small font has no letter spacing to give up).
     readonly property real wordRoom: (width - (count - 1) * row.spacing) / count - KanteStyle.unit(6)
-    readonly property bool tight: widestWord > wordRoom
+    readonly property bool tight: KanteStyle.active && widestWord > wordRoom
     // The label font without its letter spacing: the same size, never below Kante's 7 pt.
     readonly property font tightFont: {
         const f = KanteStyle.labelFont()

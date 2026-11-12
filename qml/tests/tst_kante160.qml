@@ -153,6 +153,11 @@ TestCase {
         verify(picker.tight, "set tight")
         picker.width = 600
         verify(!picker.tight, "with room: the letter spacing back")
+
+        // System: the platform's font, nothing to set tight.
+        KanteStyle.kind = KanteStyle.Kind.System
+        picker.width = 200
+        verify(!picker.tight, "System keeps the platform's font")
     }
 
     // Right to left: the arrow keys stay within 1..count.
