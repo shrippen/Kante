@@ -193,7 +193,7 @@ Item {
     property bool calm: false
     Timer { id: calmTimer; interval: 500; onTriggered: staff.calm = false }
 
-    readonly property real sp: Math.max(4, staffSpace)
+    readonly property real sp: Math.max(4, layoutSpacing)
     readonly property int currentIndex: lastAtOrBefore(position)
     readonly property var barList: normalizeBars(bars, notes, rests, keyFifths)
     /** Every chord symbol, from `chords` and the bars: [{time, text}] sorted by time. */
@@ -227,8 +227,12 @@ Item {
     property int settleMs: 0
     /** The size the layout uses: the item's, taken over at once or `settleMs` after it changed. */
     property size layoutSize: Qt.size(0, 0)
+    /** The spacing the layout uses: `staffSpace`, taken over with the size (a new spacing that
+     *  comes with a resize, e.g. a presentation going full screen, lays out once). */
+    property real layoutSpacing: staffSpace
     function takeSize() {
         layoutSize = Qt.size(width, height)
+        layoutSpacing = staffSpace
     }
     function sizeChanged() {
         if (settleMs <= 0 || layoutSize.width <= 0) {
@@ -239,6 +243,7 @@ Item {
     }
     onWidthChanged: sizeChanged()
     onHeightChanged: sizeChanged()
+    onStaffSpaceChanged: sizeChanged()
     // The first lines at once: a staff shows its notes from the first frame.
     Component.onCompleted: {
         takeSize()

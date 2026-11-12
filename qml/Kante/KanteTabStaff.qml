@@ -206,7 +206,7 @@ Item {
     readonly property var barList: normalizeBars(bars, notes)
     readonly property int currentBar: barAt(position)
     // The wanted spacing; `ls` is the one drawn (grown or shrunk in fill mode, 1.81).
-    readonly property real baseLs: Math.max(6, lineSpacing)
+    readonly property real baseLs: Math.max(6, layoutSpacing)
     // A line's height per unit of spacing: every row scales with it, the rehearsal mark too.
     readonly property real lineUnits: (hasSections ? markProbe.implicitHeight / baseLs + 0.4 : 0)
         + (hasEndings ? 1.6 : 0) + 1.3 + 0.5 + (Math.max(1, strings) - 1) + (rhythm ? 3.2 : 0.8) + 0.4
@@ -256,8 +256,12 @@ Item {
     property int settleMs: 0
     /** The size the layout uses: the item's, taken over at once or `settleMs` after it changed. */
     property size layoutSize: Qt.size(0, 0)
+    /** The spacing the layout uses: `lineSpacing`, taken over with the size (a new spacing that
+     *  comes with a resize, e.g. a presentation going full screen, lays out once). */
+    property real layoutSpacing: lineSpacing
     function takeSize() {
         layoutSize = Qt.size(width, height)
+        layoutSpacing = lineSpacing
     }
     function sizeChanged() {
         if (settleMs <= 0 || layoutSize.width <= 0) {
@@ -268,6 +272,7 @@ Item {
     }
     onWidthChanged: sizeChanged()
     onHeightChanged: sizeChanged()
+    onLineSpacingChanged: sizeChanged()
     // The first lines at once: a staff shows its notes from the first frame.
     Component.onCompleted: {
         takeSize()

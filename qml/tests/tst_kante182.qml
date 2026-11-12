@@ -253,4 +253,23 @@ TestCase {
         tryVerify(function () { return line.zoom !== 1 }, 500, "the line moves")
         compare(line.transform[0].xScale, 1, "the line slid sideways")
     }
+
+    // A new spacing waits like a new size (Kontra 12.11.: the presentation scaled the spacing
+    // at once and went full screen a moment later, two layouts and a jump from 3 to 4 lines).
+    function test_spacingSettlesWithSize_data() {
+        return [{ tag: "tab", comp: tabComponent, notes: tabNotes(16), key: "lineSpacing", to: 21 },
+                { tag: "notation", comp: bassComponent, notes: midiNotes(16), key: "staffSpace", to: 15 }]
+    }
+    function test_spacingSettlesWithSize(row) {
+        const staff = createTemporaryObject(row.comp, tc, { bars: bars(16), notes: row.notes, settleMs: 120 })
+        waitForRendering(staff)
+        const r = staff.lineRevision
+        staff[row.key] = row.to
+        staff.height = 850
+        wait(50)
+        compare(staff.lineRevision, r, "laid out before the room settled")
+        tryVerify(function () { return staff.lineRevision === r + 1 })
+        wait(200)
+        compare(staff.lineRevision, r + 1, "laid out twice")
+    }
 }
