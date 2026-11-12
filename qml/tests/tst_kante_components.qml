@@ -429,6 +429,29 @@ TestCase {
     }
 
     Component {
+        id: longTitleComponent
+        KanteSettingRow {
+            // Longest German mixer titles of Kontra, the control as wide as its button
+            title: "Bass über Kontra hören, Klang zurücksetzen"
+            width: KanteStyle.unit(380)
+            Rectangle { width: KanteStyle.unit(150); height: KanteStyle.unit(32) }
+        }
+    }
+
+    function test_settingRowLongTitle() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(longTitleComponent, tc)
+        verify(!r.narrow)
+        var ctl = r.control[0]
+        var right = ctl.mapToItem(r, ctl.width, 0).x
+        verify(right <= r.width, "control ends at " + right + ", row is " + r.width)
+        var left = ctl.mapToItem(r, 0, 0).x
+        var t = findChild(r, "settingTitle")
+        var titleRight = t.mapToItem(r, t.width, 0).x
+        verify(titleRight <= left, "title ends at " + titleRight + ", control starts at " + left)
+    }
+
+    Component {
         id: calendarComponent
         KanteCalendarGrid { year: 2026; month: 10; holidays: [3]; absences: [3, 13]; selectedDay: 5 }
     }
