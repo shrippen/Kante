@@ -424,6 +424,18 @@ TestCase {
         compare(texts(legendOf([3, 5], { integerLevels: true, openTopLevel: true })), "3 | 4 | ≥ 5")
     }
 
+    function test_integerOpenTopTerminates() {
+        // The step shrinks strictly (3 -> 2 -> 1); 2.5 rounded back up to 3 looped forever.
+        const a = legendOf([0, 8], { integerLevels: true, openTopLevel: true })
+        compare(texts(a), "0–1 | 2–3 | 4–5 | ≥ 6")
+        compare(a.levelOf(8), 4)
+        const b = legendOf([1, 9], { integerLevels: true, openTopLevel: true, exactLevelStart: true })
+        compare(texts(b), "1–2 | 3–4 | 5–6 | ≥ 7")
+        const c = legendOf([0, 15], { integerLevels: true, openTopLevel: true })
+        verify(c.levelScale.start + 3 * c.levelStep <= 15)
+        verify(Number.isInteger(c.levelStep))
+    }
+
     function test_bigMarkHit() {
         const c = createTemporaryObject(chartComponent, stage(),
                                         { points: [{ x: 0, y: 0, shape: "triangle", size: 8 }, { x: 10, y: 10 }] })

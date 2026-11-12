@@ -217,7 +217,13 @@ Item {
         // An open top level starts at or below the highest value: it is never an empty "≥ n".
         // Exact start 3, top 60: step 20 would give "≥ 63", so step 10 gives "≥ 33".
         while (openTopLevel && high > low && step > (whole ? 1 : 0) && start + (count - 1) * step > high) {
-            step = wholeStep(niceStepBelow(step * 0.99))
+            // Whole numbers round down (2.5 -> 2): rounding up could return the old step.
+            const smaller = niceStepBelow(step * 0.99)
+            const next = whole ? Math.max(1, Math.floor(smaller)) : smaller
+            if (!(next < step)) {
+                break
+            }
+            step = next
             start = startOf(step)
         }
         if (!(high > low)) {
