@@ -23,19 +23,19 @@ Flow {
     property var model: []
     property real keySize: KanteStyle.swatchSize
 
-    // The items' widths, kept by measure(); the free width goes to the end of the lines.
-    property var itemWidths: []
-    readonly property real slack: width > 0 ? width - balancedWidth() : 0
+    // The items' widths, kept by _measure(); the free width goes to the end of the lines.
+    property var _itemWidths: []
+    readonly property real _slack: width > 0 ? width - _balancedWidth() : 0
 
     spacing: KanteStyle.unit(12)
-    leftPadding: effectiveLayoutDirection === Qt.RightToLeft ? slack : 0
-    rightPadding: effectiveLayoutDirection === Qt.RightToLeft ? 0 : slack
+    leftPadding: effectiveLayoutDirection === Qt.RightToLeft ? _slack : 0
+    rightPadding: effectiveLayoutDirection === Qt.RightToLeft ? 0 : _slack
 
     // The lines a Flow `room` wide fills with the items, as Flow wraps them.
-    function lineCount(room) {
+    function _lineCount(room) {
         let lines = 1
         let x = 0
-        for (const w of itemWidths) {
+        for (const w of _itemWidths) {
             if (x > 0 && x + w > room) {
                 lines++
                 x = 0
@@ -46,21 +46,21 @@ Flow {
     }
 
     // The narrowest width of a run of items that needs no more lines than the whole width.
-    function balancedWidth() {
-        const lines = lineCount(width)
+    function _balancedWidth() {
+        const lines = _lineCount(width)
         if (lines <= 1) {
             return width
         }
         let best = width
-        for (let i = 0; i < itemWidths.length; i++) {
+        for (let i = 0; i < _itemWidths.length; i++) {
             let run = -spacing
-            for (let j = i; j < itemWidths.length; j++) {
-                run += itemWidths[j] + spacing
+            for (let j = i; j < _itemWidths.length; j++) {
+                run += _itemWidths[j] + spacing
                 if (run >= best) {
                     break
                 }
                 // Half a pixel more, so rounding does not wrap an item that fits.
-                if (lineCount(run + 0.5) === lines) {
+                if (_lineCount(run + 0.5) === lines) {
                     best = run + 0.5
                 }
             }
@@ -68,7 +68,7 @@ Flow {
         return best
     }
 
-    function measure() {
+    function _measure() {
         const widths = []
         for (let i = 0; i < items.count; i++) {
             const item = items.itemAt(i)
@@ -77,20 +77,20 @@ Flow {
             }
             widths.push(item.implicitWidth)
         }
-        itemWidths = widths
+        _itemWidths = widths
     }
 
     Repeater {
         id: items
 
         model: legend.model
-        onItemAdded: legend.measure()
-        onItemRemoved: legend.measure()
+        onItemAdded: legend._measure()
+        onItemRemoved: legend._measure()
 
         delegate: Row {
             id: item
             required property var modelData
-            onImplicitWidthChanged: legend.measure()
+            onImplicitWidthChanged: legend._measure()
             readonly property string words: (modelData.value !== undefined ? modelData.value + " " : "") + (modelData.text || "")
             spacing: KanteStyle.unit(6)
             Accessible.role: Accessible.StaticText
