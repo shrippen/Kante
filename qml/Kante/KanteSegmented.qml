@@ -26,7 +26,6 @@ FocusScope {
     implicitHeight: KanteStyle.heightMedium
     implicitWidth: row.implicitWidth
     activeFocusOnTab: true
-    opacity: enabled ? 1 : 0.5
 
     Keys.onLeftPressed: select(nextEnabled(-1))
     Keys.onRightPressed: select(nextEnabled(1))
@@ -55,8 +54,10 @@ FocusScope {
         }
     }
 
+    // Dimmed when disabled, on the parts (like the other controls): `opacity` stays the app's.
     Rectangle {
         anchors.fill: parent
+        opacity: seg.enabled ? 1 : 0.5
         color: KanteStyle.sunkenColor
         border.width: 1
         border.color: seg.activeFocus ? KanteStyle.focusColor : KanteStyle.frameColor
@@ -66,6 +67,7 @@ FocusScope {
         id: row
         anchors.fill: parent
         anchors.margins: 1
+        opacity: seg.enabled ? 1 : 0.5
 
         Repeater {
             model: seg.model
