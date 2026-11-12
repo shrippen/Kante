@@ -337,6 +337,16 @@ TestCase {
         compare(texts(legendOf([5])), "5")
         compare(texts(legendOf([0, 0])), "0")
         compare(legendOf([0]).legendModel[0].color, KanteStyle.levelColor(4, 4, legendOf([0]).scaleColor))
+        // Same format as the tooltip: whole numbers plain, else two decimals.
+        compare(texts(legendOf([1 / 3])), "0.33")
+    }
+
+    function test_fixedRangeKeepsLevelKeys() {
+        // With a fixed end the points are placed on that range: keys per level, as with
+        // different values, so every point's colour has a key.
+        compare(legendOf([2, 2], { minValue: 5 }).legendModel.length, 4)
+        compare(legendOf([0, 5, 20], { minValue: 10, maxValue: 10 }).legendModel.length, 4)
+        compare(legendOf([0, 0], { minValue: 1 }).legendModel.length, 4)
     }
 
     function test_bigMarkHit() {
