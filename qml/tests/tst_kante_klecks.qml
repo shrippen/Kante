@@ -64,6 +64,32 @@ TestCase {
         compare(c.pointsOf([3])[0].y, c.yOf(3))
     }
 
+    function thresholdLabel(limit) {
+        for (let i = 0; i < limit.children.length; i++) {
+            if (limit.children[i].text !== undefined) {
+                return limit.children[i]
+            }
+        }
+        return null
+    }
+
+    function test_thresholdLabelStaysInside_data() {
+        return [
+            { tag: "above data", props: { thresholds: [{ value: 8, label: "Limit" }] } },
+            { tag: "at data max", props: { thresholds: [{ value: 5, label: "Limit" }] } },
+            { tag: "above data, axis", props: { axis: true, thresholds: [{ value: 8, label: "Limit" }] } },
+            { tag: "at data max, axis", props: { axis: true, thresholds: [{ value: 5, label: "Limit" }] } }
+        ]
+    }
+
+    function test_thresholdLabelStaysInside(data) {
+        const c = createTemporaryObject(chartComponent, stage(), data.props)
+        const label = thresholdLabel(limits(c)[0])
+        verify(label.visible)
+        verify(label.y >= 0, "label y " + label.y)
+        verify(label.y + label.height <= c.height, "label bottom " + (label.y + label.height))
+    }
+
     function test_thresholdColours() {
         const c = createTemporaryObject(chartComponent, stage())
         c.thresholds = [{ value: 2 }, { value: 3, series: 1 }, { value: 4, color: "#112233" }]
@@ -241,6 +267,22 @@ TestCase {
         keyClick(Qt.Key_Space)
         compare(spy.count, 3)
         compare(spy.signalArguments[2][0], 2)
+    }
+
+    function test_stepsFailedCurrentAnnouncesBoth() {
+        const s = createTemporaryObject(stepsComponent, stage(), { errors: [1] })
+        waitForRendering(s)
+        const name = stepItems(s)[1].Accessible.name
+        verify(name.indexOf("aktuell") > 0, name)
+        verify(name.indexOf("Fehler") > 0, name)
+    }
+
+    function test_stepsRoleFollowsClickable() {
+        const s = createTemporaryObject(stepsComponent, stage())
+        waitForRendering(s)
+        compare(stepItems(s)[0].Accessible.role, Accessible.ListItem)
+        s.clickable = true
+        compare(stepItems(s)[0].Accessible.role, Accessible.Button)
     }
 
     function test_stepsErrorState() {

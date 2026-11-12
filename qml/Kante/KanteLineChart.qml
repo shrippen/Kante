@@ -58,20 +58,22 @@ Item {
         if (maxValue > 0) {
             return maxValue
         }
-        var m = minValue + 1
-        for (var i = 0; i < series.length; i++) {
-            for (var k = 0; k < series[i].length; k++) {
+        let m = minValue + 1
+        for (let i = 0; i < series.length; i++) {
+            for (let k = 0; k < series[i].length; k++) {
                 m = Math.max(m, series[i][k])
             }
         }
-        for (var t = 0; t < thresholds.length; t++) {
+        for (let t = 0; t < thresholds.length; t++) {
             m = Math.max(m, thresholds[t].value)
         }
         if (!axis) {
             return m
         }
-        var raw = (m - minValue) / 4, p10 = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10)), f = raw / p10
-        var step = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p10
+        const raw = (m - minValue) / 4
+        const p10 = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10))
+        const f = raw / p10
+        const step = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p10
         return minValue + 4 * step
     }
     readonly property real mark: KanteStyle.unit(compact ? 5 : 6)
@@ -108,11 +110,11 @@ Item {
     }
 
     function pointsOf(values) {
-        var pts = []
-        var n = values.length
-        var w = width - padLeft - mark
-        for (var i = 0; i < n; i++) {
-            var x = padLeft + mark / 2 + (n > 1 ? i / (n - 1) * w : w / 2)
+        const pts = []
+        const n = values.length
+        const w = width - padLeft - mark
+        for (let i = 0; i < n; i++) {
+            const x = padLeft + mark / 2 + (n > 1 ? i / (n - 1) * w : w / 2)
             pts.push(Qt.point(x, yOf(values[i])))
         }
         return pts
@@ -135,7 +137,7 @@ Item {
             required property int index
             x: chart.padLeft - width - KanteStyle.unit(6)
             y: Math.max(chart.padTop, Math.min(chart.padTop + chart.plotHeight - height, chart.padTop + chart.plotHeight - 1 - index * (chart.plotHeight - 1) / 4 - height / 2))
-            text: { var v = chart.minValue + index * (chart.scaleTop - chart.minValue) / 4; return Number(v).toLocaleString(Qt.locale(), 'f', (chart.scaleTop - chart.minValue) / 4 < 1 ? 1 : 0) + chart.unit }
+            text: { const v = chart.minValue + index * (chart.scaleTop - chart.minValue) / 4; return Number(v).toLocaleString(Qt.locale(), 'f', (chart.scaleTop - chart.minValue) / 4 < 1 ? 1 : 0) + chart.unit }
             color: KanteStyle.mutedTextColor
             font: KanteStyle.monoFont(KanteStyle.labelFont().pointSize, false)
         }
@@ -204,7 +206,8 @@ Item {
             Text {
                 visible: text !== ""
                 x: chart.width - width
-                y: limit.lineY - height - 1
+                // Above the line; below it when the line is at the top and there is no room.
+                y: limit.lineY - height - 1 >= 0 ? limit.lineY - height - 1 : Math.min(limit.lineY + 2, chart.height - height)
                 text: limit.spec.label || ""
                 color: KanteStyle.mutedTextColor
                 font: captionProbe.font
@@ -244,8 +247,8 @@ Item {
     }
 
     function nearest(px) {
-        var n = 0
-        for (var i = 0; i < series.length; i++) {
+        let n = 0
+        for (let i = 0; i < series.length; i++) {
             n = Math.max(n, series[i].length)
         }
         if (n === 0) {
@@ -254,7 +257,7 @@ Item {
         if (n === 1) {
             return 0
         }
-        var f = (px - padLeft - mark / 2) / (width - padLeft - mark) * (n - 1)
+        const f = (px - padLeft - mark / 2) / (width - padLeft - mark) * (n - 1)
         return Math.max(0, Math.min(n - 1, Math.round(f)))
     }
 

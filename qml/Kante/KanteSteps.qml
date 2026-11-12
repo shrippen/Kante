@@ -101,6 +101,11 @@ Item {
                 width: named ? namedWidth : signSize + KanteStyle.unit(20)
                 height: Math.max(KanteStyle.unit(60), label.y + label.implicitHeight + KanteStyle.unit(8))
 
+                /** The word for a state; a failed current step says both, "aktuell, Fehler". */
+                function stateWord(key) {
+                    return steps.stateNames && steps.stateNames[key] !== undefined ? steps.stateNames[key] : key
+                }
+
                 activeFocusOnTab: steps.clickable
                 function choose() {
                     if (steps.clickable) {
@@ -111,10 +116,10 @@ Item {
                 Keys.onEnterPressed: choose()
                 Keys.onSpacePressed: choose()
 
-                Accessible.role: Accessible.ListItem
+                Accessible.role: steps.clickable ? Accessible.Button : Accessible.ListItem
                 Accessible.onPressAction: choose()
                 Accessible.name: steps.stepText.arg(index + 1).arg(steps.model ? steps.model.length : 0) + ": " + modelData
-                                 + ", " + (steps.stateNames && steps.stateNames[stateKey] !== undefined ? steps.stateNames[stateKey] : stateKey)
+                                 + ", " + (failed && now ? stateWord("current") + ", " : "") + stateWord(stateKey)
 
                 Rectangle { anchors.fill: parent; color: KanteStyle.cardColor }
                 // The current step: a 2 px outline around the whole step.
