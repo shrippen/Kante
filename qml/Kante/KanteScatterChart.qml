@@ -178,7 +178,8 @@ Item {
      * The value levels: `levels` steps of a nice size from a multiple of the step, grown to
      * the next nice step until the top bound reaches the highest value. The legend shows
      * exactly these bounds and `levelOf` uses them. The scale may reach past the highest
-     * value, so a top level can stay empty.
+     * value, so a top level can stay empty. With one value (or all equal) it takes the top
+     * level, and the legend shows only that value.
      */
     readonly property var levelScale: {
         const low = valueRange.low
@@ -210,6 +211,12 @@ Item {
             return out
         }
         const digits = decimalsOf(levelStep)
+        if (!(valueRange.high > valueRange.low)) {
+            // One value: no ranges to tell apart, just the value in its colour (the top level).
+            out.push({ color: KanteStyle.levelColor(levels, levels, scaleColor),
+                       text: numberText(valueRange.high, decimalsOf(valueRange.high)) })
+            return out
+        }
         for (let k = 1; k <= levels; k++) {
             const lo = levelScale.start + (k - 1) * levelStep
             const hi = levelScale.start + k * levelStep

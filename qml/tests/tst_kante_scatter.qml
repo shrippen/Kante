@@ -332,8 +332,11 @@ TestCase {
         // One value (or all equal) has nothing to compare with: full colour, as before.
         compare(legendOf([5]).levelOf(5), 4)
         compare(legendOf([7, 7, 7]).levelOf(7), 4)
-        // ... and the legend puts it there too.
-        compare(texts(legendOf([5])), "2–3 | 3–4 | 4–5 | 5–6")
+        // ... and the legend shows just that value in the top colour: ranges below it would
+        // name values that are not there (all zeros gave −3–−2, −2–−1, …).
+        compare(texts(legendOf([5])), "5")
+        compare(texts(legendOf([0, 0])), "0")
+        compare(legendOf([0]).legendModel[0].color, KanteStyle.levelColor(4, 4, legendOf([0]).scaleColor))
     }
 
     function test_bigMarkHit() {
