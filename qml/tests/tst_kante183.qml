@@ -84,8 +84,8 @@ TestCase {
         verify(p.shown)
         tryVerify(function () { return p.slide > 0.05 }, 3000)
         verify(p.mapToItem(null, 0, 0).y < 0)
-        tryCompare(p, "slide", 1, 3000)
-        compare(p.mapToItem(null, 0, 0).y, 0)
+        tryVerify(function () { return !p.moving }, 3000)
+        fuzzyCompare(p.mapToItem(null, 0, 0).y, 0, 0.01)
         p.open = false
         tryCompare(p, "shown", false, 3000)
         compare(effects(p), false)
@@ -136,5 +136,38 @@ TestCase {
         KanteStyle.kind = KanteStyle.Kind.System
         verify(KanteStyle.glassColor.a > 0)
         verify(KanteStyle.glassDenseColor.a > KanteStyle.glassColor.a)
+    }
+
+    // In slowly, out quickly (review #158: out took as long as in, the duration's binding
+    // followed `open` only after the animation had started).
+    function test_closesFasterThanItOpens() {
+        KanteStyle.motion = true
+        if (!KanteStyle.animate) {
+            skip("platform animations are off")
+        }
+        const p = make({ software: false })
+        let t = Date.now()
+        p.open = true
+        tryVerify(function () { return !p.moving }, 3000)
+        const inMs = Date.now() - t
+        t = Date.now()
+        p.open = false
+        tryVerify(function () { return !p.moving }, 3000)
+        const outMs = Date.now() - t
+        verify(outMs < inMs * 0.75, "out " + outMs + " ms, in " + inMs + " ms")
+    }
+
+    // Open and still, it draws no frames of its own (review #158: 97 frames a second while
+    // nothing moved, each copying and blurring the source).
+    function test_stillPanelDrawsNothing() {
+        const p = make({ software: false, open: true })
+        tryVerify(function () { return !p.moving }, 3000)
+        wait(100)
+        let frames = 0
+        const count = function () { frames++ }
+        tc.Window.window.frameSwapped.connect(count)
+        wait(300)
+        tc.Window.window.frameSwapped.disconnect(count)
+        verify(frames < 3, frames + " frames while still")
     }
 }

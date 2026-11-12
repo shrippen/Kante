@@ -8,11 +8,13 @@ import "."
  *
  * Place it as a sibling above `blurSource` (never inside it), anchor it across its
  * edge (e.g. left, right and top for `edge: Top`) and set `panelSize` or leave it to
- * the content; the size along the edge's axis comes from there. Content goes in as
+ * the content; the size along the edge's axis comes from there. While it slides it lies
+ * outside its place: clip the parent (`clip: true`), or it passes over what is next to it. Content goes in as
  * children. Closed, it is invisible and costs nothing (no blur, no copy of the source).
  *
- * Blur: a `ShaderEffectSource` of the part of `blurSource` under the panel, through
- * `MultiEffect`, refreshed every frame while the panel is shown. Without a GPU
+ * Blur: a live `ShaderEffectSource` of the part of `blurSource` under the panel, through
+ * `MultiEffect`; it follows the slide and both items' geometry, and redraws only when
+ * something under it changes. Without a GPU
  * (Qt Quick software renderer) or without `blurSource` there is no blur; the tint is
  * denser then (`KanteStyle.glassDenseColor`) so text stays readable. The panel is
  * a rectangle: the blur cannot follow a cut corner.
@@ -66,9 +68,12 @@ Item {
     Accessible.role: Accessible.Pane
     Accessible.name: accessibleName
 
+    // In slowly, out quickly. By the target, not by `open`: the animation starts before a
+    // binding on `open` would follow (review #158).
     Behavior on slide {
+        id: slideBehavior
         NumberAnimation {
-            duration: panel.open ? KanteStyle.durationSlow : KanteStyle.duration
+            duration: slideBehavior.targetValue > 0 ? KanteStyle.durationSlow : KanteStyle.duration
             easing.type: Easing.OutCubic
         }
     }
@@ -82,15 +87,12 @@ Item {
          : panel.edge === KanteGlassPanel.Edge.Bottom ? away * panel.height : 0
     }
 
-    // The part of blurSource under the panel, in blurSource's coordinates.
-    function underRect() {
-        return blurSource.mapFromItem(panel, 0, 0, width, height)
-    }
-
-    // The source moves under the panel (scrolling), so follow it every frame.
-    FrameAnimation {
-        running: panel.blurred
-        onTriggered: grab.sourceRect = panel.underRect()
+    // The part of blurSource under the panel, in blurSource's coordinates. The arguments are
+    // what moves it: the slide and both items' geometry. A binding on them, not a copy every
+    // frame: still, the panel draws nothing (review #158: 97 frames a second while still).
+    // Content moving inside blurSource shows through anyway: the copy is live.
+    function underRect(slide, x, y, w, h, sx, sy, sw, sh) {
+        return blurSource.mapFromItem(panel, 0, 0, w, h)
     }
 
     ShaderEffectSource {
@@ -101,7 +103,10 @@ Item {
         height: panel.height
         sourceItem: panel.blurred ? panel.blurSource : null
         live: panel.blurred
-        sourceRect: panel.blurred ? panel.underRect() : Qt.rect(0, 0, 0, 0)
+        sourceRect: panel.blurred
+            ? panel.underRect(panel.slide, panel.x, panel.y, panel.width, panel.height,
+                              panel.blurSource.x, panel.blurSource.y, panel.blurSource.width, panel.blurSource.height)
+            : Qt.rect(0, 0, 0, 0)
     }
 
     Loader {
