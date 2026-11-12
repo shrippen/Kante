@@ -175,13 +175,10 @@ Item {
     readonly property int yDecimals: decimalsOf(axes.yStep)
 
     /**
-     * Width of one level: a round step from the scale's start, so the legend reads 0–4,
-     * 4–8 …; `levelOf` cuts at the same bounds. E.g. 0..10: step 2.5 (0–2.5 … 7.5–10).
-     */
-    /**
      * The value levels: `levels` steps of a nice size from a multiple of the step, grown to
      * the next nice step until the top bound reaches the highest value. The legend shows
-     * exactly these bounds and `levelOf` uses them.
+     * exactly these bounds and `levelOf` uses them. The scale may reach past the highest
+     * value, so a top level can stay empty.
      */
     readonly property var levelScale: {
         const low = valueRange.low
@@ -295,6 +292,9 @@ Item {
     function levelOf(v) {
         if (!isFinite(v) || !valued) {
             return 0
+        }
+        if (!(valueRange.high > valueRange.low)) {
+            return levels  // one value: nothing to compare with, full colour
         }
         // 1e-9: 0.3 / 0.1 is 2.9999… and still belongs to the level starting at 0.3.
         const index = Math.floor((v - levelScale.start) / levelStep + 1e-9)

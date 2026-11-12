@@ -328,6 +328,12 @@ TestCase {
         compare(d.levelOf(0.3), 4)
     }
 
+    function test_singleValueIsTopLevel() {
+        // One value (or all equal) has nothing to compare with: full colour, as before.
+        compare(legendOf([5]).levelOf(5), 4)
+        compare(legendOf([7, 7, 7]).levelOf(7), 4)
+    }
+
     function test_bigMarkHit() {
         const c = createTemporaryObject(chartComponent, stage(),
                                         { points: [{ x: 0, y: 0, shape: "triangle", size: 8 }, { x: 10, y: 10 }] })
