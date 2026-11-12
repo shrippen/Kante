@@ -167,6 +167,7 @@
       "large": 48
     },
     "cutSmall": 6,
+    "glassBlur": 32,
     "lines": {
       "border": 1,
       "mark": 2,
@@ -231,6 +232,14 @@
         "bg0",
         0.97
       ],
+      "glass": [
+        "bg0",
+        0.72
+      ],
+      "glassDense": [
+        "bg0",
+        0.96
+      ],
       "focus": "cyan",
       "selection": "cyan-tint",
       "accentHover": "yellow-hi",
@@ -290,6 +299,14 @@
       "dialog": [
         "bg-panel",
         0.98
+      ],
+      "glass": [
+        "bg-panel",
+        0.74
+      ],
+      "glassDense": [
+        "bg-panel",
+        0.97
       ],
       "focus": "cyan",
       "selection": "cyan-tint",
