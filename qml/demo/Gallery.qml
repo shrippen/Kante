@@ -264,6 +264,40 @@ Rectangle {
                         KanteHeatmap { columns: 10; levels: [0, 1, 2, 3, 4, 2, 0, 1, 3, 4, 1, 2, 0, 3, 4] }
                     }
                 }
+                // Scatter chart as a top view map: the walls coloured by view count, the table in the
+                // middle grey (no count), the cameras as triangles looking at it; same unit on both axes.
+                KanteScatterChart {
+                    objectName: "galleryScatter"
+                    Layout.preferredWidth: KanteStyle.unit(480)
+                    Layout.preferredHeight: KanteStyle.unit(320)
+                    equalAspect: true
+                    unit: "m"
+                    xTitle: "Ost"
+                    yTitle: "Nord"
+                    valueKey: "views"
+                    valueTitle: "Ansichten"
+                    seriesNames: ["", "Kameras"]
+                    pointColor: KanteStyle.dataColor(5)
+                    accessibleName: "Draufsicht"
+                    points: {
+                        const out = []
+                        // A room of 6 × 4 m: points along the walls and a table in the middle.
+                        for (let i = 0; i < 3000; i++) {
+                            const t = i * 0.618034 % 1
+                            const side = i % 5
+                            const jitter = ((i * 7919) % 100) / 100 - 0.5
+                            const x = side < 2 ? t * 6 - 3 : side < 4 ? (side === 2 ? -3 : 3) + jitter * 0.2 : jitter * 1.2
+                            const y = side < 2 ? (side === 0 ? -2 : 2) + jitter * 0.2 : side < 4 ? t * 4 - 2 : (t - 0.5) * 0.8
+                            out.push(side === 4 ? { x: x, y: y } : { x: x, y: y, views: 2 + (i * 13) % 15 })
+                        }
+                        for (let k = 0; k < 8; k++) {
+                            const a = k / 8 * 2 * Math.PI
+                            out.push({ x: Math.cos(a) * 1.8, y: Math.sin(a) * 1.3, series: 1, shape: "triangle",
+                                       angle: a * 180 / Math.PI + 180, label: "Kamera " + (k + 1) })
+                        }
+                        return out
+                    }
+                }
                 // 1.76: a song map, hit rate per bar over the last runs; bars 5–8 chosen as the loop.
                 KanteSongMap {
                     objectName: "gallerySongMap"
