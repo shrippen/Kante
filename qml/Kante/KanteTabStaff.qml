@@ -1023,7 +1023,7 @@ Item {
                         active: markSlot.shownIndex >= 0
                         onLoaded: {
                             if (markSlot.live) {
-                                item.noteStateChanged()
+                                item.play()
                             }
                         }
                         sourceComponent: KanteNoteMark {

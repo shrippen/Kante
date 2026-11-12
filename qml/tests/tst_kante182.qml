@@ -129,4 +129,36 @@ TestCase {
         const line = lineItems(staff)[0]
         verify(count(line) < 500, "items in a line: " + count(line))
     }
+    function marksIn(item, out) {
+        for (let i = 0; i < item.children.length; i++) {
+            const c = item.children[i]
+            if (c.noteState !== undefined && c.moving !== undefined) {
+                out.push(c)
+            }
+            marksIn(c, out)
+        }
+        return out
+    }
+    // A mark built by a state change during play moves (A4); built with the line it stays still.
+    function test_markOfAStateChangeMoves_data() {
+        return [{ tag: "tab", comp: tabComponent, notes: tabNotes(8) }, { tag: "notation", comp: bassComponent, notes: midiNotes(8) }]
+    }
+    function test_markOfAStateChangeMoves(row) {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = true
+        const staff = createTemporaryObject(row.comp, tc, { bars: bars(8), notes: row.notes })
+        waitForRendering(staff)
+        compare(marksIn(staff, []).length, 0, "no marks for pending notes")
+        staff.setNoteState(0, "hit")
+        tryVerify(function () { return marksIn(staff, []).length === 1 })
+        verify(marksIn(staff, [])[0].moving, "the new mark pulses")
+
+        const built = createTemporaryObject(row.comp, tc, { bars: bars(8), notes: row.notes.map(function (n, i) {
+            return Object.assign({}, n, i === 0 ? { state: "hit" } : {}) }) })
+        waitForRendering(built)
+        const marks = marksIn(built, [])
+        compare(marks.length, 1)
+        verify(!marks[0].moving, "a mark built with its line stays still")
+    }
+
 }

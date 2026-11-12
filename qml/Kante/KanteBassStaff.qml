@@ -1047,7 +1047,7 @@ Item {
                         active: markSlot.st !== "pending"
                         onLoaded: {
                             if (markSlot.live) {
-                                item.noteStateChanged()
+                                item.play()
                             }
                         }
                         sourceComponent: KanteNoteMark {
