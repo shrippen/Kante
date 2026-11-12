@@ -289,18 +289,41 @@ TestCase {
         compare(d.legendModel.length, 0)
     }
 
-    function test_legendBoundsMatchLevels() {
-        // 0..6 in four levels: bounds 1.5, 3, 4.5, not 2, 3, 5.
+    function legendOf(vals, extra) {
+        const pts = vals.map((v, i) => ({ x: i, y: i, v: v }))
         const c = createTemporaryObject(chartComponent, stage(),
-                                        { valueKey: "v", points: [{ x: 0, y: 0, v: 0 }, { x: 1, y: 1, v: 6 }] })
-        const d = c.decimalsOf(6 / c.levels)
-        compare(d, 1)
-        compare(c.legendModel[0].text, c.numberText(0, d) + "–" + c.numberText(1.5, d))
-        compare(c.legendModel[1].text, c.numberText(1.5, d) + "–" + c.numberText(3, d))
-        // 0..1: bound 0.25.
-        const e = createTemporaryObject(chartComponent, stage(),
-                                        { valueKey: "v", points: [{ x: 0, y: 0, v: 0 }, { x: 1, y: 1, v: 1 }] })
-        compare(e.legendModel[0].text, e.numberText(0, 2) + "–" + e.numberText(0.25, 2))
+                                        Object.assign({ valueKey: "v", points: pts }, extra || {}))
+        return c
+    }
+    function texts(c) {
+        return c.legendModel.map(e => e.text.replace(/,/g, ".")).join(" | ")
+    }
+
+    function test_legendBoundsAreRound() {
+        // Step = niceStep(span / levels) from the scale's start.
+        compare(texts(legendOf([0, 6])), "0–2 | 2–4 | 4–6 | 6–8")
+        compare(texts(legendOf([0, 10 / 3])), "0–1 | 1–2 | 2–3 | 3–4")
+        compare(texts(legendOf([1], { minValue: 0, maxValue: 1000 / 7 })), "0–50 | 50–100 | 100–150 | 150–200")
+        compare(texts(legendOf([1, 100])), "1–26 | 26–51 | 51–76 | 76–101")
+        compare(texts(legendOf([2, 16])), "2–7 | 7–12 | 12–17 | 17–22")
+        compare(texts(legendOf([0, 1])), "0.00–0.25 | 0.25–0.50 | 0.50–0.75 | 0.75–1.00")
+    }
+
+    function test_levelsUseLegendBounds() {
+        // A value on a shown bound belongs to the level that starts there.
+        const c = legendOf([0, 10 / 3])
+        compare(c.levelOf(0.99), 1)
+        compare(c.levelOf(1), 2)
+        compare(c.levelOf(2), 3)
+        compare(c.levelOf(3), 4)
+        compare(c.levelOf(10 / 3), 4)
+        const g = legendOf([2, 16])
+        compare(g.levelOf(6.9), 1)
+        compare(g.levelOf(7), 2)
+        compare(g.levelOf(16), 3)
+        // Decimal steps: 0.3 / 0.1 is 2.9999… and still level 4.
+        const d = legendOf([0, 0.4])
+        compare(d.levelOf(0.3), 4)
     }
 
     function test_bigMarkHit() {

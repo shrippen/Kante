@@ -174,6 +174,12 @@ Item {
     readonly property int xDecimals: decimalsOf(axes.xStep)
     readonly property int yDecimals: decimalsOf(axes.yStep)
 
+    /**
+     * Width of one level: a round step from the scale's start, so the legend reads 0–4,
+     * 4–8 …; `levelOf` cuts at the same bounds. E.g. 0..10: step 2.5 (0–2.5 … 7.5–10).
+     */
+    readonly property real levelStep: niceStep((valueRange.high - valueRange.low) / levels)
+
     /** The legend's entries as KanteLegend takes them ({color, text}). */
     readonly property var legendModel: {
         const out = []
@@ -186,11 +192,10 @@ Item {
         if (!valued) {
             return out
         }
-        const span = valueRange.high - valueRange.low
-        const digits = decimalsOf(span / levels)
+        const digits = decimalsOf(levelStep)
         for (let k = 1; k <= levels; k++) {
-            const lo = valueRange.low + (k - 1) * span / levels
-            const hi = valueRange.low + k * span / levels
+            const lo = valueRange.low + (k - 1) * levelStep
+            const hi = valueRange.low + k * levelStep
             out.push({ color: KanteStyle.levelColor(k, levels, scaleColor),
                        text: numberText(lo, digits) + "–" + numberText(hi, digits) })
         }
@@ -275,9 +280,9 @@ Item {
         if (!isFinite(v) || !valued) {
             return 0
         }
-        const span = valueRange.high - valueRange.low
-        const share = span > 0 ? (v - valueRange.low) / span : 1
-        return Math.max(1, Math.min(levels, 1 + Math.floor(share * levels)))
+        // 1e-9: 0.3 / 0.1 is 2.9999… and still belongs to the level starting at 0.3.
+        const index = Math.floor((v - valueRange.low) / levelStep + 1e-9)
+        return Math.max(1, Math.min(levels, 1 + index))
     }
     function shapeOf(i) {
         const s = points[i] ? points[i].shape : undefined
