@@ -183,7 +183,15 @@ Item {
     function shownState(i, revision) {
         return marks === KanteBassStaff.Marks.Off || i === undefined ? "pending" : stateOf(i)
     }
-    onNotesChanged: resetStates()
+    onNotesChanged: {
+        resetStates()
+        calm = true
+        calmTimer.restart()
+    }
+    // New notes get their states again from the app (Kontra transposes during a run): those
+    // marks stay still for a moment instead of all moving at once (review #155).
+    property bool calm: false
+    Timer { id: calmTimer; interval: 500; onTriggered: staff.calm = false }
 
     readonly property real sp: Math.max(4, staffSpace)
     readonly property int currentIndex: lastAtOrBefore(position)
@@ -582,6 +590,9 @@ Item {
 
     // ── Layout ───────────────────────────────────────────────────────
     function computeLayout(first, per, nsys, w, sp, ns, rs, bl, cl) {
+        // The line of bar b counted from `first`: a line laid out alone is line 0 (review
+        // #155: lines below the top one drew their notes one or two lines lower).
+        var lineOf = function (b) { return Math.floor((b - first) / per) }
         var L = { glyphs: [], rects: [], polys: [], ties: [], marks: [], techniques: [], sections: [], boxes: {} }
         if (w <= 0 || bl.length === 0) {
             return L
@@ -621,7 +632,8 @@ Item {
             for (var k = 0; k < ks.length; k++) {
                 L.glyphs.push({ x: sp * (4.2 + k * 1.1), y: yOf(ks[k].pos, s), g: signGlyph(ks[k].sign), ink: "" })
             }
-            if (s === 0 || bl[firstOfLine].changed) {
+            // The time signature at the start of the piece and where it changes, as printed.
+            if (firstOfLine === 0 || bl[firstOfLine].changed) {
                 timeSig(bl[firstOfLine], sp * (4.2 + ks.length * 1.1 + 1.3), s)
             }
             for (var c = 0; c < used; c++) {
@@ -670,7 +682,7 @@ Item {
         for (var ci = 0; cl && ci < cl.length; ci++) {
             var ct = cl[ci].time
             if (ct < from - 1e-6 || ct >= to - 1e-6) continue
-            var cb = barAt(ct), csys = sysOf(cb)
+            var cb = barAt(ct), csys = lineOf(cb)
             var label = chordLabel(cl[ci].text)
             var cx = Math.max(xOf(ct, cb) - sp * 0.6, (chordRight[csys] || 0) + sp * 0.8)
             L.glyphs.push({ x: cx, y: csys * systemHeight + sectionRow + sp * 3.2, g: "", text: label, ink: "chord", chord: true })
@@ -680,7 +692,7 @@ Item {
         for (var r = 0; rs && r < rs.length; r++) {
             var rt = Number(rs[r].time)
             if (rt < from - 1e-6 || rt >= to - 1e-6) continue
-            var rb = barAt(rt), rsys = sysOf(rb)
+            var rb = barAt(rt), rsys = lineOf(rb)
             var rv = valueOf(rs[r].beats)
             var fullBar = Math.abs(Number(rs[r].beats) - bl[rb].num * 4 / bl[rb].den) < 1e-3
             var rx = fullBar ? headerWidth + ((rb - first) % per + 0.5) * barWidth - sp * 0.6 : xOf(rt, rb) - sp * 0.5
@@ -697,7 +709,7 @@ Item {
             var n = ns[i]
             var t = Number(n.time)
             if (t < from - 1e-6 || t >= to - 1e-6) continue
-            var b = barAt(t), sys = sysOf(b)
+            var b = barAt(t), sys = lineOf(b)
             if (b !== accBar) {
                 acc = {}
                 accBar = b
@@ -1046,7 +1058,7 @@ Item {
                         anchors.fill: parent
                         active: markSlot.st !== "pending"
                         onLoaded: {
-                            if (markSlot.live) {
+                            if (markSlot.live && !staff.calm) {
                                 item.play()
                             }
                         }

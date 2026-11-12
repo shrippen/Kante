@@ -149,6 +149,8 @@ TestCase {
         const staff = createTemporaryObject(row.comp, tc, { bars: bars(8), notes: row.notes })
         waitForRendering(staff)
         compare(marksIn(staff, []).length, 0, "no marks for pending notes")
+        // Past the calm after new notes: now a state comes from play.
+        tryVerify(function () { return !staff.calm })
         staff.setNoteState(0, "hit")
         tryVerify(function () { return marksIn(staff, []).length === 1 })
         verify(marksIn(staff, [])[0].moving, "the new mark pulses")
@@ -159,6 +161,63 @@ TestCase {
         const marks = marksIn(built, [])
         compare(marks.length, 1)
         verify(!marks[0].moving, "a mark built with its line stays still")
+    }
+
+    // Every line draws its notes on its own staff, also lines below the top one and after a
+    // page turn (review #155: they stood one or two lines lower).
+    function test_notesStandOnTheirLine() {
+        const staff = createTemporaryObject(tabComponent, tc, { bars: bars(35), notes: tabNotes(35) })
+        waitForRendering(staff)
+        const check = function () {
+            for (const k in staff.lineCache) {
+                const L = staff.lineCache[k]
+                const strings = L.lines.filter(function (r) { return r.kind === "line" })
+                const top = Math.min.apply(null, strings.map(function (r) { return r.y }))
+                const bottom = Math.max.apply(null, strings.map(function (r) { return r.y }))
+                for (const f of L.frets) {
+                    verify(f.y >= top - 1 && f.y <= bottom + 1, "line " + k + ": fret at " + f.y + " outside " + top + "–" + bottom)
+                }
+                for (const i in L.boxes) {
+                    compare(L.boxes[i].sys, 0, "line " + k + " band")
+                }
+            }
+        }
+        check()
+        staff.position = staff.perSystem * 2 + 0.1
+        tryVerify(function () { return staff.lineCache[3] !== undefined })
+        check()
+    }
+    function test_notationStandsOnItsLine() {
+        const staff = createTemporaryObject(bassComponent, tc, { bars: bars(35), notes: midiNotes(35) })
+        waitForRendering(staff)
+        for (const k in staff.lineCache) {
+            const L = staff.lineCache[k]
+            for (const i in L.boxes) {
+                compare(L.boxes[i].sys, 0, "line " + k)
+            }
+            for (const m of L.marks) {
+                verify(m.y < staff.systemHeight, "line " + k + ": mark at " + m.y)
+            }
+        }
+    }
+
+    // New notes with their states set again (Kontra transposes during a run) do not make
+    // every mark move at once (review #155); a state set later in play does.
+    function test_newNotesWithStatesStayStill() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        KanteStyle.motion = true
+        const staff = createTemporaryObject(tabComponent, tc, { bars: bars(8), notes: tabNotes(8) })
+        waitForRendering(staff)
+        staff.notes = tabNotes(8).map(function (n) { return Object.assign({}, n, { fret: n.fret + 1 }) })
+        for (let i = 0; i < 6; i++) {
+            staff.setNoteState(i, "hit")
+        }
+        tryVerify(function () { return marksIn(staff, []).length === 6 })
+        compare(marksIn(staff, []).filter(function (m) { return m.moving }).length, 0)
+        wait(800)
+        staff.setNoteState(6, "hit")
+        tryVerify(function () { return marksIn(staff, []).length === 7 })
+        compare(marksIn(staff, []).filter(function (m) { return m.moving }).length, 1)
     }
 
 }

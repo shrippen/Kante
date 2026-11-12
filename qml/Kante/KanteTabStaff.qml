@@ -191,7 +191,15 @@ Item {
     function shownState(i, revision) {
         return marks === KanteTabStaff.Marks.Off || i === undefined ? "pending" : stateOf(i)
     }
-    onNotesChanged: resetStates()
+    onNotesChanged: {
+        resetStates()
+        calm = true
+        calmTimer.restart()
+    }
+    // New notes get their states again from the app (Kontra transposes during a run): those
+    // marks stay still for a moment instead of all moving at once (review #155).
+    property bool calm: false
+    Timer { id: calmTimer; interval: 500; onTriggered: staff.calm = false }
 
     /** Last note with time ≤ position, -1 before the first. */
     readonly property int currentIndex: lastAtOrBefore(position)
@@ -528,6 +536,9 @@ Item {
     }
 
     function computeLayout(first, per, nsys, w, ls, ns, bl, nstr, lowTop, withRhythm) {
+        // The line of bar b counted from `first`: a line laid out alone is line 0 (review
+        // #155: lines below the top one drew their notes one or two lines lower).
+        var lineOf = function (b) { return Math.floor((b - first) / per) }
         var L = { lines: [], frets: [], marks: [], rects: [], flags: [], heads: [], endings: [], sections: [], boxes: {} }
         if (w <= 0 || bl.length === 0) {
             return L
@@ -615,7 +626,7 @@ Item {
             }
             var b = barAt(t)
             var x = xOf(t, b)
-            var sys = sysOf(b)
+            var sys = lineOf(b)
             var str = Math.max(0, Math.min(nstr - 1, Number(n.string) || 0))
             var y = sys * systemHeight + staffTop + rowOf(str) * ls
             var fretText = n.fret !== undefined ? String(n.fret) : ""
@@ -1022,7 +1033,7 @@ Item {
                         anchors.fill: parent
                         active: markSlot.shownIndex >= 0
                         onLoaded: {
-                            if (markSlot.live) {
+                            if (markSlot.live && !staff.calm) {
                                 item.play()
                             }
                         }
