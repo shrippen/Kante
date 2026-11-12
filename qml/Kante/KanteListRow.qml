@@ -63,7 +63,6 @@ FocusScope {
     /** The meta figure and `trailing` sit under the texts, because the row is too narrow. */
     readonly property bool stacked: minTextWidth > 0 && tail.visible && width < inlineNeed()
     readonly property bool pressed: tap.active
-    readonly property bool wraps: stacked || overflow === KanteListRow.Overflow.Wrap
     default property alias marker: markerSlot.data
     /** Items at the right end, after the meta figure (e.g. a chevron or an icon). */
     property alias trailing: trailingSlot.data
@@ -84,6 +83,7 @@ FocusScope {
         readonly property real margin: KanteStyle.unit(12)
         readonly property real gap: KanteStyle.unit(10)
         readonly property real stackGap: KanteStyle.unit(4)
+        readonly property bool wraps: row.stacked || row.overflow === KanteListRow.Overflow.Wrap
     }
 
     // Width the row needs to keep everything on one line: the fixed items, the tail and the
@@ -249,8 +249,8 @@ FocusScope {
                     text: row.text
                     color: KanteStyle.textColor
                     font: KanteStyle.defaultFont
-                    wrapMode: row.wraps ? Text.Wrap : Text.NoWrap
-                    elide: row.wraps ? Text.ElideNone : Text.ElideRight
+                    wrapMode: metrics.wraps ? Text.Wrap : Text.NoWrap
+                    elide: metrics.wraps ? Text.ElideNone : Text.ElideRight
                 }
                 Text {
                     objectName: "listRowSubtitle"
@@ -259,8 +259,8 @@ FocusScope {
                     text: row.secondLine
                     color: !row.enabled && row.disabledReason !== "" ? KanteStyle.neutralTextColor : KanteStyle.mutedTextColor
                     font: KanteStyle.smallFont
-                    wrapMode: row.wraps ? Text.Wrap : Text.NoWrap
-                    elide: row.wraps ? Text.ElideNone : Text.ElideRight
+                    wrapMode: metrics.wraps ? Text.Wrap : Text.NoWrap
+                    elide: metrics.wraps ? Text.ElideNone : Text.ElideRight
                 }
             }
             // Count badge: quiet, cyan on the selected row.
