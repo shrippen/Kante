@@ -300,12 +300,14 @@ TestCase {
     }
 
     function test_legendBoundsAreRound() {
-        // Step = niceStep(span / levels) from the scale's start.
+        // Step = niceStep(span / levels), levels start at a multiple of the step and
+        // the top bound reaches the highest value.
         compare(texts(legendOf([0, 6])), "0–2 | 2–4 | 4–6 | 6–8")
         compare(texts(legendOf([0, 10 / 3])), "0–1 | 1–2 | 2–3 | 3–4")
         compare(texts(legendOf([1], { minValue: 0, maxValue: 1000 / 7 })), "0–50 | 50–100 | 100–150 | 150–200")
-        compare(texts(legendOf([1, 100])), "1–26 | 26–51 | 51–76 | 76–101")
-        compare(texts(legendOf([2, 16])), "2–7 | 7–12 | 12–17 | 17–22")
+        compare(texts(legendOf([1, 100])), "0–25 | 25–50 | 50–75 | 75–100")
+        compare(texts(legendOf([2, 16])), "0–5 | 5–10 | 10–15 | 15–20")
+        compare(texts(legendOf([4.99, 12.99])), "0–5 | 5–10 | 10–15 | 15–20")
         compare(texts(legendOf([0, 1])), "0.00–0.25 | 0.25–0.50 | 0.50–0.75 | 0.75–1.00")
     }
 
@@ -318,9 +320,9 @@ TestCase {
         compare(c.levelOf(3), 4)
         compare(c.levelOf(10 / 3), 4)
         const g = legendOf([2, 16])
-        compare(g.levelOf(6.9), 1)
-        compare(g.levelOf(7), 2)
-        compare(g.levelOf(16), 3)
+        compare(g.levelOf(4.9), 1)
+        compare(g.levelOf(5), 2)
+        compare(g.levelOf(16), 4)
         // Decimal steps: 0.3 / 0.1 is 2.9999… and still level 4.
         const d = legendOf([0, 0.4])
         compare(d.levelOf(0.3), 4)

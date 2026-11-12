@@ -178,7 +178,23 @@ Item {
      * Width of one level: a round step from the scale's start, so the legend reads 0–4,
      * 4–8 …; `levelOf` cuts at the same bounds. E.g. 0..10: step 2.5 (0–2.5 … 7.5–10).
      */
-    readonly property real levelStep: niceStep((valueRange.high - valueRange.low) / levels)
+    /**
+     * The value levels: `levels` steps of a nice size from a multiple of the step, grown to
+     * the next nice step until the top bound reaches the highest value. The legend shows
+     * exactly these bounds and `levelOf` uses them.
+     */
+    readonly property var levelScale: {
+        const low = valueRange.low
+        const high = valueRange.high
+        let step = niceStep((high - low) / levels)
+        let start = Math.floor(low / step) * step
+        while (start + levels * step < high) {
+            step = niceStep(step * 1.01)
+            start = Math.floor(low / step) * step
+        }
+        return { start: start, step: step }
+    }
+    readonly property real levelStep: levelScale.step
 
     /** The legend's entries as KanteLegend takes them ({color, text}). */
     readonly property var legendModel: {
@@ -194,8 +210,8 @@ Item {
         }
         const digits = decimalsOf(levelStep)
         for (let k = 1; k <= levels; k++) {
-            const lo = valueRange.low + (k - 1) * levelStep
-            const hi = valueRange.low + k * levelStep
+            const lo = levelScale.start + (k - 1) * levelStep
+            const hi = levelScale.start + k * levelStep
             out.push({ color: KanteStyle.levelColor(k, levels, scaleColor),
                        text: numberText(lo, digits) + "–" + numberText(hi, digits) })
         }
@@ -281,7 +297,7 @@ Item {
             return 0
         }
         // 1e-9: 0.3 / 0.1 is 2.9999… and still belongs to the level starting at 0.3.
-        const index = Math.floor((v - valueRange.low) / levelStep + 1e-9)
+        const index = Math.floor((v - levelScale.start) / levelStep + 1e-9)
         return Math.max(1, Math.min(levels, 1 + index))
     }
     function shapeOf(i) {
