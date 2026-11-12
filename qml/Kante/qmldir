@@ -82,6 +82,7 @@ KanteRehearsalMark 1.0 KanteRehearsalMark.qml
 KanteReveal 1.0 KanteReveal.qml
 KanteRubyText 1.0 KanteRubyText.qml
 KanteRunner 1.0 KanteRunner.qml
+KanteScatterChart 1.0 KanteScatterChart.qml
 KanteScope 1.0 KanteScope.qml
 KanteScrollMeter 1.0 KanteScrollMeter.qml
 KanteSearchCombo 1.0 KanteSearchCombo.qml
