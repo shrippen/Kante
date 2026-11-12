@@ -179,8 +179,8 @@ Item {
      * The value levels: `levels` steps of a nice size from a multiple of the step, grown to
      * the next nice step until the top bound reaches the highest value. The legend shows
      * exactly these bounds and `levelOf` uses them. The scale may reach past the highest
-     * value, so a top level can stay empty. With one value (or all equal) it takes the top
-     * level; without a fixed end the legend then shows only that value.
+     * value, so a top level can stay empty. Without a fixed end, one value (or all equal)
+     * takes the top level and the legend shows only that value.
      */
     readonly property var levelScale: {
         const low = valueRange.low
