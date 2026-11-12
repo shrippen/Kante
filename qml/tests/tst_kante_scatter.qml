@@ -349,6 +349,44 @@ TestCase {
         compare(legendOf([0, 0], { minValue: 1 }).legendModel.length, 4)
     }
 
+    function test_exactLevelStart() {
+        // Default: start rounded down to a multiple of the step.
+        compare(texts(legendOf([3, 60])), "0–20 | 20–40 | 40–60 | 60–80")
+        // Exact: the first level starts at the lowest value.
+        const c = legendOf([3, 60], { exactLevelStart: true })
+        compare(texts(c), "3–23 | 23–43 | 43–63 | 63–83")
+        compare(c.levelOf(3), 1)
+        compare(c.levelOf(22.9), 1)
+        compare(c.levelOf(23), 2)
+        compare(c.levelOf(60), 3)
+        // A fixed minValue sets the start; a single value keeps its one key.
+        compare(texts(legendOf([5, 60], { minValue: 3, exactLevelStart: true })).split(" | ")[0], "3–23")
+        compare(texts(legendOf([5], { exactLevelStart: true })), "5")
+        compare(legendOf([2, 2], { minValue: 5, exactLevelStart: true }).legendModel.length, 4)
+    }
+
+    function test_openTopLevel() {
+        const c = legendOf([3, 60], { openTopLevel: true })
+        compare(texts(c), "0–20 | 20–40 | 40–60 | ≥ 60")
+        // Values above the last bound (fixed maxValue) share the top level and its key.
+        const f = legendOf([3, 100], { minValue: 3, maxValue: 60, openTopLevel: true, exactLevelStart: true })
+        compare(texts(f), "3–13 | 13–23 | 23–33 | ≥ 33")
+        compare(f.levelOf(100), 4)
+        compare(f.levelOf(60), 4)
+        compare(f.levelOf(33), 4)
+        compare(f.levelOf(32.9), 3)
+        compare(f.legendModel[3].color, KanteStyle.levelColor(f.levelOf(100), 4, f.scaleColor))
+        // Single value: still just that value.
+        compare(texts(legendOf([5], { openTopLevel: true })), "5")
+    }
+
+    function test_levelOptionsDefaultOff() {
+        const c = legendOf([3, 60])
+        compare(c.exactLevelStart, false)
+        compare(c.openTopLevel, false)
+        compare(c.levelScale.start, 0)
+    }
+
     function test_bigMarkHit() {
         const c = createTemporaryObject(chartComponent, stage(),
                                         { points: [{ x: 0, y: 0, shape: "triangle", size: 8 }, { x: 10, y: 10 }] })
