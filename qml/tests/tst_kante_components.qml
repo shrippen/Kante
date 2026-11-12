@@ -452,6 +452,34 @@ TestCase {
     }
 
     Component {
+        id: shortTitleComponent
+        KanteSettingRow {
+            // As in Kaiwa's settings: a shared title column, a short title.
+            title: "Tagesziel"
+            titleWidth: KanteStyle.unit(210)
+            width: KanteStyle.unit(533)
+            Rectangle { width: KanteStyle.unit(150); height: KanteStyle.unit(32) }
+        }
+    }
+
+    // A title gets the width of its text (Kante 1.80 first gave it 0: every word on its own line).
+    function test_settingRowTitleHasItsWidth() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        for (const narrow of [false, true]) {
+            var r = createTemporaryObject(shortTitleComponent, tc, { narrow: narrow })
+            var t = findChild(r, "settingTitle")
+            // Layouts settle at the next polish.
+            tryVerify(function () { return t.width + 1 >= t.contentWidth }, 1000,
+                      "narrow " + narrow + ": width " + t.width + ", text " + t.contentWidth)
+            compare(t.lineCount, 1, "narrow " + narrow)
+        }
+        var long = createTemporaryObject(longTitleComponent, tc)
+        var lt = findChild(long, "settingTitle")
+        tryVerify(function () { return lt.width > 0 && lt.width + 1 >= lt.contentWidth }, 1000,
+                  "long title: width " + lt.width + ", text " + lt.contentWidth)
+    }
+
+    Component {
         id: markedComponent
         KanteSettingRow {
             title: "Schwelle"
