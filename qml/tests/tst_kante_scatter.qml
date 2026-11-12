@@ -278,6 +278,64 @@ TestCase {
         verify(i >= 0)
     }
 
+    function test_noValueNoLegend() {
+        // A fixed minimum without any value leaves `high` NaN: no "nan–nan" entries.
+        const c = createTemporaryObject(chartComponent, stage(), { valueKey: "views", minValue: 0, points: [] })
+        verify(!c.valued)
+        compare(c.legendModel.length, 0)
+        const d = createTemporaryObject(chartComponent, stage(),
+                                        { valueKey: "views", minValue: 0, points: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
+        verify(!d.valued)
+        compare(d.legendModel.length, 0)
+    }
+
+    function test_legendBoundsMatchLevels() {
+        // 0..6 in four levels: bounds 1.5, 3, 4.5, not 2, 3, 5.
+        const c = createTemporaryObject(chartComponent, stage(),
+                                        { valueKey: "v", points: [{ x: 0, y: 0, v: 0 }, { x: 1, y: 1, v: 6 }] })
+        const d = c.decimalsOf(6 / c.levels)
+        compare(d, 1)
+        compare(c.legendModel[0].text, c.numberText(0, d) + "–" + c.numberText(1.5, d))
+        compare(c.legendModel[1].text, c.numberText(1.5, d) + "–" + c.numberText(3, d))
+        // 0..1: bound 0.25.
+        const e = createTemporaryObject(chartComponent, stage(),
+                                        { valueKey: "v", points: [{ x: 0, y: 0, v: 0 }, { x: 1, y: 1, v: 1 }] })
+        compare(e.legendModel[0].text, e.numberText(0, 2) + "–" + e.numberText(0.25, 2))
+    }
+
+    function test_bigMarkHit() {
+        const c = createTemporaryObject(chartComponent, stage(),
+                                        { points: [{ x: 0, y: 0, shape: "triangle", size: 8 }, { x: 10, y: 10 }] })
+        const half = c.markSize(0) / 2
+        for (let d = 0; d < half; d += 2) {
+            compare(c.pointAt(c.xOf(0) + d, c.yOf(0)), 0, "right by " + d)
+        }
+    }
+
+    function test_keysStayInPlot() {
+        const c = createTemporaryObject(chartComponent, stage(),
+                                        { xMin: 0, xMax: 10, points: [{ x: 5, y: 0 }, { x: 50, y: 1 }] })
+        c.forceActiveFocus()
+        keyClick(Qt.Key_End)
+        compare(c.currentIndex, 0)
+        keyClick(Qt.Key_Right)
+        compare(c.currentIndex, 0)
+    }
+
+    function test_fixedEndNotWidened() {
+        const c = createTemporaryObject(chartComponent, stage(),
+                                        { xMin: 0, points: [{ x: -5, y: 0 }, { x: -1, y: 1 }] })
+        compare(c.axes.x0, 0)
+        const s = createTemporaryObject(chartComponent, stage(),
+                                        { yMin: 0, points: [{ x: 0, y: 0 }, { x: 1, y: 0 }] })
+        compare(s.axes.y0, 0)
+        verify(s.axes.y1 > 0)
+        const b = createTemporaryObject(chartComponent, stage(),
+                                        { yMin: 0, yMax: 5, points: [{ x: 0, y: 2 }, { x: 1, y: 2 }] })
+        compare(b.axes.y0, 0)
+        compare(b.axes.y1, 5)
+    }
+
     function watch(target, name) {
         spy.signalName = ""
         spy.target = target

@@ -77,7 +77,7 @@ Item {
 
     readonly property int count: points ? points.length : 0
     readonly property int levels: 4
-    readonly property bool valued: valueKey !== "" && isFinite(valueRange.low)
+    readonly property bool valued: valueKey !== "" && isFinite(valueRange.low) && isFinite(valueRange.high)
 
     // Layout: y labels on the left, a title row above, x labels and title below, legend last.
     readonly property real captionHeight: captionProbe.implicitHeight
@@ -141,7 +141,7 @@ Item {
     }
 
     /**
-     * The axes: { x0, x1, y0, y1, xStep, yStep }. Ends round out to a 1-2-5 step; with
+     * The axes: { x0, x1, y0, y1, xStep, yStep }. Ends round out to a 1-2-2.5-5 step; with
      * `equalAspect` the shorter axis grows around its centre until a unit is as long on
      * both, and both tick at the larger step. E.g. x 0..10, y 0..2 in a square plot:
      * y becomes −4..6.
@@ -187,7 +187,7 @@ Item {
             return out
         }
         const span = valueRange.high - valueRange.low
-        const digits = span / levels >= 1 || span === 0 ? 0 : 1
+        const digits = decimalsOf(span / levels)
         for (let k = 1; k <= levels; k++) {
             const lo = valueRange.low + (k - 1) * span / levels
             const hi = valueRange.low + k * span / levels
@@ -203,7 +203,7 @@ Item {
         }
         return title === "" ? u : title + " (" + u + ")"
     }
-    /** 1-2-5 step at least `raw`. */
+    /** 1-2-2.5-5 step at least `raw`. */
     function niceStep(raw) {
         if (!(raw > 0)) {
             return 1
@@ -212,11 +212,20 @@ Item {
         const f = raw / p10
         return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p10
     }
-    /** One axis: ends rounded out to its step unless fixed; a single value spans one step. */
+    /**
+     * One axis: ends rounded out to its step unless fixed; an empty span (one value, or the
+     * points beyond a fixed end) grows by one on the free side, by ±0.5 when both are free
+     * or both fixed. A fixed end never moves.
+     */
     function axisOf(lo, hi, fixedLo, fixedHi, ticks) {
         if (!(hi > lo)) {
-            lo -= 0.5
-            hi += 0.5
+            if (fixedLo !== fixedHi) {
+                hi = fixedLo ? lo + 1 : hi
+                lo = fixedLo ? lo : hi - 1
+            } else {
+                lo -= 0.5
+                hi += 0.5
+            }
         }
         const step = niceStep((hi - lo) / ticks)
         return {
@@ -330,6 +339,8 @@ Item {
     property var _groups: []
     property var _cells: ({})
     readonly property real hitRadius: KanteStyle.unit(8)
+    /** Largest hit distance: the hit radius or half of the biggest mark. Sets the grid's cell. */
+    readonly property real hitReach: Math.max(hitRadius, pointSize * bounds.mark / 2)
     readonly property string layoutKey: [count, width, height, axes.x0, axes.x1, axes.y0, axes.y1,
         padLeft, padTop, plotWidth, plotHeight, valueKey, valueRange.low, valueRange.high, pointSize].join(",")
     onLayoutKeyChanged: invalidate()
@@ -352,7 +363,7 @@ Item {
         const ys = new Array(count)
         const byKey = {}
         const grid = {}
-        const cell = hitRadius * 2
+        const cell = hitReach * 2
         for (let i = 0; i < count; i++) {
             const p = points[i]
             if (!p || !isFinite(p.x) || !isFinite(p.y)) {
@@ -389,7 +400,7 @@ Item {
     /** Index of the point nearest to (x, y) within its mark or the hit radius; -1 for none. */
     function pointAt(x, y) {
         ensureLayout()
-        const cell = hitRadius * 2
+        const cell = hitReach * 2
         const cx = Math.floor(x / cell)
         const cy = Math.floor(y / cell)
         let best = -1
@@ -424,7 +435,7 @@ Item {
         let best = -1
         let bestScore = Infinity
         for (let i = 0; i < count; i++) {
-            if (i === from || !isFinite(_px[i])) {
+            if (i === from || !inPlot(i)) {
                 continue
             }
             const ox = _px[i] - _px[from]
@@ -441,10 +452,15 @@ Item {
         }
         return best
     }
+    /** Whether point i has a position inside the plot. */
+    function inPlot(i) {
+        return _px[i] >= padLeft && _px[i] <= padLeft + plotWidth
+            && _py[i] >= padTop && _py[i] <= padTop + plotHeight
+    }
     function firstDrawn(from, step) {
         ensureLayout()
         for (let i = from; i >= 0 && i < count; i += step) {
-            if (isFinite(_px[i])) {
+            if (inPlot(i)) {
                 return i
             }
         }
