@@ -452,6 +452,28 @@ TestCase {
     }
 
     Component {
+        id: markedComponent
+        KanteSettingRow {
+            title: "Schwelle"
+            modified: true
+            width: KanteStyle.unit(600)
+            Rectangle { width: KanteStyle.unit(150); height: KanteStyle.unit(32) }
+        }
+    }
+
+    // The mark stands right after the title's text ("Schwelle ■"), not at the column's edge.
+    function test_settingRowMarkAfterTitle() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var r = createTemporaryObject(markedComponent, tc)
+        var t = findChild(r, "settingTitle")
+        var mark = findChild(r, "settingMark")
+        var textEnd = t.mapToItem(r, t.contentWidth, 0).x
+        var markX = mark.mapToItem(r, 0, 0).x
+        verify(markX - textEnd <= KanteStyle.unit(12),
+               "mark at " + markX + ", title text ends at " + textEnd)
+    }
+
+    Component {
         id: calendarComponent
         KanteCalendarGrid { year: 2026; month: 10; holidays: [3]; absences: [3, 13]; selectedDay: 5 }
     }
