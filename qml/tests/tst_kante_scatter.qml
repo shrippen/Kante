@@ -332,6 +332,8 @@ TestCase {
         // One value (or all equal) has nothing to compare with: full colour, as before.
         compare(legendOf([5]).levelOf(5), 4)
         compare(legendOf([7, 7, 7]).levelOf(7), 4)
+        // ... and the legend puts it there too.
+        compare(texts(legendOf([5])), "2–3 | 3–4 | 4–5 | 5–6")
     }
 
     function test_bigMarkHit() {

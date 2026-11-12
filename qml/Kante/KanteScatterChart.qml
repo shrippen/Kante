@@ -189,6 +189,10 @@ Item {
             step = niceStep(step * 1.01)
             start = Math.floor(low / step) * step
         }
+        if (!(high > low)) {
+            // One value: nothing to compare with, so it takes the top level (full colour).
+            start -= (levels - 1) * step
+        }
         return { start: start, step: step }
     }
     readonly property real levelStep: levelScale.step
@@ -292,9 +296,6 @@ Item {
     function levelOf(v) {
         if (!isFinite(v) || !valued) {
             return 0
-        }
-        if (!(valueRange.high > valueRange.low)) {
-            return levels  // one value: nothing to compare with, full colour
         }
         // 1e-9: 0.3 / 0.1 is 2.9999… and still belongs to the level starting at 0.3.
         const index = Math.floor((v - levelScale.start) / levelStep + 1e-9)
