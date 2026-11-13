@@ -92,9 +92,6 @@ TestCase {
         d.open()
         tryVerify(() => d.opened)
         wait(200)
-        // Open (revert of 391d0bb): the scope looked up through its target made Mitori's style
-        // switch fail in CI (Kirigami Material Theme.qml:85 "Cannot read property 'Kirigami' of null").
-        expectFail("", "a scope without a window of its own: open, see the comment")
         verify(Qt.colorEqual(d.off.Kirigami.Theme.textColor, KanteStyle.disabledTextColor),
                "disabled text " + d.off.Kirigami.Theme.textColor + ", not " + KanteStyle.disabledTextColor)
         d.close()
@@ -120,9 +117,6 @@ TestCase {
         d.open()
         tryVerify(() => d.opened)
         wait(200)
-        // Open (revert of 391d0bb): the scope looked up through its target made Mitori's style
-        // switch fail in CI (Kirigami Material Theme.qml:85 "Cannot read property 'Kirigami' of null").
-        expectFail("", "a scope without a window of its own: open, see the comment")
         verify(Qt.colorEqual(d.off.Kirigami.Theme.textColor, KanteStyle.disabledTextColor),
                "disabled text " + d.off.Kirigami.Theme.textColor + ", not " + KanteStyle.disabledTextColor)
         d.close()
