@@ -220,17 +220,22 @@ TestCase {
         compare(s.view.contentY, Math.max(0, target.y - s.header.compactHeight - s.header.gap))
     }
 
-    function test_keyboardOnTabs() {
+    // Round 23 review: the arrows alone must not scroll the page out from under the bar's own
+    // focus (they only move the selection, the underline follows); Return (like a tap) scrolls
+    // there and hands focus to the section's first control.
+    function test_arrowsMoveOnlyReturnScrolls() {
         const s = make()
         const bar = findChild(s.header, "headerTabs")
         bar.forceActiveFocus()
         keyClick(Qt.Key_Right)
-        tryCompare(s.header, "currentIndex", 1)
-        verify(s.view.contentY > 0)
-        // The bar and the header stay in step after the bar changed its own index.
-        s.view.contentY = 0
-        compare(s.header.currentIndex, 0)
-        compare(bar.currentIndex, 0)
+        keyClick(Qt.Key_Right)
+        compare(bar.activeFocus, true, "focus left the bar after the arrows")
+        compare(s.header.currentIndex, 2)
+        compare(s.view.contentY, 0, "the arrows alone scrolled the page")
+        const g2 = findChild(s, "group2")
+        keyClick(Qt.Key_Return)
+        tryCompare(s.view, "contentY", g2.y - s.header.compactHeight - s.header.gap)
+        tryCompare(findChild(s, "first2"), "activeFocus", true)
     }
 
     function test_tabBarRoleAndName() {

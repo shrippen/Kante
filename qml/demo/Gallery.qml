@@ -1607,7 +1607,11 @@ Rectangle {
                         title: "Einstellungen"
                         tabsName: "Abschnitte"
                         model: ["Audio", "Anzeige", "Üben"]
-                        targets: [settingsDemoGroups.itemAt(0), settingsDemoGroups.itemAt(1), settingsDemoGroups.itemAt(2)]
+                        // itemAt() alone never notifies (count does): without it this binding
+                        // ran once, before the Repeater had built its items, and stayed [null, null, null].
+                        targets: settingsDemoGroups.count === 3
+                            ? [settingsDemoGroups.itemAt(0), settingsDemoGroups.itemAt(1), settingsDemoGroups.itemAt(2)]
+                            : []
                     }
                     KanteFocusFollow { flickable: settingsDemoFlick; topInset: settingsDemoHeader.height }
                 }
