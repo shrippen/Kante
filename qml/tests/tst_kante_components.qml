@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Layouts
 import QtTest
 import org.kde.kirigami as Kirigami
 import Kante
@@ -487,6 +488,34 @@ TestCase {
             width: KanteStyle.unit(600)
             Rectangle { width: KanteStyle.unit(150); height: KanteStyle.unit(32) }
         }
+    }
+
+    Component {
+        id: groupedShortTitleComponent
+        KanteSettingGroup {
+            title: "Anzeige"
+            countText: "1 Einstellung"
+            KanteSettingRow {
+                Layout.fillWidth: true
+                title: "Tiefe Saite oben"
+                KanteSwitch { checked: false }
+            }
+        }
+    }
+
+    // Round 22: a real font under X11 gave this title's implicitWidth a fraction of a pixel
+    // (132.359375); the layout floors that to a whole device pixel (132), a hair under what the
+    // text needs, and it wrapped ("Tiefe Saite oben" -> "Tiefe Saite" / "oben") although the row
+    // (inside a KanteSettingGroup, at a normal reading width) had plenty of room to spare.
+    function test_settingRowTitleRoundsUpAgainstDevicePixelFlooring() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var group = createTemporaryObject(groupedShortTitleComponent, tc, { width: KanteStyle.unit(1008) })
+        var t = findChild(group, "settingTitle")
+        tryVerify(function () { return t.width > 0 }, 1000)
+        compare(t.Layout.maximumWidth, Math.ceil(t.implicitWidth),
+                "maximumWidth " + t.Layout.maximumWidth + ", implicitWidth " + t.implicitWidth)
+        verify(t.Layout.maximumWidth >= t.implicitWidth)
+        compare(t.lineCount, 1, "width " + t.width + ", implicitWidth " + t.implicitWidth)
     }
 
     // The mark stands right after the title's text ("Schwelle ■"), not at the column's edge.

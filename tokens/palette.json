@@ -167,7 +167,7 @@
       "large": 48
     },
     "cutSmall": 6,
-    "glassBlur": 32,
+    "glassBlur": 48,
     "lines": {
       "border": 1,
       "mark": 2,
@@ -234,7 +234,7 @@
       ],
       "glass": [
         "bg0",
-        0.72
+        0.93
       ],
       "glassDense": [
         "bg0",
@@ -302,7 +302,7 @@
       ],
       "glass": [
         "bg-panel",
-        0.74
+        0.94
       ],
       "glassDense": [
         "bg-panel",
