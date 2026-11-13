@@ -9,7 +9,8 @@ import "."
  * list of icon names (empty label = icon only), `counts` an optional list of counters
  * and `countKinds` their kinds (KanteCounter.Kind: 0 normal, 1 info, 2 error, e.g. overdue).
  * With `badges` the counters are filled badges instead of mono text. When the tabs do not
- * fit they scroll sideways and the selected tab is kept in view.
+ * fit they scroll sideways and the selected tab is kept in view; an arrow (‹ ›) over a fade
+ * into `edgeColor` marks each side with hidden tabs, and a tap on it scrolls that way.
  * Left/Right move the selection while the bar has focus; by default (`activation` Automatic)
  * they activate it at once, like a tap. With `activation: KanteTabBar.Activation.Manual` the
  * arrows only move the selection (nothing opens, the bar keeps focus); Return, Enter, Space or
@@ -46,6 +47,11 @@ FocusScope {
     property var countKinds: []
     property bool badges: false
     property int currentIndex: 0
+    /** The ground the side arrows fade into: the colour behind the bar. */
+    property color edgeColor: KanteStyle.backgroundColor
+    /** Tabs hidden to the left or right (the bar is too narrow for all of them). */
+    readonly property bool moreBefore: flick.contentX > 1
+    readonly property bool moreAfter: flick.contentX + flick.width < flick.contentWidth - 1
     signal activated(int index)
     /** Manual arrows only (`move`): the selection changed without activating it. */
     signal moved(int index)
@@ -107,6 +113,44 @@ FocusScope {
         }
     }
     onCurrentIndexChanged: ensureVisible()
+
+    /** Scrolls most of a width towards `direction` (-1 left, 1 right): a side arrow's tap. */
+    function page(direction) {
+        var most = Math.max(0, flick.contentWidth - flick.width)
+        flick.contentX = Math.max(0, Math.min(most, flick.contentX + direction * flick.width * 0.8))
+    }
+
+    // A side with hidden tabs: an arrow over a fade, so a label cut at the edge never passes for
+    // the last tab (Kontra QA 14.11.: "Taste…" at 200 %). Not a Tab stop: the arrows of the
+    // keyboard keep the selection in view already.
+    component Edge: Item {
+        id: edge
+        required property int direction
+        width: KanteStyle.unit(40)
+        height: tabs.height - 2
+        Accessible.ignored: true
+
+        Rectangle {
+            anchors.fill: parent
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0; color: edge.direction < 0 ? tabs.edgeColor : "transparent" }
+                GradientStop { position: 0.55; color: tabs.edgeColor }
+                GradientStop { position: 1; color: edge.direction < 0 ? "transparent" : tabs.edgeColor }
+            }
+        }
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: edge.direction < 0 ? parent.left : undefined
+            anchors.right: edge.direction < 0 ? undefined : parent.right
+            anchors.margins: KanteStyle.unit(6)
+            text: edge.direction < 0 ? "‹" : "›"
+            font: KanteStyle.titleFont(KanteStyle.labelFont().pointSize * 1.4)
+            color: arrowHover.hovered ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
+        }
+        HoverHandler { id: arrowHover; cursorShape: Qt.PointingHandCursor }
+        TapHandler { onTapped: tabs.page(edge.direction) }
+    }
 
     Rectangle {
         anchors.bottom: parent.bottom
@@ -228,5 +272,18 @@ FocusScope {
             height: 3
             color: KanteStyle.focusColor
         }
+    }
+
+    Edge {
+        objectName: "moreBefore"
+        direction: -1
+        anchors.left: parent.left
+        visible: tabs.moreBefore
+    }
+    Edge {
+        objectName: "moreAfter"
+        direction: 1
+        anchors.right: parent.right
+        visible: tabs.moreAfter
     }
 }
