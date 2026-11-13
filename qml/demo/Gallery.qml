@@ -1556,6 +1556,62 @@ Rectangle {
                     }
                 }
             }
+
+            Section {
+                title: "1.81 · einstellungen: gruppe, geschrumpfter kopf"
+                // A page with a sticky, shrinking header (title + scrollspy tabs) over
+                // KanteSettingGroup tiles, as Kontra's settings page.
+                Item {
+                    Layout.preferredWidth: KanteStyle.unit(520)
+                    Layout.preferredHeight: KanteStyle.unit(320)
+                    clip: true
+                    Flickable {
+                        id: settingsDemoFlick
+                        anchors.fill: parent
+                        contentWidth: width
+                        contentHeight: settingsDemoCol.implicitHeight
+                        ColumnLayout {
+                            id: settingsDemoCol
+                            width: settingsDemoFlick.width
+                            spacing: KanteStyle.unit(16)
+                            Item { Layout.preferredHeight: settingsDemoHeader.expandedHeight }
+                            Repeater {
+                                id: settingsDemoGroups
+                                model: [
+                                    { title: "Audio", rows: ["Eingang", "Ausgang"] },
+                                    { title: "Anzeige", rows: ["Linkshänder", "Bewegung"] },
+                                    { title: "Üben", rows: ["Metronom", "Referenzton", "Adaptiv"] }
+                                ]
+                                delegate: KanteSettingGroup {
+                                    required property var modelData
+                                    Layout.fillWidth: true
+                                    title: modelData.title
+                                    countText: count + " Einstellungen"
+                                    Repeater {
+                                        model: modelData.rows
+                                        delegate: KanteSettingRow {
+                                            required property string modelData
+                                            Layout.fillWidth: true
+                                            title: modelData
+                                            KanteSwitch { checked: true }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    KanteStickyHeader {
+                        id: settingsDemoHeader
+                        anchors { left: parent.left; right: parent.right; top: parent.top }
+                        flickable: settingsDemoFlick
+                        title: "Einstellungen"
+                        tabsName: "Abschnitte"
+                        model: ["Audio", "Anzeige", "Üben"]
+                        targets: [settingsDemoGroups.itemAt(0), settingsDemoGroups.itemAt(1), settingsDemoGroups.itemAt(2)]
+                    }
+                    KanteFocusFollow { flickable: settingsDemoFlick; topInset: settingsDemoHeader.height }
+                }
+            }
         }
     }
 }
