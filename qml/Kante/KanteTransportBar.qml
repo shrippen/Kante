@@ -285,6 +285,7 @@ FocusScope {
             }
             QQC2.SpinBox {
                 id: speedBox
+                objectName: "speedBox"
                 visible: bar.speedSteps.length === 0
                 anchors.verticalCenter: parent.verticalCenter
                 from: Math.round(bar.minSpeed * 100)
@@ -303,6 +304,14 @@ FocusScope {
                 }
                 Accessible.name: bar.speedText
                 KanteFieldSkin { control: parent }
+                // One Tab stop: the box. Some styles (Kontra's on Linux) give it a text field
+                // inside, a second stop with nothing to type (QA 28.10., P7).
+                Binding {
+                    target: speedBox.contentItem
+                    property: "activeFocusOnTab"
+                    value: false
+                    when: speedBox.contentItem !== null
+                }
             }
         }
         Toggle {
