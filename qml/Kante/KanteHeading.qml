@@ -39,6 +39,7 @@ Kirigami.Heading {
         width: wraps ? control.width : Math.min(implicitWidth, control.width)
         wrapMode: wraps ? control.wrapMode : Text.NoWrap
         maximumLineCount: wraps ? control.maximumLineCount : 1
+        horizontalAlignment: control.horizontalAlignment
         text: control.text
         font: control.sectionLabel ? KanteStyle.labelFont()
                                    : KanteStyle.titleFont(KanteStyle.defaultFont.pointSize * (control.level <= 2 ? 1.6 : 1.3))

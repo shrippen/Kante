@@ -28,4 +28,23 @@ TestCase {
         compare(row.resetText, "Reset")
     }
     Component { id: rowComponent; KanteSettingRow {} }
+
+    Component {
+        id: headingComponent
+        KanteHeading {
+            text: "Title"
+            level: 2
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.Wrap
+            width: 300
+        }
+    }
+
+    function test_headingAlignmentFollowsInKante() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const h = createTemporaryObject(headingComponent, tc)
+        const label = h.children.find(c => c.objectName === "kanteText")
+        verify(label, "kanteText")
+        compare(label.horizontalAlignment, Text.AlignHCenter)
+    }
 }
