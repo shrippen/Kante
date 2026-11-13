@@ -83,6 +83,46 @@ TestCase {
         }
     }
 
+    // A page with two short sections at the end, after a tall one: scrolling to the
+    // second-to-last clamps at the very end of the page, right at the last section's top.
+    Component {
+        id: shortEndScene
+        Item {
+            id: root
+            width: 500
+            height: 400
+            property alias header: head
+            property alias view: flick
+            property alias a: secA
+            property alias b: secB
+            property alias c: secC
+            Flickable {
+                id: flick
+                anchors.fill: parent
+                contentWidth: width
+                contentHeight: col.implicitHeight
+                clip: true
+                ColumnLayout {
+                    id: col
+                    width: flick.width
+                    spacing: 0
+                    Item { Layout.preferredHeight: head.expandedHeight }
+                    Item { id: secA; objectName: "a"; Layout.preferredHeight: 1000; Layout.fillWidth: true }
+                    Item { id: secB; objectName: "b"; Layout.preferredHeight: 50; Layout.fillWidth: true }
+                    Item { id: secC; objectName: "c"; Layout.preferredHeight: 50; Layout.fillWidth: true }
+                }
+            }
+            KanteStickyHeader {
+                id: head
+                anchors { left: parent.left; right: parent.right; top: parent.top }
+                flickable: flick
+                title: "Kurz"
+                tabsName: "Abschnitte"
+                model: ["A", "B", "C"]
+            }
+        }
+    }
+
     function init() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         KanteStyle.motion = false
@@ -269,6 +309,39 @@ TestCase {
         wait(300)
         compare(bar.activeFocus, true, "the bare section has no control to take the focus")
         compare(s.header.browsing, false, "Return did not end the browsing pause")
+        s.view.contentY = 0
+        compare(s.header.currentIndex, 0)
+    }
+
+    // Round 24 review: Tab out of the bar (no Return) must end the pause too, or a later
+    // programmatic contentY change (KanteFocusFollow, with the mouse never touching the view)
+    // never clears it and the underline stays stuck on the arrow-picked tab.
+    function test_browsingClearsOnFocusOut() {
+        const s = make()
+        const bar = findChild(s.header, "headerTabs")
+        bar.forceActiveFocus()
+        keyClick(Qt.Key_Right)
+        compare(s.header.browsing, true)
+        bar.focus = false
+        compare(s.header.browsing, false, "browsing still true after Tab out")
+        const g2 = findChild(s, "group2")
+        s.view.contentY = g2.y - s.header.compactHeight
+        compare(s.header.currentIndex, 2)
+    }
+
+    // Round 24 review: scrollTo's own target must stay current until the user scrolls by
+    // themselves, even when the jump lands near the end of the page (the "last tab at the end"
+    // rule must not override a jump at a second-to-last, short section).
+    function test_jumpTargetStaysUntilUserScrolls() {
+        const s = createTemporaryObject(shortEndScene, tc)
+        verify(s)
+        wait(50)
+        s.header.targets = [s.a, s.b, s.c]
+        s.header.scrollTo(1)
+        tryCompare(s.header, "currentIndex", 1)
+        wait(50)
+        compare(s.header.currentIndex, 1, "the end rule pulled the jump away from its target")
+        s.view.movementStarted()
         s.view.contentY = 0
         compare(s.header.currentIndex, 0)
     }
