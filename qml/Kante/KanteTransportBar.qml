@@ -304,8 +304,8 @@ FocusScope {
                 }
                 Accessible.name: bar.speedText
                 KanteFieldSkin { control: parent }
-                // One Tab stop: the box. Some styles (Kontra's on Linux) give it a text field
-                // inside, a second stop with nothing to type (QA 28.10., P7).
+                // One Tab stop: the box. Its content item (a text input, in Kontra's style on Linux
+                // a text field) was a second stop with nothing to type (QA 28.10., P7).
                 Binding {
                     target: speedBox.contentItem
                     property: "activeFocusOnTab"
