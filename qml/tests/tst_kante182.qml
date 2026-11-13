@@ -278,4 +278,24 @@ TestCase {
         wait(200)
         compare(staff.lineRevision, r + 1, "laid out twice")
     }
+
+    // Kontra QA 28.10. (P4, beamer): in the presentation the tab grows 1.5 times, but its
+    // string names and bar numbers stayed at label size, about 8 px. They grow with the lines.
+    function test_labelsGrowWithTheLines() {
+        const sizes = []
+        for (const spacing of [14, 21]) {
+            const staff = createTemporaryObject(tabComponent, tc, { lineSpacing: spacing })
+            staff.bars = bars(4)
+            staff.notes = tabNotes(4)
+            tryVerify(function () { return staff.layoutSize.width > 0 && lineItems(staff).length > 0 })
+            const name = findChild(staff, "stringName")
+            const number = findChild(staff, "barNumber")
+            verify(name !== null && number !== null, "labels found")
+            sizes.push({ name: name.implicitHeight, number: number.implicitHeight })
+        }
+        verify(sizes[1].name >= sizes[0].name * 1.4,
+               "string names " + sizes[0].name + " → " + sizes[1].name + " at 1.5× spacing")
+        verify(sizes[1].number >= sizes[0].number * 1.4,
+               "bar numbers " + sizes[0].number + " → " + sizes[1].number + " at 1.5× spacing")
+    }
 }
