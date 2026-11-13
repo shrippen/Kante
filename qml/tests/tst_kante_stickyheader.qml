@@ -329,6 +329,20 @@ TestCase {
         compare(s.header.currentIndex, 2)
     }
 
+    // Review #167: leaving the bar without Return ends the pause at once, so the underline
+    // goes back to the section at the top instead of staying on the arrows' choice.
+    function test_focusOutShowsTheTopSection() {
+        const s = make()
+        const bar = findChild(s.header, "headerTabs")
+        s.view.contentY = 0
+        bar.forceActiveFocus()
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Right)
+        bar.focus = false
+        wait(100)
+        compare(s.header.currentIndex, 0, "the underline stayed on the arrows' choice")
+    }
+
     // Round 24 review: scrollTo's own target must stay current until the user scrolls by
     // themselves, even when the jump lands near the end of the page (the "last tab at the end"
     // rule must not override a jump at a second-to-last, short section).

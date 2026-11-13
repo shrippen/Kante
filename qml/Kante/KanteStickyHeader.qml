@@ -29,8 +29,10 @@ import "."
  * The tab bar is a KanteTabBar with the Underline look, `activation` Manual: Left/Right only
  * move the selection (the bar keeps focus, nothing scrolls yet); Return, Enter, Space or a tap
  * scroll there and move the focus to the section (`scrollTo`). The scrollspy stands aside from
- * a Manual arrow move until it is acted on, or the user scrolls by themselves, so it cannot pull
- * the selection away from under the arrows before they are acted on.
+ * a Manual arrow move until it is acted on, the user scrolls by themselves or the bar loses the
+ * focus, so it cannot pull the selection away from under the arrows. After `scrollTo` the
+ * jumped-to tab stays current until the page moves (`jumped`), also when the jump ends at the
+ * page's bottom, where the last tab would otherwise win.
  * Pair it with `KanteFocusFollow { topInset: header.height }` so Tab does not hide the focus
  * under the header.
  */
@@ -232,9 +234,14 @@ Item {
             width: parent.width - 2 * header.sideMargin
             onActivated: function(index) { header.browsing = false; header.scrollTo(index) }
             onMoved: header.browsing = true
-            // Tab out without Return: nothing acted on the arrow move, but the pause must still
-            // end, or a later programmatic scroll (no mouse, no Return) never clears it.
-            onActiveFocusChanged: if (!activeFocus) header.browsing = false
+            // Tab out without Return: nothing acted on the arrow move, but the pause ends and the
+            // underline goes back to the section at the top (review #167).
+            onActiveFocusChanged: {
+                if (!activeFocus) {
+                    header.browsing = false
+                    header.spy()
+                }
+            }
             // The arrows move the bar's own selection without scrolling (no `activated`):
             // follow it here, so the underline and `currentIndex` agree while the bar has focus.
             onCurrentIndexChanged: header.currentIndex = currentIndex
