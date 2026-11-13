@@ -49,5 +49,27 @@ Item {
             tryVerify(function() { return !findChild(bar, "moreAfter").visible }, 2000)
             verify(findChild(bar, "moreBefore").visible)
         }
+    
+        // Review #172: the arrow keys put the chosen tab flush at the edge, under the arrow.
+        function test_theChosenTabStaysClearOfTheArrows() {
+            var bar = createTemporaryObject(barComponent, stage, { width: 300 })
+            bar.forceActiveFocus()
+            var after = findChild(bar, "moreAfter")
+            var before = findChild(bar, "moreBefore")
+            for (var i = 0; i < tc.labels.length - 1; i++) {
+                keyClick(Qt.Key_Right)
+                wait(400)
+                var tab = bar.tabAt(bar.currentIndex)
+                var right = tab.mapToItem(bar, tab.width, 0).x
+                var left = tab.mapToItem(bar, 0, 0).x
+                if (after.visible) {
+                    verify(right <= after.x + 1, "tab " + i + " ends at " + right + ", arrow at " + after.x)
+                }
+                if (before.visible) {
+                    verify(left >= before.x + before.width - 1, "tab " + i + " starts at " + left)
+                }
+            }
+        }
+
     }
 }

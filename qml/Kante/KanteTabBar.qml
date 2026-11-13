@@ -101,32 +101,49 @@ FocusScope {
         activated(i)
     }
 
+    /** The tab item at `i` (for tests and layouts that place things by a tab). */
+    function tabAt(i) {
+        return rep.count > i ? rep.itemAt(i) : null
+    }
+
+    // Room an arrow takes at a side that still hides tabs: the chosen tab stays clear of it.
+    readonly property real edgeWidth: KanteStyle.unit(40)
+
     function ensureVisible() {
         var t = rep.count > 0 ? rep.itemAt(currentIndex) : null
         if (!t) {
             return
         }
-        if (t.x < flick.contentX) {
-            flick.contentX = t.x
-        } else if (t.x + t.width > flick.contentX + flick.width) {
-            flick.contentX = t.x + t.width - flick.width
+        // Tabs left of this one stay hidden while it is not the first: keep the arrow's room.
+        var before = t.x > 0 ? edgeWidth : 0
+        var after = t.x + t.width < flick.contentWidth - 1 ? edgeWidth : 0
+        var most = Math.max(0, flick.contentWidth - flick.width)
+        if (t.x - before < scrollTarget()) {
+            flick.contentX = Math.max(0, t.x - before)
+        } else if (t.x + t.width + after > scrollTarget() + flick.width) {
+            flick.contentX = Math.min(most, t.x + t.width + after - flick.width)
         }
+    }
+
+    // Where the bar scrolls to: the end of a running slide, not its current point.
+    function scrollTarget() {
+        return slideMotion.running ? slide.targetValue : flick.contentX
     }
     onCurrentIndexChanged: ensureVisible()
 
     /** Scrolls most of a width towards `direction` (-1 left, 1 right): a side arrow's tap. */
     function page(direction) {
         var most = Math.max(0, flick.contentWidth - flick.width)
-        flick.contentX = Math.max(0, Math.min(most, flick.contentX + direction * flick.width * 0.8))
+        flick.contentX = Math.max(0, Math.min(most, scrollTarget() + direction * flick.width * 0.8))
     }
 
     // A side with hidden tabs: an arrow over a fade, so a label cut at the edge never passes for
     // the last tab (Kontra QA 14.11.: "Taste…" at 200 %). Not a Tab stop: the arrows of the
-    // keyboard keep the selection in view already.
+    // keyboard keep the selection in view, clear of the arrows (`ensureVisible`).
     component Edge: Item {
         id: edge
         required property int direction
-        width: KanteStyle.unit(40)
+        width: tabs.edgeWidth
         height: tabs.height - 2
         Accessible.ignored: true
 
@@ -168,6 +185,7 @@ FocusScope {
 
     Flickable {
         id: flick
+        objectName: "tabsFlick"
         anchors.fill: parent
         contentWidth: row.implicitWidth
         contentHeight: height
@@ -175,7 +193,10 @@ FocusScope {
         boundsBehavior: Flickable.StopAtBounds
         interactive: contentWidth > width
         clip: true
-        Behavior on contentX { NumberAnimation { duration: KanteStyle.duration; easing.type: Easing.OutCubic } }
+        Behavior on contentX {
+            id: slide
+            NumberAnimation { id: slideMotion; duration: KanteStyle.duration; easing.type: Easing.OutCubic }
+        }
 
         // The sliding yellow tab.
         KantePolygon {
