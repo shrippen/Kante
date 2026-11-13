@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kante for Klappe</title>
+<link rel="stylesheet" href="../../docs/v1/shrippen.css">
+</head>
+<body>
+<main style="max-width:60rem;margin:0 auto;padding:1.5rem 1rem;display:flex;flex-direction:column;gap:1.2rem">
+<h1>Kante for Klappe: QML gaps</h1>
+<p>Klappe (floor plans for a film shoot) needs a multi-track timeline and a plan view drawn from data. Both are QML only and generic. Live: <code>qml/demo/Gallery.qml</code> (section "klappe: spuren, plan"); tests: <code>qml/tests/tst_kante_klappe.qml</code>. Screenshot in Kante dark, offscreen render (no icon theme there, so the eye buttons show no icon).</p>
+<img src="tracks-and-plan.png" alt="A timeline with three tracks, segments, a marker, a selected segment and the playhead, above a plan with a room, a table, two discs, a dashed path and a dotted cable on a grid" style="max-width:100%;height:auto">
+<div class="table-wrap"><table class="table">
+<thead><tr><th>Component</th><th>API</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td><code>KanteTrackTimeline</code></td><td><code>duration</code>, <code>position</code>, <code>tracks</code> [{name, label, shown, segments [{from, to, text, selected}], markers [{at, text}]}], <code>trackHeight</code>, <code>labelWidth</code>, <code>hideText</code>, <code>showText</code>, <code>seek(seconds)</code>, <code>toggleShown(track)</code>, <code>segmentClicked(track, segment)</code>, <code>timeAt(x)</code>, <code>xAt(s)</code>, <code>segmentAt(x, y)</code>, <code>markerAt(x, y)</code></td><td>Ruler with a readable step, one row per track, eye button per row, segments as bars with their text, selected one framed wider and bold, markers as diamonds with a tooltip, hidden rows dimmed, playhead in the focus colour. Left / Right one second, Home / End.</td></tr>
+<tr><td><code>KanteShapeCanvas</code></td><td><code>contentWidth</code>, <code>contentHeight</code>, <code>gridStep</code>, <code>shapes</code> [{kind, points, radius, width, label, stroke, fill, text, key, selected}], <code>zoom</code>, <code>fitOnLoad</code>, <code>fit()</code>, <code>mapToModel(px, py)</code>, <code>mapFromModel(x, y)</code>, <code>keyAt(px, py)</code>, <code>shapeAt(px, py)</code>, <code>shapeClicked(key, x, y)</code>, <code>shapeHovered(key, x, y)</code></td><td>One Canvas, back to front. Kinds line, polyline, polygon, circle; stroke solid, dashed, dotted; fill none, solid, tint. Captions at a constant screen size. Wheel or pinch zoom about the pointer, pan with the middle button, space or from empty ground. Topmost shape wins the hit test.</td></tr>
+</tbody></table></div>
+</main>
+<script src="../../docs/v1/shrippen.js"></script>
+</body>
+</html>

@@ -1616,6 +1616,59 @@ Rectangle {
                     KanteFocusFollow { flickable: settingsDemoFlick; topInset: settingsDemoHeader.height }
                 }
             }
+
+            Section {
+                title: "1.81 · klappe: spuren, plan"
+                // Tracks over time: seek on click, eye button, segments, markers, playhead.
+                KanteTrackTimeline {
+                    id: demoTimeline
+                    Layout.fillWidth: true
+                    duration: 40
+                    position: 12
+                    hideText: "Ausblenden"
+                    showText: "Einblenden"
+                    accessibleName: "Zeitleiste"
+                    property var rows: [
+                        { name: "Spur 1", label: "blue", shown: true,
+                          segments: [{ from: 2, to: 11, text: "Eintritt" }, { from: 14, to: 26, text: "Gespräch", selected: true }],
+                          markers: [{ at: 12, text: "Schnitt" }] },
+                        { name: "Spur 2", label: "green", shown: true,
+                          segments: [{ from: 6, to: 20, text: "Tür" }, { from: 28, to: 38, text: "Abgang" }], markers: [] },
+                        { name: "Ton", label: "", shown: false, segments: [{ from: 0, to: 40, text: "Atmo" }], markers: [{ at: 33, text: "Hinweis" }] }
+                    ]
+                    tracks: rows
+                    onSeek: function (s) { position = s }
+                    onToggleShown: function (i) {
+                        const next = rows.map(function (r, k) { return k === i ? Object.assign({}, r, { shown: !r.shown }) : r })
+                        rows = next
+                    }
+                    onSegmentClicked: function (t, i) {
+                        rows = rows.map(function (r, k) {
+                            return Object.assign({}, r, { segments: r.segments.map(function (g, m) {
+                                return Object.assign({}, g, { selected: k === t && m === i })
+                            }) })
+                        })
+                    }
+                }
+                // A pannable, zoomable plan from data: wheel zooms, drag on empty ground pans.
+                KanteShapeCanvas {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: KanteStyle.unit(320)
+                    contentWidth: 12
+                    contentHeight: 8
+                    gridStep: 1
+                    accessibleName: "Grundriss"
+                    shapes: [
+                        { kind: "polygon", points: [0, 0, 12, 0, 12, 8, 0, 8], width: 0.2, label: "muted", key: "room", text: "Raum" },
+                        { kind: "line", points: [4, 0, 4, 5], width: 0.15, label: "text", key: "wall" },
+                        { kind: "polygon", points: [7, 2, 10, 2, 10, 4, 7, 4], label: "blue", fill: "tint", key: "table", text: "Tisch" },
+                        { kind: "circle", points: [2, 6], radius: 0.5, label: "red", fill: "solid", key: "a", text: "A", selected: true },
+                        { kind: "circle", points: [9, 6.5], radius: 0.5, label: "green", fill: "solid", key: "b", text: "B" },
+                        { kind: "polyline", points: [2, 6, 5, 7, 9, 6.5], label: "accent", stroke: "dashed", key: "path" },
+                        { kind: "line", points: [6, 1, 11, 1], label: "warning", stroke: "dotted", key: "cable" }
+                    ]
+                }
+            }
         }
     }
 }
