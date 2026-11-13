@@ -318,4 +318,45 @@ TestCase {
         wait(50)
         compare(c.keyAt(c.mapFromModel(3, 2).x, c.mapFromModel(3, 2).y), "s53")
     }
+
+    // --- Review fixes
+
+    function test_canvasKeyZeroIsAKey() {
+        const c = createTemporaryObject(canvasComponent, stage(),
+            { shapes: [{ kind: "circle", points: [5, 4], radius: 1, fill: "solid", key: 0 }] })
+        const p = c.mapFromModel(5, 4)
+        compare(c.keyAt(p.x, p.y), "0")
+    }
+
+    Component { id: otherItem; Item { width: 10; height: 10; focus: true } }
+
+    function test_canvasSpaceResetsOnFocusLoss() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.forceActiveFocus()
+        keyPress(Qt.Key_Space)
+        verify(c._spaceDown)
+        const o = createTemporaryObject(otherItem, stage())
+        o.forceActiveFocus()
+        verify(!c.activeFocus)
+        verify(!c._spaceDown)
+    }
+
+    function test_timelineLabelRoles() {
+        const t = createTemporaryObject(timelineComponent, stage())
+        compare(t._labelColor("accent"), KanteStyle.accentColor)
+        compare(t._labelColor("focus"), KanteStyle.focusColor)
+        compare(t._labelColor("warning"), KanteStyle.warningColor)
+        compare(t._labelColor("muted"), KanteStyle.mutedTextColor)
+        compare(t._labelColor("text"), KanteStyle.textColor)
+        compare(t._labelColor("unknown"), KanteStyle.textColor)
+        compare(t._labelColor(""), KanteStyle.textColor)
+        compare(t._labelColor("blue"), KanteStyle.labelColor("blue"))
+    }
+
+    function test_timelineHoverResetsWithTracks() {
+        const t = createTemporaryObject(timelineComponent, stage())
+        t.hovered = { track: 1, index: 0 }
+        t.tracks = [t.tracks[0]]
+        compare(t.hovered, null)
+    }
 }
