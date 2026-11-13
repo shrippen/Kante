@@ -238,6 +238,41 @@ TestCase {
         tryCompare(findChild(s, "first2"), "activeFocus", true)
     }
 
+    // Round 23 review (Kleinigkeit): the pause after an arrow must end when the user scrolls by
+    // themselves, not only when they act on the arrow — a real flick or drag fires the
+    // flickable's own `movementStarted`, unlike the programmatic `contentY` a test (or
+    // `KanteFocusFollow`) sets directly.
+    function test_scrollspyFollowsAfterAUserScroll() {
+        const s = make()
+        const bar = findChild(s.header, "headerTabs")
+        bar.forceActiveFocus()
+        keyClick(Qt.Key_Right)
+        compare(s.header.browsing, true)
+        s.view.movementStarted()
+        compare(s.header.browsing, false)
+        const g2 = findChild(s, "group2")
+        s.view.contentY = g2.y - s.header.compactHeight
+        compare(s.header.currentIndex, 2)
+    }
+
+    // The old guard (the bar's own focus) never cleared once `scrollTo` landed on a section
+    // without a control to focus: the spy stayed frozen for the rest of the session.
+    function test_scrollspyResumesAfterReturnOnABareSection() {
+        const s = make()
+        const bar = findChild(s.header, "headerTabs")
+        bar.forceActiveFocus()
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Right)
+        keyClick(Qt.Key_Return)
+        wait(300)
+        compare(bar.activeFocus, true, "the bare section has no control to take the focus")
+        compare(s.header.browsing, false, "Return did not end the browsing pause")
+        s.view.contentY = 0
+        compare(s.header.currentIndex, 0)
+    }
+
     function test_tabBarRoleAndName() {
         const s = make()
         const bar = findChild(s.header, "headerTabs")

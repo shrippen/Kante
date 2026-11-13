@@ -115,6 +115,33 @@ TestCase {
     }
 
     Component {
+        id: pagedTabsComponent
+        Item {
+            property int tab: 0
+            property alias bar: t
+            KanteTabBar {
+                id: t
+                model: ["Alle", "Prüfen", "Fertig"]
+                currentIndex: parent.tab
+                onActivated: function(i) { parent.tab = i }
+            }
+        }
+    }
+
+    // Round 23 changed the arrows to move only, breaking every app that binds its page to
+    // `onActivated` (lmix, Kladde, FrameWidge): KanteTabBar.activation stays Automatic by
+    // default, so the arrows keep activating there; only KanteStickyHeader opts into Manual.
+    function test_tabBarArrowsActivateByDefault() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var p = createTemporaryObject(pagedTabsComponent, tc)
+        p.bar.forceActiveFocus()
+        keyClick(Qt.Key_Right)
+        compare(p.tab, 1, "the page did not follow the arrow")
+        compare(p.bar.currentIndex, 1)
+        compare(p.bar.activation, KanteTabBar.Activation.Automatic)
+    }
+
+    Component {
         id: spyComponent
         SignalSpy { }
     }
