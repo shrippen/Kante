@@ -57,7 +57,7 @@ import "."
  * width counts).
  *
  * A grid that switches between data sets (Mitori's technique map: one group, one grade at a
- * time) keeps its cells in place with reserves (1.65): `reserveRowLabels` and
+ * time) keeps its cells in place with reserves (1.81): `reserveRowLabels` and
  * `reserveColumnLabels` are labels that may come, the label room takes the longest of them and
  * of its own; `reserveColumns` keeps the implicit width for that many columns. The cells start
  * where they started, left aligned in the room.
@@ -125,11 +125,11 @@ FocusScope {
     property bool columnLabelsVertical: false
     /** Longest an upright column label may be (0: as long as the longest); longer ones elide. */
     property real columnLabelMaxLength: 0
-    /** Row labels the grid keeps room for besides its own (1.65); within `rowLabelWidth`. */
+    /** Row labels the grid keeps room for besides its own (1.81); within `rowLabelWidth`. */
     property var reserveRowLabels: []
-    /** Column labels the grid keeps room for besides its own (1.65); within `columnLabelMaxLength`. */
+    /** Column labels the grid keeps room for besides its own (1.81); within `columnLabelMaxLength`. */
     property var reserveColumnLabels: []
-    /** Columns the implicit width keeps room for, at least (1.65). */
+    /** Columns the implicit width keeps room for, at least (1.81). */
     property int reserveColumns: 0
     /** The focused (or last focused) cell. */
     property int currentRow: 0

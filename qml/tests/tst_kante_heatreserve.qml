@@ -3,7 +3,7 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.65: KanteHeatGrid keeps its cells in place when it switches between data sets
+ * Kante 1.81: KanteHeatGrid keeps its cells in place when it switches between data sets
  * (Mitori's technique map), with room reserved for the labels and columns that may come.
  * Run: tools/check-qml.sh.
  */
@@ -61,7 +61,7 @@ TestCase {
         compare(grid.implicitWidth, width, "room for the larger set's columns")
     }
 
-    // Without reserves the room follows the labels (as before 1.65).
+    // Without reserves the room follows the labels (as before 1.81).
     function test_without_reserve() {
         const grid = createTemporaryObject(gridComponent, tc.Window.contentItem)
         show(grid, small)
