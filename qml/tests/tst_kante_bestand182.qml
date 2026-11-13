@@ -49,6 +49,26 @@ TestCase {
     }
 
     Component {
+        id: oneLineHeading
+        KanteHeading {
+            text: "Title"
+            level: 2
+            horizontalAlignment: Text.AlignHCenter
+            width: 300
+        }
+    }
+
+    // A one-line title (no wrapMode, the default) is centred too: its text stands in the middle.
+    function test_oneLineHeadingCentredInKante() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const h = createTemporaryObject(oneLineHeading, tc)
+        const label = h.children.find(c => c.objectName === "kanteText")
+        verify(label, "kanteText")
+        const middle = label.x + (label.width - label.contentWidth) / 2 + label.contentWidth / 2
+        fuzzyCompare(middle, h.width / 2, 1)
+    }
+
+    Component {
         id: skinDialog
         QQC2.Dialog {
             id: d
