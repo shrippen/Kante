@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Layouts
 import QtTest
 import org.kde.kirigami as Kirigami
 import Kante
@@ -111,6 +112,33 @@ TestCase {
         compare(spy.count, 1)
         t.currentIndex = 0
         compare(t.currentIndex, 0)
+    }
+
+    Component {
+        id: pagedTabsComponent
+        Item {
+            property int tab: 0
+            property alias bar: t
+            KanteTabBar {
+                id: t
+                model: ["Alle", "Prüfen", "Fertig"]
+                currentIndex: parent.tab
+                onActivated: function(i) { parent.tab = i }
+            }
+        }
+    }
+
+    // Round 23 changed the arrows to move only, breaking every app that binds its page to
+    // `onActivated` (lmix, Kladde, FrameWidge): KanteTabBar.activation stays Automatic by
+    // default, so the arrows keep activating there; only KanteStickyHeader opts into Manual.
+    function test_tabBarArrowsActivateByDefault() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var p = createTemporaryObject(pagedTabsComponent, tc)
+        p.bar.forceActiveFocus()
+        keyClick(Qt.Key_Right)
+        compare(p.tab, 1, "the page did not follow the arrow")
+        compare(p.bar.currentIndex, 1)
+        compare(p.bar.activation, KanteTabBar.Activation.Automatic)
     }
 
     Component {
@@ -487,6 +515,34 @@ TestCase {
             width: KanteStyle.unit(600)
             Rectangle { width: KanteStyle.unit(150); height: KanteStyle.unit(32) }
         }
+    }
+
+    Component {
+        id: groupedShortTitleComponent
+        KanteSettingGroup {
+            title: "Anzeige"
+            countText: "1 Einstellung"
+            KanteSettingRow {
+                Layout.fillWidth: true
+                title: "Tiefe Saite oben"
+                KanteSwitch { checked: false }
+            }
+        }
+    }
+
+    // Round 22: a real font under X11 gave this title's implicitWidth a fraction of a pixel
+    // (132.359375); the layout floors that to a whole device pixel (132), a hair under what the
+    // text needs, and it wrapped ("Tiefe Saite oben" -> "Tiefe Saite" / "oben") although the row
+    // (inside a KanteSettingGroup, at a normal reading width) had plenty of room to spare.
+    function test_settingRowTitleRoundsUpAgainstDevicePixelFlooring() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var group = createTemporaryObject(groupedShortTitleComponent, tc, { width: KanteStyle.unit(1008) })
+        var t = findChild(group, "settingTitle")
+        tryVerify(function () { return t.width > 0 }, 1000)
+        compare(t.Layout.maximumWidth, Math.ceil(t.implicitWidth),
+                "maximumWidth " + t.Layout.maximumWidth + ", implicitWidth " + t.implicitWidth)
+        verify(t.Layout.maximumWidth >= t.implicitWidth)
+        compare(t.lineCount, 1, "width " + t.width + ", implicitWidth " + t.implicitWidth)
     }
 
     // The mark stands right after the title's text ("Schwelle ■"), not at the column's edge.
