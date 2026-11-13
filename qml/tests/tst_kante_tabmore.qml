@@ -32,6 +32,8 @@ Item {
 
             mouseClick(after, after.width / 2, after.height / 2)
             tryVerify(function() { return before.visible }, 2000, "scrolled: tabs hidden on the left")
+            // The tap is the arrow's alone: the tab under it is not chosen (Kontra, 14.11.).
+            compare(bar.currentIndex, 0)
         }
 
         function test_aWideBarShowsNoArrow() {

@@ -146,10 +146,17 @@ FocusScope {
             anchors.margins: KanteStyle.unit(6)
             text: edge.direction < 0 ? "‹" : "›"
             font: KanteStyle.titleFont(KanteStyle.labelFont().pointSize * 1.4)
-            color: arrowHover.hovered ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
+            color: arrowArea.containsMouse ? KanteStyle.strongTextColor : KanteStyle.mutedTextColor
         }
-        HoverHandler { id: arrowHover; cursorShape: Qt.PointingHandCursor }
-        TapHandler { onTapped: tabs.page(edge.direction) }
+        // A MouseArea, not a TapHandler: it takes the press, so the tab under the fade is not
+        // chosen as well.
+        MouseArea {
+            id: arrowArea
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: tabs.page(edge.direction)
+        }
     }
 
     Rectangle {
