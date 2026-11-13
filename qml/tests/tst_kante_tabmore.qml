@@ -71,5 +71,20 @@ Item {
             }
         }
 
+
+        // Review #172: a tab wider than the room between the arrows kept its start under the
+        // left one.
+        function test_aWideTabKeepsItsStart() {
+            var bar = createTemporaryObject(barComponent, stage, { width: 170 })
+            bar.forceActiveFocus()
+            var before = findChild(bar, "moreBefore")
+            for (var i = 0; i < 6; i++) {
+                keyClick(Qt.Key_Right)
+            }
+            wait(400)
+            var tab = bar.tabAt(bar.currentIndex)
+            var left = tab.mapToItem(bar, 0, 0).x
+            verify(!before.visible || left >= before.width - 1, "starts at " + left)
+        }
     }
 }

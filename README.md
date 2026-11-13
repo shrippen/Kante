@@ -390,7 +390,7 @@ Everything Andon, Kader, Plasmai, Kurrent and FrameWidge had kept locally becaus
 | Dismissible callout with actions | `.callout.has-x` + `.callout-x` | `KanteCallout.dismissible`, `actions` |
 | Flow node done, fact tier | `.flow-node.done`, `.fact[data-tier]` | – |
 | Pill over an image | `.pill.is-solid` | – |
-| Tabs: icons, scrolling, counter kinds | – | `KanteTabBar` (`icons`, `countKinds`, `badges`; arrows ‹ › at a side with hidden tabs, `edgeColor`) |
+| Tabs: icons, scrolling, counter kinds | – | `KanteTabBar` (`icons`, `countKinds`, `badges`; arrows ‹ › at a side with hidden tabs, `edgeColor`, `arrowWidth`, `tabAt(i)`) |
 | Segments: icons, tooltips | – | `KanteSegmented` (`icons`, `tooltips`) |
 | Segments in one row over the full width (narrow panels) | `.seg.seg-fill` | `KanteSegmented` (`Layout.fillWidth`) |
 | Empty state as a card | – | `KanteEmptyState.barColor` |

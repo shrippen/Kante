@@ -107,7 +107,7 @@ FocusScope {
     }
 
     // Room an arrow takes at a side that still hides tabs: the chosen tab stays clear of it.
-    readonly property real edgeWidth: KanteStyle.unit(40)
+    readonly property real arrowWidth: KanteStyle.unit(40)
 
     function ensureVisible() {
         var t = rep.count > 0 ? rep.itemAt(currentIndex) : null
@@ -115,13 +115,15 @@ FocusScope {
             return
         }
         // Tabs left of this one stay hidden while it is not the first: keep the arrow's room.
-        var before = t.x > 0 ? edgeWidth : 0
-        var after = t.x + t.width < flick.contentWidth - 1 ? edgeWidth : 0
+        var before = t.x > 0 ? arrowWidth : 0
+        var after = t.x + t.width < flick.contentWidth - 1 ? arrowWidth : 0
         var most = Math.max(0, flick.contentWidth - flick.width)
         if (t.x - before < scrollTarget()) {
             flick.contentX = Math.max(0, t.x - before)
         } else if (t.x + t.width + after > scrollTarget() + flick.width) {
-            flick.contentX = Math.min(most, t.x + t.width + after - flick.width)
+            // A tab wider than the room between the arrows keeps its start in view.
+            var end = Math.min(most, t.x + t.width + after - flick.width)
+            flick.contentX = Math.min(end, Math.max(0, t.x - before))
         }
     }
 
@@ -143,7 +145,7 @@ FocusScope {
     component Edge: Item {
         id: edge
         required property int direction
-        width: tabs.edgeWidth
+        width: tabs.arrowWidth
         height: tabs.height - 2
         Accessible.ignored: true
 
