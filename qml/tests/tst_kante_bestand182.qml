@@ -47,4 +47,56 @@ TestCase {
         verify(label, "kanteText")
         compare(label.horizontalAlignment, Text.AlignHCenter)
     }
+
+    Component {
+        id: skinDialog
+        QQC2.Dialog {
+            id: d
+            property alias off: off
+            width: 200
+            height: 120
+            contentItem: Item {
+                QQC2.Label {
+                    id: off
+                    enabled: false
+                    text: "off"
+                }
+            }
+            KanteDialogSkin { dialog: d }
+        }
+    }
+
+    function test_skinScopeFindsWindow() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const d = createTemporaryObject(skinDialog, tc)
+        d.open()
+        tryVerify(() => d.opened)
+        tryVerify(() => Qt.colorEqual(d.off.Kirigami.Theme.textColor, KanteStyle.disabledTextColor), 2000,
+                  "disabled text " + d.off.Kirigami.Theme.textColor + ", not " + KanteStyle.disabledTextColor)
+        d.close()
+    }
+
+    Component {
+        id: ownContentDialog
+        KanteDialog {
+            property alias off: off
+            contentItem: ColumnLayout {
+                QQC2.Label {
+                    id: off
+                    enabled: false
+                    text: "off"
+                }
+            }
+        }
+    }
+
+    function test_ownContentDisabledKeepsKante() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const d = createTemporaryObject(ownContentDialog, tc)
+        d.open()
+        tryVerify(() => d.opened)
+        tryVerify(() => Qt.colorEqual(d.off.Kirigami.Theme.textColor, KanteStyle.disabledTextColor), 2000,
+                  "disabled text " + d.off.Kirigami.Theme.textColor + ", not " + KanteStyle.disabledTextColor)
+        d.close()
+    }
 }
