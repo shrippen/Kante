@@ -222,8 +222,9 @@ Item {
         unwatchAll()
     }
 
-    // Enabled again: the items are let go (the ones dressed keep their roles). The next time
-    // the target is disabled, the sweep looks at them again.
+    // Enabled again: the items are let go (the ones dressed keep their roles and keep their
+    // `enabled` watch: their text colour follows it). The next time the target is disabled,
+    // the sweep looks at them again.
     function unwatchAll() {
         const table = watched
         watched = {}
@@ -235,7 +236,9 @@ Item {
             if (!alive(item)) {
                 continue
             }
-            item.enabledChanged.disconnect(item, itemEnabled)
+            if (dressed[key] !== item) {
+                item.enabledChanged.disconnect(item, itemEnabled)
+            }
             item.childrenChanged.disconnect(item, itemGrown)
         }
     }
