@@ -46,13 +46,14 @@ stylesheet or copy the module.
       │              │               │           │      │
       ▼              ▼               │           │      │
  docs/v1/        components, skins   │           │      │
-      │           │         │        │           │      │
-      │           │         ▼        │           │      │
-      │           │    KantePlasma   │           │      │
-      ▼           ▼         ▼        ▼           ▼      ▼
- web pages      apps     Plasma     Kimai with its    KDE desktop
- (link /v1/)   (copy     widgets    plug-ins (Knust
-              qml/Kante) (copy)     installed, kit copied in)
+      │              │               │           │      │
+      │              ▼               │           │      │
+      │          KantePlasma         │           │      │
+      ▼              ▼               ▼           ▼      ▼
+ web pages      apps and Plasma     Kimai with its    KDE desktop
+ (link /v1/)    widgets (copy       plug-ins (Knust
+                qml/Kante; widgets  installed, kit copied in)
+                also KantePlasma)
 ```
 
 - A value stands once, in `tokens/palette.json`. Everything else that holds a colour is
@@ -81,7 +82,7 @@ stylesheet or copy the module.
 |---|---|
 | A new or changed colour, font or level | `tokens/palette.json` (and, until they are generated, the same value in `tokens/variables.css`), `./build.sh`, README |
 | A new role (what a colour is for) | `tokens/variables.css` and `qml/Kante/KanteStyle.qml`, under the same name; README |
-| A new web component | `css/components.css`, behaviour in `js/`, README, its catalogue page in `proposals/` |
+| A new web component | `css/components.css`, behaviour in `js/`, README, `tools/specimen.html`, its catalogue page in `proposals/` |
 | A new QML component | A file in `qml/Kante/`, a test in `qml/tests/`, an entry in `qml/demo/Gallery.qml`, README; `./build.sh` writes `qmldir` |
 | Motion | The `prefers-reduced-motion` block at the end of `css/components.css`; `KanteStyle.motion` in QML |
 | Something for Kimai's look | `kimai/knust/`; something Kimai plug-ins share: `kimai/kit/`, then `kimai/kit/bin/sync.sh` per plug-in |
@@ -105,8 +106,9 @@ stylesheet or copy the module.
 - `css/components.css` writes the dark palette out again for the areas that stay
   dark in every theme, and holds a few raw `rgba()` colours; the token check allows
   the first (not in `AUDIT.md`).
-- Twelve components have no gallery entry, among them three skins; one of them,
-  `KantePageTitle`, has no test either (not in `AUDIT.md`).
+- Not every component has a gallery entry (skins, helpers such as `KantePolygon`,
+  the Plasma components and others); `KantePageTitle` has no test either
+  (not in `AUDIT.md`).
 - Two components read `KantePalette` directly (`KanteSticker`, `KanteRehearsalMark`;
   not in `AUDIT.md`).
 - The release-notes tool of all projects lives here (`AUDIT.md`, finding 8).
