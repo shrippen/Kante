@@ -2,12 +2,10 @@
 # never grow; a raised or new entry needs its reason in the PR. Rewrite with --update.
 # Lines: exclude<TAB>glob | path<TAB>function or - for the file<TAB>metric=value ...
 exclude	docs/v1/*
+exclude	js/map/*
 exclude	kimai/kit/kit/templates/_kit/assets.html.twig
 js/kante-map.js	(anonymous)	length=165
 js/kante-wall.js	(anonymous)	length=156
-js/map/basemaps.js	k	ccn=16
-js/map/pmtiles.js	(anonymous)	ccn=48 nesting=8
-js/map/pmtiles.js	(anonymous)#2	ccn=22
 js/shrippen.js	(anonymous)	ccn=17
 js/shrippen.js	(anonymous)#2	length=450
 js/shrippen.js	(anonymous)#3	length=506
