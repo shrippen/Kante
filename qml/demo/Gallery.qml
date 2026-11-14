@@ -1676,6 +1676,14 @@ Rectangle {
                             galleryPlanPopover.openAtPoint(at.x, at.y, galleryPlan)
                         }
                     }
+                    // 1.81: a palette that floats over the plan and folds to its head.
+                    KanteFloatingPanel {
+                        x: KanteStyle.unit(12)
+                        y: KanteStyle.unit(12)
+                        title: "Werkzeuge"
+                        KanteButton { text: "Wand"; size: KanteButton.Size.Small }
+                        KanteButton { text: "Figur"; size: KanteButton.Size.Small }
+                    }
                     KantePopover {
                         id: galleryPlanPopover
                         title: "Figur"

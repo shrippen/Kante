@@ -296,4 +296,70 @@ TestCase {
         compare(p.entries.length, 6)
         p.close()
     }
+
+    // --- Floating panel
+
+    Component {
+        id: panelComponent
+        KanteFloatingPanel {
+            x: 20
+            y: 20
+            title: "Werkzeuge"
+            property alias tool: tool
+            KanteButton { id: tool; text: "Wand" }
+        }
+    }
+
+    function headOf(p) {
+        return p.children.find(c => c.activeFocusOnTab === true)
+    }
+
+    function test_panelFoldsAndUnfolds() {
+        const p = createTemporaryObject(panelComponent, stage())
+        verify(!p.collapsed)
+        verify(p.height > p.headerHeight, "open: head and content")
+        const open = p.height
+        p.collapsed = true
+        compare(p.height, p.headerHeight, "folded: the head only")
+        p.collapsed = false
+        compare(p.height, open)
+        p.toggle()
+        verify(p.collapsed)
+        p.toggle()
+        verify(!p.collapsed)
+    }
+
+    function test_panelFoldedHidesContent() {
+        const p = createTemporaryObject(panelComponent, stage())
+        verify(p.tool.visible)
+        p.collapsed = true
+        verify(!p.tool.visible)
+    }
+
+    function test_panelKeyboard() {
+        const p = createTemporaryObject(panelComponent, stage())
+        const head = headOf(p)
+        verify(head !== undefined, "the head takes Tab")
+        head.forceActiveFocus()
+        keyClick(Qt.Key_Space)
+        verify(p.collapsed)
+        keyClick(Qt.Key_Return)
+        verify(!p.collapsed)
+        keyClick(Qt.Key_Enter)
+        verify(p.collapsed)
+    }
+
+    function test_panelClickHead() {
+        const p = createTemporaryObject(panelComponent, stage())
+        mouseClick(headOf(p))
+        verify(p.collapsed)
+        mouseClick(headOf(p))
+        verify(!p.collapsed)
+    }
+
+    function test_panelGrowsWithContent() {
+        const p = createTemporaryObject(panelComponent, stage())
+        verify(p.width >= p.implicitWidth)
+        verify(p.implicitWidth >= 2 * p.pad + 1)
+    }
 }
