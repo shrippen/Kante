@@ -61,6 +61,7 @@ Rectangle {
                     KanteButton { text: "Zurücksetzen"; emphasis: KanteButton.Emphasis.Quiet }
                     KanteButton { text: "Lädt"; emphasis: KanteButton.Emphasis.Primary; busy: true }
                     KanteButton { text: "Aus"; emphasis: KanteButton.Emphasis.Primary; enabled: false }
+                    KanteToolButton { text: "Ohne Icon"; icon.name: "kante-no-such-icon"; display: QQC2.AbstractButton.IconOnly }
                 }
                 RowLayout {
                     spacing: KanteStyle.unit(10)
@@ -90,8 +91,7 @@ Rectangle {
                     QQC2.CheckBox { text: "Überschreiben"; KanteCheckSkin { control: parent } }
                     QQC2.RadioButton { text: "Automatisch"; checked: true; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Radio } }
                     QQC2.RadioButton { text: "Manuell"; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Radio } }
-                    QQC2.Switch { text: "Rahmen"; checked: true; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Switch } }
-                    QQC2.Switch { text: "Staub"; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Switch } }
+                    QQC2.Switch { text: "Rahmen"; checked: true; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Switch } } QQC2.Switch { text: "Staub"; KanteCheckSkin { control: parent; shape: KanteCheckSkin.Shape.Switch } }
                 }
                 // 1.27: the wrappers, so an app does not leave a light platform control on a dark page
                 RowLayout {
