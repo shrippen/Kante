@@ -277,6 +277,66 @@ TestCase {
         compare(c.panX, 0)
     }
 
+    function test_canvasEditingDragsAShape() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.editing = true
+        watch(c, "shapeDragged")
+        const p = c.mapFromModel(5, 4)
+        mousePress(c, p.x, p.y)
+        mouseMove(c, p.x + 20, p.y)
+        mouseMove(c, p.x + 40, p.y + 20)
+        mouseRelease(c, p.x + 40, p.y + 20)
+
+        verify(spy.count >= 2)
+        const last = spy.signalArguments[spy.count - 1]
+        compare(last[0], "disc")
+        fuzzyCompare(last[1], 5, 1e-9)
+        fuzzyCompare(last[2], 4, 1e-9)
+        fuzzyCompare(last[3], 7, 1e-9)
+        fuzzyCompare(last[4], 5, 1e-9)
+        compare(last[5], true)
+        compare(spy.signalArguments[0][5], false)
+        compare(c.panX, 0)
+    }
+
+    function test_canvasEditingDrawsFromEmptyGround() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.editing = true
+        watch(c, "shapeDragged")
+        mousePress(c, 390, 290)
+        mouseMove(c, 370, 280)
+        mouseRelease(c, 350, 270)
+
+        compare(c.panX, 0)
+        compare(c.panY, 0)
+        const last = spy.signalArguments[spy.count - 1]
+        compare(last[0], "")
+        compare(last[5], true)
+    }
+
+    function test_canvasEditingStillPansWithMiddleButton() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.editing = true
+        watch(c, "shapeDragged")
+        mousePress(c, 390, 290, Qt.MiddleButton)
+        mouseMove(c, 370, 280, -1, Qt.MiddleButton)
+        mouseRelease(c, 370, 280, Qt.MiddleButton)
+
+        compare(c.panX, -20)
+        compare(spy.count, 0)
+    }
+
+    function test_canvasWithoutEditingReportsNoDrag() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        watch(c, "shapeDragged")
+        const p = c.mapFromModel(5, 4)
+        mousePress(c, p.x, p.y)
+        mouseMove(c, p.x + 30, p.y + 30)
+        mouseRelease(c, p.x + 30, p.y + 30)
+
+        compare(spy.count, 0)
+    }
+
     function test_canvasWheelZoomsAboutPointer() {
         const c = createTemporaryObject(canvasComponent, stage())
         const before = c.mapToModel(150, 100)
