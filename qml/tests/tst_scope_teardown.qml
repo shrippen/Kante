@@ -93,4 +93,21 @@ TestCase {
         compare(o.deep.enabled, true)
         compare(spy.count, 0, "no theme write below a part taken apart")
     }
+
+    // A target that leaves its window starts no Timer: a Timer started while Qt's QML animation
+    // timer holds only timers makes Qt tick every running animation at once, in the middle of the
+    // teardown. Kirigami's ColumnView then disabled pages already being deleted, and its Material
+    // theme read their gone item (mitori-app CI, Theme.qml:85 "Cannot read property 'Kirigami' of null").
+    function test_no_timer_on_leaving() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const outer = createTemporaryObject(treeComponent, tc.Window.contentItem)
+        const scope = outer.inner.scope
+        tryVerify(() => Object.keys(scope.dressed).length > 0, 2000, "the disabled leaf is dressed")
+        wait(50)
+        const timers = scope.data.filter(o => o instanceof Timer)
+        verify(timers.length > 0)
+        verify(timers.every(t => !t.running), "no timer runs before")
+        outer.inner.parent = null
+        compare(timers.filter(t => t.running).length, 0, "no timer started while the target left its window")
+    }
 }
