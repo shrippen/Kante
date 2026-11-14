@@ -409,4 +409,30 @@ TestCase {
         tryCompare(spy, "count", 1, 1000)
         compare(spy.signalArguments[0][0], false, "asks to open")
     }
+
+    // --- Tile stage aspect
+
+    Component {
+        id: tileTwoComponent
+        KanteTile { width: 180; name: "IMG_1" }
+    }
+
+    function stageOf(t) {
+        return findChild(t, "kantePlaceholder").parent
+    }
+
+    function test_tileStageIsThreeByTwo() {
+        const t = createTemporaryObject(tileTwoComponent, stage())
+        compare(t.stageAspect, 1.5)
+        compare(stageOf(t).height, 120)
+        compare(t.implicitHeight, t.implicitWidth / 1.5 + KanteStyle.unit(34))
+    }
+
+    function test_tileStageAspect() {
+        const t = createTemporaryObject(tileTwoComponent, stage(), { stageAspect: 2.39 })
+        fuzzyCompare(stageOf(t).height, 180 / 2.39, 0.01)
+        fuzzyCompare(t.implicitHeight, t.implicitWidth / 2.39 + KanteStyle.unit(34), 0.01)
+        t.stageAspect = 1
+        compare(stageOf(t).height, 180)
+    }
 }
