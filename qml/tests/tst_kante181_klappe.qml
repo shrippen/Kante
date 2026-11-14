@@ -95,6 +95,28 @@ TestCase {
         tryVerify(() => !o.popover.visible)
     }
 
+    function test_popoverPointerClearOfTheCorner() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.popover.openAtPoint(tc.width - 20, 5, o.plan)
+        tryVerify(() => o.popover.opened)
+        compare(o.popover.pointerSide, "right")
+        verify(o.popover.pointerY - o.popover.pointerWidth / 2 >= KanteStyle.chamferSmall,
+               "below the chamfer: " + o.popover.pointerY)
+        o.popover.close()
+    }
+
+    function test_popoverNoRoomHasNoPointer() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        // Wider than either side of the window's middle.
+        o.popover.implicitWidth = tc.width - 40
+        o.popover.openAtPoint(tc.width / 2, 120, o.plan)
+        tryVerify(() => o.popover.opened)
+        compare(o.popover.pointerSide, "")
+        verify(!o.popover.pointer.visible)
+        verify(cardAt(o).x >= 0)
+        o.popover.close()
+    }
+
     function test_popoverOpenAtHasNoPointer() {
         const o = createTemporaryObject(popoverComponent, stage())
         o.popover.openAtPoint(100, 120, o.plan)
@@ -213,6 +235,17 @@ TestCase {
         compare(p.current, 0)
         keyClick(Qt.Key_Down)
         compare(p.current, 0, "grid is disabled: round to zoom")
+        p.close()
+    }
+
+    function test_paletteSpeaksTheChosenEntry() {
+        const p = openPalette()
+        const first = p.entries[p.current]
+        verify(p.spoken.indexOf(first.text) === 0, p.spoken)
+        keyClick(Qt.Key_Down)
+        verify(p.spoken.indexOf(p.entries[p.current].text) === 0, p.spoken)
+        type("xyz")
+        compare(p.spoken, p.emptyText)
         p.close()
     }
 
@@ -419,6 +452,30 @@ TestCase {
         compare(spy.signalArguments[0][0], false, "asks to open")
     }
 
+    function test_splitKeysFold() {
+        const h = createTemporaryObject(splitComponent, stage(), { collapsible: true })
+        spy.target = h
+        spy.signalName = "collapseToggled"
+        spy.clear()
+        h.forceActiveFocus()
+        keyClick(Qt.Key_Return)
+        compare(spy.count, 1)
+        compare(spy.signalArguments[0][0], true)
+        keyClick(Qt.Key_Space)
+        compare(spy.count, 2)
+    }
+
+    function test_splitKeysIgnoredWhenNotCollapsible() {
+        const h = createTemporaryObject(splitComponent, stage())
+        spy.target = h
+        spy.signalName = "collapseToggled"
+        spy.clear()
+        h.forceActiveFocus()
+        keyClick(Qt.Key_Return)
+        compare(spy.count, 0)
+        compare(h.value, 200)
+    }
+
     // --- Tile stage aspect
 
     Component {
@@ -481,6 +538,16 @@ TestCase {
         compare(spy.count, 2)
         compare(spy.signalArguments[0][0], -1)
         compare(spy.signalArguments[1][0], 1)
+    }
+
+    // The glyph is drawn as |◀◀; the button that steps on shows it mirrored (▶▶|).
+    function test_barMarkerGlyphs() {
+        const bar = createTemporaryObject(barComponent, stage(), { markersVisible: true })
+        const buttons = markerButtons(bar)
+        const scale = b => b.children.find(c => c.transform && c.transform.length > 0).transform[0].xScale
+        compare(buttons[0].direction, -1)
+        compare(scale(buttons[0]), 1, "back: |◀◀ as drawn")
+        compare(scale(buttons[1]), -1, "on: mirrored ▶▶|")
     }
 
     function test_barMarkerKeys() {
