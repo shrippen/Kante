@@ -4,7 +4,9 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.81, for Klappe: KantePopover.openAtPoint and closeOnOutside, KanteCommandPalette.
+ * Kante 1.81, for Klappe: KantePopover.openAtPoint and closeOnOutside, KanteCommandPalette,
+ * KanteFloatingPanel, KanteSplitHandle folding, KanteTile.stageAspect, markers and tenths of
+ * KanteTransportBar.
  * Run: tools/check-qml.sh.
  */
 TestCase {
@@ -16,6 +18,13 @@ TestCase {
 
     function stage() {
         return tc.Window.contentItem
+    }
+
+    function watch(target, name) {
+        spy.signalName = ""
+        spy.target = target
+        spy.signalName = name
+        spy.clear()
     }
 
     function init() {
@@ -434,5 +443,67 @@ TestCase {
         fuzzyCompare(t.implicitHeight, t.implicitWidth / 2.39 + KanteStyle.unit(34), 0.01)
         t.stageAspect = 1
         compare(stageOf(t).height, 180)
+    }
+
+    // --- Transport bar: markers and tenths
+
+    Component {
+        id: barComponent
+        KanteTransportBar { width: 900 }
+    }
+
+    function markerButtons(bar) {
+        return bar.children[0].children.filter(c => c.hasOwnProperty("direction") && c.hasOwnProperty("glyphSize")
+                                                    && c.Accessible.name.indexOf("Marker") >= 0)
+    }
+
+    function test_barMarkersHiddenByDefault() {
+        const bar = createTemporaryObject(barComponent, stage())
+        compare(bar.markersVisible, false)
+        const buttons = markerButtons(bar)
+        compare(buttons.length, 2)
+        verify(!buttons[0].visible && !buttons[1].visible)
+        watch(bar, "markerStepRequested")
+        bar.forceActiveFocus()
+        keyClick(Qt.Key_BracketRight)
+        compare(spy.count, 0, "no key without markersVisible")
+    }
+
+    function test_barMarkerButtons() {
+        const bar = createTemporaryObject(barComponent, stage(), { markersVisible: true })
+        const buttons = markerButtons(bar)
+        verify(buttons[0].visible && buttons[1].visible)
+        // Before play on the left, after it on the right.
+        verify(buttons[0].x < buttons[1].x)
+        watch(bar, "markerStepRequested")
+        buttons[0].clicked()
+        buttons[1].clicked()
+        compare(spy.count, 2)
+        compare(spy.signalArguments[0][0], -1)
+        compare(spy.signalArguments[1][0], 1)
+    }
+
+    function test_barMarkerKeys() {
+        const bar = createTemporaryObject(barComponent, stage(), { markersVisible: true })
+        watch(bar, "markerStepRequested")
+        bar.forceActiveFocus()
+        keyClick(Qt.Key_BracketLeft)
+        keyClick(Qt.Key_BracketRight)
+        compare(spy.count, 2)
+        compare(spy.signalArguments[0][0], -1)
+        compare(spy.signalArguments[1][0], 1)
+    }
+
+    function test_barTimeFormat() {
+        const bar = createTemporaryObject(barComponent, stage(), { position: 65.37, duration: 3725 })
+        compare(bar.positionText, "1:05 / 62:05", "m:ss unchanged")
+        bar.timeFormat = "mm:ss,d"
+        compare(bar.time(65.37), "01:05,3")
+        compare(bar.time(0), "00:00,0")
+        compare(bar.time(59.99), "00:59,9")
+        compare(bar.time(-3), "00:00,0")
+        compare(bar.positionText, "01:05,3 / 62:05,0")
+        bar.timeFormat = "unknown"
+        compare(bar.time(65.37), "1:05")
     }
 }
