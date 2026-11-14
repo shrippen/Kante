@@ -26,6 +26,23 @@ QQC2.ComboBox {
     /** Kante: mark the value as invalid (red bottom edge). */
     property bool invalid: false
 
+    /** Keys the box handles itself; a window Shortcut would otherwise take them first. */
+    readonly property var ownKeys: [
+        Qt.Key_Up, Qt.Key_Down, Qt.Key_Home, Qt.Key_End, Qt.Key_PageUp, Qt.Key_PageDown,
+        Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space, Qt.Key_Delete, Qt.Key_Backspace
+    ]
+
+    // Qt asks the Shortcuts before Keys.onPressed: claim plain letters, digits and
+    // navigation ("l" would pick the tool, not the list entry). Ctrl, Alt, Meta and Escape pass.
+    Keys.onShortcutOverride: function (event) {
+        const plain = (event.modifiers & ~(Qt.ShiftModifier | Qt.KeypadModifier)) === 0
+        if (!plain) {
+            return
+        }
+        const printable = event.text.length > 0 && event.text.charCodeAt(0) > 0x20
+        event.accepted = printable || ownKeys.indexOf(event.key) >= 0
+    }
+
     KanteFieldSkin {
         control: combo
         invalid: combo.invalid
