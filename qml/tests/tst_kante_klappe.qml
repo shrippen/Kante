@@ -534,6 +534,14 @@ TestCase {
         compare(t._labelColor("blue"), KanteStyle.labelColor("blue"))
     }
 
+    function test_canvasGroundColour() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        compare(c._colorOf("ground"), KanteStyle.backgroundColor)
+        for (const name of KanteStyle.labels) {
+            verify(c._colorOf("ground") !== c._colorOf(name), "ground differs from " + name)
+        }
+    }
+
     function test_timelineHoverResetsWithTracks() {
         const t = createTemporaryObject(timelineComponent, stage())
         t.hovered = { track: 1, index: 0 }
