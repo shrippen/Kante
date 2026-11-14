@@ -77,6 +77,34 @@ TestCase {
         compare(b.implicitHeight, systemHeight)
     }
 
+    // Kontra N6: a button built its hard shadow, its focus ring and an icon slot hidden; the
+    // learn page's 40 buttons cost it about 50 ms. They come when shown: nothing hidden is
+    // built but a Loader that is not active.
+    function test_buttonBuildsOnlyWhatItShows() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        // The roots of hidden parts; a hidden part's own children are not counted again.
+        var hidden = function(item) {
+            var idle = item.sourceComponent !== undefined && !item.active
+            if (!item.visible && !idle) {
+                return 1
+            }
+            var n = 0
+            for (var i = 0; i < item.children.length; ++i) {
+                n += hidden(item.children[i])
+            }
+            return n
+        }
+        // The test case is hidden itself: shown for this test, so `visible` tells the parts.
+        var shown = tc.visible
+        tc.visible = true
+        try {
+            var b = createTemporaryObject(buttonComponent, tc)
+            compare(hidden(b), 0, "hidden parts built")
+        } finally {
+            tc.visible = shown
+        }
+    }
+
     function test_buttonVariants() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         var b = createTemporaryObject(buttonComponent, tc)
