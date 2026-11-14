@@ -34,11 +34,15 @@ TestCase {
             id: target
             property alias box: boxItem
             property alias leaf: leafItem
+            property alias deep: deepItem
             KanteScope { target: target }
             Item {
                 id: boxItem
                 enabled: false
                 Item { id: leafItem }
+                Item {
+                    Item { id: deepItem }
+                }
             }
         }
     }
@@ -73,5 +77,20 @@ TestCase {
         o.leaf.parent = null
         compare(o.leaf.enabled, true)
         compare(spy.count, 0, "no theme write to an item without a parent")
+    }
+
+    // Only the part's children lose their parent; the items below them keep theirs.
+    function test_no_write_below_orphan() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        const o = createTemporaryObject(partComponent, tc.Window.contentItem)
+        tryVerify(() => Qt.colorEqual(o.deep.Kirigami.Theme.textColor, KanteStyle.disabledTextColor),
+                  2000, "the disabled deep item is dressed")
+        wait(200) // the scope's second sweep dresses again; the spy starts after it
+        spy.target = o.deep.Kirigami.Theme
+        spy.clear()
+        // As ~QQuickItem does: the part's child loses its parent, the deep item keeps its own.
+        o.deep.parent.parent = null
+        compare(o.deep.enabled, true)
+        compare(spy.count, 0, "no theme write below a part taken apart")
     }
 }
