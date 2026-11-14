@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 import QtQuick.Templates as T
+import QtQuick.Controls.impl
 import org.kde.kirigami as Kirigami
 import "."
 
@@ -10,6 +11,9 @@ import "."
  *   System  a plain tool button of the active style (unchanged).
  *   Kante   square; hover and pressed show the sunken tint, checked ones
  *           (segmented filters) the accent. Icon and text are drawn here.
+ *
+ *   No icon file (the theme lacks the name, the url does not load): the text is shown, also with
+ *   `display: IconOnly`, so a button never comes up empty. Needs `text`.
  *
  *   fillChecked  (1.38) false: a checked button is not filled with the accent, for a
  *                toggle that shows its state itself (KanteTransportBar's lamps). It stays
@@ -24,8 +28,20 @@ QQC2.ToolButton {
     Keys.onEnterPressed: function (event) { KanteStyle.pressByKey(control, event) }
 
     property bool fillChecked: true
+    // True when an icon is asked for and not found.
+    readonly property bool iconMissing: (control.icon.name !== "" || String(control.icon.source) !== "")
+        && probe.status !== Image.Ready
     readonly property bool filled: checked && fillChecked
     readonly property color kanteInk: filled ? KanteStyle.accentForegroundColor : KanteStyle.textColor
+
+    // Asks the theme or the url whether the icon is there.
+    IconImage {
+        id: probe
+        visible: false
+        name: control.icon.name
+        source: control.icon.source
+        sourceSize: Qt.size(Kirigami.Units.iconSizes.smallMedium, Kirigami.Units.iconSizes.smallMedium)
+    }
 
     Rectangle {
         z: -1
@@ -65,6 +81,14 @@ QQC2.ToolButton {
         }
     }
 
+    // Text only: the platform's content sizes the button, in Kante too.
+    Binding {
+        target: control
+        property: "display"
+        value: T.AbstractButton.TextOnly
+        when: control.iconMissing && control.text.length > 0
+        restoreMode: Binding.RestoreBindingOrValue
+    }
     Binding {
         target: control.background
         property: "opacity"
