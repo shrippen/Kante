@@ -46,8 +46,14 @@ jobs:
         env:
           GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
       - name: Tools
-        run: pacman -Syu --noconfirm --needed git nodejs python qt6-base qt6-declarative qt6-shadertools qt6-svg kirigami libplasma php
+        run: pacman -Syu --noconfirm --needed git nodejs python python-pipx qt6-base qt6-declarative qt6-shadertools qt6-svg kirigami libplasma php
       - uses: actions/checkout@v4
+      # The container runs as root on a checkout owned by another user; git refuses it
+      # until the directory is marked safe, and the check reads `git ls-files`.
+      - name: Structure limits
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          pipx run tools/structure-check.py
       - name: Tokens
         run: python3 tools/check-tokens.py
       - name: Release lists
