@@ -13,7 +13,8 @@ import "."
  *           (segmented filters) the accent. Icon and text are drawn here.
  *
  *   No icon file (the theme lacks the name, the url does not load): the text is shown, also with
- *   `display: IconOnly`, so a button never comes up empty. Needs `text`.
+ *   `display: IconOnly`, so a button never comes up empty. Needs `text`. As drawn, a name wins over
+ *   a url: a missing name shows the text even if `icon.source` would load.
  *
  *   fillChecked  (1.38) false: a checked button is not filled with the accent, for a
  *                toggle that shows its state itself (KanteTransportBar's lamps). It stays
@@ -46,8 +47,9 @@ QQC2.ToolButton {
     Component {
         id: probeIcon
         IconImage {
+            // As KanteIcon draws: the name, else the url.
             name: control.icon.name
-            source: control.icon.source
+            source: control.icon.name !== "" ? "" : control.icon.source
             sourceSize: Qt.size(Kirigami.Units.iconSizes.smallMedium, Kirigami.Units.iconSizes.smallMedium)
         }
     }

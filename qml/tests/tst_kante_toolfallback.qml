@@ -121,4 +121,8 @@ TestCase {
         b.iconName = "kante-no-such-icon"
         tryVerify(function () { return labelShown(b) })
     }
+    function test_missing_name_with_found_url() {
+        const b = make({ iconName: "kante-no-such-icon", iconUrl: found })
+        tryVerify(function () { return labelShown(b) })
+    }
 }
