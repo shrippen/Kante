@@ -362,4 +362,51 @@ TestCase {
         verify(p.width >= p.implicitWidth)
         verify(p.implicitWidth >= 2 * p.pad + 1)
     }
+
+    // --- Split handle: folding
+
+    Component {
+        id: splitComponent
+        KanteSplitHandle {
+            width: 300
+            from: 100
+            to: 400
+            defaultValue: 250
+            value: 200
+            onMoved: (v) => value = v
+        }
+    }
+
+    function test_splitDoubleClickStillResets() {
+        const h = createTemporaryObject(splitComponent, stage())
+        verify(!h.collapsible)
+        spy.target = h
+        spy.signalName = "collapseToggled"
+        spy.clear()
+        mouseDoubleClickSequence(h, h.width / 2, h.height / 2)
+        tryCompare(h, "value", 250, 1000)
+        compare(spy.count, 0)
+    }
+
+    function test_splitDoubleClickFolds() {
+        const h = createTemporaryObject(splitComponent, stage(), { collapsible: true })
+        spy.target = h
+        spy.signalName = "collapseToggled"
+        spy.clear()
+        mouseDoubleClickSequence(h, h.width / 2, h.height / 2)
+        tryCompare(spy, "count", 1, 1000)
+        compare(spy.signalArguments[0][0], true, "asks to fold")
+        compare(h.value, 200, "the value is the app's to change")
+        verify(!h.collapsed, "the handle changes nothing itself")
+    }
+
+    function test_splitDoubleClickOpens() {
+        const h = createTemporaryObject(splitComponent, stage(), { collapsible: true, collapsed: true })
+        spy.target = h
+        spy.signalName = "collapseToggled"
+        spy.clear()
+        mouseDoubleClickSequence(h, h.width / 2, h.height / 2)
+        tryCompare(spy, "count", 1, 1000)
+        compare(spy.signalArguments[0][0], false, "asks to open")
+    }
 }
