@@ -306,6 +306,8 @@ FocusScope {
                     Accessible.description: tab.busy ? String(bar.kindNames && bar.kindNames.length > tab.kind ? bar.kindNames[tab.kind] : "") : tab.tip
                     Accessible.selected: tab.current
                     Accessible.selectable: true
+                    // Screen readers pick a page through this, not through a tap.
+                    Accessible.onPressAction: bar.select(tab.index)
                 }
             }
         }

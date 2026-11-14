@@ -279,6 +279,8 @@ FocusScope {
                     Accessible.role: Accessible.PageTab
                     Accessible.name: String(tab.modelData).length > 0 ? tab.modelData : tab.iconName
                     Accessible.selected: tab.current
+                    // Screen readers pick a tab through this, not through a tap.
+                    Accessible.onPressAction: tabs.select(tab.index)
                 }
             }
         }

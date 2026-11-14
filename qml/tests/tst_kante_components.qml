@@ -158,6 +158,61 @@ TestCase {
         compare(s.currentIndex, 1)
     }
 
+    // The items under `root` a screen reader sees with `role`.
+    function withRole(root, role) {
+        var found = []
+        var walk = function(item) {
+            if (item.Accessible.role === role) {
+                found.push(item)
+            }
+            for (var i = 0; i < item.children.length; i++) {
+                walk(item.children[i])
+            }
+        }
+        walk(root)
+        return found
+    }
+
+    Component {
+        id: pageBarComponent
+        KantePageBar { model: ["Eins", "Zwei", "Drei"] }
+    }
+
+    Component {
+        id: calloutComponent
+        KanteCallout { title: "Note"; text: "Text"; width: 200; dismissible: true }
+    }
+
+    // Tabs, pages and the callout's cross answer a screen reader's press too.
+    function test_pressActions() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var tabs = createTemporaryObject(tabsComponent, tc)
+        withRole(tabs, Accessible.PageTab)[2].Accessible.pressAction()
+        compare(tabs.currentIndex, 2, "tab bar")
+
+        var pages = createTemporaryObject(pageBarComponent, tc)
+        withRole(pages, Accessible.PageTab)[1].Accessible.pressAction()
+        compare(pages.currentIndex, 1, "page bar")
+
+        var callout = createTemporaryObject(calloutComponent, tc)
+        var spy = createTemporaryObject(spyComponent, tc, { target: callout, signalName: "dismissed" })
+        withRole(callout, Accessible.Button)[0].Accessible.pressAction()
+        compare(spy.count, 1, "callout")
+    }
+
+    // A screen reader picks a segment through its press action (Kontra QA 14.11., J-C12: the
+    // mode could not be chosen with Orca).
+    function test_segmentedPressAction() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var s = createTemporaryObject(segmentedComponent, tc)
+        var spy = createTemporaryObject(spyComponent, tc, { target: s, signalName: "activated" })
+        var radios = withRole(s, Accessible.RadioButton)
+        compare(radios.length, 2)
+        radios[1].Accessible.pressAction()
+        compare(s.currentIndex, 1)
+        compare(spy.count, 1)
+    }
+
     Component {
         id: toastComponent
         KanteToast { title: "Fertig"; text: "42 Bilder"; life: 150 }
