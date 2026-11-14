@@ -46,10 +46,10 @@ stylesheet or copy the module.
       │              │               │           │      │
       ▼              ▼               │           │      │
  docs/v1/        components, skins   │           │      │
-      │              │               │           │      │
-      │              ▼               │           │      │
-      │          KantePlasma         │           │      │
-      ▼              ▼               ▼           ▼      ▼
+      │              │    │          │           │      │
+      │              │    ▼          │           │      │
+      │              │  KantePlasma  │           │      │
+      ▼              ▼    ▼          ▼           ▼      ▼
  web pages      apps and Plasma     Kimai with its    KDE desktop
  (link /v1/)    widgets (copy       plug-ins (Knust
                 qml/Kante; widgets  installed, kit copied in)
