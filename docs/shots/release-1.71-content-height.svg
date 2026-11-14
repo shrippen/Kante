@@ -34,6 +34,6 @@
 <path d="M390 195.0 L396 199.0 L390 203.0" stroke="#a89984" stroke-width="1.5" fill="none"/>
 <rect x="400" y="168" width="160" height="62" fill="#282828" stroke="#b8bb26" stroke-width="2"/>
 <text x="480.0" y="187.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">height follows the</text>
-<text x="480.0" y="203.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">content once:</text>
+<text x="480.0" y="203.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">content after build:</text>
 <text x="480.0" y="219.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">NO LOOP</text>
 </svg>

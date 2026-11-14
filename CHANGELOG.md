@@ -147,8 +147,6 @@ Buttons, fields and pickers with icons are built up to ten times faster on Plasm
 - `KanteButton` and `KantePlasmaButton`: every button carried its three hopping squares hidden, though at most a few are busy at a time. They are now built while `busy` only. In the Plasmai widget they were 2860 of the 20650 objects created at its start. It looks the same.
 - `KanteIcon`: before its size was known, and on every new width or height, the icon had no name and no file. Qt then looks up an empty name in the icon theme, uncached, about 6.5 ms each on Plasma, and a layout changes the size several times. Buttons took 9 ms each to create instead of 1 ms as before 1.73, pages of the Plasmai app with date and time fields opened five to eight times slower. A transparent placeholder stands in until the icon is picked, and a new size picks once, after width and height. It looks the same.
 
-![Diagram: a hidden stopped indicator kept the window drawing 90 frames a second; the new one is absent while stopped, so nothing draws](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
-
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1763
 
 ### Deutsch
@@ -158,8 +156,6 @@ Knöpfe, Felder und Auswahllisten mit Symbolen entstehen auf Plasma bis zu zehnm
 #### Verbessert
 - `KanteButton` und `KantePlasmaButton`: Jeder Knopf trug seine drei hüpfenden Quadrate versteckt mit sich, obwohl höchstens wenige gleichzeitig beschäftigt sind. Sie entstehen jetzt nur während `busy`. Im Plasmai-Widget waren das 2860 der 20650 Objekte beim Start. Es sieht gleich aus.
 - `KanteIcon`: Bevor seine Größe feststand und bei jeder neuen Breite oder Höhe hatte das Symbol weder Namen noch Datei. Qt sucht dann einen leeren Namen im Symbolthema, ohne Cache, auf Plasma etwa 6,5 ms je Mal, und ein Layout ändert die Größe mehrmals. Ein Knopf brauchte 9 ms statt 1 ms wie vor 1.73, Seiten der Plasmai-App mit Datums- und Zeitfeldern öffneten fünf- bis achtmal langsamer. Ein durchsichtiger Platzhalter steht da, bis das Symbol gewählt ist, und eine neue Größe wählt einmal, nach Breite und Höhe. Es sieht gleich aus.
-
-![Diagramm: eine versteckte, angehaltene Anzeige hielt das Fenster bei 90 Bildern in der Sekunde; die neue fehlt beim Anhalten, nichts wird gezeichnet](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1763
 
@@ -172,8 +168,6 @@ Apps with many items under a KanteScope no longer stand still when a view fills.
 #### Improved
 - `KanteScope` looked at an item once for every child it got. When a list or a staff made hundreds of items at once, it went through all of them hundreds of times. Kontra's notation view stood still for 2.7 s when it opened and for up to a second on the next line while playing. Now each item is looked at once: opening takes 17 ms and the next line 10 ms.
 
-![Diagram: a hidden stopped indicator kept the window drawing 90 frames a second; the new one is absent while stopped, so nothing draws](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
-
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762
 
 ### Deutsch
@@ -182,8 +176,6 @@ Apps mit vielen Elementen unter einem KanteScope stehen nicht mehr still, wenn s
 
 #### Verbessert
 - `KanteScope` sah sich ein Element für jedes Kind, das es bekam, einmal an. Legte eine Liste oder ein Notensystem Hunderte Elemente auf einmal an, ging es alle Hunderte Male durch. Kontras Notenansicht stand beim Öffnen 2,7 s still und beim Spielen in der nächsten Zeile bis zu einer Sekunde. Jetzt wird jedes Element einmal angesehen: Das Öffnen dauert 17 ms, die nächste Zeile 10 ms.
-
-![Diagramm: eine versteckte, angehaltene Anzeige hielt das Fenster bei 90 Bildern in der Sekunde; die neue fehlt beim Anhalten, nichts wird gezeichnet](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762
 
@@ -197,8 +189,6 @@ A long song map starts at bar 1 in right-to-left layouts, and a shorter song kee
 - `KanteSongMap`, right to left and too long for its width: the view started at the end of the piece, so the last bars showed. It now starts at bar 1, also when the number of bars changes; a new width keeps the view where it was, counted from bar 1.
 - `KanteSongMap`: when the piece got shorter, the chosen range stayed, for example bars 6 to 8 of a piece with two bars, and a loop bound to it named bars that do not exist. The range now ends at the last bar, or is cleared when none of its bars is left.
 
-![Diagram: a hidden stopped indicator kept the window drawing 90 frames a second; the new one is absent while stopped, so nothing draws](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
-
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761
 
 ### Deutsch
@@ -208,8 +198,6 @@ Eine lange Liedkarte beginnt auch bei Schrift von rechts nach links bei Takt 1, 
 #### Behoben
 - `KanteSongMap`, von rechts nach links und zu lang für seine Breite: Die Ansicht begann am Ende des Stücks, man sah die letzten Takte. Sie beginnt jetzt bei Takt 1, auch wenn sich die Zahl der Takte ändert; eine neue Breite lässt die Ansicht, wo sie war, gezählt von Takt 1.
 - `KanteSongMap`: Wurde das Stück kürzer, blieb der gewählte Bereich, etwa Takt 6 bis 8 bei einem Stück mit zwei Takten, und eine daran gebundene Schleife nannte Takte, die es nicht gibt. Der Bereich endet jetzt am letzten Takt oder wird geleert, wenn keiner seiner Takte bleibt.
-
-![Diagramm: eine versteckte, angehaltene Anzeige hielt das Fenster bei 90 Bildern in der Sekunde; die neue fehlt beim Anhalten, nichts wird gezeichnet](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761
 
