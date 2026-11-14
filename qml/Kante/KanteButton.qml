@@ -182,7 +182,8 @@ QQC2.Button {
 
         Loader {
             readonly property var iconSource: control.icon.name !== "" ? control.icon.name : control.icon.source
-            active: !control.busy && control.display !== T.AbstractButton.TextOnly && String(iconSource).length > 0
+            active: control.drawn && !control.busy && control.display !== T.AbstractButton.TextOnly
+                && String(iconSource).length > 0
             visible: active
             Layout.preferredWidth: Kirigami.Units.iconSizes.small
             Layout.preferredHeight: Kirigami.Units.iconSizes.small

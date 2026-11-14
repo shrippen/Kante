@@ -77,9 +77,9 @@ TestCase {
         compare(b.implicitHeight, systemHeight)
     }
 
-    // Kontra N6: a button built its hard shadow, its focus ring and an icon slot hidden; the
-    // learn page's 40 buttons cost it about 50 ms. They come when shown: nothing hidden is
-    // built but a Loader that is not active.
+    // Kontra N6: a button built its hard shadow, its focus ring and an icon slot hidden, a
+    // tenth of its creation (about 8 ms on the learn page's 40 buttons). They come when
+    // shown: nothing hidden is built but a Loader that is not active.
     function test_buttonBuildsOnlyWhatItShows() {
         KanteStyle.kind = KanteStyle.Kind.Kante
         // The roots of hidden parts; a hidden part's own children are not counted again.
@@ -100,7 +100,19 @@ TestCase {
         try {
             var b = createTemporaryObject(buttonComponent, tc)
             compare(hidden(b), 0, "hidden parts built")
+            // Review #179: the platform draws a System button; Kante's icon stays unbuilt.
+            KanteStyle.kind = KanteStyle.Kind.System
+            var withIcon = createTemporaryObject(buttonComponent, tc, { "icon.name": "go-next" })
+            var icons = function(item) {
+                var n = String(item).indexOf("KanteIcon") === 0 ? 1 : 0
+                for (var i = 0; i < item.children.length; ++i) {
+                    n += icons(item.children[i])
+                }
+                return n
+            }
+            compare(icons(withIcon), 0, "Kante's icon in a System button")
         } finally {
+            KanteStyle.kind = KanteStyle.Kind.Kante
             tc.visible = shown
         }
     }
