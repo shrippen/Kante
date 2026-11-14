@@ -41,11 +41,23 @@ QQC2.ToolButton {
         objectName: "iconProbe"
         active: control.iconAsked
         visible: false
-        sourceComponent: IconImage {
+        sourceComponent: probeIcon
+    }
+    Component {
+        id: probeIcon
+        IconImage {
             name: control.icon.name
             source: control.icon.source
             sourceSize: Qt.size(Kirigami.Units.iconSizes.smallMedium, Kirigami.Units.iconSizes.smallMedium)
         }
+    }
+
+    // A new name that the theme lacks leaves an IconImage on its old file, status Ready. A fresh
+    // probe per name or url answers for that one only.
+    readonly property string iconKey: control.icon.name + "|" + control.icon.source
+    onIconKeyChanged: {
+        probe.sourceComponent = null
+        probe.sourceComponent = probeIcon
     }
 
     Rectangle {

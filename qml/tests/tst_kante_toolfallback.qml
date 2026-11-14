@@ -98,4 +98,27 @@ TestCase {
         verify(probe, "the probe is a loader that stays empty")
         compare(probe.item, null)
     }
+    function test_icon_changes_to_missing() {
+        const b = make({ iconUrl: found })
+        wait(200)
+        verify(!labelShown(b))
+        b.iconUrl = "file:///kante-no-such-file.svg"
+        tryVerify(function () { return labelShown(b) })
+    }
+    function test_icon_changes_to_found() {
+        const b = make({ iconUrl: "file:///kante-no-such-file.svg" })
+        tryVerify(function () { return labelShown(b) })
+        b.iconUrl = found
+        tryVerify(function () { return !labelShown(b) })
+    }
+    function test_theme_name_changes_to_missing() {
+        const b = make({ iconName: "account-apple" })
+        wait(200)
+        if (b.iconMissing) {
+            skip("the theme has no account-apple (hicolor)")
+        }
+        verify(!labelShown(b))
+        b.iconName = "kante-no-such-icon"
+        tryVerify(function () { return labelShown(b) })
+    }
 }
