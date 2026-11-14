@@ -487,12 +487,12 @@ TestCase {
 
     function test_canvasImageOrder() {
         const c = createTemporaryObject(imageCanvasComponent, stage())
-        c.shapes = [
-            { kind: "image", source: redImage, points: [1, 1], width: 2, height: 2 },
-            { kind: "polygon", points: [1, 1, 3, 1, 3, 3, 1, 3], label: "blue", fill: "solid" }
-        ]
-        wait(100)
-        verify(!isRed(grabImage(c).pixel(40, 40)))
+        const image = { kind: "image", source: redImage, points: [1, 1], width: 2, height: 2 }
+        // The image alone draws first, so the cover below is shown to hide a loaded image.
+        c.shapes = [image]
+        tryVerify(() => isRed(grabImage(c).pixel(40, 40)))
+        c.shapes = [image, { kind: "polygon", points: [1, 1, 3, 1, 3, 3, 1, 3], label: "blue", fill: "solid" }]
+        tryVerify(() => !isRed(grabImage(c).pixel(40, 40)))
     }
 
     function test_canvasImageMissing() {

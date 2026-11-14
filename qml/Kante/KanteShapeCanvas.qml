@@ -19,7 +19,8 @@ import "."
  *     key      id given back by the signals; selected: framed wider in the focus colour
  *     Drawn in order, so the last shape is on top (and wins the hit test).
  *   Image     { kind: "image", source, points: [x, y], width, height, rotation, opacity, key }
- *             a background such as a scanned plan. source is a url or path as for Image.source;
+ *             a background such as a scanned plan. source is an absolute url or path:
+ *             loadImage resolves a relative one against Kante, so pass Qt.resolvedUrl(...);
  *             points is the top left corner and width, height the size, both in model units;
  *             rotation in degrees, clockwise, about the top left corner; opacity 0..1 (default 1).
  *             Drawn in order like any shape. Loaded on first use and the view repaints when it
