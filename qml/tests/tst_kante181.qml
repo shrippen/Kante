@@ -1,88 +1,122 @@
 import QtQuick
+import QtQuick.Controls as QQC2
 import QtTest
 import Kante
 
 /**
- * Kante 1.81, tablature that fills its height (Kontra 12.11.: four lines and a third of the
- * page empty): in fill mode the staff takes as many lines as fit at its spacing, no more
- * than the piece needs, and grows the spacing until they fill the height, up to maxGrow.
+ * Kante 1.81, for Klappe: KantePopover.openAtPoint and closeOnOutside.
  * Run: tools/check-qml.sh.
  */
 TestCase {
     id: tc
     name: "Kante181"
-    width: 1000
-    height: 900
+    width: 600
+    height: 500
     when: windowShown
 
-    // Bar starts every 2 s; one note per bar.
-    function bars(count) {
-        const list = []
-        for (let i = 0; i < count; i++) {
-            list.push({ time: i * 2 })
-        }
-        return list
+    function stage() {
+        return tc.Window.contentItem
     }
-    function notes(count) {
-        const list = []
-        for (let i = 0; i < count; i++) {
-            list.push({ time: i * 2 + 0.5, duration: 0.5, beats: 1, string: i % 4, fret: i % 5 })
-        }
-        return list
+
+    function init() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
     }
+
+    // --- Popover at a point
 
     Component {
-        id: staffComponent
-        KanteTabStaff { width: 900; lineSpacing: 14; minBarWidth: 200 }
+        id: popoverComponent
+        Item {
+            anchors.fill: parent
+            property alias popover: popover
+            property alias plan: plan
+            property alias other: other
+            Item { id: plan; x: 0; y: 0; width: parent.width; height: parent.height }
+            Item { id: other; x: 10; y: 10; width: 30; height: 30 }
+            KantePopover {
+                id: popover
+                title: "Figur"
+                KanteSwitch { text: "Sichtbar" }
+            }
+        }
     }
 
-    function make(props) {
-        const staff = createTemporaryObject(staffComponent, tc, props)
-        verify(staff)
-        waitForRendering(staff)
-        return staff
+    // The card's top left corner in the window.
+    function cardAt(o) {
+        return o.popover.background.mapToItem(null, 0, 0)
     }
 
-    function test_fillsTheHeightWithGrownLines() {
-        // A line is lineUnits * 14 high; room for 3.4 lines, 40 bars need more.
-        const probe = make({ bars: bars(40), notes: notes(40), height: 100 })
-        const height = probe.lineUnits * 14 * 3.4
-        const staff = make({ bars: bars(40), notes: notes(40), fill: true, height: height })
-        compare(staff.shownSystems, 3)
-        verify(staff.ls > 14)
-        fuzzyCompare(staff.systemHeight * staff.shownSystems, height, 1)
+    function test_popoverPointRight() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.popover.openAtPoint(100, 120, o.plan)
+        tryVerify(() => o.popover.opened)
+        const card = cardAt(o)
+        verify(card.x >= 100 + o.popover.pointerLength, "clear of the point: " + card.x)
+        compare(o.popover.pointerSide, "left")
+        verify(o.popover.pointer.visible)
+        // Top near the point, the pointer's tip level with it.
+        verify(card.y <= 120 && card.y > 120 - o.popover.height, "beside the point: " + card.y)
+        fuzzyCompare(card.y + o.popover.pointerY, 120, 1)
+        keyClick(Qt.Key_Escape)
+        tryVerify(() => !o.popover.visible)
     }
 
-    function test_shortPieceGrowsUpToMaxGrow() {
-        const staff = make({ bars: bars(2), notes: notes(2), fill: true, height: 800 })
-        compare(staff.shownSystems, 1)
-        fuzzyCompare(staff.ls, 14 * 1.5, 0.01)
+    function test_popoverPointLeftAtTheEdge() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.popover.openAtPoint(tc.width - 20, 120, o.plan)
+        tryVerify(() => o.popover.opened)
+        const card = cardAt(o)
+        verify(card.x + o.popover.width <= tc.width - 20 - o.popover.pointerLength + 1, "left of the point: " + card.x)
+        verify(card.x >= 0)
+        compare(o.popover.pointerSide, "right")
+        keyClick(Qt.Key_Escape)
+        tryVerify(() => !o.popover.visible)
     }
 
-    function test_lowStaffShrinksToOneLine() {
-        const probe = make({ bars: bars(8), notes: notes(8), height: 100 })
-        const height = probe.lineUnits * 14 * 0.6
-        const staff = make({ bars: bars(8), notes: notes(8), fill: true, height: height })
-        compare(staff.shownSystems, 1)
-        verify(staff.ls < 14)
-        fuzzyCompare(staff.systemHeight, height, 1)
+    function test_popoverPointKeptInWindow() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.popover.openAtPoint(100, tc.height - 5, o.plan)
+        tryVerify(() => o.popover.opened)
+        const card = cardAt(o)
+        verify(card.y >= 0, "inside the window: " + card.y)
+        verify(card.y + o.popover.height <= tc.height + 1, "inside the window: " + (card.y + o.popover.height))
+        // The pointer stays on the card.
+        verify(o.popover.pointerY > 0 && o.popover.pointerY < o.popover.height)
+        keyClick(Qt.Key_Escape)
+        tryVerify(() => !o.popover.visible)
     }
 
-    function test_withoutFillSystemsHold() {
-        const staff = make({ bars: bars(40), notes: notes(40), systems: 2, height: 900 })
-        compare(staff.shownSystems, 2)
-        compare(staff.ls, 14)
+    function test_popoverOpenAtHasNoPointer() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.popover.openAtPoint(100, 120, o.plan)
+        tryVerify(() => o.popover.opened)
+        o.popover.close()
+        tryVerify(() => !o.popover.visible)
+        o.popover.openAt(o.other)
+        tryVerify(() => o.popover.opened)
+        compare(o.popover.pointerSide, "")
+        verify(!o.popover.pointer.visible)
+        o.popover.close()
     }
 
-    function test_sectionsAndEndingsStillFit() {
-        const list = bars(40)
-        list[0].section = "Intro"
-        list[4].endings = [1]
-        const probe = make({ bars: list, notes: notes(40), height: 100 })
-        const height = probe.lineUnits * 14 * 2.5
-        const staff = make({ bars: list, notes: notes(40), fill: true, height: height })
-        compare(staff.shownSystems, 2)
-        verify(staff.systemHeight * staff.shownSystems <= height + 1)
-        verify(staff.systemHeight * staff.shownSystems >= height - 2)
+    function test_popoverOutsideClick() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        compare(o.popover.closeOnOutside, true)
+        o.popover.openAtPoint(100, 120, o.plan)
+        tryVerify(() => o.popover.opened)
+        mouseClick(stage(), 500, 400)
+        tryVerify(() => !o.popover.visible)
+    }
+
+    function test_popoverStaysOpenOutside() {
+        const o = createTemporaryObject(popoverComponent, stage())
+        o.popover.closeOnOutside = false
+        o.popover.openAtPoint(100, 120, o.plan)
+        tryVerify(() => o.popover.opened)
+        mouseClick(stage(), 500, 400)
+        wait(100)
+        verify(o.popover.visible, "a press outside leaves it open")
+        keyClick(Qt.Key_Escape)
+        tryVerify(() => !o.popover.visible)
     }
 }

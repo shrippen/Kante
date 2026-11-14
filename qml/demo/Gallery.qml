@@ -1652,8 +1652,22 @@ Rectangle {
                 }
                 // A pannable, zoomable plan from data: wheel zooms, drag on empty ground pans.
                 KanteShapeCanvas {
+                    id: galleryPlan
                     Layout.fillWidth: true
                     Layout.preferredHeight: KanteStyle.unit(320)
+                    // 1.81: a click on a figure opens a card beside it; it stays open while one works.
+                    onShapeClicked: function (key, x, y) {
+                        if (key === "a" || key === "b") {
+                            const at = mapFromModel(x, y)
+                            galleryPlanPopover.openAtPoint(at.x, at.y, galleryPlan)
+                        }
+                    }
+                    KantePopover {
+                        id: galleryPlanPopover
+                        title: "Figur"
+                        closeOnOutside: false
+                        KanteSwitch { text: "Sichtbar"; checked: true }
+                    }
                     contentWidth: 12
                     contentHeight: 8
                     gridStep: 1
@@ -1663,6 +1677,7 @@ Rectangle {
                         { kind: "line", points: [4, 0, 4, 5], width: 0.15, label: "text", key: "wall" },
                         { kind: "polygon", points: [7, 2, 10, 2, 10, 4, 7, 4], label: "blue", fill: "tint", key: "table", text: "Tisch" },
                         { kind: "circle", points: [2, 6], radius: 0.5, label: "red", fill: "solid", key: "a", text: "A", selected: true },
+                        { kind: "circle", points: [2, 6], radius: 0.12, label: "ground", fill: "solid" },
                         { kind: "circle", points: [9, 6.5], radius: 0.5, label: "green", fill: "solid", key: "b", text: "B" },
                         { kind: "polyline", points: [2, 6, 5, 7, 9, 6.5], label: "accent", stroke: "dashed", key: "path" },
                         { kind: "line", points: [6, 1, 11, 1], label: "warning", stroke: "dotted", key: "cable" }
