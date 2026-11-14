@@ -436,6 +436,92 @@ TestCase {
         verify(!c._spaceDown)
     }
 
+    // --- Image shape
+
+    readonly property url redImage: Qt.resolvedUrl("klappe-red.png")
+
+    Component {
+        id: imageCanvasComponent
+        KanteShapeCanvas {
+            width: 400
+            height: 300
+            contentWidth: 20
+            contentHeight: 15
+            fitOnLoad: false
+            zoom: 20
+            panX: 0
+            panY: 0
+        }
+    }
+
+    function isRed(px) {
+        return px.r > 0.9 && px.g < 0.1 && px.b < 0.1
+    }
+
+    function test_canvasImageDrawn() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [{ kind: "image", source: redImage, points: [1, 1], width: 2, height: 2, key: "bg" }]
+        tryVerify(function () { return isRed(grabImage(c).pixel(40, 40)) })
+        verify(!isRed(grabImage(c).pixel(100, 100)))
+        verify(!isRed(grabImage(c).pixel(10, 10)))
+    }
+
+    function test_canvasImageRotated() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+
+        // 2 x 1 about (5, 1), clockwise 90 degrees: covers x 4..5, y 1..3.
+        c.shapes = [{ kind: "image", source: redImage, points: [5, 1], width: 2, height: 1, rotation: 90 }]
+        tryVerify(function () { return isRed(grabImage(c).pixel(90, 40)) })
+        verify(!isRed(grabImage(c).pixel(110, 30)))
+        verify(!isRed(grabImage(c).pixel(70, 40)))
+    }
+
+    function test_canvasImageOpacity() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [{ kind: "image", source: redImage, points: [1, 1], width: 2, height: 2, opacity: 0.5 }]
+        tryVerify(function () {
+            const px = grabImage(c).pixel(40, 40)
+            return px.r > px.g && px.g > 0.2
+        })
+    }
+
+    function test_canvasImageOrder() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [
+            { kind: "image", source: redImage, points: [1, 1], width: 2, height: 2 },
+            { kind: "polygon", points: [1, 1, 3, 1, 3, 3, 1, 3], label: "blue", fill: "solid" }
+        ]
+        wait(100)
+        verify(!isRed(grabImage(c).pixel(40, 40)))
+    }
+
+    function test_canvasImageMissing() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [
+            { kind: "image", source: Qt.resolvedUrl("nope.png"), points: [1, 1], width: 2, height: 2 },
+            { kind: "image", points: [1, 1], width: 2, height: 2 },
+            { kind: "image", source: redImage },
+            { kind: "line", points: [5, 5, 8, 5], width: 0.2, label: "red" }
+        ]
+        wait(100)
+        verify(!isRed(grabImage(c).pixel(40, 40)))
+        verify(c.shapes.length === 4)
+    }
+
+    function test_canvasImageNotHit() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [{ kind: "image", source: redImage, points: [1, 1], width: 2, height: 2, key: "bg" }]
+        compare(c.keyAt(40, 40), "")
+        compare(c.shapeAt(40, 40), -1)
+
+        // Shapes beneath and above are still found.
+        c.shapes = [
+            { kind: "polygon", points: [0, 0, 10, 0, 10, 8, 0, 8], fill: "tint", key: "room" },
+            { kind: "image", source: redImage, points: [1, 1], width: 2, height: 2, key: "bg" }
+        ]
+        compare(c.keyAt(40, 40), "room")
+    }
+
     function test_timelineLabelRoles() {
         const t = createTemporaryObject(timelineComponent, stage())
         compare(t._labelColor("accent"), KanteStyle.accentColor)
