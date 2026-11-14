@@ -4,7 +4,7 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.81, for Klappe: KantePopover.openAtPoint and closeOnOutside.
+ * Kante 1.81, for Klappe: KantePopover.openAtPoint and closeOnOutside, KanteCommandPalette.
  * Run: tools/check-qml.sh.
  */
 TestCase {
@@ -118,5 +118,182 @@ TestCase {
         verify(o.popover.visible, "a press outside leaves it open")
         keyClick(Qt.Key_Escape)
         tryVerify(() => !o.popover.visible)
+    }
+
+    // --- Command palette
+
+    SignalSpy { id: spy }
+
+    Component {
+        id: paletteComponent
+        KanteCommandPalette {
+            commands: [
+                { id: "save", text: "Speichern", group: "Datei", keys: "Strg+S" },
+                { id: "open", text: "Öffnen", group: "Datei", keys: ["Strg", "O"] },
+                { id: "zoom", text: "Zoom einpassen", group: "Ansicht", keys: "0" },
+                { id: "grid", text: "Raster zeigen", group: "Ansicht", enabled: false },
+                { id: "wall", text: "Wand zeichnen", group: "Datei" },
+                { id: "help", text: "Hilfe" }
+            ]
+        }
+    }
+
+    // keyClick takes one key; type a text letter by letter.
+    function type(text) {
+        for (const ch of text) {
+            keyClick(ch)
+        }
+    }
+
+    function ids(p) {
+        return p.entries.map(c => c.id)
+    }
+
+    function openPalette() {
+        const p = createTemporaryObject(paletteComponent, stage())
+        p.open()
+        tryVerify(() => p.opened)
+        return p
+    }
+
+    function test_paletteListsAllGrouped() {
+        const p = openPalette()
+        // No group first, then the groups as they first appear; stable within.
+        compare(ids(p), ["help", "save", "open", "wall", "zoom", "grid"])
+        compare(p.rows.filter(r => r.header).map(r => r.text), ["Datei", "Ansicht"])
+        // The first enabled entry is the current one.
+        compare(p.current, 0)
+        p.close()
+    }
+
+    function test_paletteFilter() {
+        const p = openPalette()
+        type("W")
+        compare(ids(p), ["wall"], "part of a word, any case")
+        compare(p.current, 0)
+        p.close()
+    }
+
+    function test_paletteFilterByGroupAndWords() {
+        const p = openPalette()
+        type("ansicht")
+        compare(ids(p), ["zoom", "grid"], "the group is searched")
+        keyClick(Qt.Key_Space)
+        type("EIN")
+        compare(ids(p), ["zoom"], "every word must match")
+        p.close()
+    }
+
+    function test_paletteNoMatch() {
+        const p = openPalette()
+        type("xyz")
+        compare(p.entries.length, 0)
+        compare(p.current, -1)
+        spy.target = p
+        spy.signalName = "triggered"
+        spy.clear()
+        keyClick(Qt.Key_Return)
+        compare(spy.count, 0)
+        verify(p.opened, "Enter with nothing to fire leaves it open")
+        p.close()
+    }
+
+    function test_paletteArrowsSkipDisabled() {
+        const p = openPalette()
+        type("ansicht")
+        compare(p.current, 0)
+        keyClick(Qt.Key_Down)
+        compare(p.current, 0, "grid is disabled: round to zoom")
+        p.close()
+    }
+
+    function test_paletteArrowsMove() {
+        const p = openPalette()
+        compare(p.entries[p.current].id, "help")
+        keyClick(Qt.Key_Down)
+        compare(p.entries[p.current].id, "save")
+        keyClick(Qt.Key_Down)
+        keyClick(Qt.Key_Down)
+        keyClick(Qt.Key_Down)
+        compare(p.entries[p.current].id, "zoom")
+        keyClick(Qt.Key_Down)
+        compare(p.entries[p.current].id, "help", "round at the end, grid skipped")
+        keyClick(Qt.Key_Up)
+        compare(p.entries[p.current].id, "zoom")
+        p.close()
+    }
+
+    function test_paletteEnterTriggers() {
+        const p = openPalette()
+        spy.target = p
+        spy.signalName = "triggered"
+        spy.clear()
+        keyClick(Qt.Key_Down)
+        keyClick(Qt.Key_Return)
+        compare(spy.count, 1)
+        compare(spy.signalArguments[0][0], "save")
+        tryVerify(() => !p.visible)
+    }
+
+    function test_paletteDisabledDoesNotFire() {
+        const p = openPalette()
+        spy.target = p
+        spy.signalName = "triggered"
+        spy.clear()
+        p.current = 5
+        p.fire()
+        compare(spy.count, 0)
+        verify(p.opened)
+        p.close()
+    }
+
+    function test_paletteEscapeCloses() {
+        const p = openPalette()
+        keyClick(Qt.Key_Escape)
+        tryVerify(() => !p.visible)
+    }
+
+    function test_paletteClickFires() {
+        const p = openPalette()
+        spy.target = p
+        spy.signalName = "triggered"
+        spy.clear()
+        // The row of "Öffnen": the list's items, found by their accessible name.
+        const list = p.contentItem.children.find(c => c.positionViewAtIndex !== undefined)
+        verify(list !== undefined, "the list")
+        tryVerify(() => list.contentItem.children.length > list.count)
+        let target = null
+        for (const item of list.contentItem.children) {
+            if (item.modelData && item.modelData.command && item.modelData.command.id === "open") {
+                target = item
+            }
+        }
+        verify(target !== null)
+        mouseClick(target)
+        compare(spy.count, 1)
+        compare(spy.signalArguments[0][0], "open")
+    }
+
+    function test_paletteKeycaps() {
+        const p = openPalette()
+        const list = p.contentItem.children.find(c => c.positionViewAtIndex !== undefined)
+        tryVerify(() => list.contentItem.children.length > list.count)
+        const rowOf = id => list.contentItem.children.find(c => c.modelData && c.modelData.command && c.modelData.command.id === id)
+        compare(rowOf("save").keys, ["Strg+S"])
+        compare(rowOf("open").keys, ["Strg", "O"])
+        compare(rowOf("wall").keys, [])
+        p.close()
+    }
+
+    function test_paletteOpensClean() {
+        const p = openPalette()
+        type("zoom")
+        p.close()
+        tryVerify(() => !p.visible)
+        p.open()
+        tryVerify(() => p.opened)
+        compare(p.query, "")
+        compare(p.entries.length, 6)
+        p.close()
     }
 }

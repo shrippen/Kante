@@ -1117,6 +1117,20 @@ Rectangle {
                                     onClicked: galleryRemoveDialog.open()
                                 }
                             }
+                            // 1.81: Ctrl+K in an editor.
+                            KanteButton {
+                                text: "Befehle …"
+                                onClicked: galleryPalette.open()
+                            }
+                            KanteCommandPalette {
+                                id: galleryPalette
+                                commands: [
+                                    { id: "save", text: "Speichern", group: "Datei", keys: "Strg+S" },
+                                    { id: "open", text: "Öffnen", group: "Datei", keys: "Strg+O" },
+                                    { id: "grid", text: "Raster zeigen", group: "Ansicht", enabled: false },
+                                    { id: "fit", text: "Plan einpassen", group: "Ansicht", keys: "0" }
+                                ]
+                            }
                             KanteButton {
                                 text: "Toast"
                                 onClicked: galleryToast.show()

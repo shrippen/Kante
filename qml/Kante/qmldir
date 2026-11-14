@@ -22,6 +22,7 @@ KanteChip 1.0 KanteChip.qml
 KanteClock 1.0 KanteClock.qml
 KanteComboBox 1.0 KanteComboBox.qml
 KanteCommandBox 1.0 KanteCommandBox.qml
+KanteCommandPalette 1.0 KanteCommandPalette.qml
 KanteCounter 1.0 KanteCounter.qml
 KanteCurveEditor 1.0 KanteCurveEditor.qml
 KanteDateField 1.0 KanteDateField.qml
