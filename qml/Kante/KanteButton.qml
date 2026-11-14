@@ -101,8 +101,8 @@ QQC2.Button {
     }
 
     // Hard shadow (raised): a second cut shape 4 px down and right. Shadow, focus ring and
-    // icon are built only when shown: hidden in every button, they cost a page of 40 buttons
-    // about 15 ms (Kontra N6).
+    // icon are built only when shown: hidden in every button, they cost a tenth of its
+    // creation, about 8 ms on a page of 40 buttons (Kontra N6).
     Loader {
         z: -2
         x: 4
