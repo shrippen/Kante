@@ -68,7 +68,7 @@ TestCase {
         compare(s.combo.currentIndex, 2)
     }
 
-    function test_openPopupKeepsShortcuts() {
+    function test_openPopupBlocksShortcuts() {
         const s = make()
         s.combo.forceActiveFocus()
         keyClick(Qt.Key_Space)
@@ -79,11 +79,13 @@ TestCase {
         compare(fired, 0)
     }
 
-    function test_deleteStaysInBox() {
+    // The closed box does nothing with Delete: the window's Delete (remove the selection)
+    // still works while a box has focus.
+    function test_deleteReachesWindow() {
         const s = make()
         s.combo.forceActiveFocus()
-        keyClick(Qt.Key_Delete)
-        compare(fired, 0)
+        keyClick(Qt.Key_Delete, Qt.NoModifier, -1)
+        compare(fired, 1)
     }
 
     function test_ctrlStaysWithWindow() {
