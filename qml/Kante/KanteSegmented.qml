@@ -127,9 +127,10 @@ FocusScope {
                     Accessible.role: Accessible.RadioButton
                     Accessible.name: String(item.modelData).length > 0 ? item.modelData : item.tip
                     Accessible.checked: item.current
-                    // Screen readers pick a segment through these, not through a tap.
-                    Accessible.onPressAction: seg.select(item.index)
-                    Accessible.onToggleAction: seg.select(item.index)
+                    // Screen readers pick a segment through these, not through a tap; Qt sends
+                    // them to a disabled control too (review #174).
+                    Accessible.onPressAction: if (seg.enabled) { seg.select(item.index) }
+                    Accessible.onToggleAction: if (seg.enabled) { seg.select(item.index) }
                 }
             }
         }

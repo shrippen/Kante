@@ -200,6 +200,23 @@ TestCase {
         compare(spy.count, 1, "callout")
     }
 
+    // Review #174: a disabled control takes no press from a screen reader either.
+    function test_disabledTakesNoPress() {
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        var seg = createTemporaryObject(segmentedComponent, tc, { enabled: false })
+        withRole(seg, Accessible.RadioButton)[1].Accessible.pressAction()
+        withRole(seg, Accessible.RadioButton)[1].Accessible.toggleAction()
+        compare(seg.currentIndex, 0, "segmented")
+
+        var tabs = createTemporaryObject(tabsComponent, tc, { enabled: false })
+        withRole(tabs, Accessible.PageTab)[2].Accessible.pressAction()
+        compare(tabs.currentIndex, 0, "tab bar")
+
+        var pages = createTemporaryObject(pageBarComponent, tc, { enabled: false })
+        withRole(pages, Accessible.PageTab)[1].Accessible.pressAction()
+        compare(pages.currentIndex, 0, "page bar")
+    }
+
     // A screen reader picks a segment through its press action (Kontra QA 14.11., J-C12: the
     // mode could not be chosen with Orca).
     function test_segmentedPressAction() {
