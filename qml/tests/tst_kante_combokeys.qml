@@ -27,6 +27,8 @@ TestCase {
             Shortcut { sequence: "l"; onActivated: tc.fired++ }
             Shortcut { sequence: "1"; onActivated: tc.fired++ }
             Shortcut { sequence: "Delete"; onActivated: tc.fired++ }
+            Shortcut { sequence: "Return"; onActivated: tc.fired++ }
+            Shortcut { sequence: "Enter"; onActivated: tc.fired++ }
             Shortcut { sequence: "Ctrl+D"; onActivated: tc.fired += 100 }
             Item { id: outside; focus: true; width: 1; height: 1 }
             KanteComboBox {
@@ -93,5 +95,34 @@ TestCase {
         s.combo.forceActiveFocus()
         keyClick(Qt.Key_D, Qt.ControlModifier)
         compare(fired, 100)
+    }
+
+    // The closed box does nothing with Return and Enter: a window Shortcut on them fires.
+    function test_returnEnterReachWindow() {
+        const s = make()
+        s.combo.forceActiveFocus()
+        keyClick(Qt.Key_Return)
+        compare(fired, 1)
+        keyClick(Qt.Key_Enter)
+        compare(fired, 2)
+    }
+
+    // An open popup takes Return and Enter: they choose the highlighted entry.
+    function test_openPopupTakesReturnEnter() {
+        const s = make()
+        s.combo.forceActiveFocus()
+        keyClick(Qt.Key_Space)
+        tryCompare(s.combo.popup, "opened", true)
+        keyClick(Qt.Key_Down)
+        keyClick(Qt.Key_Return)
+        compare(fired, 0)
+        compare(s.combo.currentIndex, 1)
+        tryCompare(s.combo.popup, "opened", false)
+        keyClick(Qt.Key_Space)
+        tryCompare(s.combo.popup, "opened", true)
+        keyClick(Qt.Key_Down)
+        keyClick(Qt.Key_Enter)
+        compare(fired, 0)
+        compare(s.combo.currentIndex, 2)
     }
 }
