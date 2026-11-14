@@ -90,4 +90,12 @@ TestCase {
         wait(200)
         compare(b.display, QQC2.AbstractButton.IconOnly)
     }
+
+    // 1.76.3: an IconImage without name and source looks up "" in the icon theme, uncached.
+    function test_no_probe_without_icon() {
+        const b = make({})
+        const probe = findChild(b, "iconProbe")
+        verify(probe, "the probe is a loader that stays empty")
+        compare(probe.item, null)
+    }
 }

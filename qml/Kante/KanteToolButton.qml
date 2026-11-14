@@ -28,19 +28,24 @@ QQC2.ToolButton {
     Keys.onEnterPressed: function (event) { KanteStyle.pressByKey(control, event) }
 
     property bool fillChecked: true
+    readonly property bool iconAsked: control.icon.name !== "" || String(control.icon.source) !== ""
     // True when an icon is asked for and not found.
-    readonly property bool iconMissing: (control.icon.name !== "" || String(control.icon.source) !== "")
-        && probe.status !== Image.Ready
+    readonly property bool iconMissing: iconAsked && probe.item !== null && probe.item.status !== Image.Ready
     readonly property bool filled: checked && fillChecked
     readonly property color kanteInk: filled ? KanteStyle.accentForegroundColor : KanteStyle.textColor
 
-    // Asks the theme or the url whether the icon is there.
-    IconImage {
+    // Asks the theme or the url whether the icon is there. Built only for a button that has an
+    // icon: an IconImage without name and source looks up "" in the theme (1.76.3).
+    Loader {
         id: probe
+        objectName: "iconProbe"
+        active: control.iconAsked
         visible: false
-        name: control.icon.name
-        source: control.icon.source
-        sourceSize: Qt.size(Kirigami.Units.iconSizes.smallMedium, Kirigami.Units.iconSizes.smallMedium)
+        sourceComponent: IconImage {
+            name: control.icon.name
+            source: control.icon.source
+            sourceSize: Qt.size(Kirigami.Units.iconSizes.smallMedium, Kirigami.Units.iconSizes.smallMedium)
+        }
     }
 
     Rectangle {
