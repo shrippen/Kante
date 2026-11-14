@@ -299,6 +299,41 @@ TestCase {
         compare(c.panX, 0)
     }
 
+    // Review of PR 175: panning with the keys mid-drag moved the reported start.
+    function test_canvasEditingKeepsTheStartWhenTheViewMoves() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.editing = true
+        watch(c, "shapeDragged")
+        const p = c.mapFromModel(5, 4)
+        mousePress(c, p.x, p.y)
+        mouseMove(c, p.x + 20, p.y)
+        keyClick(Qt.Key_Right)
+        mouseMove(c, p.x + 30, p.y)
+        mouseRelease(c, p.x + 30, p.y)
+
+        const last = spy.signalArguments[spy.count - 1]
+        compare(last[5], true)
+        fuzzyCompare(last[1], 5, 1e-9)
+        fuzzyCompare(last[2], 4, 1e-9)
+    }
+
+    // Review of PR 175: a second finger took the drag over and the app never got done.
+    function test_canvasEditingEndsWhenAPinchTakesOver() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.editing = true
+        watch(c, "shapeDragged")
+        const p = c.mapFromModel(5, 4)
+        const touch = touchEvent(c)
+        touch.press(0, c, p.x, p.y).commit()
+        touch.move(0, c, p.x + 30, p.y).commit()
+        touch.stationary(0).press(1, c, p.x + 80, p.y).commit()
+        touch.move(0, c, p.x - 20, p.y).move(1, c, p.x + 140, p.y).commit()
+        touch.release(0, c, p.x - 20, p.y).release(1, c, p.x + 140, p.y).commit()
+
+        verify(spy.count > 0)
+        compare(spy.signalArguments[spy.count - 1][5], true)
+    }
+
     function test_canvasEditingDrawsFromEmptyGround() {
         const c = createTemporaryObject(canvasComponent, stage())
         c.editing = true
