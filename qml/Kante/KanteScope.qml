@@ -325,6 +325,11 @@ Item {
         if (!applied || !windowRoot) {
             return
         }
+        // Taken apart (~QQuickItem drops its children, which are enabled again): its theme
+        // reads a parent that is gone.
+        if (!item.parent) {
+            return
+        }
         const key = String(item)
         if (dressed[key] === item) {
             // Dressed before: only the text role follows enabled (no binding on item.enabled: it
