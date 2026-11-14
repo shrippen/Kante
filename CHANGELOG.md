@@ -119,6 +119,8 @@ A busy indicator that has stopped no longer keeps the window drawing.
 #### Fixed
 - `KantePullToRefresh` uses it, so it no longer carries a stopped indicator before and after each refresh.
 
+![Diagram: a hidden stopped indicator kept the window drawing 90 frames a second; the new one is absent while stopped, so nothing draws](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
 
 ### Deutsch
@@ -130,6 +132,8 @@ Eine Ladeanzeige, die angehalten hat, lässt das Fenster nicht mehr weiterzeichn
 
 #### Behoben
 - `KantePullToRefresh` nutzt sie und trägt vor und nach jedem Aktualisieren keine angehaltene Anzeige mehr mit sich.
+
+![Diagramm: eine versteckte, angehaltene Anzeige hielt das Fenster bei 90 Bildern in der Sekunde; die neue fehlt beim Anhalten, nichts wird gezeichnet](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
 
@@ -428,6 +432,8 @@ A dialog with a wrapping text no longer reports a binding loop while it is built
 #### Fixed
 - `KanteDialog` (1.70 measured its content): the content height follows once the dialog is built. While Qt built it, Kante's header and colours arrived and a wrapping text changed its height inside the dialog's own height: Mitori's question before deleting a notebook reported a binding loop.
 
+![Diagram: before, a wrapping text changed its height inside the dialog's own height, a binding loop; now the height follows after the build](https://shrippen.github.io/Kante/shots/release-1.71-content-height.svg)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171
 
 ### Deutsch
@@ -436,6 +442,8 @@ Ein Dialog mit umbrechendem Text meldet beim Aufbau keine Bindungsschleife mehr.
 
 #### Behoben
 - `KanteDialog` (1.70 misst seinen Inhalt): Die Inhaltshöhe folgt, sobald der Dialog aufgebaut ist. Während Qt ihn aufbaute, kamen Kantes Kopf und Farben an, und ein umbrechender Text änderte seine Höhe mitten in der Höhe des Dialogs: Mitoris Frage vor dem Löschen eines Notizbuchs meldete eine Bindungsschleife.
+
+![Diagramm: bisher änderte ein umbrechender Text seine Höhe in der Höhe des Dialogs selbst, eine Bindungsschleife; jetzt folgt die Höhe nach dem Aufbau](https://shrippen.github.io/Kante/shots/release-1.71-content-height.svg)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171
 
@@ -448,6 +456,8 @@ A dialog of its content's size measures its content.
 #### Fixed
 - `KanteDialog` with size Fit: the dialog takes its content's width and height. Its colour scope is a second child of the content, and Qt measures a popup's content only from a single child: the dialog was 0 wide, and a text without `contentHeight` ran into the buttons. The dialog now takes the size from the app's item; the scope stays where it is (it themes disabled items, 1.51). Found in Mitori (its own Shinki dialog had the same pattern).
 
+![A KanteDialog of size Fit in dark Kante: the dialog is as wide and tall as its text and buttons](https://shrippen.github.io/Kante/shots/release-1.70-dialog-fit.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
 
 ### Deutsch
@@ -456,6 +466,8 @@ Ein Dialog in der Größe seines Inhalts misst seinen Inhalt.
 
 #### Behoben
 - `KanteDialog` mit Größe Fit: Der Dialog nimmt Breite und Höhe seines Inhalts. Sein Farb-Scope ist ein zweites Kind im Inhalt, und Qt misst den Inhalt eines Popups nur bei einem einzigen Kind: Der Dialog war 0 breit, und ein Text ohne `contentHeight` lief in die Knöpfe. Jetzt nimmt der Dialog die Größe vom Element der App; der Scope bleibt, wo er ist (er färbt deaktivierte Elemente, 1.51). Gefunden in Mitori (dessen Shinki-Dialog hatte dasselbe Muster).
+
+![Ein KanteDialog der Größe Fit in dunklem Kante: Der Dialog ist so breit und hoch wie Text und Knöpfe](https://shrippen.github.io/Kante/shots/release-1.70-dialog-fit.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
 
@@ -468,6 +480,8 @@ A chip that is one choice of a set keeps the app's choice.
 #### Fixed
 - `KanteChip` with `choice`: a tap only reports (`clicked`), `checked` stays the app's binding. Before, a tap toggled the chip itself and broke the binding: an old choice stayed marked, and a second tap on the chosen chip cleared it. Found in Mitori (grade chips).
 
+![Four grade chips with choice in dark Kante, the second one chosen](https://shrippen.github.io/Kante/shots/release-1.69-chip-choice.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169
 
 ### Deutsch
@@ -476,6 +490,8 @@ Ein Chip, der eine Wahl aus einer Reihe ist, behält die Wahl der App.
 
 #### Behoben
 - `KanteChip` mit `choice`: Ein Tipp meldet nur (`clicked`), `checked` bleibt die Bindung der App. Bisher schaltete ein Tipp den Chip selbst um und brach die Bindung: Eine alte Wahl blieb markiert, und ein zweiter Tipp auf den gewählten Chip hob sie auf. Gefunden in Mitori (Grad-Chips).
+
+![Vier Grad-Chips mit choice in dunklem Kante, der zweite gewählt](https://shrippen.github.io/Kante/shots/release-1.69-chip-choice.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169
 
@@ -488,6 +504,8 @@ A heading that may wrap shows its whole text in Kante too.
 #### Fixed
 - `KanteHeading` with `wrapMode` breaks a long title into lines in Kante and Kante Light; before, Kante drew it on one line and cut it off with “…”. Found in Mitori (long comment titles).
 
+![A long KanteHeading title broken into two lines in dark Kante](https://shrippen.github.io/Kante/shots/release-1.68-heading-wrap.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168
 
 ### Deutsch
@@ -496,6 +514,8 @@ Eine Überschrift, die umbrechen darf, zeigt auch in Kante ihren ganzen Text.
 
 #### Behoben
 - `KanteHeading` mit `wrapMode` bricht einen langen Titel in Kante und Kante Light in Zeilen um; bisher zeichnete Kante ihn einzeilig und schnitt ihn mit „…“ ab. Gefunden in Mitori (lange Titel der Kommentare).
+
+![Ein langer Titel einer KanteHeading in dunklem Kante, in zwei Zeilen umbrochen](https://shrippen.github.io/Kante/shots/release-1.68-heading-wrap.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168
 
@@ -508,6 +528,8 @@ An app can offer Leinen as a choice of its own: Kante's light palette no longer 
 #### New
 - `KanteStyle.preferLight` forces Leinen whatever the platform theme says, as `preferDark` forces dark (`preferDark` wins when both are set). For Mitori's style setting, which offers Kante and Leinen side by side.
 
+![Heading, text, two buttons and a chip in Leinen, the light palette, with KanteStyle.preferLight set](https://shrippen.github.io/Kante/shots/release-1.67-prefer-light.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167
 
 ### Deutsch
@@ -516,6 +538,8 @@ Eine App kann Leinen als eigene Wahl anbieten: Kantes helle Palette hängt nicht
 
 #### Neu
 - `KanteStyle.preferLight` erzwingt Leinen, gleich was das Plattform-Thema sagt, so wie `preferDark` dunkel erzwingt (`preferDark` gewinnt, wenn beide gesetzt sind). Für Mitoris Stilwahl, die Kante und Leinen nebeneinander anbietet.
+
+![Überschrift, Text, zwei Knöpfe und ein Chip in Leinen, der hellen Palette, mit gesetztem KanteStyle.preferLight](https://shrippen.github.io/Kante/shots/release-1.67-prefer-light.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167
 
@@ -528,6 +552,8 @@ A window with a Kante dialog or page scope that the garbage collector takes leav
 #### Fixed
 - When the garbage collector took a window, a pending step of `KanteScope` or `KanteDialog` ran on it and wrote a `TypeError` to the log, up to 14 times in a test. Found in Mitori.
 
+![Diagram: a pending step fires after the garbage collector took its function and writes a TypeError; now it checks and is skipped](https://shrippen.github.io/Kante/shots/release-1.66-pending-step.svg)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166
 
 ### Deutsch
@@ -536,6 +562,8 @@ Ein Fenster mit einem Kante-Dialog oder Seiten-Scope, das der Garbage Collector 
 
 #### Behoben
 - Nahm der Garbage Collector ein Fenster, lief ein ausstehender Schritt von `KanteScope` oder `KanteDialog` darauf und schrieb einen `TypeError` ins Log, im Test bis zu 14-mal. Gefunden in Mitori.
+
+![Diagramm: ein ausstehender Schritt läuft, nachdem der Garbage Collector seine Funktion nahm, und schreibt einen TypeError; jetzt prüft er und wird übersprungen](https://shrippen.github.io/Kante/shots/release-1.66-pending-step.svg)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166
 
@@ -548,6 +576,8 @@ A window that holds a Kante dialog goes down without a crash.
 #### Fixed
 - An app crashed when a window with a `KanteDialog`, or a dialog with `KanteDialogSkin`, in it went down and the garbage collector took it: the dialog gave its old background back while Qt was already deleting it. lmix had to take its page windows down by hand for it.
 
+![Diagram: before, the dialog's bindings give the old background back to a popup Qt is deleting, a crash; now they give nothing back](https://shrippen.github.io/Kante/shots/release-1.65-teardown.svg)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-165
 
 ### Deutsch
@@ -556,6 +586,8 @@ Ein Fenster mit einem Kante-Dialog darin geht ohne Absturz zu.
 
 #### Behoben
 - Eine App stürzte ab, wenn ein Fenster mit einem `KanteDialog` oder einem Dialog mit `KanteDialogSkin` darin abgebaut wurde und der Garbage Collector es nahm: Der Dialog gab seinen alten Hintergrund zurück, während Qt ihn schon löschte. lmix musste seine Seitenfenster dafür von Hand abbauen.
+
+![Diagramm: bisher geben die Bindings des Dialogs den alten Hintergrund an ein Popup zurück, das Qt gerade löscht, ein Absturz; jetzt geben sie nichts zurück](https://shrippen.github.io/Kante/shots/release-1.65-teardown.svg)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-165
 

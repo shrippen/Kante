@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 256" width="600" height="256" role="img" aria-labelledby="t">
+<title id="t">Teardown order: before, the dialog&#x27;s bindings gave the old background back to a popup Qt was already deleting, which crashed; now they give nothing back.</title>
+<rect width="600" height="256" fill="#2a2826"/>
+<text x="20" y="30" font-size="13" font-weight="700" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">1.65  Teardown of a window with a dialog</text>
+<text x="20" y="58" font-size="11" fill="#fb4934" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">before</text>
+<rect x="20" y="66" width="160" height="62" fill="#282828" stroke="#504945" stroke-width="1"/>
+<text x="100.0" y="85.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">window collected:</text>
+<text x="100.0" y="101.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">Qt deletes popup</text>
+<text x="100.0" y="117.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">and its content</text>
+<path d="M184 97.0 H204" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<path d="M200 93.0 L206 97.0 L200 101.0" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<rect x="210" y="66" width="160" height="62" fill="#282828" stroke="#504945" stroke-width="1"/>
+<text x="290.0" y="85.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">Bindings in content</text>
+<text x="290.0" y="101.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">give the old</text>
+<text x="290.0" y="117.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">background back</text>
+<path d="M374 97.0 H394" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<path d="M390 93.0 L396 97.0 L390 101.0" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<rect x="400" y="66" width="160" height="62" fill="#282828" stroke="#fb4934" stroke-width="2"/>
+<text x="480.0" y="93.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">popup half deleted:</text>
+<text x="480.0" y="109.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">CRASH</text>
+<text x="20" y="160" font-size="11" fill="#b8bb26" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">now</text>
+<rect x="20" y="168" width="160" height="62" fill="#282828" stroke="#504945" stroke-width="1"/>
+<text x="100.0" y="187.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">window collected:</text>
+<text x="100.0" y="203.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">Qt deletes popup</text>
+<text x="100.0" y="219.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">and its content</text>
+<path d="M184 199.0 H204" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<path d="M200 195.0 L206 199.0 L200 203.0" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<rect x="210" y="168" width="160" height="62" fill="#282828" stroke="#504945" stroke-width="1"/>
+<text x="290.0" y="187.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">Bindings set to</text>
+<text x="290.0" y="203.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">RestoreNone:</text>
+<text x="290.0" y="219.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">give nothing back</text>
+<path d="M374 199.0 H394" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<path d="M390 195.0 L396 199.0 L390 203.0" stroke="#a89984" stroke-width="1.5" fill="none"/>
+<rect x="400" y="168" width="160" height="62" fill="#282828" stroke="#b8bb26" stroke-width="2"/>
+<text x="480.0" y="195.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">window goes</text>
+<text x="480.0" y="211.0" text-anchor="middle" font-size="12" fill="#ebdbb2" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace">down: NO CRASH</text>
+</svg>
