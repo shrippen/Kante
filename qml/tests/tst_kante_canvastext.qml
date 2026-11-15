@@ -120,6 +120,17 @@ TestCase {
         compare(spy.signalArguments[0][2], 7)
     }
 
+    // Both clicks of a double click still report shapeClicked, as before the signal came.
+    function test_doubleClickKeepsBothClicks() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = [{ kind: "circle", points: [10, 7], radius: 2, label: "red", fill: "solid", key: "disc" }]
+        spy.target = c
+        spy.signalName = "shapeClicked"
+        spy.clear()
+        mouseDoubleClickSequence(c, 200, 140)
+        compare(spy.count, 2)
+    }
+
     function test_doubleClickOnGround() {
         const c = createTemporaryObject(canvasComponent, stage())
         c.shapes = [{ kind: "circle", points: [10, 7], radius: 2, label: "red", fill: "solid", key: "disc" }]
