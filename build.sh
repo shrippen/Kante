@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Builds everything in Kante: the design system, Knust and the Kimai plugin kit.
+#   0. tokens/variables.css: tokens/variables.src.css with the colours from tokens/palette.json (tools/build-variables.py)
 #   1. Kante for the web: docs/v1/shrippen.css, shrippen.js, kante-map.js and map/, kante-wall.js, fonts.css and fonts/
 #      -> shrippen.github.io copies docs/v1/ (its build.sh), served at https://shrippen.github.io/v1/
 #   2. Kante for apps: qml/Kante/KantePalette.qml, tokens/palette.qml and the bundled fonts,
@@ -20,6 +21,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 OUT=docs/v1
 mkdir -p "$OUT"
+python3 tools/build-variables.py
 {
   echo "/* Kante v1 — https://github.com/shrippen/shrippen.github.io */"
   cat tokens/variables.css css/base.css css/components.css

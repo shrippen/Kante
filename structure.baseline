@@ -24,4 +24,3 @@ qml/Kante/KanteTabStaff.qml	normalizeBars	ccn=19
 qml/Kante/KanteTransportBar.qml	Keys.onPressed	ccn=19
 qml/demo/Gallery.qml	-	lines=1711
 qml/tests/tst_kante_components.qml	-	lines=1203
-tools/check-tokens.py	check_shared_palette	ccn=16
