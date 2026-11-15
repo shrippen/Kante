@@ -69,9 +69,9 @@ TestCase {
         return n
     }
 
-    function room(text, anchor) {
+    function room(text, anchor, size) {
         return [{ kind: "polygon", points: [2, 2, 18, 2, 18, 13, 2, 13], label: "red", fill: "none",
-                  text: text, textAnchor: anchor, key: "room" }]
+                  text: text, textAnchor: anchor, captionSize: size, key: "room" }]
     }
 
     // The outline sits at x 40, 360 and y 40, 260: stay inside it.
@@ -141,5 +141,50 @@ TestCase {
         mouseDoubleClickSequence(c, 20, 20)
         compare(spy.count, 1)
         compare(spy.signalArguments[0][0], "")
+    }
+
+    // First and last row of ink of one caption at a zoom, [] for none. The plan's top left corner
+    // stays at the view's, the outline lies outside the scanned area.
+    function span(text, size, zoom) {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.zoom = zoom
+        c.panX = 0
+        c.panY = 0
+        c.shapes = [{ kind: "polygon", points: [0, 0, 30, 0, 30, 20, 0, 20], label: "red", fill: "none",
+                      text: text, textAnchor: "topLeft", captionSize: size, key: "room" }]
+        wait(50)
+        const rows = inkRows(c, 2, 390, 2, 290)
+        return rows.length === 0 ? [] : [rows[0], rows[rows.length - 1]]
+    }
+
+    // 0.5 m at 20 px/m is 10 px, at 40 px/m 20 px: the glyphs grow with the zoom.
+    function test_captionSizeScalesWithZoom() {
+        const small = span("MMMM", 0.5, 20)
+        const big = span("MMMM", 0.5, 40)
+        verify(small.length === 2 && big.length === 2)
+        verify(big[1] - big[0] > (small[1] - small[0]) * 1.6)
+    }
+
+    function test_captionSizeLinesScale() {
+        const one = span("MMMM", 0.5, 20)
+        const three = span("MMMM\nMMMM\nMMMM", 0.5, 20)
+        const doubled = span("MMMM\nMMMM\nMMMM", 0.5, 40)
+        // Lines 1.25 font sizes apart: three lines span two pitches more than one.
+        const pitch = 0.5 * 20 * 1.25
+        verify(Math.abs((three[1] - three[0]) - (one[1] - one[0]) - 2 * pitch) < 3)
+        verify(Math.abs((doubled[1] - doubled[0]) - (three[1] - three[0]) * 2) < 6)
+    }
+
+    function test_captionSizeBelowMinimumIsLeftOut() {
+        // 0.1 m at 20 px/m is 2 px.
+        compare(span("MMMM", 0.1, 20).length, 0)
+        verify(span("MMMM", 0.1, 60).length > 0)
+    }
+
+    // Without captionSize the caption keeps the small font at every zoom.
+    function test_withoutCaptionSizeStaysFixed() {
+        const a = span("MMMM", undefined, 20)
+        const b = span("MMMM", undefined, 40)
+        compare(a[1] - a[0], b[1] - b[0])
     }
 }
