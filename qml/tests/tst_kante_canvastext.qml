@@ -44,7 +44,8 @@ TestCase {
     // Rows of the image, from y0 up to y1, that hold any ink (a pixel unlike the ground) in x0..x1.
     function inkRows(c, x0, x1, y0, y1) {
         const img = tc.grabImage(c)
-        const ground = img.pixel(44, 44)
+        // Inside the room, below and right of any caption.
+        const ground = img.pixel(300, 220)
         const rows = []
         for (let y = y0; y < y1; y++) {
             for (let x = x0; x < x1; x += 2) {
