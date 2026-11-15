@@ -3,7 +3,7 @@ import QtTest
 import Kante
 
 /**
- * Draw time of KanteShapeCanvas at Klappe's size (610 shapes, 260 captions). Not in the normal
+ * Draw time of KanteShapeCanvas at Klappe's size (610 shapes, 272 captions). Not in the normal
  * suite (timings flicker). Run:
  *   QT_QPA_PLATFORM=offscreen /usr/lib/qt6/bin/qmltestrunner -import qml -input qml/perf
  * Prints ms per paint with the shapes and with none.

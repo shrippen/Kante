@@ -51,7 +51,7 @@ import "."
  * lies in it). Pan: middle button, space held, or left button on empty ground. Zoom: wheel or
  * pinch about the pointer. Keyboard (the item takes Tab): plus and minus zoom, 0 fits, arrows pan.
  *
- * Drawn with one Canvas, repainted when a property changes; 600 shapes with 260 captions take about
+ * Drawn with one Canvas, repainted when a property changes; 600 shapes with 272 captions take about
  * 15 ms to draw (offscreen), about 6 ms zoomed in, as shapes and captions out of view are left out.
  * Captions are the dear part (fillText, about 45 µs each): keep the text for what needs it.
  */
@@ -490,7 +490,7 @@ FocusScope {
         }
 
         // Where a caption goes, in view pixels, and how it sits there.
-        function _caption(ctx, s, name) {
+        function _caption(ctx, s) {
             const pts = s.points || []
             if (pts.length < 2) {
                 return
@@ -532,8 +532,10 @@ FocusScope {
                 align = "left"
             }
 
-            // Outside the view, allowing an em for each character (fillText is the dearest call).
-            const reach = String(s.text).length * _fontPx
+            // Outside the view (fillText is the dearest call). Wide glyphs (CJK) take up to about
+            // 1.1 em; two em for each character leaves room for them.
+            const emsPerChar = 2
+            const reach = String(s.text).length * emsPerChar * _fontPx
             const yFirst = y + top
             if (x + reach < 0 || x - reach > width || yFirst + rows + _fontPx < 0 || yFirst - _fontPx > height) {
                 return
@@ -641,7 +643,7 @@ FocusScope {
             _align = ""
             for (const s of root.shapes) {
                 if (s.text && s.kind !== "image") {
-                    _caption(ctx, s, s.label)
+                    _caption(ctx, s)
                 }
             }
         }
