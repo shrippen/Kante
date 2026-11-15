@@ -1,0 +1,3042 @@
+{
+"dark-1200": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"none",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 6px 100%, 0px calc(100% - 6px))",
+"none",
+"none"
+]
+],
+"dark-390": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 6px 100%, 0px calc(100% - 6px))",
+"none",
+"none"
+]
+],
+"leinen-1200": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"none",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 6px 100%, 0px calc(100% - 6px))",
+"none",
+"none"
+]
+],
+"leinen-390": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 6px 100%, 0px calc(100% - 6px))",
+"none",
+"none"
+]
+],
+"kante-light-1200": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"none",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"none",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"none",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"none",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, 100% 0px, 100% 0px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, 100% 0px, 100% 0px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, 100% 0px, 100% 0px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+]
+],
+"kante-light-390": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"none",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"none",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"none",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, 100% 0px, 100% 0px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, 100% 0px, 100% 0px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, 100% 0px, 100% 0px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+]
+],
+"gold-1200": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"none",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"none",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 6px 100%, 0px calc(100% - 6px))",
+"none",
+"none"
+]
+],
+"gold-390": [
+[
+"0 div.|",
+"none",
+"none",
+"none"
+],
+[
+"1 div.ch|ch",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"2 div.install-card|install-card",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"3 div.hero-shot|hero-shot",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"4 div.shots|",
+"none",
+"none",
+"none"
+],
+[
+"5 img.|shots img",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"6 figure.is-in|shots figure",
+"none",
+"none",
+"none"
+],
+[
+"7 div.feat|feat",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"8 div.callout|callout",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"9 div.codeblock|codeblock",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"10 div.table-wrap|table-wrap",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"11 table.table|",
+"none",
+"none",
+"none"
+],
+[
+"12 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"13 tr.|",
+"none",
+"none",
+"none"
+],
+[
+"14 td.|",
+"none",
+"none",
+"none"
+],
+[
+"15 div.showcase|",
+"none",
+"none",
+"none"
+],
+[
+"16 figure.is-in|showcase figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"17 div.release-shots|",
+"none",
+"none",
+"none"
+],
+[
+"18 figure.|release-shots figure",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"19 div.flow|",
+"none",
+"none",
+"none"
+],
+[
+"20 div.flow-node|flow-node",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"21 div.faq|",
+"none",
+"none",
+"none"
+],
+[
+"22 details.|faq details",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"23 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"24 button.tile|tile",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"25 div.toast|toast",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"26 div.tabs|",
+"none",
+"none",
+"none"
+],
+[
+"27 button.|tabs button",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"28 a.|tabs a",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"29 i.tabs-ind|tabs-ind",
+"none",
+"none",
+"none"
+],
+[
+"30 span.sticker|sticker",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"31 ul.menu|menu",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"32 li.|",
+"none",
+"none",
+"none"
+],
+[
+"33 div.option|option",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"34 div.bulk-bar|bulk-bar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"35 div.sheet|sheet",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"36 div.sheet is-drawer|sheet is-drawer",
+"polygon(16px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 16px)",
+"none",
+"none"
+],
+[
+"37 div.sheet is-side|sheet is-side",
+"none",
+"none",
+"none"
+],
+[
+"38 div.status|status",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"39 div.palette|palette",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"40 a.link-tile|link-tile",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"41 div.launch|launch",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"42 div.map-frame|map-frame",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"43 div.tier-card|tier-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"44 div.hint-card|hint-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"45 div.editbar|editbar",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"46 div.editbar has-menu|editbar has-menu",
+"none",
+"none",
+"none"
+],
+[
+"47 div.login|login",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"48 div.board-card|board-card",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"49 div.board-card|board-card open",
+"none",
+"none",
+"none"
+],
+[
+"50 details.|",
+"none",
+"none",
+"none"
+],
+[
+"51 summary.|",
+"none",
+"none",
+"none"
+],
+[
+"52 table.table cards-sm|cards-sm table",
+"none",
+"none",
+"none"
+],
+[
+"53 tbody.|",
+"none",
+"none",
+"none"
+],
+[
+"54 tr.|cards-sm tr",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"55 td.|",
+"none",
+"none",
+"none"
+],
+[
+"56 div.dialog|dialog",
+"polygon(0px 0px, calc(100% - 16px) 0px, 100% 16px, 100% 100%, 16px 100%, 0px calc(100% - 16px))",
+"none",
+"none"
+],
+[
+"57 button.talk|talk",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"58 div.path|",
+"none",
+"none",
+"none"
+],
+[
+"59 a.node|path node",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"60 button.btn|btn",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 0px 100%, 0px 100%)",
+"none",
+"none"
+],
+[
+"61 button.btn btn-primary|btn-primary",
+"polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px))",
+"none",
+"none"
+],
+[
+"62 button.btn btn-sm btn-danger|btn-danger sm",
+"polygon(0px 0px, calc(100% - 6px) 0px, 100% 6px, 100% 100%, 6px 100%, 0px calc(100% - 6px))",
+"none",
+"none"
+]
+]
+}
