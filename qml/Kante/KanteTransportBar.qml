@@ -79,6 +79,7 @@ FocusScope {
     signal markerStepRequested(int direction)
 
     readonly property int tenthsPerSecond: 10
+    readonly property real tenthEpsilon: 1e-6
     readonly property int speedPercent: Math.round(speed * 100)
 
     function time(s) {
@@ -87,9 +88,9 @@ FocusScope {
             return Math.floor(whole / 60) + ":" + String(whole % 60).padStart(2, "0")
         }
         // Minutes, seconds and tenths all come from one count of whole tenths, cut off:
-        // 59.99 s is 00:59,9, never 01:00,0 early, and 0.9999999999999999 s is 00:00,9.
-        // Counted from s itself: (s - whole) * 10 loses 1.2 s to 1 tenth in floating point.
-        const tenths = Math.floor(Math.max(0, s) * tenthsPerSecond)
+        // 59.99 s is 00:59,9, never 01:00,0 early; 0.9999999999999999 s is 00:01,0.
+        // The epsilon keeps 0.7 + 0.1 s at 8 tenths (0.7999999999999999 in floating point).
+        const tenths = Math.floor(Math.max(0, s) * tenthsPerSecond + tenthEpsilon)
         const whole = Math.floor(tenths / tenthsPerSecond)
         const seconds = String(whole % 60).padStart(2, "0")
         return String(Math.floor(whole / 60)).padStart(2, "0") + ":" + seconds + "," + tenths % tenthsPerSecond

@@ -580,10 +580,13 @@ TestCase {
         compare(bar.time(1.2), "00:01,2")
         compare(bar.time(0.3), "00:00,3")
         compare(bar.time(2.3), "00:02,3")
-        // Just under a whole second: tenths and seconds must agree.
-        compare(bar.time(0.9999999999999999), "00:00,9")
-        compare(bar.time(2.9999999999999996), "00:02,9")
-        compare(bar.time(59.99999999), "00:59,9")
+        // Just under a whole second is that second: tenths and seconds come from one count.
+        compare(bar.time(0.9999999999999999), "00:01,0")
+        compare(bar.time(2.9999999999999996), "00:03,0")
+        compare(bar.time(59.99999999), "01:00,0")
+        compare(bar.time(1.0000000001), "00:01,0")
+        // A sum of steps lands under the tenth: 0.7 + 0.1 is 0.7999999999999999.
+        compare(bar.time(0.7 + 0.1), "00:00,8")
         // Unchanged values.
         compare(bar.time(-5), "00:00,0")
         compare(bar.time(59.95), "00:59,9")
