@@ -756,8 +756,11 @@ FocusScope {
                 return
             }
 
+            // The second click is reported as before; the double click follows it.
             const m = _model(mouse.x, mouse.y)
-            root.shapeDoubleClicked(root.keyAt(mouse.x, mouse.y), m.x, m.y)
+            const key = root.keyAt(mouse.x, mouse.y)
+            root.shapeClicked(key, m.x, m.y)
+            root.shapeDoubleClicked(key, m.x, m.y)
         }
         onWheel: function (wheel) {
             root._zoomAt(wheel.x, wheel.y, Math.pow(root._wheelStep, wheel.angleDelta.y))
