@@ -78,8 +78,8 @@ FocusScope {
     readonly property real edgeReach: KanteStyle.unit(5)
     readonly property string edgeFrom: "from"
     readonly property string edgeTo: "to"
-    readonly property int tenthsPerSecond: 10
-    readonly property int tenthsPerMinute: 600
+    readonly property int tenthsPerSecond: KanteStyle.tenthsPerSecond
+    readonly property int tenthsPerMinute: 60 * tenthsPerSecond
 
     readonly property real rulerHeight: KanteStyle.unit(24)
     readonly property real laneWidth: Math.max(1, width - labelWidth)
@@ -213,7 +213,7 @@ FocusScope {
 
     // "m:ss.d", cut off like a timecode (59.96 -> 0:59.9).
     function _stamp(s) {
-        const tenths = Math.floor(Math.max(0, s) * tenthsPerSecond + 1e-6)
+        const tenths = KanteStyle.wholeTenths(s)
         const sec = (tenths % tenthsPerMinute) / tenthsPerSecond
         return Math.floor(tenths / tenthsPerMinute) + ":" + (sec < 10 ? "0" : "") + sec.toFixed(1)
     }

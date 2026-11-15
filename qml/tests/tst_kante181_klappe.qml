@@ -574,6 +574,12 @@ TestCase {
         compare(bar.time(65.37), "1:05")
     }
 
+    function test_styleWholeTenths() {
+        compare(KanteStyle.wholeTenths(1.2), 12)
+        compare(KanteStyle.wholeTenths(59.99), 599)
+        compare(KanteStyle.wholeTenths(-3), 0)
+    }
+
     function test_barTimeTenthsFloat() {
         const bar = createTemporaryObject(barComponent, stage(), { timeFormat: "mm:ss,d" })
         // 1.2 - 1 is 0.19999999999999996 in floating point.
