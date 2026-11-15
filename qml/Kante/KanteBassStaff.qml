@@ -98,29 +98,23 @@ Item {
      */
     property int marks: KanteBassStaff.Marks.Full
     /** Counts state changes made with setNoteState / resetStates (and new note lists). */
-    readonly property int stateRevision: revision
-    property int revision: 0
-    // States set with setNoteState, by note index (plain object, read through stateRevision).
-    property var changedStates: ({})
-    // Cents given to setNoteState, by note index.
-    property var changedCents: ({})
+    readonly property int stateRevision: noteState.revision
     /** Cents beside the sign of an offpitch note (Kante 1.27), in Full marks. */
     property bool showCents: true
-    // Technique results set with setTechniqueResult, by note index (1.31).
-    property var changedTechniques: ({})
+
+    // The states of the notes, apart from `notes` (see KanteNoteState).
+    KanteNoteState {
+        id: noteState
+        notes: staff.notes
+    }
 
     /** Sets how the technique of one note was played (Kante 1.31): "", "played", "other", "unheard". */
     function setTechniqueResult(index, result) {
-        if (!notes || index < 0 || index >= notes.length) {
-            return
-        }
-        changedTechniques[index] = String(result || "")
-        revision++
+        noteState.setTechniqueResult(index, result)
     }
     /** The technique result of note i: as set with setTechniqueResult, else from `notes`. */
     function techniqueResultOf(i) {
-        var r = changedTechniques[i]
-        return r !== undefined ? r : (notes && notes[i] && notes[i].techniqueResult ? String(notes[i].techniqueResult) : "")
+        return noteState.techniqueResultOf(i)
     }
     /** The result as shown: "" when marks are Off. Depends on stateRevision. */
     function shownTechniqueResult(i, revision) {
@@ -128,14 +122,7 @@ Item {
     }
     /** "Technik gespielt 3, Andere Technik 1" over all notes (screen readers). Depends on stateRevision. */
     function techniqueSummary(revision) {
-        var counts = {}
-        for (var i = 0; notes && i < notes.length; i++) {
-            var r = shownTechniqueResult(i, revision)
-            if (r !== "") {
-                counts[r] = (counts[r] || 0) + 1
-            }
-        }
-        return KanteStyle.techniqueCountsText(counts)
+        return marks === KanteBassStaff.Marks.Off ? "" : KanteStyle.techniqueCountsText(noteState.techniqueCounts)
     }
 
     /**
@@ -144,30 +131,15 @@ Item {
      * note's `cents` in `notes` holds.
      */
     function setNoteState(index, state, cents) {
-        if (!notes || index < 0 || index >= notes.length) {
-            return
-        }
-        changedStates[index] = String(state)
-        if (cents !== undefined) {
-            changedCents[index] = Number(cents)
-        }
-        revision++
+        noteState.setNoteState(index, state, cents)
     }
     /** Back to the states in `notes`. */
     function resetStates() {
-        changedStates = {}
-        changedCents = {}
-        changedTechniques = {}
-        revision++
+        noteState.resetStates()
     }
     /** The cents of note i (offpitch): as set with setNoteState, else from `notes`; NaN for none. */
     function centsOf(i) {
-        var c = changedCents[i]
-        if (c !== undefined) {
-            return c
-        }
-        var n = notes && notes[i]
-        return n && n.cents !== undefined && n.cents !== null ? Number(n.cents) : NaN
+        return noteState.centsOf(i)
     }
     /** ", +32 ct" for an offpitch note with cents (screen readers), else "". Depends on stateRevision. */
     function centsSuffix(i, revision) {
@@ -176,15 +148,13 @@ Item {
     }
     /** The state of note i: as set with setNoteState, else from `notes`. */
     function stateOf(i) {
-        var s = changedStates[i]
-        return s !== undefined ? s : (notes && notes[i] && notes[i].state ? String(notes[i].state) : "pending")
+        return noteState.stateOf(i)
     }
     /** The state as shown: "pending" when marks are Off. Depends on stateRevision. */
     function shownState(i, revision) {
         return marks === KanteBassStaff.Marks.Off || i === undefined ? "pending" : stateOf(i)
     }
     onNotesChanged: {
-        resetStates()
         calm = true
         calmTimer.restart()
     }
