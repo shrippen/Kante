@@ -446,7 +446,6 @@
     // load and after an htmx swap. Every open or close by the user fires "kante:fold" (bubbles)
     // with detail {key, open}, so the app can keep it on the server:
     //   document.addEventListener('kante:fold', function (e) { post('/fold', e.detail); });
-    var FOLD = 'details.fold[data-key]';
     K.folds = function (root) {
       root = root || d;
       var all = [].slice.call(root.querySelectorAll ? root.querySelectorAll(FOLD) : []);
@@ -546,6 +545,7 @@
     initReadout();
     initCurves();
     var K = initLive();
+    initLiveWatch(K);
     initFolds(K);
 
     if (!moving) return;
