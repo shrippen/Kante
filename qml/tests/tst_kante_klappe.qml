@@ -534,6 +534,11 @@ TestCase {
         compare(t._labelColor("blue"), KanteStyle.labelColor("blue"))
     }
 
+    function test_timelineGroundColour() {
+        const t = createTemporaryObject(timelineComponent, stage())
+        compare(t._labelColor("ground"), KanteStyle.backgroundColor)
+    }
+
     function test_canvasGroundColour() {
         const c = createTemporaryObject(canvasComponent, stage())
         compare(c._colorOf("ground"), KanteStyle.backgroundColor)

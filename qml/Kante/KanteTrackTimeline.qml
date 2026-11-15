@@ -224,6 +224,7 @@ FocusScope {
         case "accent": return KanteStyle.accentColor
         case "focus": return KanteStyle.focusColor
         case "warning": return KanteStyle.warningColor
+        case "ground": return KanteStyle.backgroundColor
         }
         const c = KanteStyle.labelColor(name)
         return c.a > 0 ? c : KanteStyle.textColor
