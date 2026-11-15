@@ -1492,7 +1492,7 @@ The quieter variant for apps that should sit next to Breeze / Kirigami apps and 
 
 - Qt: `KanteStyle.kind = KanteStyle.Kind.KanteLight`. `KanteStyle.active` is true for Kante and Kante Light (shapes, type, layouts); `KanteStyle.themed` only for Kante (palette, control skins). Views branch on `active` for layout and read colors from the roles, which stay the theme's in Kante Light. Control wrappers and skins only draw in `themed`.
 - Web: `<html data-kante="light">` with the regular stylesheet. Colours in `tokens/palette.json` (`kanteLight`), written into `tokens/variables.css` (Breeze light, and dark under `prefers-color-scheme: dark`), shape and type rules in the "Kante Light" block of `css/components.css`. App CSS uses the roles (`--primary`, `--on-primary`, `--hl`, `--bg-panel`, …), never `--yellow` for "active".
-- Kante Light has no palette of its own in `palette.json`: there is nothing to keep in sync, the platform owns the colors.
+- Kante Light's colors stand in `palette.json` (`kanteLight`, light and dark), like the other themes; the platform owns them, they follow Breeze.
 
 ### Web ↔ app
 

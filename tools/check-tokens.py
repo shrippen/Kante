@@ -8,13 +8,14 @@
   - A fill that marks "active / chosen / working" uses --primary, never --yellow: in Leinen and
     Kante Light --yellow is a text colour (ochre, orange). Only the brand marks in YELLOW_FILL_OK
     may fill with --yellow.
-  - Lines and levels in tokens/palette.json have the same value as their custom property in
-    tokens/variables.css. Colours need no check: tools/build-variables.py writes them from the palette.
+  - tokens/variables.css is what tools/build-variables.py writes from the palette now (the colours
+    cannot be stale), and lines and levels in tokens/palette.json equal their custom property.
 
 Scans css/*.css, templates/*.html, the landing pages in docs/ and any HTML file given as argument (in HTML only <style>, style="…"
 and fill/stroke/color attributes). Exits 1 on any finding.
 Usage: python3 tools/check-tokens.py [page.html ...]   (build.sh runs it; shrippen.github.io passes its overview)
 """
+import importlib.util
 import re
 import sys
 from pathlib import Path
@@ -85,7 +86,10 @@ def check_shared_palette():
     """palette.json (apps, QML) and variables.css (web) must not drift apart in lines and levels."""
     import json
     palette = json.loads((KANTE / "tokens/palette.json").read_text())
-    dark = css_block((KANTE / "tokens/variables.css").read_text(), ":root {")
+    built = (KANTE / "tokens/variables.css").read_text()
+    if built != render_variables():
+        yield "tokens/variables.css is out of date: run ./build.sh (tools/build-variables.py)"
+    dark = css_block(built, ":root {")
     # Lines and levels: px and percentages on the web, plain numbers in palette.json.
     lines, levels = palette["shape"]["lines"], palette["levels"]
     expected = [(f"line-{k}", f"{v}px") for k, v in lines.items() if k != "note"]
@@ -95,6 +99,14 @@ def check_shared_palette():
     for name, value in expected:
         if dark.get(name) != value.lower():
             yield f"tokens/palette.json {name} = {value} but tokens/variables.css has {dark.get(name)}"
+
+
+def render_variables():
+    """variables.css as tools/build-variables.py would write it now, without writing it."""
+    spec = importlib.util.spec_from_file_location("build_variables", KANTE / "tools/build-variables.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.render()
 
 
 # fonts.css declares the font families themselves: it is the one place that names them

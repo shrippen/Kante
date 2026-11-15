@@ -55,7 +55,8 @@ def themes(palette):
     }
 
 
-def main():
+def render():
+    """The text of variables.css: the source with the palette's values; exits on an unknown placeholder."""
     palette = json.loads((KANTE / "tokens/palette.json").read_text())
     values = themes(palette)
     missing = []
@@ -68,10 +69,12 @@ def main():
             return match.group(0)
         return found
 
-    OUT.write_text(PLACEHOLDER.sub(value, SRC.read_text()))
+    text = PLACEHOLDER.sub(value, SRC.read_text())
     if missing:
         sys.exit("tokens/variables.src.css: not in tokens/palette.json: " + ", ".join(missing))
+    return text
+
+
+if __name__ == "__main__":
+    OUT.write_text(render())
     print(f"built {OUT.relative_to(KANTE)}")
-
-
-main()

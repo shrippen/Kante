@@ -14,7 +14,7 @@ stylesheet or copy the module.
 
 | Path | Its one task |
 |---|---|
-| `tokens/palette.json` | The one source of every colour, font, line and level, for all themes (dark, Leinen, Gold). |
+| `tokens/palette.json` | The one source of every colour, font, line and level, for all themes (dark, Leinen, Kante Light, Gold). |
 | `tokens/variables.src.css`, `tokens/variables.css` | The palette as CSS custom properties, and the roles built on them (text, ground, accent, state). The `.src.css` is written by hand with `{{theme.name}}` placeholders for colours; `tools/build-variables.py` fills them from the palette into `variables.css`. |
 | `css/`, `js/`, `fonts/` | Kante for the web: the components' styles, their behaviour, the map and wall display scripts, the offline fonts. |
 | `qml/Kante/` | Kante for apps: `KanteStyle` (all roles, the one place that picks the theme), one file per component, the skins for Qt's own controls. `KantePalette.qml` is generated. |
