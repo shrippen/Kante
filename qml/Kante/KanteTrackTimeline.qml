@@ -11,8 +11,9 @@ import "."
  *   position    the playhead in seconds
  *   tracks      [{ name, label, shown, segments: [{ from, to, text, selected }],
  *               markers: [{ at, text }] }]; seconds. label: a colour name of
- *               KanteStyle.labels, or "text", "muted", "accent", "focus", "warning";
- *               "" or an unknown name gives the text colour. shown false: the row is dimmed
+ *               KanteStyle.labels, or "text", "muted", "accent", "focus", "warning",
+ *               "ground" (the app's background: a sign on a filled bar reads in every label
+ *               colour); "" or an unknown name gives the text colour. shown false: the row is dimmed
  *   trackHeight height of a row, labelWidth width of the name column (KanteStyle units)
  *   hideText, showText   the app's words for the toggle: "<hideText>: <name>" while shown,
  *               "<showText>: <name>" while hidden (tooltip and name for screen readers)
