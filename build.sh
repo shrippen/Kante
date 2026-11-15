@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Builds everything in Kante: the design system, Knust and the Kimai plugin kit.
+#   0. tokens/variables.css: tokens/variables.src.css with the colours from tokens/palette.json (tools/build-variables.py)
 #   1. Kante for the web: docs/v1/shrippen.css, shrippen.js, kante-map.js and map/, kante-wall.js, fonts.css and fonts/
 #      -> shrippen.github.io copies docs/v1/ (its build.sh), served at https://shrippen.github.io/v1/
 #   2. Kante for apps: qml/Kante/KantePalette.qml, tokens/palette.qml and the bundled fonts,
 #      generated from tokens/palette.json (tools/build-qml.py)
 #   3. Knust palette: docs/v1/knust-palette.css (--shr-* for the Kimai theme), copied unchanged
 #      into kimai/knust/Resources/public/css/ (tools/build-knust.py)
-#   4. Token check: no raw colours or fonts outside tokens/, palette.json matches variables.css
+#   4. Token check: no raw colours or fonts outside tokens/, variables.css is current with palette.json
 #      (tools/check-tokens.py); the landing pages' release lists (tools/check-changes.py); the structure limits (tools/structure-check.py); Knust's palette check (kimai/knust/bin/check-palette.sh), Knust test (kimai/knust/tests/assets.php)
 #   5. QML module test: qml/tests, if qmltestrunner is installed (tools/check-qml.sh)
 #   6. Kimai plugin kit: assets.html.twig from kit.css/kit.js, self test (kimai/kit/bin/lint.sh)
@@ -22,6 +23,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 OUT=docs/v1
 mkdir -p "$OUT"
+python3 tools/build-variables.py
 {
   echo "/* Kante v1 — https://github.com/shrippen/shrippen.github.io */"
   cat tokens/variables.css css/base.css css/components.css

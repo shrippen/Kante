@@ -17,11 +17,10 @@ qml/Kante/KanteCurveEditor.qml	Keys.onPressed	ccn=18 nesting=8
 qml/Kante/KanteHeatGrid.qml	-	lines=940
 qml/Kante/KanteHeatGrid.qml	Keys.onPressed	nesting=6
 qml/Kante/KanteListRow.qml	underPopup	ccn=16
-qml/Kante/KanteScatterChart.qml	-	lines=823
+qml/Kante/KanteScatterChart.qml	-	lines=814
 qml/Kante/KanteSplitHandle.qml	Keys.onPressed	ccn=18
 qml/Kante/KanteTabStaff.qml	-	lines=999
 qml/Kante/KanteTabStaff.qml	normalizeBars	ccn=19
 qml/Kante/KanteTransportBar.qml	Keys.onPressed	ccn=19
 qml/demo/Gallery.qml	-	lines=1711
 qml/tests/tst_kante_components.qml	-	lines=1203
-tools/check-tokens.py	check_shared_palette	ccn=16

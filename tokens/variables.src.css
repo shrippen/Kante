@@ -1,0 +1,331 @@
+/*
+ * Kante — CSS custom properties (web). Apps: qml/Kante, same values via tokens/palette.json
+ * https://github.com/shrippen/shrippen.github.io
+ *
+ * Gruvbox-inspired, warm, dark-first palette.
+ * Copy this block into your landing page <style> or import as a stylesheet.
+ */
+
+:root {
+  /* ── Backgrounds ── */
+  --bg-void:  {{dark.bg-void}};   /* landing-page ground, darker than bg-hard */
+  --bg-hard:  {{dark.bg-hard}};   /* deepest: hero gradient, code blocks */
+  --bg0:      {{dark.bg0}};   /* page / widget background */
+  --bg-panel: {{dark.bg-panel}};   /* landing-page cards and panels */
+  --bg1:      {{dark.bg1}};   /* cards, elevated surfaces */
+  --bg2:      {{dark.bg2}};   /* borders, dividers */
+
+  /* ── Foregrounds ── */
+  --fg0:      {{dark.fg0}};   /* primary heading (sparingly) */
+  --fg1:      {{dark.fg1}};   /* body text */
+  --fg2:      {{dark.fg2}};   /* secondary text */
+  --fg3:      {{dark.fg3}};   /* placeholder, disabled, footer */
+
+  /* ── Brand accent ── */
+  --accent:   {{dark.accent}};   /* warm cream — icon fills, version badges */
+
+  /* ── Semantic colors (Gruvbox bright) ── */
+  --blue:     {{dark.blue}};   /* links, primary action */
+  --blue-hover: {{dark.blue-hover}}; /* primary button hover (~10% darker) */
+  --aqua:     {{dark.aqua}};   /* success, confirm */
+  --green:    {{dark.green}};   /* positive diff, badges */
+  --yellow:   {{dark.yellow}};   /* warning, attention */
+  --orange:   {{dark.orange}};   /* active, highlight */
+  --red:      {{dark.red}};   /* error, destructive */
+  --purple:   {{dark.purple}};   /* tags, categories */
+  --cyan:     {{dark.cyan}};   /* technical layer: focus, links, data, brackets. Lines and text, never large fills */
+  --cyan-tint: {{dark.cyan-tint}};  /* ground of a selected row or a focused field */
+  --yellow-hi: {{dark.yellow-hi}};  /* primary hover (one step lighter) */
+  --red-text: {{dark.red-text}};   /* red as small text: 4.5:1 on every dark ground, bg1 included */
+  --yellow-lo: {{dark.yellow-lo}};  /* primary pressed */
+
+  /* ── Semantic colors (Gruvbox neutral — for quieter contexts) ── */
+  --blue-n:   {{dark.blue-n}};
+  --aqua-n:   {{dark.aqua-n}};
+  --green-n:  {{dark.green-n}};
+  --yellow-n: {{dark.yellow-n}};
+  --orange-n: {{dark.orange-n}};
+  --red-n:    {{dark.red-n}};
+  --purple-n: {{dark.purple-n}};
+  --cyan-n:   {{dark.cyan-n}};   /* quiet lines only (4.4:1 on cards) */
+
+  /* ── Roles (follow the theme; see Light theme below) ── */
+  --field:    var(--bg-hard); /* input fields, nested surfaces */
+  --score:    var(--yellow);  /* scores, points, "how good is it" */
+  --hl:       var(--cyan);    /* current selection (selected tile, active row) */
+  --focus:    var(--cyan);    /* focus ring, everywhere */
+  --link:     var(--cyan);    /* links in running text */
+  --info:     var(--cyan);    /* info callouts and toasts, third feature tier */
+  --warn:     var(--orange);  /* warnings: callout, banner, middle tier of states */
+  --danger:   var(--red);     /* errors, destructive actions */
+  --danger-text: var(--red-text); /* error text, critical labels and counts (not fills) */
+  --on-state: var(--bg-void); /* text on a filled state colour (danger button, counters) */
+  --scrim:    rgba(20,19,18,.62); /* dimmed area behind dialogs and outside a crop */
+  --primary:  var(--yellow);  /* primary action, pressed segment, switch on, focus ring */
+  --on-primary: var(--bg-void); /* text on --primary */
+  --map-marker: var(--focus);   /* pins on a map (QML mapMarkerColor) */
+  --map-route:  var(--primary); /* a route or track on a map (QML mapRouteColor) */
+  --entity-fallback: var(--fg3); /* an entity without a colour of its own (QML entityFallbackColor) */
+
+  /* ── Tints: translucent steps of the theme colours for hover, drop targets, selection, outlines ── */
+  --tint-1:    color-mix(in srgb, var(--fg1) 8%, transparent);
+  --tint-2:    color-mix(in srgb, var(--fg1) 16%, transparent);
+  --tint-hl:   color-mix(in srgb, var(--cyan) 12%, transparent);
+  --tint-hl-2: color-mix(in srgb, var(--cyan) 25%, transparent);
+  --tint-warn: color-mix(in srgb, var(--orange) 14%, transparent);
+
+  /* ── Data palette: series colours of charts, in this order (red stays danger) ── */
+  --d1: var(--cyan);
+  --d2: var(--yellow);
+  --d3: var(--purple);
+  --d4: var(--aqua);
+  --d5: var(--orange);
+  --d6: var(--fg3);
+
+  /* ── Paper: stickers and brand chips (cream label, dark ink) ── */
+  --paper:    var(--accent);
+  --on-paper: var(--bg-void);
+
+  /* ── Layout ── */
+  --radius:   12px;
+  --max-w:    860px;
+  --max-w-wide: 1280px;  /* landing hero and feature rows */
+  --gutter:   clamp(1rem, 5.6vw, 4.5rem);
+  --chamfer:  16px;      /* top-right corner cut on boxes (surfaces) */
+  --cut-m:    10px;      /* buttons, tiles, tabs, menus */
+  --cut-s:    6px;       /* small buttons, stickers */
+  --h-s:      32px;      /* control heights: small, medium, large */
+  --h-m:      40px;
+  --h-l:      48px;
+  --h-xs:     24px;      /* dense parts below the control heights: chips, pills, stickers, inline buttons (touch: --h-s) */
+  --h-mark:   20px;      /* counters and markers: .count, hint counts, the help "?" */
+  --line-border: 1px;    /* borders and grid lines */
+  --line-mark:   2px;    /* lines that mark: today, the picked day, the now line, underlines */
+  --line-edge:   3px;    /* the colour edge of an entry (a calendar's or project's colour) */
+  --level-wash:   6%;    /* tint levels of a data colour, for color-mix(): a tray */
+  --level-fill:   12%;   /* free time, a draft */
+  --level-strong: 22%;   /* a planned block */
+  --level-edge:   40%;   /* the border of such an area */
+  --level-done:   .6;    /* opacity of something done */
+  --level-dim:    .5;    /* opacity of something out of range or minor */
+  --title-s:  1.1rem;    /* titles of cards, rows, tiles and bars (Rajdhani, uppercase) */
+  --title-m:  1.4rem;    /* titles of blocks, sheets, dialogs and the login card */
+  --title-l:  clamp(1.8rem, 4.2vw, 2.5rem); /* the title of an app page */
+  --title-track: .04em;  /* letter spacing of --title-s and --title-m */
+
+  /* ── Motion (only under prefers-reduced-motion: no-preference) ── */
+  --dur-fast: 120ms;     /* colour and border changes */
+  --dur:      200ms;     /* cut grows, lift, slide */
+  --dur-slow: 450ms;     /* entrances: bar, scan, cascade */
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --ease-snap: cubic-bezier(.3,1.5,.5,1); /* mechanical snap with a small overshoot */
+
+  /* ── Typography ── */
+  --font-heading: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+               Ubuntu, Cantarell, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  --font-control: var(--font-heading); /* buttons; Kante Gold keeps Rajdhani here while titles turn serif */
+}
+
+/*
+ * Light theme ("Leinen") — opt-in via <html data-theme="light">.
+ * Token names describe ROLES, not lightness: --bg-void is still the page
+ * ground, --bg-panel the cards, --bg2 the borders, --fg1 the body text.
+ * Landing pages stay dark-first; apps that need a light mode use this.
+ * Semantic colors are the darkened counterparts so every text pair reaches
+ * WCAG AA on the ground and on cards.
+ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* ── Backgrounds ── */
+  --bg-void:  {{light.bg-void}};   /* page ground: linen, between too-yellow #fbf1c7 and too-bright #f5f1e8 */
+  --bg-hard:  {{light.bg-hard}};   /* sunk areas: code, progress tracks */
+  --bg0:      {{light.bg0}};
+  --bg-panel: {{light.bg-panel}};   /* cards and panels */
+  --bg1:      {{light.bg1}};   /* fields, elevated surfaces */
+  --bg2:      {{light.bg2}};   /* borders, dividers */
+
+  /* ── Foregrounds ── */
+  --fg0:      {{light.fg0}};
+  --fg1:      {{light.fg1}};
+  --fg2:      {{light.fg2}};
+  --fg3:      {{light.fg3}};
+
+  /* ── Brand accent ── */
+  --accent:   {{light.accent}};   /* icon fill on light: dark square, yellow marks */
+
+  /* ── Semantic colors (darkened for light grounds) ── */
+  --blue:     {{light.blue}};
+  --blue-hover: {{light.blue-hover}};
+  --aqua:     {{light.aqua}};
+  --green:    {{light.green}};
+  --yellow:   {{light.yellow}};
+  --orange:   {{light.orange}};
+  --red:      {{light.red}};
+  --purple:   {{light.purple}};
+  --cyan:     {{light.cyan}};   /* 5.2:1 on the ground */
+  --cyan-tint: {{light.cyan-tint}};
+  --red-text: {{light.red-text}};
+
+  --field:    var(--bg1);
+  --scrim:    rgba(40,40,40,.5);
+  --primary:  {{light.primary}};   /* yellow fill with ink, as in the dark theme (not ochre with brown text) */
+  --on-primary: {{light.on-primary}};
+  --yellow-hi: {{light.yellow-hi}};
+  --yellow-lo: {{light.yellow-lo}};
+  --on-state: {{light.on-state}};
+}
+
+/*
+ * Kante Light (apps) — opt-in via <html data-kante="light">.
+ * Kante shapes on the platform look: colors are Breeze and follow the
+ * system's light/dark setting (prefers-color-scheme), like Kirigami.Theme
+ * does for Qt apps. Controls keep a small radius and the system font;
+ * css/components.css "Kante Light" adds the shape and type rules.
+ * Semantic colors are the Breeze inks (readable as text on the ground).
+ */
+:root[data-kante="light"] {
+  color-scheme: light;
+
+  --bg-void:  {{kanteLight.bg-void}};   /* window ground */
+  --bg-hard:  {{kanteLight.bg-hard}};   /* sunk areas, tracks */
+  --bg0:      {{kanteLight.bg0}};
+  --bg-panel: {{kanteLight.bg-panel}};   /* cards, panels (view) */
+  --bg1:      {{kanteLight.bg1}};   /* fields */
+  --bg2:      {{kanteLight.bg2}};   /* borders */
+
+  --fg0:      {{kanteLight.fg0}};
+  --fg1:      {{kanteLight.fg1}};
+  --fg2:      {{kanteLight.fg2}};
+  --fg3:      {{kanteLight.fg3}};
+
+  --accent:   {{kanteLight.accent}};
+
+  --blue:     {{kanteLight.blue}};
+  --blue-hover: {{kanteLight.blue-hover}};
+  --aqua:     {{kanteLight.aqua}};
+  --green:    {{kanteLight.green}};
+  --yellow:   {{kanteLight.yellow}};   /* "check" tier: Breeze neutral, darkened */
+  --orange:   {{kanteLight.orange}};
+  --red:      {{kanteLight.red}};
+  --purple:   {{kanteLight.purple}};
+
+  --field:    var(--bg1);
+  --score:    var(--blue);
+  --hl:       {{kanteLight.hl}};   /* Breeze highlight: selection, focus */
+  --scrim:    rgba(35,38,41,.5);
+  --primary:  {{kanteLight.primary}};
+  --on-primary: {{kanteLight.on-primary}};
+  --cyan:     {{kanteLight.cyan}};   /* Kante Light has no cyan: the platform's link and focus colours */
+  --cyan-n:   {{kanteLight.cyan-n}};
+  --cyan-tint: {{kanteLight.cyan-tint}};
+  --red-text: var(--red);
+  --yellow-hi: {{kanteLight.yellow-hi}};
+  --yellow-lo: {{kanteLight.yellow-lo}};
+  --on-state: {{kanteLight.on-state}};
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-kante="light"] {
+    color-scheme: dark;
+
+    --bg-void:  {{kanteLightDark.bg-void}};
+    --bg-hard:  {{kanteLightDark.bg-hard}};
+    --bg0:      {{kanteLightDark.bg0}};
+    --bg-panel: {{kanteLightDark.bg-panel}};
+    --bg1:      {{kanteLightDark.bg1}};
+    --bg2:      {{kanteLightDark.bg2}};
+
+    --fg0:      {{kanteLightDark.fg0}};
+    --fg1:      {{kanteLightDark.fg1}};
+    --fg2:      {{kanteLightDark.fg2}};
+    --fg3:      {{kanteLightDark.fg3}};
+
+    --accent:   {{kanteLightDark.accent}};
+
+    --blue:     {{kanteLightDark.blue}};
+    --blue-hover: {{kanteLightDark.blue-hover}};
+    --aqua:     {{kanteLightDark.aqua}};
+    --green:    {{kanteLightDark.green}};
+    --yellow:   {{kanteLightDark.yellow}};
+    --orange:   {{kanteLightDark.orange}};
+    --red:      {{kanteLightDark.red}};
+    --purple:   {{kanteLightDark.purple}};
+
+    --scrim:    rgba(0,0,0,.55);
+    --cyan:     {{kanteLightDark.cyan}};
+    --cyan-n:   {{kanteLightDark.cyan-n}};
+    --cyan-tint: {{kanteLightDark.cyan-tint}};
+    --red-text: var(--red);
+    --yellow-hi: {{kanteLightDark.yellow-hi}};
+    --yellow-lo: {{kanteLightDark.yellow-lo}};
+    --on-state: {{kanteLightDark.on-state}};
+  }
+}
+
+/*
+ * Kante Gold — opt-in via <html data-kante="gold">. Only Kintsugi uses it (see AGENT-RULE.md).
+ * The noble variant: the same components and sizes on urushi lacquer, paper text and gold.
+ * Every cut edge is gilded, bars are 2 px, titles and figures are Spectral, motion glides.
+ * Dark only. css/components.css "Kante Gold" adds the shape, type and motion rules.
+ * Patina (verdigris) takes cyan's roles: focus, links, info.
+ */
+:root[data-kante="gold"] {
+  color-scheme: dark;
+
+  /* ── Backgrounds: lacquer ── */
+  --bg-void:  {{gold.bg-void}};   /* urushi: page ground */
+  --bg-hard:  {{gold.bg-hard}};   /* sunk areas, fields, tracks */
+  --bg0:      {{gold.bg0}};
+  --bg-panel: {{gold.bg-panel}};   /* lacquer: cards and panels */
+  --bg1:      {{gold.bg1}};   /* elevated, hover */
+  --bg2:      {{gold.bg2}};   /* borders, dividers */
+
+  /* ── Foregrounds: paper ── */
+  --fg0:      {{gold.fg0}};
+  --fg1:      {{gold.fg1}};
+  --fg2:      {{gold.fg2}};
+  --fg3:      {{gold.fg3}};   /* ash: 6.6:1 on the ground */
+
+  /* ── Brand accent: pale gold ── */
+  --accent:   {{gold.accent}};
+
+  /* ── Semantic colors: metals and pigments ── */
+  --blue:     {{gold.blue}};   /* slate */
+  --blue-hover: {{gold.blue-hover}};
+  --aqua:     {{gold.aqua}};   /* jade: success */
+  --green:    {{gold.green}};
+  --yellow:   {{gold.yellow}};   /* gold: primary, lines, score */
+  --orange:   {{gold.orange}};   /* copper: warning */
+  --red:      {{gold.red}};   /* cinnabar: error */
+  --purple:   {{gold.purple}};   /* ume: tags */
+  --cyan:     {{gold.cyan}};   /* patina: focus, links, info */
+  --cyan-n:   {{gold.cyan-n}};
+  --cyan-tint: {{gold.cyan-tint}};
+  --yellow-hi: {{gold.yellow-hi}};
+  --yellow-lo: {{gold.yellow-lo}};
+  --red-text: {{gold.red-text}};
+
+  --scrim:    rgba(15,13,11,.72);
+  --d1: var(--yellow);
+  --d2: var(--cyan);
+
+  /* ── Gold only ── */
+  --gold-line: color-mix(in srgb, var(--yellow) 32%, transparent); /* hairlines, frames */
+  --gild:     1.6px;     /* the gold line on every cut edge */
+  --bar:      2px;       /* state and tier bars (Kante: 4 px) */
+
+  /* ── Motion: glides, no overshoot ── */
+  --dur-fast: 160ms;
+  --dur:      280ms;
+  --dur-slow: 700ms;
+  --ease-snap: cubic-bezier(.2,.8,.2,1);
+
+  /* ── Typography: serif titles and figures, Rajdhani stays on the controls ── */
+  --font-heading: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-control: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  Oxygen, Ubuntu, Cantarell, sans-serif;
+}
