@@ -28,6 +28,7 @@ stylesheet or copy the module.
 | `tools/build-*.py`, `build.sh` | The build: generates everything below from the sources above. `tools/knust-zip.sh` packs Knust's release. |
 | `tools/check-*`, `tools/qmllint.sh`, `tools/structure-check.py` | The checks the build and CI run: tokens, release lists, QML tests, Union, structure limits (a synced copy). `check-kit.sh`, run by hand, lists the plug-ins beside this repository that lack the current kit. |
 | `tools/specimen.html`, `tools/shoot-specimen.py` | One page with every web component, and its pictures in each theme. |
+| `tools/clip-fixture.html`, `tools/check-clip.py`, `tools/clip-expected.json` | The cut corner's test: one instance of every cut surface, its computed `clip-path` in four variants at two widths against the expectation. |
 | `docs/v1/` | The built web files. `shrippen.github.io` copies them and serves them to every page. Generated. |
 | `docs/` (rest), `proposals/`, `README.md` | Kante's and Knust's own pages; design proposals by date, kept as record; the catalogue of every token and component. |
 | `.design-sync/` | The bundle for Claude Design, built from the same sources. |

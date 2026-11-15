@@ -16,6 +16,8 @@
 #   9. Claude Design upload: ds-bundle/ (.design-sync/make-bundle.py, gitignored)
 #  10. Specimen: tools/specimen.html in dark, Leinen, Kante Light and Gold -> dist/specimen/
 #      (tools/shoot-specimen.py; skipped when $KANTE_PY has no Playwright)
+#  11. Cut corner: computed clip-path of tools/clip-fixture.html against tools/clip-expected.json
+#      (tools/check-clip.py; skipped when $KANTE_PY has no Playwright)
 set -euo pipefail
 cd "$(dirname "$0")"
 OUT=docs/v1
@@ -54,6 +56,7 @@ python3 .design-sync/make-bundle.py
 KANTE_PY="${KANTE_PY:-$(realpath -m ../shrippen.github.io/demo/tools/.venv/bin/python)}"
 if "$KANTE_PY" -c "import playwright" 2>/dev/null; then
   "$KANTE_PY" tools/shoot-specimen.py
+  "$KANTE_PY" tools/check-clip.py
 else
-  echo "specimen skipped (no Playwright in \$KANTE_PY)"
+  echo "specimen and clip check skipped (no Playwright in \$KANTE_PY)"
 fi
