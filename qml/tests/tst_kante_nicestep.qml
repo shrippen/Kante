@@ -27,4 +27,15 @@ TestCase {
         compare(KanteStyle.niceStep(-5), 1)
         compare(KanteStyle.niceStep(NaN), 1)
     }
+
+    Component {
+        id: lineChart
+        KanteLineChart { axis: true }
+    }
+
+    // A gap (NaN) in a line keeps the scale undefined, as before the shared step.
+    function test_lineWithGapHasNoScale() {
+        const chart = createTemporaryObject(lineChart, this, { series: [[1, NaN, 3]] })
+        verify(isNaN(chart.scaleTop))
+    }
 }

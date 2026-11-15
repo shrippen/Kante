@@ -105,7 +105,6 @@ stylesheet or copy the module.
   hold); `KanteBassStaff` and `KanteTabStaff` each have their own `computeLayout`,
   `normalizeBars`, `layoutBeams`, `layoutSections` and `xOf`, which differ in the notation
   (staff lines against strings, `sys` in the sections, other paddings).
-- Three charts each compute their own axis steps (`AUDIT.md`, finding 2).
 - The cut corner is written out about 25 times in the stylesheet
   (`AUDIT.md`, finding 7).
 - `js/shrippen.js` does everything in one function (`AUDIT.md`, finding 5).

@@ -67,7 +67,8 @@ Item {
         for (let t = 0; t < thresholds.length; t++) {
             m = Math.max(m, thresholds[t].value)
         }
-        if (!axis) {
+        // A gap (NaN) in the values leaves the scale undefined.
+        if (!axis || isNaN(m)) {
             return m
         }
         return minValue + 4 * KanteStyle.niceStep((m - minValue) / 4)
