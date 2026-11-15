@@ -53,7 +53,7 @@ The palette is a **warm-shifted Gruvbox Dark** subset.
 
 ### Light theme ("Leinen")
 
-Opt-in for apps (not landing pages) via `<html data-theme="light">`, defined in [`tokens/variables.css`](tokens/variables.css). Token names describe **roles, not lightness**: `--bg-void` is always the page ground, `--bg-panel` the cards, `--bg2` the borders, `--fg1` the body text. Switching the theme only swaps values.
+Opt-in for apps (not landing pages) via `<html data-theme="light">`, defined in [`tokens/variables.src.css`](tokens/variables.src.css) (built into `tokens/variables.css`). Token names describe **roles, not lightness**: `--bg-void` is always the page ground, `--bg-panel` the cards, `--bg2` the borders, `--fg1` the body text. Switching the theme only swaps values.
 
 | Token | Dark | Light | Role |
 |---|---|---|---|
@@ -1491,12 +1491,12 @@ The quieter variant for apps that should sit next to Breeze / Kirigami apps and 
 | Other headings (`KanteHeading` without `pageTitle`) | The Kante layouts an app offers (tiles, time lines) |
 
 - Qt: `KanteStyle.kind = KanteStyle.Kind.KanteLight`. `KanteStyle.active` is true for Kante and Kante Light (shapes, type, layouts); `KanteStyle.themed` only for Kante (palette, control skins). Views branch on `active` for layout and read colors from the roles, which stay the theme's in Kante Light. Control wrappers and skins only draw in `themed`.
-- Web: `<html data-kante="light">` with the regular stylesheet. Tokens in `tokens/variables.css` (Breeze light, and dark under `prefers-color-scheme: dark`), shape and type rules in the "Kante Light" block of `css/components.css`. App CSS uses the roles (`--primary`, `--on-primary`, `--hl`, `--bg-panel`, …), never `--yellow` for "active".
-- Kante Light has no palette of its own in `palette.json`: there is nothing to keep in sync, the platform owns the colors.
+- Web: `<html data-kante="light">` with the regular stylesheet. Colours in `tokens/palette.json` (`kanteLight`), written into `tokens/variables.css` (Breeze light, and dark under `prefers-color-scheme: dark`), shape and type rules in the "Kante Light" block of `css/components.css`. App CSS uses the roles (`--primary`, `--on-primary`, `--hl`, `--bg-panel`, …), never `--yellow` for "active".
+- Kante Light's colors stand in `palette.json` (`kanteLight`, light and dark), like the other themes; the platform owns them, they follow Breeze.
 
 ### Web ↔ app
 
-Both sides use the same palette values (`tools/check-tokens.py` fails if `palette.json` and `variables.css` drift apart). Apps add alpha to surfaces, because a translucent or blurred platform ground sits behind them.
+Both sides use the same palette values: `tools/build-variables.py` writes the web's colours from `palette.json`, so they cannot drift apart. Apps add alpha to surfaces, because a translucent or blurred platform ground sits behind them.
 
 | Role | Web (CSS) | App (`KanteStyle`) | Dark | Light (Leinen) |
 |---|---|---|---|---|

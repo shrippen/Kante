@@ -14,8 +14,8 @@ stylesheet or copy the module.
 
 | Path | Its one task |
 |---|---|
-| `tokens/palette.json` | The one source of every colour, font, line and level, for all themes (dark, Leinen, Gold). |
-| `tokens/variables.css` | The palette as CSS custom properties, and the roles built on them (text, ground, accent, state). |
+| `tokens/palette.json` | The one source of every colour, font, line and level, for all themes (dark, Leinen, Kante Light, Gold). |
+| `tokens/variables.src.css`, `tokens/variables.css` | The palette as CSS custom properties, and the roles built on them (text, ground, accent, state). The `.src.css` is written by hand with `{{theme.name}}` placeholders for colours; `tools/build-variables.py` fills them from the palette into `variables.css`. |
 | `css/`, `js/`, `fonts/` | Kante for the web: the components' styles, their behaviour, the map and wall display scripts, the offline fonts. |
 | `qml/Kante/` | Kante for apps: `KanteStyle` (all roles, the one place that picks the theme), one file per component, the skins for Qt's own controls. `KantePalette.qml` is generated. |
 | `qml/Kante/KanteNoteState.qml`, `KanteStaffFrame.qml` | What the note views share, without a look: the state of each note (played right, wrong, technique), kept for the two staffs and the two lanes; and the staffs' room, line layouts and loop split. |
@@ -63,7 +63,7 @@ stylesheet or copy the module.
   component asks `KanteStyle`, never `KantePalette`, and never decides the theme itself.
 - Generated files are committed and changed only by `./build.sh`: `docs/v1/`,
   `qml/Kante/KantePalette.qml`, `qmldir` and `fonts/`, `tokens/palette.qml`,
-  `qml/KantePlasma/KantePlasmaButton.qml`, `knust-palette.css`, the kit's
+  `tokens/variables.css`, `qml/KantePlasma/KantePlasmaButton.qml`, `knust-palette.css`, the kit's
   `assets.html.twig`, `union/styles/`, `union/colors/`.
 - A shape or behaviour several components share is written once and used by them: in
   CSS as one rule or property, in QML as one component or function.
@@ -81,20 +81,19 @@ stylesheet or copy the module.
 
 | Change | Touch |
 |---|---|
-| A new or changed colour, font or level | `tokens/palette.json` (and, until they are generated, the same value in `tokens/variables.css`), `./build.sh`, README |
-| A new role (what a colour is for) | `tokens/variables.css` and `qml/Kante/KanteStyle.qml`, under the same name; README |
+| A new or changed colour | `tokens/palette.json`, `./build.sh`, README |
+| A new or changed font or level | `tokens/palette.json` and `tokens/variables.src.css` (checked against each other), `./build.sh`, README |
+| A new role (what a colour is for) | `tokens/variables.src.css` and `qml/Kante/KanteStyle.qml`, under the same name; README |
 | A new web component | `css/components.css`, behaviour in `js/`, README, `tools/specimen.html`, its catalogue page in `proposals/` |
 | A change to how note states work, or to how the staffs lay out lines and take their size | `KanteNoteState.qml` or `KanteStaffFrame.qml`, never one view alone; the views `KanteBassStaff`, `KanteTabStaff`, `KanteTabLane`, `KanteKeyLane` only hand on |
 | A new QML component | A file in `qml/Kante/`, a test in `qml/tests/`, an entry in `qml/demo/Gallery.qml`, README; `./build.sh` writes `qmldir` |
 | Motion | The `prefers-reduced-motion` block at the end of `css/components.css`; `KanteStyle.motion` in QML |
 | Something for Kimai's look | `kimai/knust/`; something Kimai plug-ins share: `kimai/kit/`, then `kimai/kit/bin/sync.sh` per plug-in |
-| A theme or variant | `tokens/palette.json`, its block in `tokens/variables.css`, `KanteStyle`, the build scripts that list themes |
+| A theme or variant | `tokens/palette.json`, its block in `tokens/variables.src.css`, `KanteStyle`, the build scripts that list themes |
 | A proposal before it is built | `proposals/<year>-<month>-<name>/` |
 
 ## Known deviations
 
-- Every colour stands by hand in `tokens/variables.css` as well; a check compares the
-  two. Kante Light's colours stand only there (`AUDIT.md`, finding 3).
 - The Union build calls Leinen "Kante Light", which is another theme
   (`AUDIT.md`, finding 4).
 - The bass and tablature staffs are still over 800 lines each, and `normalizeBars` and

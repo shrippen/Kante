@@ -8,13 +8,14 @@
   - A fill that marks "active / chosen / working" uses --primary, never --yellow: in Leinen and
     Kante Light --yellow is a text colour (ochre, orange). Only the brand marks in YELLOW_FILL_OK
     may fill with --yellow.
-  - Web and apps share one palette: every colour in tokens/palette.json (dark and the
-    light theme "Leinen" and Kante Gold) has the same value as its custom property in tokens/variables.css.
+  - tokens/variables.css is what tools/build-variables.py writes from the palette now (the colours
+    cannot be stale), and lines and levels in tokens/palette.json equal their custom property.
 
 Scans css/*.css, templates/*.html, the landing pages in docs/ and any HTML file given as argument (in HTML only <style>, style="…"
 and fill/stroke/color attributes). Exits 1 on any finding.
 Usage: python3 tools/check-tokens.py [page.html ...]   (build.sh runs it; shrippen.github.io passes its overview)
 """
+import importlib.util
 import re
 import sys
 from pathlib import Path
@@ -82,36 +83,30 @@ def css_block(text, selector):
 
 
 def check_shared_palette():
-    """palette.json (apps, QML) and variables.css (web) must not drift apart."""
+    """palette.json (apps, QML) and variables.css (web) must not drift apart in lines and levels."""
     import json
     palette = json.loads((KANTE / "tokens/palette.json").read_text())
-    css = (KANTE / "tokens/variables.css").read_text()
-    dark, light = css_block(css, ":root {"), css_block(css, ':root[data-theme="light"]')
-    gold = css_block(css, ':root[data-kante="gold"]')
-    expected = [(":root", dark, "accent", palette["accent"])]
-    for group in ("backgrounds", "foregrounds"):
-        expected += [(":root", dark, k, v) for k, v in palette[group].items()]
-    expected += [(":root", dark, k, v["bright"]) for k, v in palette["semantic"].items()]
-    expected += [(":root", dark, "cyan-n", palette["semantic"]["cyan"]["neutral"])]
-    expected += [(":root", dark, k, v) for k, v in palette.get("extra", {}).items()]
-    lt = palette["light"]
-    expected += [("light", light, "accent", lt["accent"])]
-    for group in ("backgrounds", "foregrounds", "semantic"):
-        expected += [("light", light, k, v) for k, v in lt[group].items()]
-    expected += [("light", light, k, v) for k, v in lt.get("extra", {}).items()]
-    gd = palette["gold"]
-    expected += [("gold", gold, "accent", gd["accent"])]
-    for group in ("backgrounds", "foregrounds", "semantic", "extra"):
-        expected += [("gold", gold, k, v) for k, v in gd[group].items()]
+    built = (KANTE / "tokens/variables.css").read_text()
+    if built != render_variables():
+        yield "tokens/variables.css is out of date: run ./build.sh (tools/build-variables.py)"
+    dark = css_block(built, ":root {")
     # Lines and levels: px and percentages on the web, plain numbers in palette.json.
     lines, levels = palette["shape"]["lines"], palette["levels"]
-    expected += [(":root", dark, f"line-{k}", f"{v}px") for k, v in lines.items() if k != "note"]
-    expected += [(":root", dark, f"level-{k}", f"{round(levels[n] * 100)}%")
+    expected = [(f"line-{k}", f"{v}px") for k, v in lines.items() if k != "note"]
+    expected += [(f"level-{k}", f"{round(levels[n] * 100)}%")
                  for k, n in (("wash", "wash"), ("fill", "fill"), ("strong", "strongFill"), ("edge", "edge"))]
-    expected += [(":root", dark, f"level-{k}", str(levels[k]).lstrip("0")) for k in ("done", "dim")]
-    for block, props, name, value in expected:
-        if props.get(name) != value.lower():
-            yield f"tokens/palette.json {name} = {value} but tokens/variables.css ({block}) has {props.get(name)}"
+    expected += [(f"level-{k}", str(levels[k]).lstrip("0")) for k in ("done", "dim")]
+    for name, value in expected:
+        if dark.get(name) != value.lower():
+            yield f"tokens/palette.json {name} = {value} but tokens/variables.css has {dark.get(name)}"
+
+
+def render_variables():
+    """variables.css as tools/build-variables.py would write it now, without writing it."""
+    spec = importlib.util.spec_from_file_location("build_variables", KANTE / "tools/build-variables.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.render()
 
 
 # fonts.css declares the font families themselves: it is the one place that names them
