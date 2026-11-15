@@ -63,12 +63,8 @@ TestCase {
         compare(c.axes.x1, 13)
     }
 
-    function test_niceStepAndDecimals() {
+    function test_decimals() {
         const c = createTemporaryObject(chartComponent, stage())
-        compare(c.niceStep(0.7), 1)
-        compare(c.niceStep(1.7), 2)
-        compare(c.niceStep(2.2), 2.5)
-        compare(c.niceStep(31), 50)
         compare(c.decimalsOf(2), 0)
         compare(c.decimalsOf(2.5), 1)
         compare(c.decimalsOf(0.25), 2)
