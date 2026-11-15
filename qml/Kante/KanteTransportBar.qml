@@ -78,6 +78,8 @@ FocusScope {
     signal frameStepRequested(int direction)
     signal markerStepRequested(int direction)
 
+    readonly property int tenthsPerSecond: 10
+    readonly property real tenthEpsilon: 1e-6
     readonly property int speedPercent: Math.round(speed * 100)
 
     function time(s) {
@@ -87,8 +89,9 @@ FocusScope {
         if (timeFormat !== "mm:ss,d") {
             return minutes + ":" + seconds
         }
-        // Whole tenths, cut off: 59.99 s is 00:59,9, never 01:00,0 early.
-        const tenth = Math.min(9, Math.floor((Math.max(0, s) - whole) * 10))
+        // Whole tenths, cut off: 59.99 s is 00:59,9, never 01:00,0 early. The epsilon
+        // keeps 1.2 s at 2 tenths (1.2 - 1 is 0.1999... in floating point).
+        const tenth = Math.floor(Math.max(0, s) * tenthsPerSecond + tenthEpsilon) % tenthsPerSecond
         return String(minutes).padStart(2, "0") + ":" + seconds + "," + tenth
     }
     /** The words of a fixed tempo: "25 %" for 0.25. */

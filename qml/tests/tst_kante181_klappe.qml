@@ -573,4 +573,12 @@ TestCase {
         bar.timeFormat = "unknown"
         compare(bar.time(65.37), "1:05")
     }
+
+    function test_barTimeTenthsFloat() {
+        const bar = createTemporaryObject(barComponent, stage(), { timeFormat: "mm:ss,d" })
+        // 1.2 - 1 is 0.19999999999999996 in floating point.
+        compare(bar.time(1.2), "00:01,2")
+        compare(bar.time(0.3), "00:00,3")
+        compare(bar.time(2.3), "00:02,3")
+    }
 }
