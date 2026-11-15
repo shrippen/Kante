@@ -79,20 +79,20 @@ FocusScope {
     signal markerStepRequested(int direction)
 
     readonly property int tenthsPerSecond: 10
-    readonly property real tenthEpsilon: 1e-6
     readonly property int speedPercent: Math.round(speed * 100)
 
     function time(s) {
-        const whole = Math.floor(Math.max(0, s))
-        const minutes = Math.floor(whole / 60)
-        const seconds = String(whole % 60).padStart(2, "0")
         if (timeFormat !== "mm:ss,d") {
-            return minutes + ":" + seconds
+            const whole = Math.floor(Math.max(0, s))
+            return Math.floor(whole / 60) + ":" + String(whole % 60).padStart(2, "0")
         }
-        // Whole tenths, cut off: 59.99 s is 00:59,9, never 01:00,0 early. The epsilon
-        // keeps 1.2 s at 2 tenths (1.2 - 1 is 0.1999... in floating point).
-        const tenth = Math.floor(Math.max(0, s) * tenthsPerSecond + tenthEpsilon) % tenthsPerSecond
-        return String(minutes).padStart(2, "0") + ":" + seconds + "," + tenth
+        // Minutes, seconds and tenths all come from one count of whole tenths, cut off:
+        // 59.99 s is 00:59,9, never 01:00,0 early, and 0.9999999999999999 s is 00:00,9.
+        // Counted from s itself: (s - whole) * 10 loses 1.2 s to 1 tenth in floating point.
+        const tenths = Math.floor(Math.max(0, s) * tenthsPerSecond)
+        const whole = Math.floor(tenths / tenthsPerSecond)
+        const seconds = String(whole % 60).padStart(2, "0")
+        return String(Math.floor(whole / 60)).padStart(2, "0") + ":" + seconds + "," + tenths % tenthsPerSecond
     }
     /** The words of a fixed tempo: "25 %" for 0.25. */
     function speedLabel(step) {

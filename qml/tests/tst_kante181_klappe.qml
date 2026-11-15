@@ -580,5 +580,18 @@ TestCase {
         compare(bar.time(1.2), "00:01,2")
         compare(bar.time(0.3), "00:00,3")
         compare(bar.time(2.3), "00:02,3")
+        // Just under a whole second: tenths and seconds must agree.
+        compare(bar.time(0.9999999999999999), "00:00,9")
+        compare(bar.time(2.9999999999999996), "00:02,9")
+        compare(bar.time(59.99999999), "00:59,9")
+        // Unchanged values.
+        compare(bar.time(-5), "00:00,0")
+        compare(bar.time(59.95), "00:59,9")
+        compare(bar.time(60), "01:00,0")
+        compare(bar.time(60.05), "01:00,0")
+        compare(bar.time(119.95), "01:59,9")
+        compare(bar.time(3599.95), "59:59,9")
+        compare(bar.time(6000.3), "100:00,3")
+        compare(bar.time(1e7 + 0.3), "166666:40,3")
     }
 }
