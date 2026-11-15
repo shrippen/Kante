@@ -203,19 +203,6 @@ FocusScope {
         canvas.requestPaint()
     }
 
-    // Colour of a shape's label name.
-    function _colorOf(name) {
-        switch (name) {
-        case "muted": return KanteStyle.mutedTextColor
-        case "accent": return KanteStyle.accentColor
-        case "focus": return KanteStyle.focusColor
-        case "warning": return KanteStyle.warningColor
-        case "ground": return KanteStyle.backgroundColor
-        }
-        const c = KanteStyle.labelColor(name)
-        return c.a > 0 ? c : KanteStyle.textColor
-    }
-
     // Distance from (px, py) to the segment (ax, ay)-(bx, by).
     function _segDist(px, py, ax, ay, bx, by) {
         const dx = bx - ax
@@ -375,7 +362,7 @@ FocusScope {
         function _color(name) {
             let c = _colors[name]
             if (c === undefined) {
-                c = root._colorOf(name)
+                c = KanteStyle.namedColor(name)
                 _colors[name] = c
             }
             return c
