@@ -10,7 +10,7 @@ js/shrippen.js	(anonymous)	ccn=17
 js/shrippen.js	(anonymous)#2	length=450
 js/shrippen.js	(anonymous)#3	length=506
 kimai/kit/kit/js/kit.js	(anonymous)	length=665
-qml/Kante/KanteBassStaff.qml	-	lines=1119
+qml/Kante/KanteBassStaff.qml	-	lines=1027
 qml/Kante/KanteBassStaff.qml	computeLayout	ccn=105 length=266 nesting=8
 qml/Kante/KanteBassStaff.qml	normalizeBars	ccn=41
 qml/Kante/KanteBassStaff.qml	spell	ccn=16 nesting=6
@@ -21,7 +21,7 @@ qml/Kante/KanteListRow.qml	underPopup	ccn=16
 qml/Kante/KanteScatterChart.qml	-	lines=823
 qml/Kante/KanteShapeCanvas.qml	-	lines=812
 qml/Kante/KanteSplitHandle.qml	Keys.onPressed	ccn=18
-qml/Kante/KanteTabStaff.qml	-	lines=1098
+qml/Kante/KanteTabStaff.qml	-	lines=1004
 qml/Kante/KanteTabStaff.qml	computeLayout	ccn=67 length=179 nesting=5
 qml/Kante/KanteTabStaff.qml	normalizeBars	ccn=19
 qml/Kante/KanteTransportBar.qml	Keys.onPressed	ccn=19

@@ -71,7 +71,6 @@ Item {
     // The states of the notes, apart from `notes` (see KanteNoteState).
     KanteNoteState {
         id: noteState
-        notes: lane.notes
         onStateSet: function (index, state, cents) {
             const it = noteRepeater.itemAt(index)
             if (!it) {
@@ -92,6 +91,7 @@ Item {
             }
         }
     }
+    onNotesChanged: noteState.notes = notes
 
     /** The key geometry (KanteKeyLayout), e.g. to align own items with the keys. */
     readonly property KanteKeyLayout keyLayout: KanteKeyLayout {

@@ -94,7 +94,6 @@ Item {
     // object reports, so one change moves one note.
     KanteNoteState {
         id: noteState
-        notes: lane.notes
         onStateSet: function (index, state, cents) {
             const it = noteRepeater.itemAt(index)
             if (!it) {
@@ -122,6 +121,7 @@ Item {
             }
         }
     }
+    onNotesChanged: noteState.notes = notes
 
     /**
      * Sets how the technique of one note was played (Kante 1.31): "", "played", "other" or

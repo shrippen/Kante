@@ -105,7 +105,6 @@ Item {
     // The states of the notes, apart from `notes` (see KanteNoteState).
     KanteNoteState {
         id: noteState
-        notes: staff.notes
     }
 
     /** Sets how the technique of one note was played (Kante 1.31): "", "played", "other", "unheard". */
@@ -155,6 +154,7 @@ Item {
         return marks === KanteBassStaff.Marks.Off || i === undefined ? "pending" : stateOf(i)
     }
     onNotesChanged: {
+        noteState.notes = notes
         calm = true
         calmTimer.restart()
     }
@@ -196,87 +196,48 @@ Item {
      */
     property int settleMs: 0
     /** The size the layout uses: the item's, taken over at once or `settleMs` after it changed. */
-    property size layoutSize: Qt.size(0, 0)
+    readonly property size layoutSize: frame.layoutSize
     /** The spacing the layout uses: `staffSpace`, taken over with the size (a new spacing that
      *  comes with a resize, e.g. a presentation going full screen, lays out once). */
-    property real layoutSpacing: staffSpace
+    readonly property real layoutSpacing: frame.layoutSpacing
     /** The bar width the layout uses: `minBarWidth`, taken over with the size too (it may
      *  follow the spacing, e.g. `staffSpace * 18`). */
-    property real layoutMinBarWidth: minBarWidth
-    function takeSize() {
-        layoutSize = Qt.size(width, height)
-        layoutSpacing = staffSpace
-        layoutMinBarWidth = minBarWidth
-    }
-    function sizeChanged() {
-        if (settleMs <= 0 || layoutSize.width <= 0) {
-            takeSize()
-            return
-        }
-        settle.restart()
-    }
-    onWidthChanged: sizeChanged()
-    onHeightChanged: sizeChanged()
-    onStaffSpaceChanged: sizeChanged()
-    onMinBarWidthChanged: sizeChanged()
-    // The first lines at once: a staff shows its notes from the first frame.
-    Component.onCompleted: {
-        takeSize()
-        syncLines()
-        lineView.forceLayout()
-    }
-    Timer { id: settle; interval: staff.settleMs; onTriggered: staff.takeSize() }
+    readonly property real layoutMinBarWidth: frame.layoutMinBarWidth
     /** Shown long enough that its room has settled: before, a change of the room (a page still
      *  laying out) lands at once instead of growing in (Kontra 12.11.). */
-    property bool grown: false
-    Timer { running: staff.layoutSize.width > 0; interval: KanteStyle.durationSlow; onTriggered: staff.grown = true }
+    readonly property bool grown: frame.grown
 
-    // Line layouts by line index (1.82), as KanteTabStaff: a line keeps its layout while it
-    // stays in view, so a page turn lays out only the line that comes in; any input below
-    // lays them all out again, once per turn of the event loop.
-    property var lineCache: ({})
-    property bool lineCacheStale: false
-    property int lineRevision: 0
+    // Line layouts by line index (1.82), kept by the frame: a line keeps its layout while it
+    // stays in view, so a page turn lays out only the line that comes in.
+    readonly property var lineCache: frame.lineCache
+    readonly property int lineRevision: frame.lineRevision
     readonly property var emptyLayout: ({ rects: [], polys: [], ties: [], glyphs: [], marks: [], techniques: [],
                                           sections: [], boxes: ({}) })
     readonly property var lineInputs: [layoutSize, perSystem, sp, systemHeight, headerWidth, barWidth, staffTop,
                                        notes, rests, barList, chordList]
-    onLineInputsChanged: {
-        lineCacheStale = true
-        Qt.callLater(syncLines)
+
+    KanteStaffFrame {
+        id: frame
+        width: staff.width
+        height: staff.height
+        spacing: staff.staffSpace
+        minBarWidth: staff.minBarWidth
+        settleMs: staff.settleMs
+        perSystem: staff.perSystem
+        firstBar: staff.firstBar
+        systems: Math.max(1, staff.systems)
+        barCount: staff.barList.length
+        inputs: staff.lineInputs
+        layoutLine: staff.layoutLine
     }
-    onFirstBarChanged: Qt.callLater(syncLines)
-    onSystemsChanged: Qt.callLater(syncLines)
-    function syncLines() {
-        const per = perSystem
-        const top = Math.floor(firstBar / per)
-        const want = []
-        for (let k = 0; k < Math.max(1, systems); k++) {
-            if ((top + k) * per < barList.length) {
-                want.push(top + k)
-            }
-        }
-        const cache = lineCacheStale ? ({}) : lineCache
-        for (const n of want) {
-            if (!cache[n]) {
-                cache[n] = computeLayout(n * per, per, 1, layoutSize.width, sp, notes, rests, barList, chordList)
-            }
-        }
-        lineCache = cache
-        lineCacheStale = false
-        lineRevision++
-        // The model keeps the lines that stay and adds or drops the others (A1, A2).
-        for (let i = lineModel.count - 1; i >= 0; i--) {
-            if (want.indexOf(lineModel.get(i).lineIndex) < 0) {
-                lineModel.remove(i)
-            }
-        }
-        for (let k = 0; k < want.length; k++) {
-            if (k < lineModel.count && lineModel.get(k).lineIndex === want[k]) {
-                continue
-            }
-            lineModel.insert(k, { lineIndex: want[k] })
-        }
+    function layoutLine(first, per) {
+        return computeLayout(first, per, 1, layoutSize.width, sp, notes, rests, barList, chordList)
+    }
+    // The first lines at once: a staff shows its notes from the first frame.
+    Component.onCompleted: {
+        frame.takeSize()
+        frame.syncLines()
+        lineView.forceLayout()
     }
 
     Accessible.role: Accessible.Chart
@@ -530,29 +491,7 @@ Item {
      * the loop starts / ends on this line (bracket edge), else it runs on (open edge).
      */
     function loopLayout(first, per, nsys, w, bl, from, to) {
-        var out = []
-        if (w <= 0 || bl.length === 0 || from < 0 || to <= from) {
-            return out
-        }
-        var last = Math.min(bl.length - 1, first + per * nsys - 1)
-        for (var s = 0; s < nsys; s++) {
-            let b0 = first + s * per
-            let b1 = Math.min(last, b0 + per - 1)
-            if (b1 < b0) {
-                break
-            }
-            let t0 = Math.max(from, bl[b0].time)
-            let t1 = Math.min(to, bl[b1].end)
-            if (t1 <= t0 + 1e-6) {
-                continue
-            }
-            // The bar of each edge, kept on this line; the end belongs to the bar before it.
-            let x0 = loopX(t0, Math.max(b0, Math.min(b1, barAt(t0))))
-            let x1 = loopX(t1, Math.max(b0, Math.min(b1, barAt(t1 - 1e-3))))
-            out.push({ x: x0, w: Math.max(1, x1 - x0), sys: s, left: from >= bl[b0].time - 1e-6,
-                       right: to <= bl[b1].end + 1e-6 })
-        }
-        return out
+        return frame.cutLoop(first, per, nsys, w, bl, from, to, barAt, loopX)
     }
     function padLeft(b) {
         var bar = barList[b]
@@ -859,14 +798,13 @@ Item {
     // The lines shown, one delegate each, kept while they stay in view (1.82, as
     // KanteTabStaff): a page turn builds only the line that comes in, the others move up and
     // the top one fades (A2); lines that come or go fade in or out (A1).
-    ListModel { id: lineModel }
     ListView {
         id: lineView
         objectName: "staffLines"
         anchors.fill: parent
         interactive: false
         currentIndex: -1
-        model: lineModel
+        model: frame.lineModel
         add: Transition {
             enabled: KanteStyle.animate && staff.grown
             NumberAnimation { property: "opacity"; from: 0; to: 1; duration: KanteStyle.duration }

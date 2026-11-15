@@ -7,7 +7,9 @@ import QtQuick
  * `setNoteState`, `setTechniqueResult` and `resetStates` on, so a change reaches only that
  * note and no new layout. Has no look of its own.
  *
- *   notes      the view's note list [{state, cents, techniqueResult, ...}]
+ *   notes      the view's note list [{state, cents, techniqueResult, ...}]; set by the view in its
+ *              `onNotesChanged`, not bound: a binding resets while the view's own bindings
+ *              read it, which is a binding loop. A new list resets the states.
  *   revision   counts every change; bind to it to follow them
  *   stateCounts, techniqueCounts   notes per state / technique result, kept up to date
  *
