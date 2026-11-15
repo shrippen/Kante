@@ -78,8 +78,8 @@ FocusScope {
     readonly property real edgeReach: KanteStyle.unit(5)
     readonly property string edgeFrom: "from"
     readonly property string edgeTo: "to"
-    readonly property int tenthsPerSecond: 10
-    readonly property int tenthsPerMinute: 600
+    readonly property int tenthsPerSecond: KanteStyle.tenthsPerSecond
+    readonly property int tenthsPerMinute: 60 * tenthsPerSecond
 
     readonly property real rulerHeight: KanteStyle.unit(24)
     readonly property real laneWidth: Math.max(1, width - labelWidth)
