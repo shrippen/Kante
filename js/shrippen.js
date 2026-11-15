@@ -7,6 +7,10 @@
   h.classList.add('js');
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!still && 'IntersectionObserver' in window) h.classList.add('motion');
+  var moving = h.classList.contains('motion');
+  var reading = null; // chart under the pointer
+  var live = { replay: [], counting: false }; // live API: pending class replays, running count-up
+  var NS = 'http://www.w3.org/2000/svg', FOLD = 'details.fold[data-key]';
 
   // An app with its own language handling (Andon) puts data-own-lang on <html>: Kante then
   // leaves <html lang> and the .lang switch alone.
@@ -57,9 +61,7 @@
   d.addEventListener('input', markPicks);
   d.addEventListener('change', markPicks);
 
-  d.addEventListener('DOMContentLoaded', function () {
-    mark();
-
+  function initClicks() {
     d.addEventListener('click', function (e) {
       var lb = !ownLang && e.target.closest && e.target.closest('.lang button');
       if (lb) {
@@ -82,9 +84,11 @@
         });
       }
     });
+  }
 
+  function initBrand(nav) {
     // Project name in the nav appears once the hero is out of view.
-    var nav = d.querySelector('.nav'), hero = d.querySelector('.hero');
+    var hero = d.querySelector('.hero');
     if (nav && hero && 'IntersectionObserver' in window) {
       new IntersectionObserver(function (en) {
         nav.classList.toggle('brand-on', !en[0].isIntersecting);
@@ -92,7 +96,9 @@
     } else if (nav) {
       nav.classList.add('brand-on');
     }
+  }
 
+  function initMeter(nav) {
     // Scroll meter under the nav (A20).
     if (nav) {
       var meter = d.createElement('span');
@@ -106,7 +112,9 @@
       addEventListener('scroll', onScroll, { passive: true });
       onScroll();
     }
+  }
 
+  function initTabs() {
     // Tabs: the yellow tab slides to the selected one (A11).
     [].forEach.call(d.querySelectorAll('.tabs'), function (tabs) {
       var ind = d.createElement('span');
@@ -129,7 +137,9 @@
       addEventListener('resize', place);
       if (d.fonts) d.fonts.ready.then(place);
     });
+  }
 
+  function initDrawer() {
     // ── Nav drawer and filter side (Kante 1.19) ──────────────────────────
     // .nav-burger[aria-controls] opens its <dialog class="nav-drawer"> as a modal (focus moves in);
     // Esc, a click on the scrim or on [data-drawer-close] closes it, focus returns to the button.
@@ -188,7 +198,9 @@
       };
       if (wide.addEventListener) wide.addEventListener('change', shut);
     }
+  }
 
+  function initReadout() {
     // ── Chart read-out and curve editor (Kante 1.6, 1.15) ────────────────
     // .chart-wrap[data-readout] > svg.chart: on hover a rule and marks sit on the nearest point
     //   of each .line (polyline points or path d), .readout shows data-labels (svg) and
@@ -196,7 +208,6 @@
     //   strip) shows its own text instead. Delegated, so charts added later work too.
     // svg.curve[data-editable]: drag .pt squares, arrows move the focused one; fires "change"
     //   with detail = [{x, y}]. data-x/y-min/max and data-step give the range.
-    var NS = 'http://www.w3.org/2000/svg', reading = null;
     function linePoints(l) {
       var raw = l.getAttribute('points') || l.getAttribute('d') || '', n = raw.match(/-?[\d.]+(?:e-?\d+)?/gi) || [], out = [];
       for (var i = 0; i + 1 < n.length; i += 2) out.push([+n[i], +n[i + 1]]);
@@ -267,46 +278,88 @@
       if (!svg || !readLines(wrap, svg, tip, e)) readOff(wrap);
     });
     d.addEventListener('pointerleave', function () { readOff(reading); reading = null; });
-    [].forEach.call(d.querySelectorAll('svg.curve[data-editable]'), function (svg) {
-      var D = svg.dataset, X0 = +D.xMin, X1 = +D.xMax, Y0 = +D.yMin, Y1 = +D.yMax, step = +(D.step || 1);
-      var box = svg.querySelector('.frame').getBBox(), line = svg.querySelector('.line');
-      var dots = [].slice.call(svg.querySelectorAll('.pt')), cur = null;
-      function pos(p) { return [box.x + (p.x - X0) / (X1 - X0) * box.width, box.y + box.height - (p.y - Y0) / (Y1 - Y0) * box.height]; }
-      function val(dot) { return { x: +dot.dataset.x, y: +dot.dataset.y }; }
-      function draw() {
-        var p = dots.map(function (dt) { return pos(val(dt)); });
-        dots.forEach(function (dt, i) { dt.setAttribute('x', p[i][0] - 5); dt.setAttribute('y', p[i][1] - 5); dt.setAttribute('aria-valuenow', dt.dataset.y); dt.setAttribute('aria-valuetext', dt.dataset.x + ' → ' + dt.dataset.y); });
-        var all = [[box.x, p[0][1]]].concat(p, [[box.x + box.width, p[p.length - 1][1]]]);
-        line.setAttribute('points', all.map(function (q) { return q.join(','); }).join(' '));
-      }
-      function put(i, x, y) {
-        var lo = i > 0 ? +dots[i - 1].dataset.x + step : X0, hi = i < dots.length - 1 ? +dots[i + 1].dataset.x - step : X1;
-        var ylo = i > 0 ? +dots[i - 1].dataset.y : Y0, yhi = i < dots.length - 1 ? +dots[i + 1].dataset.y : Y1;
-        var sn = function (v) { return Math.round(v / step) * step; };
-        dots[i].dataset.x = Math.max(lo, Math.min(hi, sn(x)));
-        dots[i].dataset.y = Math.max(ylo, Math.min(yhi, sn(y)));
-        draw();
-        svg.dispatchEvent(new CustomEvent('change', { detail: dots.map(val) }));
-      }
-      dots.forEach(function (dt, i) {
-        dt.setAttribute('tabindex', 0); dt.setAttribute('role', 'slider');
-        dt.addEventListener('pointerdown', function (e) { cur = i; dt.setPointerCapture(e.pointerId); dt.focus(); e.preventDefault(); });
-        dt.addEventListener('pointermove', function (e) {
-          if (cur !== i) return;
-          var r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
-          var sx = (e.clientX - r.left) / r.width * vb.width + vb.x, sy = (e.clientY - r.top) / r.height * vb.height + vb.y;
-          put(i, X0 + (sx - box.x) / box.width * (X1 - X0), Y0 + (box.y + box.height - sy) / box.height * (Y1 - Y0));
-        });
-        dt.addEventListener('pointerup', function () { cur = null; });
-        dt.addEventListener('keydown', function (e) {
-          var v = val(dt), k = e.key, dx = k === 'ArrowRight' ? step : k === 'ArrowLeft' ? -step : 0, dy = k === 'ArrowUp' ? step : k === 'ArrowDown' ? -step : 0;
-          if (!dx && !dy) return;
-          e.preventDefault(); put(i, v.x + dx, v.y + dy);
+  }
+
+  function initCurve(svg) {
+    var D = svg.dataset, X0 = +D.xMin, X1 = +D.xMax, Y0 = +D.yMin, Y1 = +D.yMax, step = +(D.step || 1);
+    var box = svg.querySelector('.frame').getBBox(), line = svg.querySelector('.line');
+    var dots = [].slice.call(svg.querySelectorAll('.pt')), cur = null;
+    function pos(p) { return [box.x + (p.x - X0) / (X1 - X0) * box.width, box.y + box.height - (p.y - Y0) / (Y1 - Y0) * box.height]; }
+    function val(dot) { return { x: +dot.dataset.x, y: +dot.dataset.y }; }
+    function draw() {
+      var p = dots.map(function (dt) { return pos(val(dt)); });
+      dots.forEach(function (dt, i) { dt.setAttribute('x', p[i][0] - 5); dt.setAttribute('y', p[i][1] - 5); dt.setAttribute('aria-valuenow', dt.dataset.y); dt.setAttribute('aria-valuetext', dt.dataset.x + ' → ' + dt.dataset.y); });
+      var all = [[box.x, p[0][1]]].concat(p, [[box.x + box.width, p[p.length - 1][1]]]);
+      line.setAttribute('points', all.map(function (q) { return q.join(','); }).join(' '));
+    }
+    function put(i, x, y) {
+      var lo = i > 0 ? +dots[i - 1].dataset.x + step : X0, hi = i < dots.length - 1 ? +dots[i + 1].dataset.x - step : X1;
+      var ylo = i > 0 ? +dots[i - 1].dataset.y : Y0, yhi = i < dots.length - 1 ? +dots[i + 1].dataset.y : Y1;
+      var sn = function (v) { return Math.round(v / step) * step; };
+      dots[i].dataset.x = Math.max(lo, Math.min(hi, sn(x)));
+      dots[i].dataset.y = Math.max(ylo, Math.min(yhi, sn(y)));
+      draw();
+      svg.dispatchEvent(new CustomEvent('change', { detail: dots.map(val) }));
+    }
+    dots.forEach(function (dt, i) {
+      dt.setAttribute('tabindex', 0); dt.setAttribute('role', 'slider');
+      dt.addEventListener('pointerdown', function (e) { cur = i; dt.setPointerCapture(e.pointerId); dt.focus(); e.preventDefault(); });
+      dt.addEventListener('pointermove', function (e) {
+        if (cur !== i) return;
+        var r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+        var sx = (e.clientX - r.left) / r.width * vb.width + vb.x, sy = (e.clientY - r.top) / r.height * vb.height + vb.y;
+        put(i, X0 + (sx - box.x) / box.width * (X1 - X0), Y0 + (box.y + box.height - sy) / box.height * (Y1 - Y0));
+      });
+      dt.addEventListener('pointerup', function () { cur = null; });
+      dt.addEventListener('keydown', function (e) {
+        var v = val(dt), k = e.key, dx = k === 'ArrowRight' ? step : k === 'ArrowLeft' ? -step : 0, dy = k === 'ArrowUp' ? step : k === 'ArrowDown' ? -step : 0;
+        if (!dx && !dy) return;
+        e.preventDefault(); put(i, v.x + dx, v.y + dy);
+      });
+    });
+    draw();
+  }
+
+  function initCurves() {
+    [].forEach.call(d.querySelectorAll('svg.curve[data-editable]'), initCurve);
+  }
+
+  // restart replays a class animation. The class comes back two frames later, for all elements
+  // restarted meanwhile at once: a style pass without it lies in between, and nothing forces a
+  // layout (void el.offsetWidth per element cost ~20 ms each, 230 ms for 11 tiles on a big page).
+  function restart(el, cls, ms) {
+    el.classList.remove(cls);
+    if (!live.replay.length) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          var due = live.replay;
+          live.replay = [];
+          due.forEach(function (r) {
+            r.el.classList.add(r.cls);
+            setTimeout(function () { r.el.classList.remove(r.cls); }, r.ms);
+          });
         });
       });
-      draw();
-    });
+    }
+    live.replay.push({ el: el, cls: cls, ms: ms });
+  }
+  function lineOf(el) {
+    var l = el.querySelector(':scope > .live-line');
+    if (!l) {
+      l = d.createElement('span');
+      l.className = 'live-line';
+      l.setAttribute('aria-hidden', 'true');
+      el.appendChild(l);
+    }
+    return l;
+  }
 
+  function ints(a, b) {
+    var re = /^\D*\d[\d\s\u00a0.,]*\D*$/;
+    return re.test(a) && re.test(b) && !/[.,]\d{1,2}(\D|$)/.test(a + b);
+  }
+
+  function initLive() {
     // ── Live data API (window.Kante) ─────────────────────────────────────
     // tick(el, text)   a value changed: it counts up to the new number and a cyan strip fades
     // fresh(el)        new data arrived: a 2px line runs along the bottom edge of the tile
@@ -314,37 +367,6 @@
     // edit(box, on)    edit mode: tier bars turn cyan, brackets appear one after the other
     // settle(el, from) after a drop: the element glides from `from` (a DOMRect) into place with a small overshoot
     var K = window.Kante = window.Kante || {};
-    var moving = h.classList.contains('motion');
-    // restart replays a class animation. The class comes back two frames later, for all elements
-    // restarted meanwhile at once: a style pass without it lies in between, and nothing forces a
-    // layout (void el.offsetWidth per element cost ~20 ms each, 230 ms for 11 tiles on a big page).
-    var replay = [];
-    function restart(el, cls, ms) {
-      el.classList.remove(cls);
-      if (!replay.length) {
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            var due = replay;
-            replay = [];
-            due.forEach(function (r) {
-              r.el.classList.add(r.cls);
-              setTimeout(function () { r.el.classList.remove(r.cls); }, r.ms);
-            });
-          });
-        });
-      }
-      replay.push({ el: el, cls: cls, ms: ms });
-    }
-    function lineOf(el) {
-      var l = el.querySelector(':scope > .live-line');
-      if (!l) {
-        l = d.createElement('span');
-        l.className = 'live-line';
-        l.setAttribute('aria-hidden', 'true');
-        el.appendChild(l);
-      }
-      return l;
-    }
     K.fresh = function (el) {
       if (!moving || !el) return;
       el.setAttribute('data-live-tile', '');
@@ -358,11 +380,6 @@
       if (text !== undefined) l.setAttribute('data-text', text);
       el.classList.toggle('is-stale', !!on);
     };
-    var counting = false;
-    function ints(a, b) {
-      var re = /^\D*\d[\d\s\u00a0.,]*\D*$/;
-      return re.test(a) && re.test(b) && !/[.,]\d{1,2}(\D|$)/.test(a + b);
-    }
     K.tick = function (el, text) {
       if (!el) return;
       var from = el.textContent, to = text === undefined ? from : text;
@@ -373,13 +390,13 @@
       var sep = (/\d([\s\u00a0.,])\d/.exec(to) || [])[1] || '';
       var pre = /^\D*/.exec(to)[0], post = /\D*$/.exec(to)[0];
       var n = 0, steps = 14;
-      counting = true;
+      live.counting = true;
       var t = setInterval(function () {
         n++;
         var v = Math.round(a + (b - a) * (1 - Math.pow(1 - n / steps, 3)));
         var s = String(v).replace(/\B(?=(\d{3})+(?!\d))/g, sep === '' ? '' : sep);
         el.textContent = n >= steps ? to : pre + s + post;
-        if (n >= steps) { clearInterval(t); setTimeout(function () { counting = false; }, 0); }
+        if (n >= steps) { clearInterval(t); setTimeout(function () { live.counting = false; }, 0); }
       }, 45);
     };
     K.edit = function (box, on) {
@@ -395,12 +412,16 @@
       el.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }],
                  { duration: 380, easing: 'cubic-bezier(.3,1.5,.5,1)' });
     };
+    return K;
+  }
+
+  function initLiveWatch(K) {
     // Automatic: [data-live] values react to text changes, [data-live-tile] surfaces to a settled htmx swap.
     if ('MutationObserver' in window) {
       var seen = new WeakMap();
       [].forEach.call(d.querySelectorAll('[data-live]'), function (e) { seen.set(e, e.textContent); });
       new MutationObserver(function (list) {
-        if (counting) return;
+        if (live.counting) return;
         list.forEach(function (m) {
           var e = m.target.nodeType === 1 ? m.target : m.target.parentNode;
           e = e && e.closest && e.closest('[data-live]');
@@ -417,7 +438,9 @@
       if (t.hasAttribute && t.hasAttribute('data-live-tile')) K.fresh(t);
       [].forEach.call(t.querySelectorAll('[data-live-tile]'), K.fresh);
     });
+  }
 
+  function initFolds(K) {
     // ── Fold state (Kante 1.8) ───────────────────────────────────────────
     // details.fold[data-key]: data-open ("true" / "false", written by the server) sets the fold at
     // load and after an htmx swap. Every open or close by the user fires "kante:fold" (bubbles)
@@ -444,9 +467,9 @@
       f.dataset.open = open;
       f.dispatchEvent(new CustomEvent('kante:fold', { bubbles: true, detail: { key: f.dataset.key, open: f.open } }));
     }, true);
+  }
 
-    if (!h.classList.contains('motion')) return;
-
+  function initCounters() {
     // Counter (A06): figures in the facts strip roll up digit by digit.
     [].forEach.call(d.querySelectorAll('.fact b'), function (b) {
       var m = /^(\D*)(\d+)(\D*)$/.exec(b.textContent.trim());
@@ -466,14 +489,18 @@
       if (m[3]) b.appendChild(d.createTextNode(m[3]));
       b.classList.add('odo');
     });
+  }
 
+  function initTypewriter() {
     // Teleprinter (A07): [data-type] labels type in with a block cursor.
     [].forEach.call(d.querySelectorAll('[data-type]'), function (el) {
       el.dataset.text = el.textContent;
       el.style.minHeight = el.offsetHeight + 'px';
       el.textContent = '';
     });
+  }
 
+  function initEntrances() {
     // Entrances (A04 scan, A05 bar, A17 cascade) and the two above, once in view.
     var targets = d.querySelectorAll('.feat,.tiles>.tile,.hero-shot,.showcase figure,.shots figure,.fact b.odo,[data-type]');
     [].forEach.call(d.querySelectorAll('.features,.tiles'), function (g) {
@@ -506,5 +533,25 @@
       if (el.classList.contains('feat') || el.matches('.tiles>.tile,.hero-shot,.showcase figure,.shots figure')) el.setAttribute('data-entrance', '');
       io.observe(el);
     });
+  }
+
+  d.addEventListener('DOMContentLoaded', function () {
+    mark();
+    initClicks();
+    var nav = d.querySelector('.nav');
+    initBrand(nav);
+    initMeter(nav);
+    initTabs();
+    initDrawer();
+    initReadout();
+    initCurves();
+    var K = initLive();
+    initFolds(K);
+
+    if (!moving) return;
+
+    initCounters();
+    initTypewriter();
+    initEntrances();
   });
 })();

@@ -7,8 +7,7 @@ exclude	kimai/kit/kit/templates/_kit/assets.html.twig
 js/kante-map.js	(anonymous)	length=165
 js/kante-wall.js	(anonymous)	length=156
 js/shrippen.js	(anonymous)	ccn=17
-js/shrippen.js	(anonymous)#2	length=450
-js/shrippen.js	(anonymous)#3	length=506
+js/shrippen.js	(anonymous)#2	length=553
 kimai/kit/kit/js/kit.js	(anonymous)	length=665
 qml/Kante/KanteBassStaff.qml	-	lines=1056
 qml/Kante/KanteBassStaff.qml	normalizeBars	ccn=41
