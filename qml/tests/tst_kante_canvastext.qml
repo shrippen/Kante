@@ -106,4 +106,28 @@ TestCase {
         const mid = (rows[0] + rows[rows.length - 1]) / 2
         verify(Math.abs(mid - 150) < 4)
     }
+
+    function test_doubleClickOnShape() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = [{ kind: "circle", points: [10, 7], radius: 2, label: "red", fill: "solid", key: "disc" }]
+        spy.target = c
+        spy.signalName = "shapeDoubleClicked"
+        spy.clear()
+        mouseDoubleClickSequence(c, 200, 140)
+        compare(spy.count, 1)
+        compare(spy.signalArguments[0][0], "disc")
+        compare(spy.signalArguments[0][1], 10)
+        compare(spy.signalArguments[0][2], 7)
+    }
+
+    function test_doubleClickOnGround() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = [{ kind: "circle", points: [10, 7], radius: 2, label: "red", fill: "solid", key: "disc" }]
+        spy.target = c
+        spy.signalName = "shapeDoubleClicked"
+        spy.clear()
+        mouseDoubleClickSequence(c, 20, 20)
+        compare(spy.count, 1)
+        compare(spy.signalArguments[0][0], "")
+    }
 }

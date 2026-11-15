@@ -38,6 +38,7 @@ import "."
  *   mapToModel(px, py), mapFromModel(x, y)    {x, y} between view pixels and model units
  *   keyAt(px, py)             key of the topmost shape under a pixel, "" for none
  *   shapeClicked(key, x, y)   click without drag; key "" on empty ground; x, y in model units
+ *   shapeDoubleClicked(key, x, y)   double click, as shapeClicked (a click comes first)
  *   shapeHovered(key, x, y)   the pointer moved; key "" when it is over nothing
  *   editing    the left button edits instead of panning: a drag on a shape or on empty ground
  *              reports shapeDragged; pan stays on the middle button and with space held
@@ -67,6 +68,7 @@ FocusScope {
     property string accessibleName: "Plan"
 
     signal shapeClicked(string key, real x, real y)
+    signal shapeDoubleClicked(string key, real x, real y)
     signal shapeHovered(string key, real x, real y)
     signal shapeDragged(string key, real fromX, real fromY, real x, real y, bool done)
 
@@ -746,6 +748,14 @@ FocusScope {
 
             const m = _model(mouse.x, mouse.y)
             root.shapeClicked(root.keyAt(mouse.x, mouse.y), m.x, m.y)
+        }
+        onDoubleClicked: function (mouse) {
+            if (mouse.button !== Qt.LeftButton) {
+                return
+            }
+
+            const m = _model(mouse.x, mouse.y)
+            root.shapeDoubleClicked(root.keyAt(mouse.x, mouse.y), m.x, m.y)
         }
         onWheel: function (wheel) {
             root._zoomAt(wheel.x, wheel.y, Math.pow(root._wheelStep, wheel.angleDelta.y))
