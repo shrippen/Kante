@@ -106,7 +106,6 @@ stylesheet or copy the module.
   (staff lines against strings, `sys` in the sections, other paddings).
 - The cut corner is written out about 25 times in the stylesheet
   (`AUDIT.md`, finding 7).
-- `js/shrippen.js` does everything in one function (`AUDIT.md`, finding 5).
 - Tests and gallery are filed by version number, not by component
   (`AUDIT.md`, finding 6).
 - `css/components.css` writes the dark palette out again for the areas that stay
