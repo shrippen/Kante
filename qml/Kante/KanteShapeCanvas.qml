@@ -17,7 +17,10 @@ import "."
  *              filled circle, reads in every label colour)
  *     stroke   "solid" (default), "dashed", "dotted": a dash is a mark, not only a colour
  *     fill     "none" (default), "solid", "tint" (the colour at a fifth of its strength)
- *     text     small caption beside the shape, always at the same size on screen
+ *     text     small caption beside the shape, always at the same size on screen. A "\n" starts
+ *              a new line (spaced 1.25 font sizes); the canvas does not wrap, the app does.
+ *     textAnchor  "center" (default) or "topLeft": a polygon's caption starts at its top left
+ *              corner, with a small margin, instead of at its centre
  *     key      id given back by the signals; selected: framed wider in the focus colour
  *     Drawn in order, so the last shape is on top (and wins the hit test).
  *   Image     { kind: "image", source, points: [x, y], width, height, rotation, opacity, key }
@@ -80,6 +83,8 @@ FocusScope {
     readonly property real _dragSlop: KanteStyle.unit(4)
     readonly property real _reach: KanteStyle.unit(6)
     readonly property real _margin: KanteStyle.unit(24)
+    // Distance between caption lines, in font sizes.
+    readonly property real _lineSpacing: 1.25
     readonly property real _minGridGap: KanteStyle.unit(6)
     readonly property real _tintAlpha: 0.2
     readonly property real _gridAlpha: 0.3
@@ -490,9 +495,13 @@ FocusScope {
             }
 
             const gap = KanteStyle.unit(4)
+            const lines = String(s.text).split("\n")
+            const rows = (lines.length - 1) * _fontPx * root._lineSpacing
             let x = 0
             let y = 0
             let align = "left"
+            // Several lines hang from the top when the shape asks, else centre on the anchor.
+            let top = -rows / 2
             if (s.kind === "circle") {
                 x = root.panX + pts[0] * root.zoom + (s.radius || 0) * root.zoom + gap
                 y = root.panY + pts[1] * root.zoom
@@ -508,6 +517,12 @@ FocusScope {
                 x = root.panX + (x0 + x1) / 2 * root.zoom
                 y = root.panY + (y0 + y1) / 2 * root.zoom
                 align = "center"
+                if (s.textAnchor === "topLeft") {
+                    x = root.panX + x0 * root.zoom + gap
+                    y = root.panY + y0 * root.zoom + gap + _fontPx / 2
+                    align = "left"
+                    top = 0
+                }
             } else {
                 const n = pts.length
                 x = root.panX + (pts[0] + pts[n - 2]) / 2 * root.zoom + gap
@@ -517,7 +532,8 @@ FocusScope {
 
             // Outside the view, allowing an em for each character (fillText is the dearest call).
             const reach = String(s.text).length * _fontPx
-            if (x + reach < 0 || x - reach > width || y + _fontPx < 0 || y - _fontPx > height) {
+            const yFirst = y + top
+            if (x + reach < 0 || x - reach > width || yFirst + rows + _fontPx < 0 || yFirst - _fontPx > height) {
                 return
             }
 
@@ -530,7 +546,9 @@ FocusScope {
                 _fillKey = label
                 ctx.fillStyle = _ink(s.label)
             }
-            ctx.fillText(s.text, x, y)
+            for (let i = 0; i < lines.length; i++) {
+                ctx.fillText(lines[i], x, yFirst + i * _fontPx * root._lineSpacing)
+            }
         }
 
         function _grid(ctx) {
