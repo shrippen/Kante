@@ -401,6 +401,16 @@ QtObject {
     readonly property int chamfer: active ? Math.round(KantePalette.chamfer * Kirigami.Units.gridUnit / 18) : 0
     readonly property int chamferSmall: active ? Math.round(KantePalette.chamferSmall * Kirigami.Units.gridUnit / 18) : 0
 
+    readonly property int tenthsPerSecond: 10
+    readonly property real tenthEpsilon: 1e-6
+    /**
+     * Seconds as whole tenths, cut off like a timecode (59.99 -> 599). The epsilon keeps
+     * 0.7 + 0.1 s at 8 tenths (0.7999999999999999 in floating point); negative counts as 0.
+     */
+    function wholeTenths(s) {
+        return Math.floor(Math.max(0, s) * tenthsPerSecond + tenthEpsilon)
+    }
+
     /** A size in px of the web tokens (--h-*, --cut-*), scaled with the grid unit. */
     function unit(px) {
         return Math.round(px * Kirigami.Units.gridUnit / 18)

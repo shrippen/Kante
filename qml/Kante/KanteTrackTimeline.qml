@@ -213,7 +213,7 @@ FocusScope {
 
     // "m:ss.d", cut off like a timecode (59.96 -> 0:59.9).
     function _stamp(s) {
-        const tenths = Math.floor(Math.max(0, s) * tenthsPerSecond + 1e-6)
+        const tenths = KanteStyle.wholeTenths(s)
         const sec = (tenths % tenthsPerMinute) / tenthsPerSecond
         return Math.floor(tenths / tenthsPerMinute) + ":" + (sec < 10 ? "0" : "") + sec.toFixed(1)
     }
