@@ -523,27 +523,20 @@ TestCase {
     }
 
     function test_timelineLabelRoles() {
-        const t = createTemporaryObject(timelineComponent, stage())
-        compare(t._labelColor("accent"), KanteStyle.accentColor)
-        compare(t._labelColor("focus"), KanteStyle.focusColor)
-        compare(t._labelColor("warning"), KanteStyle.warningColor)
-        compare(t._labelColor("muted"), KanteStyle.mutedTextColor)
-        compare(t._labelColor("text"), KanteStyle.textColor)
-        compare(t._labelColor("unknown"), KanteStyle.textColor)
-        compare(t._labelColor(""), KanteStyle.textColor)
-        compare(t._labelColor("blue"), KanteStyle.labelColor("blue"))
-    }
-
-    function test_timelineGroundColour() {
-        const t = createTemporaryObject(timelineComponent, stage())
-        compare(t._labelColor("ground"), KanteStyle.backgroundColor)
+        compare(KanteStyle.namedColor("accent"), KanteStyle.accentColor)
+        compare(KanteStyle.namedColor("focus"), KanteStyle.focusColor)
+        compare(KanteStyle.namedColor("warning"), KanteStyle.warningColor)
+        compare(KanteStyle.namedColor("muted"), KanteStyle.mutedTextColor)
+        compare(KanteStyle.namedColor("text"), KanteStyle.textColor)
+        compare(KanteStyle.namedColor("unknown"), KanteStyle.textColor)
+        compare(KanteStyle.namedColor(""), KanteStyle.textColor)
+        compare(KanteStyle.namedColor("blue"), KanteStyle.labelColor("blue"))
     }
 
     function test_canvasGroundColour() {
-        const c = createTemporaryObject(canvasComponent, stage())
-        compare(c._colorOf("ground"), KanteStyle.backgroundColor)
+        compare(KanteStyle.namedColor("ground"), KanteStyle.backgroundColor)
         for (const name of KanteStyle.labels) {
-            verify(c._colorOf("ground") !== c._colorOf(name), "ground differs from " + name)
+            verify(KanteStyle.namedColor("ground") !== KanteStyle.namedColor(name), "ground differs from " + name)
         }
     }
 

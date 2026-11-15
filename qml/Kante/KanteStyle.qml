@@ -167,6 +167,21 @@ QtObject {
         }
         return "transparent"
     }
+    /**
+     * Colour of a name in data (a shape or a track label): a role ("muted", "accent",
+     * "focus", "warning", "ground") or a label colour ("blue"); any other name gives the text colour.
+     */
+    function namedColor(name) {
+        switch (name) {
+        case "muted": return mutedTextColor
+        case "accent": return accentColor
+        case "focus": return focusColor
+        case "warning": return warningColor
+        case "ground": return backgroundColor
+        }
+        const c = labelColor(name)
+        return c.a > 0 ? c : textColor
+    }
     // Warnings below "neutral" (e.g. stale dates, dead links); the platform has no own role, so neutral.
     readonly property color warningColor: themed ? palette.warning : Kirigami.Theme.neutralTextColor
     /** Focus ring, brackets, data lines (cyan; the platform's focus color otherwise). */

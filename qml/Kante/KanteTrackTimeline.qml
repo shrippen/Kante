@@ -218,19 +218,6 @@ FocusScope {
         return Math.floor(tenths / tenthsPerMinute) + ":" + (sec < 10 ? "0" : "") + sec.toFixed(1)
     }
 
-    // Colour of a label name; the same names as KanteShapeCanvas.
-    function _labelColor(name) {
-        switch (name) {
-        case "muted": return KanteStyle.mutedTextColor
-        case "accent": return KanteStyle.accentColor
-        case "focus": return KanteStyle.focusColor
-        case "warning": return KanteStyle.warningColor
-        case "ground": return KanteStyle.backgroundColor
-        }
-        const c = KanteStyle.labelColor(name)
-        return c.a > 0 ? c : KanteStyle.textColor
-    }
-
     function _clock(s) {
         const m = Math.floor(s / 60)
         const r = s % 60
@@ -352,7 +339,7 @@ FocusScope {
                     delegate: Rectangle {
                         id: seg
                         required property var modelData
-                        readonly property color fill: root._labelColor(row.modelData.label)
+                        readonly property color fill: KanteStyle.namedColor(row.modelData.label)
                         readonly property bool picked: modelData.selected === true
 
                         x: modelData.from * root.pixelsPerSecond
@@ -393,7 +380,7 @@ FocusScope {
                         rotation: 45
                         color: KanteStyle.backgroundColor
                         border.width: KanteStyle.unit(2)
-                        border.color: root._labelColor(row.modelData.label)
+                        border.color: KanteStyle.namedColor(row.modelData.label)
                     }
                 }
             }
