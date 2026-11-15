@@ -505,6 +505,19 @@ QtObject {
     /** Overshoot of the snap easing (Easing.OutBack), a small mechanical settle. */
     readonly property real snapOvershoot: 1.5
 
+    /**
+     * Axis step of the charts: 1, 2, 2.5, 5 or 10 times a power of ten, at least `raw`
+     * (0.7 -> 1, 2.2 -> 2.5, 31 -> 50). 1 when `raw` is not above 0.
+     */
+    function niceStep(raw) {
+        if (!(raw > 0)) {
+            return 1
+        }
+        const p10 = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10))
+        const f = raw / p10
+        return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p10
+    }
+
     function relLum(c) {
         function f(v) { return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) }
         return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b)
