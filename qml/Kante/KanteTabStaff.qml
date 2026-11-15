@@ -468,6 +468,25 @@ Item {
             return L
         }
         var last = Math.min(bl.length - 1, first + per * nsys - 1)
+        var stemW = Math.max(1, Math.round(ls * 0.1))
+        var beamH = Math.max(2, Math.round(ls * 0.28))
+        var c = { first: first, per: per, nsys: nsys, w: w, ls: ls, ns: ns, bl: bl, nstr: nstr, lowTop: lowTop, L: L, last: last,
+                  lineOf: lineOf, stemW: stemW, beamH: beamH, from: bl[first].time, to: bl[last].end }
+        layoutStaff(c)
+        layoutSections(c)
+        layoutEndings(c)
+        const onsets = layoutFrets(c)
+        layoutMarks(c, onsets)
+        if (!withRhythm) {
+            return L
+        }
+        layoutStems(c, onsets)
+        layoutBeams(c, onsets)
+        return L
+    }
+    /** Staff lines, bar lines and repeat dots of each line. */
+    function layoutStaff(c) {
+        const first = c.first, per = c.per, nsys = c.nsys, ls = c.ls, bl = c.bl, nstr = c.nstr, lowTop = c.lowTop, L = c.L, last = c.last
         for (var s = 0; s < nsys; s++) {
             var sy = s * systemHeight
             var top = sy + staffTop
@@ -498,6 +517,10 @@ Item {
                 }
             }
         }
+    }
+    /** Rehearsal marks. */
+    function layoutSections(c) {
+        const first = c.first, per = c.per, nsys = c.nsys, ls = c.ls, bl = c.bl, L = c.L, last = c.last
         // Rehearsal marks (1.50): over the first bar of a part, as wide as the room up to the
         // next mark on the line (or the line's end).
         for (let ms = 0; ms < nsys; ms++) {
@@ -513,6 +536,10 @@ Item {
             }
         }
         L.sections.reverse()
+    }
+    /** Volta brackets. */
+    function layoutEndings(c) {
+        const first = c.first, per = c.per, nsys = c.nsys, ls = c.ls, bl = c.bl, L = c.L, last = c.last
         // Volta brackets: one per run of bars with the same endings, cut at the end of a line.
         for (var es = 0; es < nsys; es++) {
             var eFirst = first + es * per
@@ -539,8 +566,10 @@ Item {
                 eb = runEnd
             }
         }
-        // Notes of the page.
-        var from = bl[first].time, to = bl[last].end
+    }
+    /** Fret numbers of the notes on show; returns the onsets (notes at one time) for marks and rhythm. */
+    function layoutFrets(c) {
+        const ls = c.ls, ns = c.ns, bl = c.bl, nstr = c.nstr, L = c.L, from = c.from, to = c.to, lineOf = c.lineOf
         var onsets = []
         for (var i = 0; ns && i < ns.length; i++) {
             var n = ns[i]
@@ -553,16 +582,8 @@ Item {
             var sys = lineOf(b)
             var str = Math.max(0, Math.min(nstr - 1, Number(n.string) || 0))
             var y = sys * systemHeight + staffTop + rowOf(str) * ls
-            var fretText = n.fret !== undefined ? String(n.fret) : ""
             var technique = n.technique ? String(n.technique) : ""
-            // A ghost note's fret in parentheses, as written in tab (1.31).
-            if (technique === "ghost" && fretText !== "") {
-                fretText = "(" + fretText + ")"
-            }
-            // A dead note reads x instead of its fret (1.32).
-            if (technique === "dead") {
-                fretText = "x"
-            }
+            var fretText = fretTextOf(n, technique)
             L.frets.push({ x: x, y: y, text: fretText, index: i, label: n.label || "", str: str, technique: technique, time: t })
             L.boxes[i] = { x: x, sys: sys }
             var prev = onsets.length ? onsets[onsets.length - 1] : null
@@ -570,23 +591,39 @@ Item {
                 prev.indices.push(i)
                 continue
             }
-            var dur = Math.max(0, Number(n.duration) || 0)
-            var beats = Number(n.beats) || 0
-            var spq = dur > 0 && beats > 0 ? dur / beats : (bl[b].end - bl[b].time) / 4
-            onsets.push({ t: t, x: x, sys: sys, bar: b, beat: Math.floor((t - bl[b].time) / spq + 1e-3),
-                          r: rhythmOf(beats > 0 ? beats : dur / spq), indices: [i] })
+            onsets.push(onsetOf(c, n, i, t, x, sys, b))
         }
+        return onsets
+    }
+    /** A note's rhythm, with its x and bar: one onset (more notes at the same time join it). */
+    function onsetOf(c, n, i, t, x, sys, b) {
+        const bl = c.bl
+        const dur = Math.max(0, Number(n.duration) || 0)
+        const beats = Number(n.beats) || 0
+        const spq = dur > 0 && beats > 0 ? dur / beats : (bl[b].end - bl[b].time) / 4
+        return { t: t, x: x, sys: sys, bar: b, beat: Math.floor((t - bl[b].time) / spq + 1e-3),
+                 r: rhythmOf(beats > 0 ? beats : dur / spq), indices: [i] }
+    }
+    /** The fret as written: a ghost note's in parentheses (1.31), a dead note's as x (1.32). */
+    function fretTextOf(n, technique) {
+        if (technique === "dead") {
+            return "x"
+        }
+        const fretText = n.fret !== undefined ? String(n.fret) : ""
+        return technique === "ghost" && fretText !== "" ? "(" + fretText + ")" : fretText
+    }
+    /** One state sign per onset. */
+    function layoutMarks(c, onsets) {
+        const L = c.L
         for (var o = 0; o < onsets.length; o++) {
             var on = onsets[o]
             // One sign per onset (a chord shows its first non-pending state); hidden while pending.
             L.marks.push({ x: on.x, y: on.sys * systemHeight + sectionRow + endingRow + markRow / 2, indices: on.indices })
         }
-        if (!withRhythm) {
-            return L
-        }
-        // Stems, dots, beams within a beat, flags for single short notes.
-        var stemW = Math.max(1, Math.round(ls * 0.1))
-        var beamH = Math.max(2, Math.round(ls * 0.28))
+    }
+    /** Stems and dots under the staff. */
+    function layoutStems(c, onsets) {
+        const ls = c.ls, L = c.L, stemW = c.stemW
         for (var k = 0; k < onsets.length; k++) {
             var e = onsets[k]
             var y0 = e.sys * systemHeight + staffTop + staffHeight + ls * 0.6
@@ -599,6 +636,34 @@ Item {
                 L.lines.push({ x: e.x + ls * 0.35, y: y1 - ls * 0.45, w: Math.max(2, ls * 0.24), h: Math.max(2, ls * 0.24), kind: "stem" })
             }
         }
+    }
+    /** The second and third beam of a group, over the notes that have them. */
+    function layoutSubBeams(c, onsets, g, h) {
+        const ls = c.ls, L = c.L, stemW = c.stemW, beamH = c.beamH
+        for (var lv = 2; lv <= 3; lv++) {
+            var off = (lv - 1) * (beamH + Math.max(2, ls * 0.18))
+            for (var q = g; q <= h; q++) {
+                if (onsets[q].r.level < lv) {
+                    continue
+                }
+                var r = q
+                while (r + 1 <= h && onsets[r + 1].r.level >= lv) {
+                    r++
+                }
+                if (r > q) {
+                    L.lines.push({ x: onsets[q].x - stemW / 2, y: onsets[q].y1 - beamH - off, w: onsets[r].x - onsets[q].x + stemW, h: beamH, kind: "beam" })
+                } else {
+                    var stub = ls * 0.8
+                    var left = q === h
+                    L.lines.push({ x: left ? onsets[q].x - stub : onsets[q].x - stemW / 2, y: onsets[q].y1 - beamH - off, w: stub + stemW / 2, h: beamH, kind: "beam" })
+                }
+                q = r
+            }
+        }
+    }
+    /** Beams within a beat, flags for single short notes. */
+    function layoutBeams(c, onsets) {
+        const ls = c.ls, L = c.L, stemW = c.stemW, beamH = c.beamH
         var g = 0
         while (g < onsets.length) {
             var h = g
@@ -611,32 +676,12 @@ Item {
             if (h > g) {
                 var gx0 = onsets[g].x - stemW / 2, gx1 = onsets[h].x + stemW / 2
                 L.lines.push({ x: gx0, y: onsets[g].y1 - beamH, w: gx1 - gx0, h: beamH, kind: "beam" })
-                for (var lv = 2; lv <= 3; lv++) {
-                    var off = (lv - 1) * (beamH + Math.max(2, ls * 0.18))
-                    for (var q = g; q <= h; q++) {
-                        if (onsets[q].r.level < lv) {
-                            continue
-                        }
-                        var r = q
-                        while (r + 1 <= h && onsets[r + 1].r.level >= lv) {
-                            r++
-                        }
-                        if (r > q) {
-                            L.lines.push({ x: onsets[q].x - stemW / 2, y: onsets[q].y1 - beamH - off, w: onsets[r].x - onsets[q].x + stemW, h: beamH, kind: "beam" })
-                        } else {
-                            var stub = ls * 0.8
-                            var left = q === h
-                            L.lines.push({ x: left ? onsets[q].x - stub : onsets[q].x - stemW / 2, y: onsets[q].y1 - beamH - off, w: stub + stemW / 2, h: beamH, kind: "beam" })
-                        }
-                        q = r
-                    }
-                }
+                layoutSubBeams(c, onsets, g, h)
             } else if (onsets[g].r.level > 0) {
                 L.flags.push({ x: onsets[g].x - stemW / 2, y: onsets[g].y1, glyph: ["", "", "", ""][onsets[g].r.level] })
             }
             g = h + 1
         }
-        return L
     }
 
     KanteRehearsalMark { id: markProbe; visible: false; text: "A"; pixelSize: staff.baseLs; Accessible.ignored: true }

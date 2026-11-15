@@ -97,9 +97,9 @@ stylesheet or copy the module.
   two. Kante Light's colours stand only there (`AUDIT.md`, finding 3).
 - The Union build calls Leinen "Kante Light", which is another theme
   (`AUDIT.md`, finding 4).
-- The notation of the bass and tablature staffs (`computeLayout`) is still one large
-  function each; it can be split at accidentals and digits, rests, beams and chords
-  (`AUDIT.md`, finding 9).
+- The bass and tablature staffs are still over 800 lines each, and `normalizeBars` and
+  the note spelling in the bass staff are over the limits; the layout itself is already
+  split into lines, beams, rests, chords and the rest (`AUDIT.md`, finding 9).
 - Three charts each compute their own axis steps (`AUDIT.md`, finding 2).
 - The cut corner is written out about 25 times in the stylesheet
   (`AUDIT.md`, finding 7).

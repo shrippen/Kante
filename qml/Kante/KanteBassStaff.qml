@@ -524,20 +524,24 @@ Item {
                   heads: ["", "", "", "", "", ""],
                   rests: ["", "", "", "", "", ""],
                   flagsUp: ["", "", "", "", "", ""], flagsDown: ["", "", "", "", "", ""] }
-        function signGlyph(sign) { return sign > 0 ? G.sharp : sign < 0 ? G.flat : G.natural }
         var lineT = Math.max(1, Math.round(sp * 0.13)), stemW = Math.max(1, Math.round(sp * 0.12))
         var ledgerT = Math.max(1, Math.round(sp * 0.16))
         var last = Math.min(bl.length - 1, first + per * nsys - 1)
-        function digits(n, x, y) {
-            var s = String(n)
-            for (var i = 0; i < s.length; i++) {
-                L.glyphs.push({ x: x + (i - s.length / 2) * sp * 1.8 , y: y, g: String.fromCharCode(0xE080 + Number(s[i])), ink: "" })
-            }
-        }
-        function timeSig(bar, x, sys) {
-            digits(bar.num, x, yOf(6, sys))
-            digits(bar.den, x, yOf(2, sys))
-        }
+        var c = { first: first, per: per, nsys: nsys, w: w, sp: sp, ns: ns, rs: rs, bl: bl, cl: cl, L: L, G: G, last: last,
+                  lineT: lineT, stemW: stemW, ledgerT: ledgerT, lineOf: lineOf,
+                  from: bl[first].time, to: bl[last].end }
+        layoutFrame(c)
+        layoutSections(c)
+        layoutChords(c)
+        layoutRests(c)
+        const items = layoutNotes(c)
+        layoutBeams(c, items)
+        layoutTies(c, items)
+        return L
+    }
+    /** Staff lines, clef, key signatures, time signatures and bar lines of each line. */
+    function layoutFrame(c) {
+        const first = c.first, per = c.per, nsys = c.nsys, sp = c.sp, bl = c.bl, L = c.L, G = c.G, last = c.last, lineT = c.lineT
         // Staff, clef, key, bars.
         for (var s = 0; s < nsys; s++) {
             var used = Math.min(per, Math.max(0, last - (first + s * per) + 1))
@@ -553,36 +557,56 @@ Item {
             var lineBar = bl[firstOfLine]
             var ks = keySigns(lineBar.keyChanged ? lineBar.fromKey : lineBar.key, lineBar.key)
             for (var k = 0; k < ks.length; k++) {
-                L.glyphs.push({ x: sp * (4.2 + k * 1.1), y: yOf(ks[k].pos, s), g: signGlyph(ks[k].sign), ink: "" })
+                L.glyphs.push({ x: sp * (4.2 + k * 1.1), y: yOf(ks[k].pos, s), g: signGlyph(c, ks[k].sign), ink: "" })
             }
             // The time signature at the start of the piece and where it changes, as printed.
             if (firstOfLine === 0 || bl[firstOfLine].changed) {
-                timeSig(bl[firstOfLine], sp * (4.2 + ks.length * 1.1 + 1.3), s)
+                drawTimeSig(c, bl[firstOfLine], sp * (4.2 + ks.length * 1.1 + 1.3), s)
             }
-            for (var c = 0; c < used; c++) {
-                var bi = firstOfLine + c
-                var bx = headerWidth + c * barWidth
-                var endX = bx + barWidth
-                var finalBar = bi === bl.length - 1
-                L.rects.push({ x: endX - (finalBar ? sp * 0.9 : Math.max(1, Math.round(sp * 0.16))), y: yOf(8, s),
-                               w: Math.max(1, Math.round(sp * 0.16)), h: sp * 4, ink: "" })
-                if (finalBar) {
-                    L.rects.push({ x: endX - sp * 0.5, y: yOf(8, s), w: sp * 0.5, h: sp * 4, ink: "" })
-                } else if (bl[bi + 1].keyChanged) {
-                    // A thin double bar line before a new key.
-                    L.rects.push({ x: endX - Math.max(1, Math.round(sp * 0.16)) - sp * 0.45, y: yOf(8, s),
-                                   w: Math.max(1, Math.round(sp * 0.16)), h: sp * 4, ink: "" })
-                }
-                L.glyphs.push({ x: bx + sp * 0.2, y: yOf(8, s) - sp * 1.0, g: "", text: bl[bi].number, ink: "muted" })
-                var midKey = c > 0 && bl[bi].keyChanged ? keySigns(bl[bi].fromKey, bl[bi].key) : []
-                for (var mk = 0; mk < midKey.length; mk++) {
-                    L.glyphs.push({ x: bx + sp * (1.2 + mk * 1.1), y: yOf(midKey[mk].pos, s), g: signGlyph(midKey[mk].sign), ink: "" })
-                }
-                if (c > 0 && bl[bi].changed) {
-                    timeSig(bl[bi], bx + sp * (midKey.length > 0 ? 1.2 + midKey.length * 1.1 + 1.2 : 1.6), s)
-                }
+            for (var ci = 0; ci < used; ci++) {
+                layoutBar(c, s, firstOfLine, ci)
             }
         }
+    }
+    /** One bar: closing bar line, number, and a key or time signature that changes in it. */
+    function layoutBar(c, s, firstOfLine, ci) {
+        const sp = c.sp, bl = c.bl, L = c.L
+        var bi = firstOfLine + ci
+        var bx = headerWidth + ci * barWidth
+        var endX = bx + barWidth
+        var finalBar = bi === bl.length - 1
+        L.rects.push({ x: endX - (finalBar ? sp * 0.9 : Math.max(1, Math.round(sp * 0.16))), y: yOf(8, s),
+                       w: Math.max(1, Math.round(sp * 0.16)), h: sp * 4, ink: "" })
+        if (finalBar) {
+            L.rects.push({ x: endX - sp * 0.5, y: yOf(8, s), w: sp * 0.5, h: sp * 4, ink: "" })
+        } else if (bl[bi + 1].keyChanged) {
+            // A thin double bar line before a new key.
+            L.rects.push({ x: endX - Math.max(1, Math.round(sp * 0.16)) - sp * 0.45, y: yOf(8, s),
+                           w: Math.max(1, Math.round(sp * 0.16)), h: sp * 4, ink: "" })
+        }
+        L.glyphs.push({ x: bx + sp * 0.2, y: yOf(8, s) - sp * 1.0, g: "", text: bl[bi].number, ink: "muted" })
+        var midKey = ci > 0 && bl[bi].keyChanged ? keySigns(bl[bi].fromKey, bl[bi].key) : []
+        for (var mk = 0; mk < midKey.length; mk++) {
+            L.glyphs.push({ x: bx + sp * (1.2 + mk * 1.1), y: yOf(midKey[mk].pos, s), g: signGlyph(c, midKey[mk].sign), ink: "" })
+        }
+        if (ci > 0 && bl[bi].changed) {
+            drawTimeSig(c, bl[bi], bx + sp * (midKey.length > 0 ? 1.2 + midKey.length * 1.1 + 1.2 : 1.6), s)
+        }
+    }
+    function signGlyph(c, sign) { return sign > 0 ? c.G.sharp : sign < 0 ? c.G.flat : c.G.natural }
+    function drawDigits(c, n, x, y) {
+        const s = String(n)
+        for (var i = 0; i < s.length; i++) {
+            c.L.glyphs.push({ x: x + (i - s.length / 2) * c.sp * 1.8 , y: y, g: String.fromCharCode(0xE080 + Number(s[i])), ink: "" })
+        }
+    }
+    function drawTimeSig(c, bar, x, sys) {
+        drawDigits(c, bar.num, x, yOf(6, sys))
+        drawDigits(c, bar.den, x, yOf(2, sys))
+    }
+    /** Rehearsal marks. */
+    function layoutSections(c) {
+        const first = c.first, per = c.per, nsys = c.nsys, sp = c.sp, bl = c.bl, L = c.L, last = c.last
         // Rehearsal marks (1.50): over the first bar of a part, as wide as the room up to the
         // next mark on the line (or the line's end).
         for (let ms = 0; ms < nsys; ms++) {
@@ -598,7 +622,10 @@ Item {
             }
         }
         L.sections.reverse()
-        var from = bl[first].time, to = bl[last].end
+    }
+    /** Chord symbols. */
+    function layoutChords(c) {
+        const sp = c.sp, cl = c.cl, L = c.L, from = c.from, to = c.to, lineOf = c.lineOf
         // Chord symbols: above the staff, left-aligned over the note at their time; one
         // that would run into the previous one on its line moves right.
         var chordRight = {}
@@ -611,6 +638,10 @@ Item {
             L.glyphs.push({ x: cx, y: csys * systemHeight + sectionRow + sp * 3.2, g: "", text: label, ink: "chord", chord: true })
             chordRight[csys] = cx + label.length * sp * 0.95
         }
+    }
+    /** Rests. */
+    function layoutRests(c) {
+        const first = c.first, per = c.per, sp = c.sp, rs = c.rs, bl = c.bl, L = c.L, G = c.G, from = c.from, to = c.to, lineOf = c.lineOf
         // Rests.
         for (var r = 0; rs && r < rs.length; r++) {
             var rt = Number(rs[r].time)
@@ -625,6 +656,10 @@ Item {
                 L.glyphs.push({ x: rx + sp * (1.5 + rd * 0.5), y: yOf(5, rsys), g: G.dot, ink: "" })
             }
         }
+    }
+    /** Heads, accidentals, dots and ledger lines of the notes on show; the items stems and beams follow. */
+    function layoutNotes(c) {
+        const sp = c.sp, ns = c.ns, bl = c.bl, L = c.L, G = c.G, from = c.from, to = c.to, lineOf = c.lineOf
         // Notes: heads, accidentals, dots, ledger lines; stems and beams after grouping.
         var items = []
         var acc = {}, accBar = -1
@@ -645,25 +680,12 @@ Item {
             var x = xOf(t, b) - headW / 2
             var y = yOf(sp_.pos, sys)
             var st = n.state || "pending"
-            var prevTied = i > 0 && ns[i - 1].tied && Number(ns[i - 1].midi) === midi
-            var key = sp_.pos
-            var current = acc[key] !== undefined ? acc[key] : keyAlter(sp_.letter, f)
-            if (sp_.alter !== current && !(prevTied && barAt(Number(ns[i - 1].time)) !== b)) {
-                var ag = sp_.alter > 0 ? G.sharp : sp_.alter < 0 ? G.flat : G.natural
-                var aw = sp_.alter > 0 ? 1.0 : sp_.alter < 0 ? 0.9 : 0.7
-                L.glyphs.push({ x: x - sp * (aw + 0.25), y: y, g: ag, ink: "note", index: i })
-            }
-            acc[key] = sp_.alter
+            layoutAccidental(c, acc, i, sp_, b, x, y)
             L.glyphs.push({ x: x, y: y, g: G.heads[v.type], ink: "note", index: i })
             for (var d = 0; d < v.dots; d++) {
                 L.glyphs.push({ x: x + headW + sp * (0.35 + d * 0.5), y: yOf(sp_.pos % 2 === 0 ? sp_.pos + 1 : sp_.pos, sys), g: G.dot, ink: "note", index: i })
             }
-            for (var p = -2; p >= sp_.pos; p -= 2) {
-                L.rects.push({ x: x - sp * 0.4, y: yOf(p, sys) - ledgerT / 2, w: headW + sp * 0.8, h: ledgerT, ink: "" })
-            }
-            for (var q = 10; q <= sp_.pos; q += 2) {
-                L.rects.push({ x: x - sp * 0.4, y: yOf(q, sys) - ledgerT / 2, w: headW + sp * 0.8, h: ledgerT, ink: "" })
-            }
+            layoutLedgers(c, sp_.pos, x, headW, sys)
             L.marks.push({ x: x + headW / 2, y: sys * systemHeight + sectionRow + sp * 1.0, index: i })
             // The technique sign under the state sign, above the chord symbols (1.31).
             if (n.technique) {
@@ -675,6 +697,35 @@ Item {
             items.push({ i: i, x: x, y: y, pos: sp_.pos, w: headW, v: v, sys: sys, bar: b, st: st, tied: !!n.tied,
                          group: Math.floor((t - bl[b].time) / spq / unit + 1e-3), t: t })
         }
+        return items
+    }
+    /** The accidental in front of a note, if the key and the bar so far do not already say it. */
+    function layoutAccidental(c, acc, i, sp_, b, x, y) {
+        const sp = c.sp, ns = c.ns, bl = c.bl, L = c.L, G = c.G
+        const f = bl[b].key
+        var prevTied = i > 0 && ns[i - 1].tied && Number(ns[i - 1].midi) === Number(ns[i].midi)
+        var key = sp_.pos
+        var current = acc[key] !== undefined ? acc[key] : keyAlter(sp_.letter, f)
+        if (sp_.alter !== current && !(prevTied && barAt(Number(ns[i - 1].time)) !== b)) {
+            var ag = sp_.alter > 0 ? G.sharp : sp_.alter < 0 ? G.flat : G.natural
+            var aw = sp_.alter > 0 ? 1.0 : sp_.alter < 0 ? 0.9 : 0.7
+            L.glyphs.push({ x: x - sp * (aw + 0.25), y: y, g: ag, ink: "note", index: i })
+        }
+        acc[key] = sp_.alter
+    }
+    /** Ledger lines above and below the staff for a head at `pos`. */
+    function layoutLedgers(c, pos, x, headW, sys) {
+        const sp = c.sp, L = c.L, ledgerT = c.ledgerT
+        for (var p = -2; p >= pos; p -= 2) {
+            L.rects.push({ x: x - sp * 0.4, y: yOf(p, sys) - ledgerT / 2, w: headW + sp * 0.8, h: ledgerT, ink: "" })
+        }
+        for (var q = 10; q <= pos; q += 2) {
+            L.rects.push({ x: x - sp * 0.4, y: yOf(q, sys) - ledgerT / 2, w: headW + sp * 0.8, h: ledgerT, ink: "" })
+        }
+    }
+    /** Stems, beams, flags and triplet signs. */
+    function layoutBeams(c, items) {
+        const rs = c.rs
         // A rest between two notes ends a beam.
         function restBetween(t0, t1) {
             for (var k = 0; rs && k < rs.length; k++) {
@@ -693,74 +744,97 @@ Item {
                     h++
                 }
             }
-            var grp = items.slice(g, h + 1)
-            var avg = 0
-            for (var a = 0; a < grp.length; a++) avg += grp[a].pos
-            avg /= grp.length
-            var up = avg < 4
-            var sx = function (it) { return up ? it.x + it.w - stemW : it.x }
-            var natural = function (it) {
-                // 3.5 spaces, and at least to the middle line for notes on ledger lines.
-                var mid = yOf(4, it.sys)
-                return up ? Math.min(it.y - sp * 3.5, mid) : Math.max(it.y + sp * 3.5, mid)
-            }
-            var beamAt = null
-            if (grp.length > 1) {
-                var x0 = sx(grp[0]), x1 = sx(grp[grp.length - 1])
-                var b0 = natural(grp[0]), b1 = natural(grp[grp.length - 1])
-                var dy = Math.max(-sp, Math.min(sp, b1 - b0))
-                var slope = x1 > x0 ? dy / (x1 - x0) : 0
-                var shift = 0
-                for (var m = 0; m < grp.length; m++) {
-                    var by = b0 + slope * (sx(grp[m]) - x0)
-                    var need = up ? by - (grp[m].y - sp * 2.5) : (grp[m].y + sp * 2.5) - by
-                    shift = Math.max(shift, need)
-                }
-                b0 += up ? -shift : shift
-                beamAt = function (x) { return b0 + slope * (x - x0) }
-                var thick = sp * 0.5, gap = sp * 0.25
-                for (var lv = 1; lv <= 3; lv++) {
-                    var off = (lv - 1) * (thick + gap) * (up ? 1 : -1)
-                    for (var u = 0; u < grp.length; u++) {
-                        if (grp[u].v.type < 2 + lv) continue
-                        var e = u
-                        while (e + 1 < grp.length && grp[e + 1].v.type >= 2 + lv) e++
-                        var xa = sx(grp[u]), xb = sx(grp[e]) + stemW
-                        if (e === u) {
-                            var stub = sp * 1.1
-                            if (u === grp.length - 1) { xa = sx(grp[u]) - stub; xb = sx(grp[u]) + stemW }
-                            else { xa = sx(grp[u]); xb = xa + stub }
-                        }
-                        var ya = beamAt(xa) + off, yb = beamAt(xb) + off
-                        var t2 = up ? thick : -thick
-                        L.polys.push({ pts: [xa, ya, xb, yb, xb, yb + t2, xa, ya + t2], ink: "" })
-                        u = e
-                    }
-                }
-                var allTriplets = grp.every(function (it) { return it.v.triplet })
-                if (allTriplets) {
-                    var cx = (x0 + x1) / 2
-                    var cy = beamAt(cx) + (up ? -sp * 1.2 : sp * 2.0)
-                    L.glyphs.push({ x: cx - sp * 0.5, y: cy, g: "", ink: "" })
-                }
-            }
-            for (var z = 0; z < grp.length; z++) {
-                var it = grp[z]
-                if (it.v.type === 0) continue
-                var end = beamAt ? beamAt(sx(it)) : natural(it)
-                var attach = up ? it.y - sp * 0.168 : it.y + sp * 0.168
-                L.rects.push({ x: sx(it), y: Math.min(end, attach), w: stemW, h: Math.abs(attach - end), ink: "" })
-                if (!beamAt && it.v.type >= 3) {
-                    L.glyphs.push({ x: sx(it), y: end, g: (up ? G.flagsUp : G.flagsDown)[it.v.type], ink: "" })
-                }
-                if (!beamAt && it.v.triplet) {
-                    L.glyphs.push({ x: it.x, y: up ? end - sp * 0.8 : end + sp * 1.8, g: "", ink: "" })
-                }
-                it.up = up
-            }
+            layoutGroup(c, items.slice(g, h + 1))
             g = h + 1
         }
-        // Ties: to the next note, on the side away from the stem; to the line end across lines.
+    }
+    /** Stem, flags and, for a group of more than one, the beams of grouped notes. */
+    function layoutGroup(c, grp) {
+        const sp = c.sp, L = c.L, G = c.G, stemW = c.stemW
+        var avg = 0
+        for (var a = 0; a < grp.length; a++) avg += grp[a].pos
+        avg /= grp.length
+        var up = avg < 4
+        var sx = function (it) { return up ? it.x + it.w - stemW : it.x }
+        var natural = function (it) {
+            // 3.5 spaces, and at least to the middle line for notes on ledger lines.
+            var mid = yOf(4, it.sys)
+            return up ? Math.min(it.y - sp * 3.5, mid) : Math.max(it.y + sp * 3.5, mid)
+        }
+        var beamAt = null
+        if (grp.length > 1) {
+            beamAt = layoutBeamLines(c, grp, up, sx, natural)
+        }
+        for (var z = 0; z < grp.length; z++) {
+            var it = grp[z]
+            if (it.v.type === 0) continue
+            var end = beamAt ? beamAt(sx(it)) : natural(it)
+            var attach = up ? it.y - sp * 0.168 : it.y + sp * 0.168
+            L.rects.push({ x: sx(it), y: Math.min(end, attach), w: stemW, h: Math.abs(attach - end), ink: "" })
+            if (!beamAt && it.v.type >= 3) {
+                L.glyphs.push({ x: sx(it), y: end, g: (up ? G.flagsUp : G.flagsDown)[it.v.type], ink: "" })
+            }
+            if (!beamAt && it.v.triplet) {
+                L.glyphs.push({ x: it.x, y: up ? end - sp * 0.8 : end + sp * 1.8, g: "", ink: "" })
+            }
+            it.up = up
+        }
+    }
+    /** The beam bars of a group, one to three levels over the notes that have them. */
+    function layoutBeamBars(c, grp, up, sx, beamAt) {
+        for (var lv = 1; lv <= 3; lv++) {
+            for (var u = 0; u < grp.length; u++) {
+                if (grp[u].v.type < 2 + lv) continue
+                var e = u
+                while (e + 1 < grp.length && grp[e + 1].v.type >= 2 + lv) e++
+                layoutBeamBar(c, grp, u, e, lv, up, sx, beamAt)
+                u = e
+            }
+        }
+    }
+    /** One bar of a beam at level lv from note u to e; a lone note gets a stub. */
+    function layoutBeamBar(c, grp, u, e, lv, up, sx, beamAt) {
+        const sp = c.sp, L = c.L, stemW = c.stemW
+        const thick = sp * 0.5, gap = sp * 0.25
+        const off = (lv - 1) * (thick + gap) * (up ? 1 : -1)
+        var xa = sx(grp[u]), xb = sx(grp[e]) + stemW
+        if (e === u) {
+            var stub = sp * 1.1
+            if (u === grp.length - 1) { xa = sx(grp[u]) - stub; xb = sx(grp[u]) + stemW }
+            else { xa = sx(grp[u]); xb = xa + stub }
+        }
+        var ya = beamAt(xa) + off, yb = beamAt(xb) + off
+        var t2 = up ? thick : -thick
+        L.polys.push({ pts: [xa, ya, xb, yb, xb, yb + t2, xa, ya + t2], ink: "" })
+    }
+    /** Beams and triplet sign of a group of notes; returns the beam line as function of x. */
+    function layoutBeamLines(c, grp, up, sx, natural) {
+        const sp = c.sp, L = c.L, stemW = c.stemW
+        var beamAt
+        var x0 = sx(grp[0]), x1 = sx(grp[grp.length - 1])
+        var b0 = natural(grp[0]), b1 = natural(grp[grp.length - 1])
+        var dy = Math.max(-sp, Math.min(sp, b1 - b0))
+        var slope = x1 > x0 ? dy / (x1 - x0) : 0
+        var shift = 0
+        for (var m = 0; m < grp.length; m++) {
+            var by = b0 + slope * (sx(grp[m]) - x0)
+            var need = up ? by - (grp[m].y - sp * 2.5) : (grp[m].y + sp * 2.5) - by
+            shift = Math.max(shift, need)
+        }
+        b0 += up ? -shift : shift
+        beamAt = function (x) { return b0 + slope * (x - x0) }
+        layoutBeamBars(c, grp, up, sx, beamAt)
+        var allTriplets = grp.every(function (it) { return it.v.triplet })
+        if (allTriplets) {
+            var cx = (x0 + x1) / 2
+            var cy = beamAt(cx) + (up ? -sp * 1.2 : sp * 2.0)
+            L.glyphs.push({ x: cx - sp * 0.5, y: cy, g: "", ink: "" })
+        }
+        return beamAt
+    }
+    /** Ties: to the next note, on the side away from the stem; to the line end across lines. */
+    function layoutTies(c, items) {
+        const first = c.first, per = c.per, sp = c.sp, bl = c.bl, L = c.L
         for (var y2 = 0; y2 < items.length; y2++) {
             var a1 = items[y2]
             if (!a1.tied) continue
@@ -776,7 +850,6 @@ Item {
                 + " C " + (tx0 + dx) + " " + (ty + hgt) + " " + (tx1 - dx) + " " + (ty + hgt) + " " + tx1 + " " + ty
                 + " C " + (tx1 - dx) + " " + (ty + hgt - th) + " " + (tx0 + dx) + " " + (ty + hgt - th) + " " + tx0 + " " + ty + " Z" })
         }
-        return L
     }
 
     /** Colour of a layout part; "note" parts follow the live state of note `index`. */
