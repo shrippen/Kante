@@ -17,7 +17,10 @@ import "."
  *              filled circle, reads in every label colour)
  *     stroke   "solid" (default), "dashed", "dotted": a dash is a mark, not only a colour
  *     fill     "none" (default), "solid", "tint" (the colour at a fifth of its strength)
- *     text     small caption beside the shape, always at the same size on screen
+ *     text     small caption beside the shape, always at the same size on screen. A "\n" starts
+ *              a new line (spaced 1.25 font sizes); the canvas does not wrap, the app does.
+ *     textAnchor  "center" (default) or "topLeft": a polygon's caption starts at its top left
+ *              corner, with a small margin, instead of at its centre
  *     key      id given back by the signals; selected: framed wider in the focus colour
  *     Drawn in order, so the last shape is on top (and wins the hit test).
  *   Image     { kind: "image", source, points: [x, y], width, height, rotation, opacity, key }
@@ -35,6 +38,7 @@ import "."
  *   mapToModel(px, py), mapFromModel(x, y)    {x, y} between view pixels and model units
  *   keyAt(px, py)             key of the topmost shape under a pixel, "" for none
  *   shapeClicked(key, x, y)   click without drag; key "" on empty ground; x, y in model units
+ *   shapeDoubleClicked(key, x, y)   double click, as shapeClicked (a click comes first)
  *   shapeHovered(key, x, y)   the pointer moved; key "" when it is over nothing
  *   editing    the left button edits instead of panning: a drag on a shape or on empty ground
  *              reports shapeDragged; pan stays on the middle button and with space held
@@ -64,6 +68,7 @@ FocusScope {
     property string accessibleName: "Plan"
 
     signal shapeClicked(string key, real x, real y)
+    signal shapeDoubleClicked(string key, real x, real y)
     signal shapeHovered(string key, real x, real y)
     signal shapeDragged(string key, real fromX, real fromY, real x, real y, bool done)
 
@@ -80,6 +85,8 @@ FocusScope {
     readonly property real _dragSlop: KanteStyle.unit(4)
     readonly property real _reach: KanteStyle.unit(6)
     readonly property real _margin: KanteStyle.unit(24)
+    // Distance between caption lines, in font sizes.
+    readonly property real _lineSpacing: 1.25
     readonly property real _minGridGap: KanteStyle.unit(6)
     readonly property real _tintAlpha: 0.2
     readonly property real _gridAlpha: 0.3
@@ -490,9 +497,13 @@ FocusScope {
             }
 
             const gap = KanteStyle.unit(4)
+            const lines = String(s.text).split("\n")
+            const rows = (lines.length - 1) * _fontPx * root._lineSpacing
             let x = 0
             let y = 0
             let align = "left"
+            // Several lines hang from the top when the shape asks, else centre on the anchor.
+            let top = -rows / 2
             if (s.kind === "circle") {
                 x = root.panX + pts[0] * root.zoom + (s.radius || 0) * root.zoom + gap
                 y = root.panY + pts[1] * root.zoom
@@ -508,6 +519,12 @@ FocusScope {
                 x = root.panX + (x0 + x1) / 2 * root.zoom
                 y = root.panY + (y0 + y1) / 2 * root.zoom
                 align = "center"
+                if (s.textAnchor === "topLeft") {
+                    x = root.panX + x0 * root.zoom + gap
+                    y = root.panY + y0 * root.zoom + gap + _fontPx / 2
+                    align = "left"
+                    top = 0
+                }
             } else {
                 const n = pts.length
                 x = root.panX + (pts[0] + pts[n - 2]) / 2 * root.zoom + gap
@@ -519,7 +536,8 @@ FocusScope {
             // 1.1 em; two em for each character leaves room for them.
             const emsPerChar = 2
             const reach = String(s.text).length * emsPerChar * _fontPx
-            if (x + reach < 0 || x - reach > width || y + _fontPx < 0 || y - _fontPx > height) {
+            const yFirst = y + top
+            if (x + reach < 0 || x - reach > width || yFirst + rows + _fontPx < 0 || yFirst - _fontPx > height) {
                 return
             }
 
@@ -532,7 +550,9 @@ FocusScope {
                 _fillKey = label
                 ctx.fillStyle = _ink(s.label)
             }
-            ctx.fillText(s.text, x, y)
+            for (let i = 0; i < lines.length; i++) {
+                ctx.fillText(lines[i], x, yFirst + i * _fontPx * root._lineSpacing)
+            }
         }
 
         function _grid(ctx) {
@@ -730,6 +750,17 @@ FocusScope {
 
             const m = _model(mouse.x, mouse.y)
             root.shapeClicked(root.keyAt(mouse.x, mouse.y), m.x, m.y)
+        }
+        onDoubleClicked: function (mouse) {
+            if (mouse.button !== Qt.LeftButton) {
+                return
+            }
+
+            // The second click is reported as before; the double click follows it.
+            const m = _model(mouse.x, mouse.y)
+            const key = root.keyAt(mouse.x, mouse.y)
+            root.shapeClicked(key, m.x, m.y)
+            root.shapeDoubleClicked(key, m.x, m.y)
         }
         onWheel: function (wheel) {
             root._zoomAt(wheel.x, wheel.y, Math.pow(root._wheelStep, wheel.angleDelta.y))
