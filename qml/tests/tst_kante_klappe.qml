@@ -585,6 +585,22 @@ TestCase {
         compare(t.grabAt(t.xAt(20) - 1, lane(t, 1)), null)
     }
 
+    // Review of #191: where two segments touch, the pointer inside the first grabs its end,
+    // not the start of the next.
+    function test_dragTouchingSegmentsGrabTheEdgeUnderThePointer() {
+        const t = dragTimeline()
+        const tracks = JSON.parse(JSON.stringify(t.tracks))
+        tracks[0].segments = [{ from: 2, to: 6, text: "A" }, { from: 6, to: 10, text: "B" }]
+        tracks[0].markers = []
+        t.tracks = tracks
+        const before = t.grabAt(t.xAt(6) - 3, lane(t, 0))
+        compare(before.index, 0)
+        compare(before.edge, "to")
+        const after = t.grabAt(t.xAt(6) + 3, lane(t, 0))
+        compare(after.index, 1)
+        compare(after.edge, "from")
+    }
+
     function test_dragLockedTakesNothing() {
         const t = dragTimeline()
         const locked = JSON.parse(JSON.stringify(t.tracks))
