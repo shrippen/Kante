@@ -99,4 +99,21 @@ TestCase {
             compare(v.techniqueResultOf(4), "", v)
         }
     }
+
+    Component { id: stateComp; KanteNoteState {} }
+
+    function test_shownWhenHidden() {
+        const st = createTemporaryObject(stateComp, tc, { notes: [{ time: 0, state: "offpitch", cents: 32, techniqueResult: "played" }] })
+        compare(st.shownState(0, st.revision), "offpitch")
+        compare(st.shownState(undefined, st.revision), "pending")
+        compare(st.centsSuffix(0, st.revision), ", +32 ct")
+        compare(st.shownTechniqueResult(0, st.revision), "played")
+        verify(st.techniqueSummary(st.revision) !== "")
+
+        st.hidden = true
+        compare(st.shownState(0, st.revision), "pending")
+        compare(st.centsSuffix(0, st.revision), "")
+        compare(st.shownTechniqueResult(0, st.revision), "")
+        compare(st.techniqueSummary(st.revision), "")
+    }
 }

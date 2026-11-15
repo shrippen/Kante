@@ -12,6 +12,7 @@ import QtQuick
  *              read it, which is a binding loop. A new list resets the states.
  *   revision   counts every change; bind to it to follow them
  *   stateCounts, techniqueCounts   notes per state / technique result, kept up to date
+ *   hidden     the view shows no states (Marks Off): the shown* functions then give "pending" / ""
  *
  * Signals tell the view which items to touch: `stateSet`, `techniqueSet`, `reset`.
  */
@@ -20,6 +21,7 @@ QtObject {
 
     property var notes: []
     property int revision: 0
+    property bool hidden: false
     // By note index (plain objects: no bindings depend on them, read through `revision`).
     property var changedStates: ({})
     property var changedCents: ({})
@@ -107,6 +109,23 @@ QtObject {
     function techniqueResultOf(i) {
         const r = changedTechniques[i]
         return r !== undefined ? r : (notes && notes[i] && notes[i].techniqueResult ? String(notes[i].techniqueResult) : "")
+    }
+    /** The state as shown: "pending" when hidden. Pass `revision` so a binding follows changes. */
+    function shownState(i, revision) {
+        return hidden || i === undefined ? "pending" : stateOf(i)
+    }
+    /** The technique result as shown: "" when hidden. Depends on `revision` as shownState. */
+    function shownTechniqueResult(i, revision) {
+        return hidden ? "" : techniqueResultOf(i)
+    }
+    /** "Technik gespielt 3, Andere Technik 1" over all notes (screen readers); "" when hidden. */
+    function techniqueSummary(revision) {
+        return hidden ? "" : KanteStyle.techniqueCountsText(techniqueCounts)
+    }
+    /** ", +32 ct" for an offpitch note with cents (screen readers), else "". Depends on `revision`. */
+    function centsSuffix(i, revision) {
+        const t = shownState(i, revision) === "offpitch" ? KanteStyle.centsText(centsOf(i)) : ""
+        return t !== "" ? ", " + t : ""
     }
 
     onNotesChanged: resetStates()

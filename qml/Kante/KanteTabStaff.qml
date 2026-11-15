@@ -116,6 +116,7 @@ Item {
     // The states of the notes, apart from `notes` (see KanteNoteState).
     KanteNoteState {
         id: noteState
+        hidden: staff.marks === KanteTabStaff.Marks.Off
     }
 
     /** Sets how the technique of one note was played (Kante 1.31): "", "played", "other", "unheard". */
@@ -126,13 +127,9 @@ Item {
     function techniqueResultOf(i) {
         return noteState.techniqueResultOf(i)
     }
-    /** The result as shown: "" when marks are Off. Depends on stateRevision. */
-    function shownTechniqueResult(i, revision) {
-        return marks === KanteTabStaff.Marks.Off ? "" : techniqueResultOf(i)
-    }
     /** "Technik gespielt 3, Andere Technik 1" over all notes (screen readers). Depends on stateRevision. */
     function techniqueSummary(revision) {
-        return marks === KanteTabStaff.Marks.Off ? "" : KanteStyle.techniqueCountsText(noteState.techniqueCounts)
+        return noteState.techniqueSummary(revision)
     }
 
     /**
@@ -151,18 +148,13 @@ Item {
     function centsOf(i) {
         return noteState.centsOf(i)
     }
-    /** ", +32 ct" for an offpitch note with cents (screen readers), else "". Depends on stateRevision. */
-    function centsSuffix(i, revision) {
-        var t = shownState(i, revision) === "offpitch" ? KanteStyle.centsText(centsOf(i)) : ""
-        return t !== "" ? ", " + t : ""
-    }
     /** The state of note i: as set with setNoteState, else from `notes`. */
     function stateOf(i) {
         return noteState.stateOf(i)
     }
     /** The state as shown: "pending" when marks are Off. Depends on stateRevision. */
     function shownState(i, revision) {
-        return marks === KanteTabStaff.Marks.Off || i === undefined ? "pending" : stateOf(i)
+        return noteState.shownState(i, revision)
     }
     onNotesChanged: {
         noteState.notes = notes
@@ -175,9 +167,9 @@ Item {
     Timer { id: calmTimer; interval: 500; onTriggered: staff.calm = false }
 
     /** Last note with time ≤ position, -1 before the first. */
-    readonly property int currentIndex: lastAtOrBefore(position)
+    readonly property int currentIndex: frame.lastAtOrBefore(notes, position)
     readonly property var barList: normalizeBars(bars, notes)
-    readonly property int currentBar: barAt(position)
+    readonly property int currentBar: frame.barAt(barList, position)
     // The wanted spacing; `ls` is the one drawn (grown or shrunk in fill mode, 1.81).
     readonly property real baseLs: Math.max(6, layoutSpacing)
     // A line's height per unit of spacing: every row scales with it, the rehearsal mark too.
@@ -257,6 +249,8 @@ Item {
         settleMs: staff.settleMs
         perSystem: staff.perSystem
         firstBar: staff.firstBar
+        headerWidth: staff.headerWidth
+        barWidth: staff.barWidth
         systems: staff.shownSystems
         barCount: staff.barList.length
         inputs: staff.lineInputs
@@ -299,7 +293,7 @@ Item {
         // notes can change before currentIndex follows (e.g. emptied while playing)
         const n = currentIndex >= 0 ? notes[currentIndex] : undefined
         if (n) {
-            d += ", " + nameOf(Number(n.string) || 0) + " " + n.fret + " (" + KanteStyle.noteStateName(shownState(currentIndex, stateRevision)) + centsSuffix(currentIndex, stateRevision) + ")"
+            d += ", " + nameOf(Number(n.string) || 0) + " " + n.fret + " (" + KanteStyle.noteStateName(shownState(currentIndex, stateRevision)) + noteState.centsSuffix(currentIndex, stateRevision) + ")"
         }
         const t = techniqueSummary(stateRevision)
         if (t !== "") {
@@ -332,18 +326,6 @@ Item {
     function nameOf(s) {
         return stringNames && s < stringNames.length ? String(stringNames[s]) : String(s + 1)
     }
-    function lastAtOrBefore(t) {
-        var a = 0, b = notes ? notes.length : 0
-        while (a < b) {
-            var m = (a + b) >> 1
-            if (Number(notes[m].time) <= t + 1e-6) {
-                a = m + 1
-            } else {
-                b = m
-            }
-        }
-        return a - 1
-    }
     /** Bars as [{time, end, repeatStart, repeatEnd, endings}]; one bar over all notes when none are given. */
     function normalizeBars(list, ns) {
         var out = []
@@ -351,7 +333,7 @@ Item {
             var b = list[i]
             var o = typeof b === "object" && b !== null ? b : { time: b }
             out.push({ time: Number(o.time) || 0, repeatStart: !!o.repeatStart, repeatEnd: !!o.repeatEnd,
-                       endings: endingsOf(o.endings), number: barLabel(o, i),
+                       endings: endingsOf(o.endings), number: frame.barLabel(o, i),
                        section: KanteStyle.rehearsalText(o.section), part: "" })
         }
         var lastEnd = 0
@@ -376,11 +358,6 @@ Item {
         }
         return out
     }
-    /** Label of a bar (1.28): its `number` as sent (written bar number), else index + 1. */
-    function barLabel(o, i) {
-        var n = typeof o === "object" && o !== null ? o.number : undefined
-        return n === undefined || n === null || String(n) === "" ? String(i + 1) : String(n)
-    }
     /** Endings of a bar as a sorted list of numbers ≥ 1: [1, 2] stays, 2 becomes [2], none []. */
     function endingsOf(e) {
         // A list from QML or C++ is not always a JS Array: test for a length.
@@ -394,18 +371,6 @@ Item {
         }
         return out.sort(function (a, b) { return a - b })
     }
-    function barAt(t) {
-        var a = 0, b = barList.length
-        while (a < b) {
-            var m = (a + b) >> 1
-            if (barList[m].time <= t + 1e-6) {
-                a = m + 1
-            } else {
-                b = m
-            }
-        }
-        return Math.max(0, a - 1)
-    }
     function rowOf(s) {
         return lowStringOnTop ? s : strings - 1 - s
     }
@@ -417,31 +382,16 @@ Item {
         var f = (t - bar.time) / Math.max(1e-6, bar.end - bar.time)
         return headerWidth + col * barWidth + padL + Math.max(0, Math.min(1, f)) * (barWidth - padL - padR)
     }
-    function sysOf(b) {
-        return Math.floor((b - firstBar) / perSystem)
-    }
     /** True when time t lies in the loop range (1.35). */
     function inLoop(t) {
         return loopStart >= 0 && loopEnd > loopStart && t >= loopStart - 1e-6 && t < loopEnd - 1e-6
-    }
-    /** x of a loop edge at time t in bar b: on the bar line at a bar start or end, else xOf. */
-    function loopX(t, b) {
-        var bar = barList[b]
-        var left = headerWidth + ((b - firstBar) % perSystem) * barWidth
-        if (Math.abs(t - bar.time) < 1e-3) {
-            return left
-        }
-        if (Math.abs(t - bar.end) < 1e-3) {
-            return left + barWidth
-        }
-        return xOf(t, b)
     }
     /**
      * The loop cut into lines: per line the part of [from, to] it shows. left / right: the
      * loop starts / ends on this line (bracket edge), else it runs on (open edge).
      */
     function loopLayout(first, per, nsys, w, bl, from, to) {
-        return frame.cutLoop(first, per, nsys, w, bl, from, to, barAt, loopX)
+        return frame.cutLoop(first, per, nsys, w, bl, from, to, xOf)
     }
     /** Rhythm of a duration in quarters: {level: beams/flags (0 none), stem: 0 none / 1 short / 2 full, dot}. */
     function rhythmOf(beats) {
@@ -577,7 +527,7 @@ Item {
             if (t < from - 1e-6 || t >= to - 1e-6) {
                 continue
             }
-            var b = barAt(t)
+            var b = frame.barAt(barList, t)
             var x = xOf(t, b)
             var sys = lineOf(b)
             var str = Math.max(0, Math.min(nstr - 1, Number(n.string) || 0))
@@ -960,7 +910,7 @@ Item {
                         sourceComponent: KanteTechniqueMark {
                             technique: fretBox.modelData.technique || ""
                             signVisible: !techniqueSlot.ghost
-                            result: staff.shownTechniqueResult(fretBox.modelData.index, staff.stateRevision)
+                            result: noteState.shownTechniqueResult(fretBox.modelData.index, staff.stateRevision)
                             color: staff.marks === KanteTabStaff.Marks.Quiet ? KanteStyle.mutedTextColor : resultColor
                         }
                     }

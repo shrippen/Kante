@@ -100,6 +100,11 @@ stylesheet or copy the module.
 - The bass and tablature staffs are still over 800 lines each, and `normalizeBars` and
   the note spelling in the bass staff are over the limits; the layout itself is already
   split into lines, beams, rests, chords and the rest (`AUDIT.md`, finding 9).
+- What is left of `AUDIT.md`, finding 1: `KanteTabLane` and `KanteKeyLane` keep their
+  own `barLabel` and note search (the same text as in `KanteStaffFrame`, which they do not
+  hold); `KanteBassStaff` and `KanteTabStaff` each have their own `computeLayout`,
+  `normalizeBars`, `layoutBeams`, `layoutSections` and `xOf`, which differ in the notation
+  (staff lines against strings, `sys` in the sections, other paddings).
 - Three charts each compute their own axis steps (`AUDIT.md`, finding 2).
 - The cut corner is written out about 25 times in the stylesheet
   (`AUDIT.md`, finding 7).

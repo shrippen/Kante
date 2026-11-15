@@ -105,6 +105,7 @@ Item {
     // The states of the notes, apart from `notes` (see KanteNoteState).
     KanteNoteState {
         id: noteState
+        hidden: staff.marks === KanteBassStaff.Marks.Off
     }
 
     /** Sets how the technique of one note was played (Kante 1.31): "", "played", "other", "unheard". */
@@ -115,13 +116,9 @@ Item {
     function techniqueResultOf(i) {
         return noteState.techniqueResultOf(i)
     }
-    /** The result as shown: "" when marks are Off. Depends on stateRevision. */
-    function shownTechniqueResult(i, revision) {
-        return marks === KanteBassStaff.Marks.Off ? "" : techniqueResultOf(i)
-    }
     /** "Technik gespielt 3, Andere Technik 1" over all notes (screen readers). Depends on stateRevision. */
     function techniqueSummary(revision) {
-        return marks === KanteBassStaff.Marks.Off ? "" : KanteStyle.techniqueCountsText(noteState.techniqueCounts)
+        return noteState.techniqueSummary(revision)
     }
 
     /**
@@ -140,18 +137,13 @@ Item {
     function centsOf(i) {
         return noteState.centsOf(i)
     }
-    /** ", +32 ct" for an offpitch note with cents (screen readers), else "". Depends on stateRevision. */
-    function centsSuffix(i, revision) {
-        var t = shownState(i, revision) === "offpitch" ? KanteStyle.centsText(centsOf(i)) : ""
-        return t !== "" ? ", " + t : ""
-    }
     /** The state of note i: as set with setNoteState, else from `notes`. */
     function stateOf(i) {
         return noteState.stateOf(i)
     }
     /** The state as shown: "pending" when marks are Off. Depends on stateRevision. */
     function shownState(i, revision) {
-        return marks === KanteBassStaff.Marks.Off || i === undefined ? "pending" : stateOf(i)
+        return noteState.shownState(i, revision)
     }
     onNotesChanged: {
         noteState.notes = notes
@@ -164,12 +156,12 @@ Item {
     Timer { id: calmTimer; interval: 500; onTriggered: staff.calm = false }
 
     readonly property real sp: Math.max(4, layoutSpacing)
-    readonly property int currentIndex: lastAtOrBefore(position)
+    readonly property int currentIndex: frame.lastAtOrBefore(notes, position)
     readonly property var barList: normalizeBars(bars, notes, rests, keyFifths)
     /** Every chord symbol, from `chords` and the bars: [{time, text}] sorted by time. */
     readonly property var chordList: collectChords(chords, barList)
     readonly property bool hasChords: chordList.length > 0
-    readonly property int currentBar: barAt(position)
+    readonly property int currentBar: frame.barAt(barList, position)
     // Wide enough for the widest key a line can start with (with the naturals of a change).
     readonly property real headerWidth: sp * (4.2 + maxHeaderKey(barList) * 1.1 + 3.0)
     readonly property int perSystem: barsPerSystem > 0 ? barsPerSystem
@@ -225,6 +217,8 @@ Item {
         settleMs: staff.settleMs
         perSystem: staff.perSystem
         firstBar: staff.firstBar
+        headerWidth: staff.headerWidth
+        barWidth: staff.barWidth
         systems: Math.max(1, staff.systems)
         barCount: staff.barList.length
         inputs: staff.lineInputs
@@ -256,7 +250,7 @@ Item {
         const n = currentIndex >= 0 ? notes[currentIndex] : undefined
         if (n) {
             d += ", " + pitchName(Number(n.midi), barList.length ? barList[currentBar].key : keyFifths)
-                + " (" + KanteStyle.noteStateName(shownState(currentIndex, stateRevision)) + centsSuffix(currentIndex, stateRevision) + ")"
+                + " (" + KanteStyle.noteStateName(shownState(currentIndex, stateRevision)) + noteState.centsSuffix(currentIndex, stateRevision) + ")"
         }
         const t = techniqueSummary(stateRevision)
         if (t !== "") {
@@ -328,20 +322,6 @@ Item {
     }
 
     // ── Time ─────────────────────────────────────────────────────────
-    function lastAtOrBefore(t) {
-        var a = 0, b = notes ? notes.length : 0
-        while (a < b) {
-            var m = (a + b) >> 1
-            if (Number(notes[m].time) <= t + 1e-6) a = m + 1
-            else b = m
-        }
-        return a - 1
-    }
-    /** Label of a bar (1.28): its `number` as sent (written bar number), else index + 1. */
-    function barLabel(o, i) {
-        var n = typeof o === "object" && o !== null ? o.number : undefined
-        return n === undefined || n === null || String(n) === "" ? String(i + 1) : String(n)
-    }
     function normalizeBars(list, ns, rs, fifths) {
         var out = [], num = 4, den = 4
         var key = clampKey(fifths)
@@ -362,7 +342,7 @@ Item {
             out.push({ time: Number(o.time) || 0, num: num, den: den, changed: changed,
                        key: key, fromKey: fromKey, keyChanged: i > 0 && key !== fromKey,
                        chord: o.chord !== undefined && o.chord !== null ? String(o.chord) : "",
-                       number: barLabel(o, i), section: KanteStyle.rehearsalText(o.section), part: "" })
+                       number: frame.barLabel(o, i), section: KanteStyle.rehearsalText(o.section), part: "" })
         }
         // Seconds per quarter, from the notes (median of time step / beats): sizes a bar
         // when none or only the start of the last one is given.
@@ -403,15 +383,6 @@ Item {
             out[p].part = out[p].section !== "" ? out[p].section : (p > 0 ? out[p - 1].part : "")
         }
         return out
-    }
-    function barAt(t) {
-        var a = 0, b = barList.length
-        while (a < b) {
-            var m = (a + b) >> 1
-            if (barList[m].time <= t + 1e-6) a = m + 1
-            else b = m
-        }
-        return Math.max(0, a - 1)
     }
     function clampKey(k) {
         return Math.max(-7, Math.min(7, Math.round(Number(k) || 0)))
@@ -471,27 +442,12 @@ Item {
         }
         return c
     }
-    function sysOf(b) {
-        return Math.floor((b - firstBar) / perSystem)
-    }
-    /** x of a loop edge at time t in bar b: on the bar line at a bar start or end, else xOf. */
-    function loopX(t, b) {
-        var bar = barList[b]
-        var left = headerWidth + ((b - firstBar) % perSystem) * barWidth
-        if (Math.abs(t - bar.time) < 1e-3) {
-            return left
-        }
-        if (Math.abs(t - bar.end) < 1e-3) {
-            return left + barWidth
-        }
-        return xOf(t, b)
-    }
     /**
      * The loop cut into lines (1.35): per line the part of [from, to] it shows. left / right:
      * the loop starts / ends on this line (bracket edge), else it runs on (open edge).
      */
     function loopLayout(first, per, nsys, w, bl, from, to) {
-        return frame.cutLoop(first, per, nsys, w, bl, from, to, barAt, loopX)
+        return frame.cutLoop(first, per, nsys, w, bl, from, to, xOf)
     }
     function padLeft(b) {
         var bar = barList[b]
@@ -632,7 +588,7 @@ Item {
         for (var ci = 0; cl && ci < cl.length; ci++) {
             var ct = cl[ci].time
             if (ct < from - 1e-6 || ct >= to - 1e-6) continue
-            var cb = barAt(ct), csys = lineOf(cb)
+            var cb = frame.barAt(barList, ct), csys = lineOf(cb)
             var label = chordLabel(cl[ci].text)
             var cx = Math.max(xOf(ct, cb) - sp * 0.6, (chordRight[csys] || 0) + sp * 0.8)
             L.glyphs.push({ x: cx, y: csys * systemHeight + sectionRow + sp * 3.2, g: "", text: label, ink: "chord", chord: true })
@@ -646,7 +602,7 @@ Item {
         for (var r = 0; rs && r < rs.length; r++) {
             var rt = Number(rs[r].time)
             if (rt < from - 1e-6 || rt >= to - 1e-6) continue
-            var rb = barAt(rt), rsys = lineOf(rb)
+            var rb = frame.barAt(barList, rt), rsys = lineOf(rb)
             var rv = valueOf(rs[r].beats)
             var fullBar = Math.abs(Number(rs[r].beats) - bl[rb].num * 4 / bl[rb].den) < 1e-3
             var rx = fullBar ? headerWidth + ((rb - first) % per + 0.5) * barWidth - sp * 0.6 : xOf(rt, rb) - sp * 0.5
@@ -667,7 +623,7 @@ Item {
             var n = ns[i]
             var t = Number(n.time)
             if (t < from - 1e-6 || t >= to - 1e-6) continue
-            var b = barAt(t), sys = lineOf(b)
+            var b = frame.barAt(barList, t), sys = lineOf(b)
             if (b !== accBar) {
                 acc = {}
                 accBar = b
@@ -706,7 +662,7 @@ Item {
         var prevTied = i > 0 && ns[i - 1].tied && Number(ns[i - 1].midi) === Number(ns[i].midi)
         var key = sp_.pos
         var current = acc[key] !== undefined ? acc[key] : keyAlter(sp_.letter, f)
-        if (sp_.alter !== current && !(prevTied && barAt(Number(ns[i - 1].time)) !== b)) {
+        if (sp_.alter !== current && !(prevTied && frame.barAt(barList, Number(ns[i - 1].time)) !== b)) {
             var ag = sp_.alter > 0 ? G.sharp : sp_.alter < 0 ? G.flat : G.natural
             var aw = sp_.alter > 0 ? 1.0 : sp_.alter < 0 ? 0.9 : 0.7
             L.glyphs.push({ x: x - sp * (aw + 0.25), y: y, g: ag, ink: "note", index: i })
@@ -1074,7 +1030,7 @@ Item {
                 delegate: KanteTechniqueMark {
                     required property var modelData
                     technique: modelData.technique
-                    result: staff.shownTechniqueResult(modelData.index, staff.stateRevision)
+                    result: noteState.shownTechniqueResult(modelData.index, staff.stateRevision)
                     color: staff.marks === KanteBassStaff.Marks.Quiet ? KanteStyle.mutedTextColor : resultColor
                     height: Math.round(staff.sp * 1.2)
                     width: implicitWidth
