@@ -18,6 +18,7 @@ stylesheet or copy the module.
 | `tokens/variables.css` | The palette as CSS custom properties, and the roles built on them (text, ground, accent, state). |
 | `css/`, `js/`, `fonts/` | Kante for the web: the components' styles, their behaviour, the map and wall display scripts, the offline fonts. |
 | `qml/Kante/` | Kante for apps: `KanteStyle` (all roles, the one place that picks the theme), one file per component, the skins for Qt's own controls. `KantePalette.qml` is generated. |
+| `qml/Kante/KanteNoteState.qml`, `KanteStaffFrame.qml` | What the note views share, without a look: the state of each note (played right, wrong, technique), kept for the two staffs and the two lanes; and the staffs' room, line layouts and loop split. |
 | `qml/KantePlasma/` | The few components for Plasma widgets, which keep Plasma's theme. |
 | `qml/tests/`, `qml/demo/Gallery.qml` | A test and a gallery entry for every component. |
 | `kimai/knust/` | Knust: the Kimai plug-in that gives Kimai Kante's look. Released on its own (`knust-v*`). |
@@ -83,6 +84,7 @@ stylesheet or copy the module.
 | A new or changed colour, font or level | `tokens/palette.json` (and, until they are generated, the same value in `tokens/variables.css`), `./build.sh`, README |
 | A new role (what a colour is for) | `tokens/variables.css` and `qml/Kante/KanteStyle.qml`, under the same name; README |
 | A new web component | `css/components.css`, behaviour in `js/`, README, `tools/specimen.html`, its catalogue page in `proposals/` |
+| A change to how note states work, or to how the staffs lay out lines and take their size | `KanteNoteState.qml` or `KanteStaffFrame.qml`, never one view alone; the views `KanteBassStaff`, `KanteTabStaff`, `KanteTabLane`, `KanteKeyLane` only hand on |
 | A new QML component | A file in `qml/Kante/`, a test in `qml/tests/`, an entry in `qml/demo/Gallery.qml`, README; `./build.sh` writes `qmldir` |
 | Motion | The `prefers-reduced-motion` block at the end of `css/components.css`; `KanteStyle.motion` in QML |
 | Something for Kimai's look | `kimai/knust/`; something Kimai plug-ins share: `kimai/kit/`, then `kimai/kit/bin/sync.sh` per plug-in |
@@ -95,8 +97,14 @@ stylesheet or copy the module.
   two. Kante Light's colours stand only there (`AUDIT.md`, finding 3).
 - The Union build calls Leinen "Kante Light", which is another theme
   (`AUDIT.md`, finding 4).
-- The staffs for bass and tablature build the same frame twice, and four components
-  each keep the note state themselves (`AUDIT.md`, finding 1).
+- The bass and tablature staffs are still over 800 lines each, and `normalizeBars` and
+  the note spelling in the bass staff are over the limits; the layout itself is already
+  split into lines, beams, rests, chords and the rest (`AUDIT.md`, finding 9).
+- What is left of `AUDIT.md`, finding 1: `KanteTabLane` and `KanteKeyLane` keep their
+  own `barLabel` and note search (the same text as in `KanteStaffFrame`, which they do not
+  hold); `KanteBassStaff` and `KanteTabStaff` each have their own `computeLayout`,
+  `normalizeBars`, `layoutBeams`, `layoutSections` and `xOf`, which differ in the notation
+  (staff lines against strings, `sys` in the sections, other paddings).
 - Three charts each compute their own axis steps (`AUDIT.md`, finding 2).
 - The cut corner is written out about 25 times in the stylesheet
   (`AUDIT.md`, finding 7).
