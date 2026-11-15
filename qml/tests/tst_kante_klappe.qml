@@ -548,4 +548,183 @@ TestCase {
         t.tracks = [t.tracks[0]]
         compare(t.hovered, null)
     }
+
+    // --- Timeline dragging
+
+    function dragTimeline(props) {
+        const t = createTemporaryObject(timelineComponent, stage(), props || {})
+        t.draggable = true
+        return t
+    }
+
+    function lane(t, row) {
+        return t.rulerHeight + (row + 0.5) * t.trackHeight
+    }
+
+    function test_dragIsOffByDefault() {
+        const t = createTemporaryObject(timelineComponent, stage())
+        compare(t.grabAt(t.xAt(7), lane(t, 0)), null)
+        watch(t, "markDragged")
+        mousePress(t, t.xAt(7), lane(t, 0))
+        mouseMove(t, t.xAt(9), lane(t, 0))
+        mouseRelease(t, t.xAt(9), lane(t, 0))
+        compare(spy.count, 0)
+    }
+
+    function test_dragGrabsMarkersAndEdges() {
+        const t = dragTimeline()
+        const mark = t.grabAt(t.xAt(7), lane(t, 0))
+        compare(mark.edge, "")
+        compare(mark.index, 0)
+        compare(mark.seconds, 7)
+        const edge = t.grabAt(t.xAt(12) - 2, lane(t, 0))
+        compare(edge.edge, "to")
+        compare(edge.index, 1)
+        compare(t.grabAt(t.xAt(10), lane(t, 0)), null)
+        // A hidden row is not grabbed.
+        compare(t.grabAt(t.xAt(20) - 1, lane(t, 1)), null)
+    }
+
+    function test_dragLockedTakesNothing() {
+        const t = dragTimeline()
+        const locked = JSON.parse(JSON.stringify(t.tracks))
+        locked[0].locked = true
+        t.tracks = locked
+        compare(t.grabAt(t.xAt(7), lane(t, 0)), null)
+
+        const some = JSON.parse(JSON.stringify(locked))
+        some[0].locked = false
+        some[0].segments[1].locked = true
+        t.tracks = some
+        compare(t.grabAt(t.xAt(12), lane(t, 0)), null)
+        compare(t.grabAt(t.xAt(6), lane(t, 0)).index, 0)
+        some[0].markers[0].locked = true
+        t.tracks = some
+        compare(t.grabAt(t.xAt(7), lane(t, 0)), null)
+    }
+
+    function test_dragMarkerSignalsMoveAndDone() {
+        const t = dragTimeline()
+        watch(t, "markDragged")
+        const y = lane(t, 0)
+        mousePress(t, t.xAt(7), y)
+        mouseMove(t, t.xAt(8), y)
+        verify(t.dragging)
+        mouseMove(t, t.xAt(9), y)
+        mouseRelease(t, t.xAt(9), y)
+        verify(!t.dragging)
+        verify(spy.count >= 2)
+        const first = spy.signalArguments[0]
+        compare(first[0], 0)
+        compare(first[1], 0)
+        compare(first[3], false)
+        const last = spy.signalArguments[spy.count - 1]
+        compare(last[3], true)
+        fuzzyCompare(last[2], 9, 0.1)
+    }
+
+    function test_dragEdgeSignals() {
+        const t = dragTimeline()
+        watch(t, "edgeDragged")
+        const y = lane(t, 0)
+        mousePress(t, t.xAt(8), y)
+        mouseMove(t, t.xAt(9), y)
+        mouseRelease(t, t.xAt(9), y)
+        const last = spy.signalArguments[spy.count - 1]
+        compare(last[0], 0)
+        compare(last[1], 1)
+        compare(last[2], "from")
+        compare(last[4], true)
+        fuzzyCompare(last[3], 9, 0.1)
+    }
+
+    function test_dragReportsShift() {
+        const t = dragTimeline()
+        watch(t, "markDragged")
+        const y = lane(t, 0)
+        mousePress(t, t.xAt(7), y)
+        mouseMove(t, t.xAt(8), y, -1, Qt.LeftButton, Qt.ShiftModifier)
+        compare(spy.signalArguments[0][4], true)
+        mouseMove(t, t.xAt(9), y, -1, Qt.LeftButton, Qt.NoModifier)
+        compare(spy.signalArguments[spy.count - 1][4], false)
+        mouseRelease(t, t.xAt(9), y)
+    }
+
+    function test_dragLineShowsTheTime() {
+        const t = dragTimeline()
+        const y = lane(t, 0)
+        const line = findChild(t, "dragLine")
+        const text = findChild(t, "dragText")
+        verify(!line.visible)
+        mousePress(t, t.xAt(7), y)
+        mouseMove(t, t.xAt(10), y)
+        verify(line.visible)
+        compare(text.text, "0:10.0")
+        t.formatTime = s => "at " + s
+        compare(text.text, "at " + t.dragSeconds)
+        mouseRelease(t, t.xAt(10), y)
+        verify(!line.visible)
+    }
+
+    function test_dragTimeCanBeSnappedByTheApp() {
+        const t = dragTimeline()
+        const y = lane(t, 0)
+        t.markDragged.connect((track, marker, seconds) => { t.dragSeconds = Math.round(seconds) })
+        mousePress(t, t.xAt(7), y)
+        mouseMove(t, t.xAt(9.4), y)
+        compare(t.dragSeconds, 9)
+        mouseRelease(t, t.xAt(9.4), y)
+    }
+
+    function test_pressWithoutMoveIsAClickOnAMarker() {
+        const t = dragTimeline()
+        watch(t, "markDragged")
+        const seeks = []
+        t.seek.connect(s => seeks.push(s))
+        mouseClick(t, t.xAt(7), lane(t, 0))
+        compare(spy.count, 0)
+        compare(seeks.length, 1)
+        fuzzyCompare(seeks[0], 7, 0.1)
+    }
+
+    function test_smallMoveStaysAClick() {
+        const t = dragTimeline()
+        watch(t, "markDragged")
+        const y = lane(t, 0)
+        mousePress(t, t.xAt(7), y)
+        mouseMove(t, t.xAt(7) + t.dragStart / 2, y)
+        verify(!t.dragging)
+        mouseRelease(t, t.xAt(7) + t.dragStart / 2, y)
+        compare(spy.count, 0)
+    }
+
+    function test_narrowSegmentIsSelectedByClick() {
+        const t = dragTimeline()
+        const narrow = JSON.parse(JSON.stringify(t.tracks))
+        narrow[0].segments = [{ from: 14, to: 14.2, text: "x", selected: false }]
+        t.tracks = narrow
+        watch(t, "segmentClicked")
+        mouseClick(t, t.xAt(14.1), lane(t, 0))
+        compare(spy.count, 1)
+        compare(spy.signalArguments[0][1], 0)
+    }
+
+    function test_dragDoesNotSelectOrSeek() {
+        const t = dragTimeline()
+        const y = lane(t, 0)
+        watch(t, "segmentClicked")
+        const seeks = []
+        t.seek.connect(s => seeks.push(s))
+        mousePress(t, t.xAt(12), y)
+        mouseMove(t, t.xAt(13), y)
+        mouseRelease(t, t.xAt(13), y)
+        compare(spy.count, 0)
+        compare(seeks.length, 0)
+    }
+
+    function test_hoverTooltipSurvivesDragging() {
+        const t = dragTimeline()
+        mouseMove(t, t.xAt(7), lane(t, 0))
+        compare(t.hovered, { track: 0, index: 0 })
+    }
 }
