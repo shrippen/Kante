@@ -468,7 +468,7 @@ FocusScope {
 
         // A shape's opacity, 0..1; 1 when not given.
         function _alpha(s) {
-            return s.opacity === undefined ? 1 : Math.max(0, Math.min(1, s.opacity))
+            return Number.isFinite(s.opacity) ? Math.max(0, Math.min(1, s.opacity)) : 1
         }
 
         function _dash(ctx, stroke) {
