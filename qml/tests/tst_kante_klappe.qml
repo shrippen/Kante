@@ -485,6 +485,42 @@ TestCase {
         })
     }
 
+    function sq(x, y, opacity) {
+        return { kind: "polygon", points: [x, y, x + 2, y, x + 2, y + 2, x, y + 2], label: "red",
+                 fill: "solid", opacity: opacity }
+    }
+
+    // Every shape kind fades: a half-faded fill sits between the ground and the full colour,
+    // 0 shows the ground, a later shape and the next paint are not faded.
+    function test_canvasShapeOpacity() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [sq(1, 1, undefined), sq(5, 1, 0.5), sq(9, 1, 0), sq(13, 1, 7), sq(1, 6, undefined)]
+        tryVerify(function () { return !Qt.colorEqual(grabImage(c).pixel(40, 40), grabImage(c).pixel(200, 200)) })
+        const img = grabImage(c)
+        const full = img.pixel(40, 40)
+        const half = img.pixel(120, 40)
+        const none = img.pixel(200, 40)
+        const over = img.pixel(280, 40)
+        const ground = img.pixel(200, 200)
+        const lo = Math.min(full.g, ground.g)
+        const hi = Math.max(full.g, ground.g)
+        verify(half.g > lo + 0.05 && half.g < hi - 0.05, "half " + half.g + " full " + full.g + " ground " + ground.g)
+        compare(Qt.colorEqual(none, ground), true)
+        compare(Qt.colorEqual(over, full), true, "opacity above 1 is clamped")
+        compare(Qt.colorEqual(img.pixel(40, 140), full), true, "a later shape is not faded")
+    }
+
+    // The caption and the selection frame fade with their shape.
+    function test_canvasShapeOpacityCaption() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [{ kind: "circle", points: [10, 7], radius: 3, width: 0.5, label: "red",
+                      fill: "none", selected: true, opacity: 0 }]
+        wait(100)
+        const img = grabImage(c)
+        // On the frame, at the circle's right edge.
+        compare(Qt.colorEqual(img.pixel(260, 140), img.pixel(380, 280)), true)
+    }
+
     function test_canvasImageOrder() {
         const c = createTemporaryObject(imageCanvasComponent, stage())
         const image = { kind: "image", source: redImage, points: [1, 1], width: 2, height: 2 }
