@@ -485,6 +485,55 @@ TestCase {
         })
     }
 
+    function sq(x, y, opacity) {
+        return { kind: "polygon", points: [x, y, x + 2, y, x + 2, y + 2, x, y + 2], label: "red",
+                 fill: "solid", opacity: opacity }
+    }
+
+    // Every shape kind fades: a half-faded fill sits between the ground and the full colour,
+    // 0 shows the ground, a shape right after a faded one is not faded, and an opacity that is
+    // no number (NaN, null) counts as the default 1.
+    function test_canvasShapeOpacity() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [sq(1, 1, undefined), sq(5, 1, 0.5), sq(1, 6, undefined), sq(9, 1, 0),
+                    sq(5, 6, NaN), sq(13, 1, 7), sq(13, 6, 0), sq(9, 6, null)]
+        tryVerify(function () { return !Qt.colorEqual(grabImage(c).pixel(40, 40), grabImage(c).pixel(200, 200)) })
+        const img = grabImage(c)
+        const full = img.pixel(40, 40)
+        const half = img.pixel(120, 40)
+        const none = img.pixel(200, 40)
+        const over = img.pixel(280, 40)
+        const ground = img.pixel(200, 200)
+        const lo = Math.min(full.g, ground.g)
+        const hi = Math.max(full.g, ground.g)
+        verify(half.g > lo + 0.05 && half.g < hi - 0.05, "half " + half.g + " full " + full.g + " ground " + ground.g)
+        compare(Qt.colorEqual(none, ground), true)
+        compare(Qt.colorEqual(over, full), true, "opacity above 1 is clamped")
+        compare(Qt.colorEqual(img.pixel(40, 140), full), true, "a shape after a faded one is not faded")
+        compare(Qt.colorEqual(img.pixel(120, 140), full), true, "NaN is the default")
+        compare(Qt.colorEqual(img.pixel(200, 140), full), true, "null is the default")
+    }
+
+    // The caption and the selection frame fade with their shape: at opacity 0 neither leaves a
+    // pixel. A full square drawn last tells when the canvas has painted.
+    function test_canvasShapeOpacityCaption() {
+        const c = createTemporaryObject(imageCanvasComponent, stage())
+        c.shapes = [{ kind: "circle", points: [10, 7], radius: 3, width: 0.5, label: "red",
+                      fill: "none", selected: true, opacity: 0, text: "WWWW" }, sq(16, 11, undefined)]
+        tryVerify(() => !Qt.colorEqual(grabImage(c).pixel(340, 240), grabImage(c).pixel(380, 280)))
+        const img = grabImage(c)
+        const ground = img.pixel(380, 280)
+        // On the frame, at the circle's right edge.
+        compare(Qt.colorEqual(img.pixel(260, 140), ground), true, "no frame")
+        let inked = 0
+        for (let x = 120; x < 300; x += 2) {
+            for (let y = 100; y < 190; y += 2) {
+                inked += Qt.colorEqual(img.pixel(x, y), ground) ? 0 : 1
+            }
+        }
+        compare(inked, 0, "no caption")
+    }
+
     function test_canvasImageOrder() {
         const c = createTemporaryObject(imageCanvasComponent, stage())
         const image = { kind: "image", source: redImage, points: [1, 1], width: 2, height: 2 }
