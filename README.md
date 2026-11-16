@@ -840,6 +840,12 @@ From Klecks (a desktop app that sorts video frames): what its screens built loca
 
 Fixed: `KanteHeading` titles in Kante follow `horizontalAlignment` (section labels stay left, beside their rule); a `KanteScope` held as a property or with its own content finds its window through its target and no longer writes the themes it dressed once that has left the window or once a part below has been taken apart (no binding on `enabled` any more; with Kante off, the target's roles still follow its parent); `KanteSettingRow.resetText` is `qsTr("Reset")` (was German). Screen readers press segments of `KanteSegmented`, tabs of `KanteTabBar` and `KantePageBar` and the cross of `KanteCallout` (before, only a tap did). `KanteButton` builds its hard shadow, focus ring and icon only when they show (about a tenth less time to create a button).
 
+### Added in Kante 1.81
+
+| Element | Web | QML |
+|---|---|---|
+| Least step width | – | `KanteSteps.minStepWidth` (default `KanteStyle.unit(110)`, as before): the least width of a step with its label; a smaller value lets more steps keep their names before the bar turns compact (8 steps in 848 px) |
+
 ### Added in Kante 1.80
 
 From Jidoka (scripts on a schedule): the state of a run in colour, sign and word, the last runs as a strip with a read-out per run, and a lane chart of runs over a day. All generic: any list of results over time can use them.

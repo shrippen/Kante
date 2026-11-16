@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.81.0] — 2026-11-17
+
+### English
+
+`KanteSteps` takes a smaller least width per step, so more steps fit before the bar turns compact.
+
+#### New
+- `KanteSteps.minStepWidth` (default 110, as before): the least width of a step with its label. Eight steps in 848 px keep their names with a smaller value.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
+
+### Deutsch
+
+`KanteSteps` nimmt eine kleinere Mindestbreite je Schritt an, damit mehr Schritte Platz haben, bevor die Leiste kompakt wird.
+
+#### Neu
+- `KanteSteps.minStepWidth` (Vorgabe 110, wie bisher): die Mindestbreite eines Schritts mit seinem Namen. Acht Schritte in 848 px behalten ihre Namen mit einem kleineren Wert.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
+
 ## [1.80.0] — 2026-11-11
 
 ### English
