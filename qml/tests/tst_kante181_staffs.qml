@@ -3,14 +3,14 @@ import QtTest
 import Kante
 
 /**
- * Kante 1.82, staffs that stay fast and move (Kontra polish pass, 12.11.): lines are kept
+ * Kante 1.81, staffs that stay fast and move (Kontra polish pass, 12.11.): lines are kept
  * while they stay in view (a page turn builds one line), a change of several inputs lays
  * out once, `settleMs` waits for a resize to end, and a line stays light enough to build.
  * Run: tools/check-qml.sh.
  */
 TestCase {
     id: tc
-    name: "Kante182"
+    name: "Kante181Staffs"
     width: 1600
     height: 900
     when: windowShown
@@ -121,8 +121,8 @@ TestCase {
         verify(after[0] === before[0] && after[2] === before[2], "the lines that stay are kept")
     }
 
-    // A line of 7 bars with 8 notes each stays below this many items (P5): before 1.82 a
-    // page of three such lines had 2280 (Kontra 12.11.: 57 ms to turn), with 1.82 1272.
+    // A line of 7 bars with 8 notes each stays below this many items (P5): before 1.81 a
+    // page of three such lines had 2280 (Kontra 12.11.: 57 ms to turn), with 1.81 1272.
     function test_lineStaysLight() {
         const staff = createTemporaryObject(tabComponent, tc, { bars: bars(35), notes: tabNotes(35) })
         waitForRendering(staff)
