@@ -117,7 +117,7 @@ QQC2.Button {
         }
     }
 
-    // The shape, and Quiet's ground on hover: built only where drawn (1.82). In System both stood
+    // The shape, and Quiet's ground on hover: built only where drawn (1.81.1). In System both stood
     // hidden in every button, a third of its creation.
     Loader {
         z: -1

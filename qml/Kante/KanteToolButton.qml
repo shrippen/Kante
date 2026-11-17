@@ -63,7 +63,7 @@ QQC2.ToolButton {
     }
 
     // Kante's ground and content: built only in Kante (System draws the style's own; an
-    // unused layout, icon and label doubled a tool button's cost, 1.82).
+    // unused layout, icon and label doubled a tool button's cost, 1.81.1).
     Loader {
         z: -1
         anchors.fill: parent
