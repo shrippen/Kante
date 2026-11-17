@@ -765,6 +765,8 @@ Rectangle {
                     ColumnLayout {
                         spacing: KanteStyle.unit(14)
                         KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -14; rmsDb: -22 }
+                        // scaleUnit: "dB" after each scale label; crowded ones drop.
+                        KanteAudioMeter { Layout.preferredWidth: KanteStyle.unit(380); level: -14; showScale: true; scaleUnit: "dB" }
                         KanteLevelMeter { Layout.preferredWidth: KanteStyle.unit(380); peakDb: -0.4; rmsDb: -5; clipped: true }
                         KanteTimingHistogram {
                             Layout.preferredWidth: KanteStyle.unit(380); Layout.preferredHeight: KanteStyle.unit(170)
@@ -1532,6 +1534,8 @@ Rectangle {
                                        { text: "五分", reading: "ごふん", word: 4 }, { text: "です", word: 5 }, { text: "。" }]
                             onWordActivated: function (word) { lookupLabel.text = "→ " + wordText(word) }
                         }
+                        // studyFont: the line the learner studies stands above the controls.
+                        Text { Layout.fillWidth: true; text: "ふくろ、いりません。"; color: KanteStyle.textColor; font: KanteStyle.studyFont() }
                         Text { id: lookupLabel; text: "1.33: Wort anklicken"; color: KanteStyle.mutedTextColor; font: KanteStyle.defaultFont }
                     }
                     ColumnLayout {

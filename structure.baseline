@@ -22,5 +22,5 @@ qml/Kante/KanteSplitHandle.qml	Keys.onPressed	ccn=18
 qml/Kante/KanteTabStaff.qml	-	lines=999
 qml/Kante/KanteTabStaff.qml	normalizeBars	ccn=19
 qml/Kante/KanteTransportBar.qml	Keys.onPressed	ccn=19
-qml/demo/Gallery.qml	-	lines=1711
+qml/demo/Gallery.qml	-	lines=1715
 qml/tests/tst_kante_components.qml	-	lines=1203
