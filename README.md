@@ -841,6 +841,12 @@ From Klecks, Kontra, Klappe and Mitori: what their screens built locally. All ge
 
 Fixed: `KanteHeading` titles in Kante follow `horizontalAlignment` (section labels stay left, beside their rule); a `KanteScope` held as a property or with its own content finds its window through its target and no longer writes the themes it dressed once that has left the window or once a part below has been taken apart (no binding on `enabled` any more; with Kante off, the target's roles still follow its parent); `KanteSettingRow.resetText` is `qsTr("Reset")` (was German). Screen readers press segments of `KanteSegmented`, tabs of `KanteTabBar` and `KantePageBar` and the cross of `KanteCallout` (before, only a tap did). `KanteButton` builds its hard shadow, focus ring and icon only when they show (about a tenth less time to create a button).
 
+### Fixed in Kante 1.81.1
+
+Found by Kurrent's performance test (its task list opened in 8 to 10 s of main-thread time).
+
+`KanteToolButton`: Kante's ground and its content (layout, `KanteIcon`, label) sit in `Loader`s active while `KanteStyle.themed` only; before, every tool button built them and hid them in System. `KanteButton` (and the generated `KantePlasmaButton`): the shape and Quiet's ground are `Loader`s active where Kante draws (`drawn`, and themed for Quiet), the label is a `Loader` active while `drawn`. Per button, created in a row (`qml/perf/tst_controls_perf.qml`, offscreen, fastest of five): `KanteToolButton` in System 1.07 → 0.75 ms (a plain `ToolButton`: 0.57 ms), `KanteButton` 1.98 → 1.25 ms. Test `qml/tests/tst_kante1811.qml`.
+
 ### Added in Kante 1.80
 
 From Jidoka (scripts on a schedule): the state of a run in colour, sign and word, the last runs as a strip with a read-out per run, and a lane chart of runs over a day. All generic: any list of results over time can use them.
