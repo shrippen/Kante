@@ -40,10 +40,19 @@ TestCase {
     }
 
     function test_study_font_pixel_size() {
-        var f = KanteStyle.studyFont(Qt.font({ family: "Sans", pixelSize: 20 }))
+        // 17 px is 12.75 pt; rounded down on the way it grew to 21 px instead of 23.
+        const f = KanteStyle.studyFont(Qt.font({ family: "Sans", pixelSize: 17 }))
         compare(f.family, KanteStyle.japaneseFamily)
-        compare(f.pixelSize, 27)
+        fuzzyCompare(f.pointSize, 12.75 * KanteStyle.studyScale, 0.01)
         verify(!f.bold)
+    }
+
+    function test_study_font_keeps_fractions() {
+        // Qt.font() itself rounds a point size down; a font keeps 9.75 when it is assigned.
+        const b = Qt.font({ family: "Sans", pointSize: 10 })
+        b.pointSize = 9.75
+        const f = KanteStyle.studyFont(b)
+        fuzzyCompare(f.pointSize, 9.75 * KanteStyle.studyScale, 0.01)
     }
 
     function test_study_font_default_base() {

@@ -143,11 +143,14 @@ QtObject {
     readonly property real studyScale: 1.35
     /** `japaneseFont(base)` at `studyScale` times the size: a sentence to read or a correction. */
     function studyFont(base) {
-        var f = japaneseFont(base)
-        if (f.pointSize > 0)
-            f.pointSize = f.pointSize * studyScale
+        const b = base || defaultFont
+        const f = japaneseFont(b)
+        // From the base, not from japaneseFont: Qt.font rounds a point size down, and a font
+        // given in pixels reports its point size too (16 px = 12 pt).
+        if (b.pointSize > 0)
+            f.pointSize = b.pointSize * studyScale
         else
-            f.pixelSize = Math.round(f.pixelSize * studyScale)
+            f.pixelSize = Math.round(b.pixelSize * studyScale)
         return f
     }
 
