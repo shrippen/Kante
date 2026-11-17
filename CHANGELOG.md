@@ -14,6 +14,8 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 #### New
 - `KanteSteps.minStepWidth` (default 110, as before): the least width of a step with its label. Eight steps in 848 px keep their names with a smaller value.
 
+![Eight steps in 848 px in dark Kante: compact with the default 110, with names at 96](https://shrippen.github.io/Kante/shots/release-1.81-steps-min-width.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
 
 ### Deutsch
@@ -22,6 +24,8 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kant
 
 #### Neu
 - `KanteSteps.minStepWidth` (Vorgabe 110, wie bisher): die Mindestbreite eines Schritts mit seinem Namen. Acht Schritte in 848 px behalten ihre Namen mit einem kleineren Wert.
+
+![Acht Schritte in 848 px in dunklem Kante: kompakt mit der Vorgabe 110, mit Namen bei 96](https://shrippen.github.io/Kante/shots/release-1.81-steps-min-width.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
 
