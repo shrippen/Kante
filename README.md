@@ -778,7 +778,7 @@ Colour labels in apps, and an audio meter for mixers (lmix). `KanteLevelMeter` (
 | Element | Web | QML |
 |---|---|---|
 | Colour label | `data-label` also takes `orange` and `cyan` | `KanteStyle.labelColor(name)`, names in `KanteStyle.labels`; palette roles `labelRed` … `labelPurple`. A label is data, so it keeps its colour in System and Kante Light too (light or dark by the theme). Name the label beside the colour |
-| Audio meter | – | `KanteAudioMeter`: `level` in dBFS (undefined: no signal), zones positive up to `warnAt` (−18), warning up to `dangerAt` (−6), negative above, from `floor` (−60); peak-hold mark (`holdMs`, 1500), `showScale` (1.45; before: `scale`) labels the floor, both limits and 0 (crowded labels drop out, floor and 0 stay), `vertical` fills bottom up; tooltip and accessible name give the value |
+| Audio meter | – | `KanteAudioMeter`: `level` in dBFS (undefined: no signal), zones positive up to `warnAt` (−18), warning up to `dangerAt` (−6), negative above, from `floor` (−60); peak-hold mark (`holdMs`, 1500), `showScale` (1.45; before: `scale`) labels the floor, both limits and 0 (crowded labels drop out, floor and 0 stay; `scaleUnit`, e.g. "dB", follows each label and counts in the room they need), `vertical` fills bottom up; tooltip and accessible name give the value |
 
 ### Added in Kante 1.30
 
@@ -1432,7 +1432,7 @@ A Japanese face for Japanese text in pieces (found in Kaiwa): `KanteRubyText` la
 
 | Element | Web | QML |
 |---|---|---|
-| Japanese family | – (the page sets `lang="ja"`) | `KanteStyle.japaneseFamilies` (preference list: Noto Sans CJK JP, Source Han Sans JP, Hiragino Sans, Yu Gothic, Meiryo, BIZ UDPGothic, IPAexGothic, …), `japaneseFamily` (the first installed, else the default font's family), `japaneseFont(base)` (`base` or the default font in that family, same size and weight). Default `font` of `KanteRubyText` and `KanteDiffText`, and the morae of `KantePitchCurve`. An app with its own Japanese `Text` pieces takes `KanteStyle.japaneseFont()` too |
+| Japanese family | – (the page sets `lang="ja"`) | `KanteStyle.japaneseFamilies` (preference list: Noto Sans CJK JP, Source Han Sans JP, Hiragino Sans, Yu Gothic, Meiryo, BIZ UDPGothic, IPAexGothic, …), `japaneseFamily` (the first installed, else the default font's family), `japaneseFont(base)` (`base` or the default font in that family, same size and weight). `studyFont(base)`: the same at `studyScale` (1.35) times the size, for text the learner studies (a tutor's sentence, the learner's line, a correction). Default `font` of `KanteRubyText` and `KanteDiffText`, and the morae of `KantePitchCurve`. An app with its own Japanese `Text` pieces takes `KanteStyle.japaneseFont()` too |
 
 ### Added in Kante 1.33
 
