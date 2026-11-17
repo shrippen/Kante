@@ -3,7 +3,7 @@ import QtTest
 import Kante
 
 /**
- * KanteShapeCanvas: captions of several lines, textAnchor, shapeDoubleClicked.
+ * KanteShapeCanvas: captions of several lines, textAnchor, shapeDoubleClicked, textRotation.
  */
 TestCase {
     id: tc
@@ -186,5 +186,112 @@ TestCase {
         const a = span("MMMM", undefined, 20)
         const b = span("MMMM", undefined, 40)
         compare(a[1] - a[0], b[1] - b[0])
+    }
+
+    // Every pixel of the view as one string: equal strings are the same picture.
+    function pixels(c) {
+        const img = tc.grabImage(c)
+        const out = []
+        for (let y = 0; y < img.height; y += 2) {
+            for (let x = 0; x < img.width; x += 2) {
+                out.push(img.pixel(x, y).toString())
+            }
+        }
+        return out.join("")
+    }
+
+    function note(points, rotation) {
+        return [{ kind: "polygon", points: points, label: "red", fill: "none", text: "MMMMMMMM\nMMMMMMMM",
+                  textAnchor: "topLeft", captionSize: 0.8, textRotation: rotation, key: "note" }]
+    }
+
+    // The card as it lies unturned and turned a quarter clockwise about its top left corner (6, 2).
+    readonly property var cardFlat: [6, 2, 16, 2, 16, 6, 6, 6]
+    readonly property var cardTurned: [6, 2, 6, 12, 2, 12, 2, 2]
+
+    function test_rotationChangesPicture() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = note(tc.cardFlat, 0)
+        wait(50)
+        const flat = pixels(c)
+        c.shapes = note(tc.cardFlat, 30)
+        wait(50)
+        verify(pixels(c) !== flat)
+    }
+
+    // 0 is today's picture, and so is no textRotation at all.
+    function test_zeroRotationIsUnchanged() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = note(tc.cardFlat, undefined)
+        wait(50)
+        const without = pixels(c)
+        c.shapes = note(tc.cardFlat, 0)
+        wait(50)
+        verify(pixels(c) === without)
+    }
+
+    // A full turn lays the caption as it was.
+    function test_fullTurnIsFlat() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = note(tc.cardFlat, 0)
+        wait(50)
+        const flat = pixels(c)
+        c.shapes = note(tc.cardFlat, 360)
+        wait(50)
+        verify(pixels(c) === flat)
+    }
+
+    // Box of the ink inside x0..x1, y0..y1: {l, t, r, b}, null for none.
+    function inkBox(c, x0, x1, y0, y1) {
+        const img = tc.grabImage(c)
+        const ground = img.pixel(300, 220)
+        let box = null
+        for (let y = y0; y < y1; y++) {
+            for (let x = x0; x < x1; x++) {
+                if (Math.abs(img.pixel(x, y).r - ground.r) <= 0.05) {
+                    continue
+                }
+                box = box === null ? { l: x, t: y, r: x, b: y }
+                    : { l: Math.min(box.l, x), t: Math.min(box.t, y), r: Math.max(box.r, x), b: Math.max(box.b, y) }
+            }
+        }
+        return box
+    }
+
+    // The card turned 90 degrees stands at x 40..120 and y 40..240 px; its top edge is the right
+    // one. The caption, turned the same, runs down it, its lines stacking leftwards from there.
+    function test_quarterTurnLiesAlongCard() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = note(tc.cardTurned, 90)
+        wait(50)
+        const box = inkBox(c, 44, 117, 44, 236)
+        verify(box !== null)
+        verify(box.b - box.t > 2 * (box.r - box.l))
+        verify(box.r > 100)
+        verify(box.l >= 44 && box.b <= 236)
+    }
+
+    // The same caption unturned on the flat card runs along it instead.
+    function test_flatCaptionRunsAcross() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = note(tc.cardFlat, 0)
+        wait(50)
+        const box = inkBox(c, 124, 316, 44, 116)
+        verify(box !== null)
+        verify(box.r - box.l > 2 * (box.b - box.t))
+    }
+
+    // A turned caption whose anchor lies left of the view but whose text reaches in is drawn; one
+    // far outside is skipped.
+    function test_turnedCaptionCulling() {
+        const c = createTemporaryObject(canvasComponent, stage())
+        c.shapes = [{ kind: "polygon", points: [-3, 5, 3, 5, 3, 9, -3, 9], label: "red", fill: "none",
+                      text: "MMMMMMMM", textAnchor: "topLeft", captionSize: 1, textRotation: 45, key: "n" }]
+        wait(50)
+        verify(inkBox(c, 44, 356, 44, 256) !== null)
+        c.shapes = [{ kind: "polygon", points: [-300, 5, -290, 5, -290, 9, -300, 9], label: "red", fill: "none",
+                      text: "MMMMMMMM", textAnchor: "topLeft", captionSize: 1, textRotation: 45, key: "n" }]
+        wait(50)
+        compare(inkBox(c, 44, 356, 44, 256), null)
     }
 }
