@@ -790,12 +790,13 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
 
-### Next release (unreleased)
+### Added in Kante 1.81
 
 From Klecks (a desktop app that sorts video frames): what its screens built locally. All generic.
 
 | Element | Web | QML |
 |---|---|---|
+| Least step width | – | `KanteSteps.minStepWidth` (default `KanteStyle.unit(110)`, as before): the least width of a step with its label; a smaller value lets more steps keep their names before the bar turns compact (8 steps in 848 px) |
 | Tool button icon fallback | – | `KanteToolButton`: with an `icon.name` or `icon.source` that is not found (the theme lacks the name, the url does not load) the button shows its `text`, also with `display: IconOnly`, as `TextOnly`; an icon that is there stays alone. A name wins over a url, as drawn: a missing name shows the text even if `icon.source` loads. Kante and System. The app no longer needs a probe `IconImage` of its own (Klappe's `PlanTools`). Needs `text`. Gallery: section buttons |
 | Line chart thresholds | – | `KanteLineChart.thresholds`: `[{ value, color, series, label }]`, dashed horizontal lines (1.5 px, as the goal line of `KanteBarChart`). `color` colours the line, `series` (index) takes that series' data colour, neither: the accent colour; `label` is written above the line at the right end, or below it when there is no room above it. Without `maxValue` the scale grows to hold the line; above a fixed scale it is not drawn. `yOf(value)` gives its y |
 | Line chart axis captions | – | `KanteLineChart`: `xStart`, `xEnd` (under the plot, left and right), `xTitle` (centred below them), `yTitle` (above the y labels, left). The chart keeps the room itself (`padTop`, `padBottom`, `plotHeight`), a caller sets no margins. `compact` shows none. Without them the layout is unchanged |
@@ -839,12 +840,6 @@ From Klecks (a desktop app that sorts video frames): what its screens built loca
 | Staff frame, shared | – | `KanteStaffFrame` (non-visual): what `KanteBassStaff` and `KanteTabStaff` share besides their notation. The room (`width`, `height`, `spacing`, `minBarWidth` taken over at once or `settleMs` after the last change, as `layoutSize`, `layoutSpacing`, `layoutMinBarWidth`), the layouts of the lines on show (`lineCache`, `lineModel`, `syncLines()`; a page turn lays out only the line that comes in), the loop cut into lines (`cutLoop`, `loopX`) and the lookups in time (`lastAtOrBefore(list, t)`, `barAt(bars, t)`, `barLabel(bar, i)`). The staffs fill its inputs; an app has no use for it |
 
 Fixed: `KanteHeading` titles in Kante follow `horizontalAlignment` (section labels stay left, beside their rule); a `KanteScope` held as a property or with its own content finds its window through its target and no longer writes the themes it dressed once that has left the window or once a part below has been taken apart (no binding on `enabled` any more; with Kante off, the target's roles still follow its parent); `KanteSettingRow.resetText` is `qsTr("Reset")` (was German). Screen readers press segments of `KanteSegmented`, tabs of `KanteTabBar` and `KantePageBar` and the cross of `KanteCallout` (before, only a tap did). `KanteButton` builds its hard shadow, focus ring and icon only when they show (about a tenth less time to create a button).
-
-### Added in Kante 1.81
-
-| Element | Web | QML |
-|---|---|---|
-| Least step width | – | `KanteSteps.minStepWidth` (default `KanteStyle.unit(110)`, as before): the least width of a step with its label; a smaller value lets more steps keep their names before the bar turns compact (8 steps in 848 px) |
 
 ### Added in Kante 1.80
 
