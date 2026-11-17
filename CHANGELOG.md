@@ -23,7 +23,7 @@ Knöpfe entstehen bei ausgeschaltetem Kante schneller.
 
 #### Verbessert
 - `KanteToolButton` baute Grund, Anordnung, Symbol und Beschriftung von Kante in jedem Stil und versteckte sie im System-Stil. So kostete jeder Werkzeugknopf etwa doppelt so viel wie ein gewöhnlicher. In Kurrents Aufgabenliste sind das drei Werkzeugknöpfe pro Zeile. Sie entstehen jetzt nur noch in Kante. Es sieht gleich aus.
-- `KanteButton` und `KantePlasmaButton` machten dasselbe mit ihrer Form mit abgeschnittener Ecke, dem Grund eines stillen Knopfs und ihrer eigenen Beschriftung. Diese entstehen jetzt nur, wo Kante den Knopf zeichnet. Ein Knopf im System-Stil entsteht etwa ein Drittel schneller. Es sieht gleich aus.
+- `KanteButton` und `KantePlasmaButton` machten dasselbe mit ihrer Form mit abgeschnittener Ecke, dem Grund eines stillen Knopfs und ihrer eigenen Beschriftung. Diese entstehen jetzt nur, wo Kante den Knopf zeichnet. Ein Knopf im System-Stil braucht etwa ein Drittel weniger Zeit, bis er entsteht. Es sieht gleich aus.
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811
 
