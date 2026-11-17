@@ -131,6 +131,24 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.81.1">
+      <div class="release-head"><b class="release-version">1.81.1</b><time datetime="2026-11-17">17 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Buttons are built faster while Kante is off.</p>
+        <p class="release-lead" lang="de">Knöpfe entstehen bei ausgeschaltetem Kante schneller.</p>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li><code>KanteToolButton</code> built Kante's ground, layout, icon and label in every style and hid them in System, so each tool button cost about twice a plain one. In Kurrent's task list that is three tool buttons per row. They are now built in Kante only. It looks the same.</li>
+            <li><code>KanteButton</code> and <code>KantePlasmaButton</code> did the same with their cut-corner shape, the ground of a quiet button and their own label. These are now built only where Kante draws the button. A button in System takes about a third less time to create. It looks the same.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteToolButton</code> baute Grund, Anordnung, Symbol und Beschriftung von Kante in jedem Stil und versteckte sie im System-Stil. So kostete jeder Werkzeugknopf etwa doppelt so viel wie ein gewöhnlicher. In Kurrents Aufgabenliste sind das drei Werkzeugknöpfe pro Zeile. Sie entstehen jetzt nur noch in Kante. Es sieht gleich aus.</li>
+            <li><code>KanteButton</code> und <code>KantePlasmaButton</code> machten dasselbe mit ihrer Form mit abgeschnittener Ecke, dem Grund eines stillen Knopfs und ihrer eigenen Beschriftung. Diese entstehen jetzt nur, wo Kante den Knopf zeichnet. Ein Knopf im System-Stil braucht etwa ein Drittel weniger Zeit, bis er entsteht. Es sieht gleich aus.</li>
+          </ul>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.81.0">
       <div class="release-head"><b class="release-version">1.81.0</b><time datetime="2026-11-17">17 Nov 2026</time></div>
       <div class="release-body">
@@ -233,6 +251,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.79.0">
       <div class="release-head"><b class="release-version">1.79.0</b><time datetime="2026-11-11">11 Nov 2026</time></div>
       <div class="release-body">
@@ -260,9 +281,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-179"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.78.0">
       <div class="release-head"><b class="release-version">1.78.0</b><time datetime="2026-11-10">10 Nov 2026</time></div>
       <div class="release-body">
@@ -1765,7 +1783,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.81.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.81.1</a></p></div>
 </footer>
 
 <script>

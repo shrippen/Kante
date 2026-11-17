@@ -5,6 +5,28 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.81.1] — 2026-11-17
+
+### English
+
+Buttons are built faster while Kante is off.
+
+#### Improved
+- `KanteToolButton` built Kante's ground, layout, icon and label in every style and hid them in System, so each tool button cost about twice a plain one. In Kurrent's task list that is three tool buttons per row. They are now built in Kante only. It looks the same.
+- `KanteButton` and `KantePlasmaButton` did the same with their cut-corner shape, the ground of a quiet button and their own label. These are now built only where Kante draws the button. A button in System takes about a third less time to create. It looks the same.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811
+
+### Deutsch
+
+Knöpfe entstehen bei ausgeschaltetem Kante schneller.
+
+#### Verbessert
+- `KanteToolButton` baute Grund, Anordnung, Symbol und Beschriftung von Kante in jedem Stil und versteckte sie im System-Stil. So kostete jeder Werkzeugknopf etwa doppelt so viel wie ein gewöhnlicher. In Kurrents Aufgabenliste sind das drei Werkzeugknöpfe pro Zeile. Sie entstehen jetzt nur noch in Kante. Es sieht gleich aus.
+- `KanteButton` und `KantePlasmaButton` machten dasselbe mit ihrer Form mit abgeschnittener Ecke, dem Grund eines stillen Knopfs und ihrer eigenen Beschriftung. Diese entstehen jetzt nur, wo Kante den Knopf zeichnet. Ein Knopf im System-Stil braucht etwa ein Drittel weniger Zeit, bis er entsteht. Es sieht gleich aus.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811
+
 ## [1.81.0] — 2026-11-17
 
 ### English
