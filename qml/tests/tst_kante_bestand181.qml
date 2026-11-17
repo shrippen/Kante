@@ -6,7 +6,7 @@ import org.kde.kirigami as Kirigami
 import Kante
 
 /**
- * From the review of the QML stock (1.82): the setting row's reset text is English by
+ * From the review of the QML stock (1.81): the setting row's reset text is English by
  * default (translated through qsTr), a heading follows its horizontalAlignment in Kante,
  * and a scope held as a property (the dialog and sheet skins) finds the window through its
  * target.
@@ -14,7 +14,7 @@ import Kante
  */
 TestCase {
     id: tc
-    name: "KanteBestand182"
+    name: "KanteBestand181"
     width: 400
     height: 300
     when: windowShown

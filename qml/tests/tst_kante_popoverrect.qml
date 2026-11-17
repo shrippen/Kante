@@ -3,7 +3,7 @@ import QtTest
 import Kante
 
 /**
- * KantePopover.openAtRect and rectSlot (Kante 1.82, for Klappe): a card beside a rectangle,
+ * KantePopover.openAtRect and rectSlot (Kante 1.81, for Klappe): a card beside a rectangle,
  * inside a bounds item.
  * Run: tools/check-qml.sh.
  */

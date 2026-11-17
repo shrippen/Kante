@@ -5,6 +5,82 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.81.0] — 2026-11-17
+
+### English
+
+Kante 1.81 collects what Klecks, Kontra, Klappe and Mitori built locally: a plan view with a command palette and floating panels, a sticky settings header over a glass panel, a scatter chart, steps that can fail or be clicked, and staffs that stay fast and move.
+
+#### New
+- `KanteShapeCanvas`: a pannable, zoomable vector view for a plan drawn from data (lines, polylines, polygons, circles, images as background, captions of several lines, opacity per shape, a `ground` label colour). With `editing` it reports left drags and the app moves figures or draws walls; `shapeDoubleClicked` joins `shapeClicked`.
+- `KantePopover.openAtPoint` and `openAtRect` open a card beside a point or an element, on the side with room, kept inside the window or a `bounds` item, with a pointer. `closeOnOutside: false` keeps it open while one works; `rectSlot` tells where it would stand.
+- `KanteCommandPalette` (Ctrl+K style): a card with a search field over the matching commands, grouped, with key caps, disabled entries and keyboard control. `KanteFloatingPanel`: a card that floats over content and folds to its head.
+- `KanteTrackTimeline`: tracks over time with a ruler, segments, markers, a playhead, hide buttons and keyboard seeking. `KanteTransportBar.markersVisible` adds jumps to the previous and next marker, `timeFormat` shows tenths of a second. `KanteSplitHandle.collapsible` folds a side column; `KanteTile.stageAspect` sets the stage ratio, e.g. 2.39.
+- `KanteScatterChart`: points on an x / y plane in one Canvas (20 000 stay cheap), shapes dot, triangle (with direction) and cross, colour by series or value, `equalAspect` for maps. `KanteLineChart.thresholds` draws dashed limit lines; `xStart`, `xEnd`, `xTitle` and `yTitle` caption the axes. `KanteHeatGrid` reserves room for labels and columns that may come, so a grid that switches data keeps its cells in place.
+- A settings page in the style of Kontra: `KanteStickyHeader` (title and tabs that shrink on scroll, with a scrollspy), `KanteGlassPanel` (a blurred layer over content), `KanteSettingGroup` (a card per group with a count), `KanteTabBar.look: Underline` and `activation: Manual`, `KanteFocusFollow.topInset` to keep focus below the header.
+- `KanteFileDrop`: a drop area for files and folders with a choose button and keyboard support. `KanteSteps.clickable` and `activated(index)` make steps clickable; `KanteSteps.errors` marks failed steps by shape and word, not by colour alone; `KanteSteps.minStepWidth` lets more steps keep their names (eight in 848 px).
+- `KanteTile.source` shows an image (with `sourceSize` for big photos) and a placeholder while none is on screen; a tile without name and figure is only as high as its stage plus the bar. `KanteListRow.overflow: Wrap` lets long names take several lines. `KanteTabStaff.fill` fills the height with lines and grows the spacing up to `maxGrow`.
+
+#### Improved
+- `KanteTabStaff` and `KanteBassStaff` stay fast: a page turn builds only the line that comes in, a resize lays out once, and `settleMs` waits for a dragged window. A page turn took 57 ms and a resize step up to 550 ms before. `KanteShapeCanvas` paints a plan with 610 shapes in 15 ms instead of 20 ms, zoomed in in 6 ms instead of 16 ms, with the same picture.
+- With `KanteStyle.animate` the staffs turn pages by moving lines, `KanteNoteMark` pulses on a hit and shakes on a wrong or missed note, and `KanteDialog` fades and scales in. Without it everything jumps as before.
+- `KanteToolButton` shows its `text` when its icon is not found, so an app needs no own fallback. `KanteComboBox` keeps letters, digits and arrows to itself, so a window `Shortcut` on "l" or "1" no longer fires while the box has focus.
+
+#### Fixed
+- `KanteHeading` titles in Kante follow `horizontalAlignment` (section labels stay left, beside their rule).
+- A `KanteScope` held as a property or with its own content finds its window through its target and no longer writes themes after the target left the window or a part below was taken apart.
+- `KanteSettingRow.resetText` is `qsTr("Reset")`, before German: an app without its own text or translation now shows "Reset".
+- Screen readers press segments of `KanteSegmented`, tabs of `KanteTabBar` and `KantePageBar` and the cross of `KanteCallout`; before, only a tap did.
+- `KanteButton` builds its shadow, focus ring and icon only when they show (about a tenth less time to create a button).
+
+#### Note
+- `KanteNoteState` and `KanteStaffFrame` (non-visual) hold the code that the bass and tab views and lanes kept four times. No change for apps.
+
+![The command palette over a plan in dark Kante: search field, commands grouped by Datei, Ansicht and Werkzeuge with key caps, one dimmed](https://shrippen.github.io/Kante/shots/release-1.81-command-palette.png)
+
+![A floor plan in dark Kante: walls, a table, two figures with a dashed path, a floating tool panel at the top left](https://shrippen.github.io/Kante/shots/release-1.81-plan-canvas.png)
+
+![Eight steps in 848 px in dark Kante: compact with the default 110, with names at 96](https://shrippen.github.io/Kante/shots/release-1.81-steps-min-width.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
+
+### Deutsch
+
+Kante 1.81 sammelt, was Klecks, Kontra, Klappe und Mitori lokal gebaut haben: eine Planansicht mit Befehlspalette und schwebenden Panels, ein fester Einstellungs-Kopf über einem Glas-Panel, ein Streudiagramm, Schritte, die fehlschlagen oder angeklickt werden können, und Notenzeilen, die schnell bleiben und sich bewegen.
+
+#### Neu
+- `KanteShapeCanvas`: eine verschieb- und zoombare Vektoransicht für einen Plan aus Daten (Linien, Linienzüge, Polygone, Kreise, Bilder als Hintergrund, mehrzeilige Beschriftungen, Deckkraft je Form, die Beschriftungsfarbe `ground`). Mit `editing` meldet sie Ziehen mit der linken Taste, die App verschiebt Figuren oder zeichnet Wände; `shapeDoubleClicked` ergänzt `shapeClicked`.
+- `KantePopover.openAtPoint` und `openAtRect` öffnen eine Karte neben einem Punkt oder Element, auf der Seite mit Platz, im Fenster oder in einem `bounds`-Item gehalten, mit Zeiger. `closeOnOutside: false` hält sie offen, solange man arbeitet; `rectSlot` sagt, wo sie stünde.
+- `KanteCommandPalette` (wie Strg+K): eine Karte mit Suchfeld über den passenden Befehlen, gruppiert, mit Tastenkappen, abgeblendeten Einträgen und Tastaturbedienung. `KanteFloatingPanel`: eine Karte, die über Inhalt schwebt und sich auf ihren Kopf zusammenfalten lässt.
+- `KanteTrackTimeline`: Spuren über der Zeit mit Lineal, Abschnitten, Markern, Abspielposition, Ausblende-Knöpfen und Suchen per Tastatur. `KanteTransportBar.markersVisible` fügt Sprünge zum vorigen und nächsten Marker hinzu, `timeFormat` zeigt Zehntelsekunden. `KanteSplitHandle.collapsible` faltet eine Seitenspalte ein; `KanteTile.stageAspect` stellt das Seitenverhältnis der Bühne ein, z. B. 2,39.
+- `KanteScatterChart`: Punkte auf einer x-/y-Ebene in einem Canvas (20 000 bleiben günstig), Formen Punkt, Dreieck (mit Richtung) und Kreuz, Farbe nach Serie oder Wert, `equalAspect` für Karten. `KanteLineChart.thresholds` zeichnet gestrichelte Grenzlinien; `xStart`, `xEnd`, `xTitle` und `yTitle` beschriften die Achsen. `KanteHeatGrid` hält Platz für Beschriftungen und Spalten, die noch kommen können, damit ein Raster beim Datenwechsel seine Zellen nicht verschiebt.
+- Eine Einstellungsseite im Stil von Kontra: `KanteStickyHeader` (Titel und Tabs, die beim Scrollen schrumpfen, mit Scrollspy), `KanteGlassPanel` (eine unscharfe Ebene über Inhalt), `KanteSettingGroup` (eine Karte je Gruppe mit Anzahl), `KanteTabBar.look: Underline` und `activation: Manual`, `KanteFocusFollow.topInset`, damit der Fokus unter dem Kopf bleibt.
+- `KanteFileDrop`: eine Ablagefläche für Dateien und Ordner mit Auswahlknopf und Tastaturbedienung. `KanteSteps.clickable` und `activated(index)` machen Schritte anklickbar; `KanteSteps.errors` markiert fehlgeschlagene Schritte durch Form und Wort, nicht nur durch Farbe; `KanteSteps.minStepWidth` lässt mehr Schritte ihre Namen behalten (acht in 848 px).
+- `KanteTile.source` zeigt ein Bild (mit `sourceSize` für große Fotos) und einen Platzhalter, solange keins zu sehen ist; eine Kachel ohne Namen und Figur ist nur so hoch wie ihre Bühne und die Leiste. `KanteListRow.overflow: Wrap` lässt lange Namen mehrere Zeilen brauchen. `KanteTabStaff.fill` füllt die Höhe mit Zeilen und vergrößert den Abstand bis `maxGrow`.
+
+#### Verbessert
+- `KanteTabStaff` und `KanteBassStaff` bleiben schnell: ein Umblättern baut nur die neue Zeile, eine Größenänderung legt einmal aus, und `settleMs` wartet auf ein gezogenes Fenster. Ein Umblättern brauchte vorher 57 ms, ein Schritt der Größenänderung bis zu 550 ms. `KanteShapeCanvas` zeichnet einen Plan mit 610 Formen in 15 statt 20 ms, vergrößert in 6 statt 16 ms, mit demselben Bild.
+- Mit `KanteStyle.animate` blättern die Notenzeilen durch Bewegung um, `KanteNoteMark` pulsiert bei einem Treffer und wackelt bei einer falschen oder verpassten Note, und `KanteDialog` blendet ein und skaliert. Ohne bleibt alles bei Sprüngen wie bisher.
+- `KanteToolButton` zeigt seinen `text`, wenn sein Symbol nicht gefunden wird; die App braucht keinen eigenen Ersatz. `KanteComboBox` behält Buchstaben, Ziffern und Pfeile für sich, ein `Shortcut` des Fensters auf "l" oder "1" löst bei fokussierter Box nicht mehr aus.
+
+#### Behoben
+- Titel von `KanteHeading` in Kante folgen `horizontalAlignment` (Abschnittsbeschriftungen bleiben links, neben ihrer Linie).
+- Ein `KanteScope` als Property oder mit eigenem Inhalt findet sein Fenster über sein Ziel und schreibt keine Themes mehr, wenn das Ziel das Fenster verlassen hat oder ein Teil darunter abgebaut wurde.
+- `KanteSettingRow.resetText` ist `qsTr("Reset")`, vorher deutsch: eine App ohne eigenen Text oder Übersetzung zeigt jetzt "Reset".
+- Bildschirmleser drücken Segmente von `KanteSegmented`, Tabs von `KanteTabBar` und `KantePageBar` und das Kreuz von `KanteCallout`; vorher ging das nur per Tippen.
+- `KanteButton` baut Schatten, Fokusring und Symbol nur, wenn sie zu sehen sind (etwa ein Zehntel weniger Zeit für einen Knopf).
+
+#### Hinweis
+- `KanteNoteState` und `KanteStaffFrame` (nicht sichtbar) halten den Code, den Bass- und Tabulatur-Ansichten und -Lanes vierfach hatten. Für Apps ändert sich nichts.
+
+![Die Befehlspalette über einem Plan in dunklem Kante: Suchfeld, Befehle gruppiert nach Datei, Ansicht und Werkzeuge mit Tastenkappen, einer abgeblendet](https://shrippen.github.io/Kante/shots/release-1.81-command-palette.png)
+
+![Ein Grundriss in dunklem Kante: Wände, ein Tisch, zwei Figuren mit gestricheltem Weg, links oben ein schwebendes Werkzeug-Panel](https://shrippen.github.io/Kante/shots/release-1.81-plan-canvas.png)
+
+![Acht Schritte in 848 px in dunklem Kante: kompakt mit der Vorgabe 110, mit Namen bei 96](https://shrippen.github.io/Kante/shots/release-1.81-steps-min-width.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
+
 ## [1.80.0] — 2026-11-11
 
 ### English

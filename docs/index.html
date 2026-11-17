@@ -131,6 +131,77 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.81.0">
+      <div class="release-head"><b class="release-version">1.81.0</b><time datetime="2026-11-17">17 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">Kante 1.81 collects what Klecks, Kontra, Klappe and Mitori built locally: a plan view with a command palette and floating panels, a sticky settings header over a glass panel, a scatter chart, steps that can fail or be clicked, and staffs that stay fast and move.</p>
+        <p class="release-lead" lang="de">Kante 1.81 sammelt, was Klecks, Kontra, Klappe und Mitori lokal gebaut haben: eine Planansicht mit Befehlspalette und schwebenden Panels, ein fester Einstellungs-Kopf über einem Glas-Panel, ein Streudiagramm, Schritte, die fehlschlagen oder angeklickt werden können, und Notenzeilen, die schnell bleiben und sich bewegen.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteShapeCanvas</code>: a pannable, zoomable vector view for a plan drawn from data (lines, polylines, polygons, circles, images as background, captions of several lines, opacity per shape, a <code>ground</code> label colour). With <code>editing</code> it reports left drags and the app moves figures or draws walls; <code>shapeDoubleClicked</code> joins <code>shapeClicked</code>.</li>
+            <li><code>KantePopover.openAtPoint</code> and <code>openAtRect</code> open a card beside a point or an element, on the side with room, kept inside the window or a <code>bounds</code> item, with a pointer. <code>closeOnOutside: false</code> keeps it open while one works; <code>rectSlot</code> tells where it would stand.</li>
+            <li><code>KanteCommandPalette</code> (Ctrl+K style): a card with a search field over the matching commands, grouped, with key caps, disabled entries and keyboard control. <code>KanteFloatingPanel</code>: a card that floats over content and folds to its head.</li>
+            <li><code>KanteTrackTimeline</code>: tracks over time with a ruler, segments, markers, a playhead, hide buttons and keyboard seeking. <code>KanteTransportBar.markersVisible</code> adds jumps to the previous and next marker, <code>timeFormat</code> shows tenths of a second. <code>KanteSplitHandle.collapsible</code> folds a side column; <code>KanteTile.stageAspect</code> sets the stage ratio, e.g. 2.39.</li>
+            <li><code>KanteScatterChart</code>: points on an x / y plane in one Canvas (20 000 stay cheap), shapes dot, triangle (with direction) and cross, colour by series or value, <code>equalAspect</code> for maps. <code>KanteLineChart.thresholds</code> draws dashed limit lines; <code>xStart</code>, <code>xEnd</code>, <code>xTitle</code> and <code>yTitle</code> caption the axes. <code>KanteHeatGrid</code> reserves room for labels and columns that may come, so a grid that switches data keeps its cells in place.</li>
+            <li>A settings page in the style of Kontra: <code>KanteStickyHeader</code> (title and tabs that shrink on scroll, with a scrollspy), <code>KanteGlassPanel</code> (a blurred layer over content), <code>KanteSettingGroup</code> (a card per group with a count), <code>KanteTabBar.look: Underline</code> and <code>activation: Manual</code>, <code>KanteFocusFollow.topInset</code> to keep focus below the header.</li>
+            <li><code>KanteFileDrop</code>: a drop area for files and folders with a choose button and keyboard support. <code>KanteSteps.clickable</code> and <code>activated(index)</code> make steps clickable; <code>KanteSteps.errors</code> marks failed steps by shape and word, not by colour alone; <code>KanteSteps.minStepWidth</code> lets more steps keep their names (eight in 848 px).</li>
+            <li><code>KanteTile.source</code> shows an image (with <code>sourceSize</code> for big photos) and a placeholder while none is on screen; a tile without name and figure is only as high as its stage plus the bar. <code>KanteListRow.overflow: Wrap</code> lets long names take several lines. <code>KanteTabStaff.fill</code> fills the height with lines and grows the spacing up to <code>maxGrow</code>.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteShapeCanvas</code>: eine verschieb- und zoombare Vektoransicht für einen Plan aus Daten (Linien, Linienzüge, Polygone, Kreise, Bilder als Hintergrund, mehrzeilige Beschriftungen, Deckkraft je Form, die Beschriftungsfarbe <code>ground</code>). Mit <code>editing</code> meldet sie Ziehen mit der linken Taste, die App verschiebt Figuren oder zeichnet Wände; <code>shapeDoubleClicked</code> ergänzt <code>shapeClicked</code>.</li>
+            <li><code>KantePopover.openAtPoint</code> und <code>openAtRect</code> öffnen eine Karte neben einem Punkt oder Element, auf der Seite mit Platz, im Fenster oder in einem <code>bounds</code>-Item gehalten, mit Zeiger. <code>closeOnOutside: false</code> hält sie offen, solange man arbeitet; <code>rectSlot</code> sagt, wo sie stünde.</li>
+            <li><code>KanteCommandPalette</code> (wie Strg+K): eine Karte mit Suchfeld über den passenden Befehlen, gruppiert, mit Tastenkappen, abgeblendeten Einträgen und Tastaturbedienung. <code>KanteFloatingPanel</code>: eine Karte, die über Inhalt schwebt und sich auf ihren Kopf zusammenfalten lässt.</li>
+            <li><code>KanteTrackTimeline</code>: Spuren über der Zeit mit Lineal, Abschnitten, Markern, Abspielposition, Ausblende-Knöpfen und Suchen per Tastatur. <code>KanteTransportBar.markersVisible</code> fügt Sprünge zum vorigen und nächsten Marker hinzu, <code>timeFormat</code> zeigt Zehntelsekunden. <code>KanteSplitHandle.collapsible</code> faltet eine Seitenspalte ein; <code>KanteTile.stageAspect</code> stellt das Seitenverhältnis der Bühne ein, z. B. 2,39.</li>
+            <li><code>KanteScatterChart</code>: Punkte auf einer x-/y-Ebene in einem Canvas (20 000 bleiben günstig), Formen Punkt, Dreieck (mit Richtung) und Kreuz, Farbe nach Serie oder Wert, <code>equalAspect</code> für Karten. <code>KanteLineChart.thresholds</code> zeichnet gestrichelte Grenzlinien; <code>xStart</code>, <code>xEnd</code>, <code>xTitle</code> und <code>yTitle</code> beschriften die Achsen. <code>KanteHeatGrid</code> hält Platz für Beschriftungen und Spalten, die noch kommen können, damit ein Raster beim Datenwechsel seine Zellen nicht verschiebt.</li>
+            <li>Eine Einstellungsseite im Stil von Kontra: <code>KanteStickyHeader</code> (Titel und Tabs, die beim Scrollen schrumpfen, mit Scrollspy), <code>KanteGlassPanel</code> (eine unscharfe Ebene über Inhalt), <code>KanteSettingGroup</code> (eine Karte je Gruppe mit Anzahl), <code>KanteTabBar.look: Underline</code> und <code>activation: Manual</code>, <code>KanteFocusFollow.topInset</code>, damit der Fokus unter dem Kopf bleibt.</li>
+            <li><code>KanteFileDrop</code>: eine Ablagefläche für Dateien und Ordner mit Auswahlknopf und Tastaturbedienung. <code>KanteSteps.clickable</code> und <code>activated(index)</code> machen Schritte anklickbar; <code>KanteSteps.errors</code> markiert fehlgeschlagene Schritte durch Form und Wort, nicht nur durch Farbe; <code>KanteSteps.minStepWidth</code> lässt mehr Schritte ihre Namen behalten (acht in 848 px).</li>
+            <li><code>KanteTile.source</code> zeigt ein Bild (mit <code>sourceSize</code> für große Fotos) und einen Platzhalter, solange keins zu sehen ist; eine Kachel ohne Namen und Figur ist nur so hoch wie ihre Bühne und die Leiste. <code>KanteListRow.overflow: Wrap</code> lässt lange Namen mehrere Zeilen brauchen. <code>KanteTabStaff.fill</code> füllt die Höhe mit Zeilen und vergrößert den Abstand bis <code>maxGrow</code>.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li><code>KanteTabStaff</code> and <code>KanteBassStaff</code> stay fast: a page turn builds only the line that comes in, a resize lays out once, and <code>settleMs</code> waits for a dragged window. A page turn took 57 ms and a resize step up to 550 ms before. <code>KanteShapeCanvas</code> paints a plan with 610 shapes in 15 ms instead of 20 ms, zoomed in in 6 ms instead of 16 ms, with the same picture.</li>
+            <li>With <code>KanteStyle.animate</code> the staffs turn pages by moving lines, <code>KanteNoteMark</code> pulses on a hit and shakes on a wrong or missed note, and <code>KanteDialog</code> fades and scales in. Without it everything jumps as before.</li>
+            <li><code>KanteToolButton</code> shows its <code>text</code> when its icon is not found, so an app needs no own fallback. <code>KanteComboBox</code> keeps letters, digits and arrows to itself, so a window <code>Shortcut</code> on "l" or "1" no longer fires while the box has focus.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTabStaff</code> und <code>KanteBassStaff</code> bleiben schnell: ein Umblättern baut nur die neue Zeile, eine Größenänderung legt einmal aus, und <code>settleMs</code> wartet auf ein gezogenes Fenster. Ein Umblättern brauchte vorher 57 ms, ein Schritt der Größenänderung bis zu 550 ms. <code>KanteShapeCanvas</code> zeichnet einen Plan mit 610 Formen in 15 statt 20 ms, vergrößert in 6 statt 16 ms, mit demselben Bild.</li>
+            <li>Mit <code>KanteStyle.animate</code> blättern die Notenzeilen durch Bewegung um, <code>KanteNoteMark</code> pulsiert bei einem Treffer und wackelt bei einer falschen oder verpassten Note, und <code>KanteDialog</code> blendet ein und skaliert. Ohne bleibt alles bei Sprüngen wie bisher.</li>
+            <li><code>KanteToolButton</code> zeigt seinen <code>text</code>, wenn sein Symbol nicht gefunden wird; die App braucht keinen eigenen Ersatz. <code>KanteComboBox</code> behält Buchstaben, Ziffern und Pfeile für sich, ein <code>Shortcut</code> des Fensters auf "l" oder "1" löst bei fokussierter Box nicht mehr aus.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteHeading</code> titles in Kante follow <code>horizontalAlignment</code> (section labels stay left, beside their rule).</li>
+            <li>A <code>KanteScope</code> held as a property or with its own content finds its window through its target and no longer writes themes after the target left the window or a part below was taken apart.</li>
+            <li><code>KanteSettingRow.resetText</code> is <code>qsTr("Reset")</code>, before German: an app without its own text or translation now shows "Reset".</li>
+            <li>Screen readers press segments of <code>KanteSegmented</code>, tabs of <code>KanteTabBar</code> and <code>KantePageBar</code> and the cross of <code>KanteCallout</code>; before, only a tap did.</li>
+            <li><code>KanteButton</code> builds its shadow, focus ring and icon only when they show (about a tenth less time to create a button).</li>
+          </ul>
+          <ul lang="de">
+            <li>Titel von <code>KanteHeading</code> in Kante folgen <code>horizontalAlignment</code> (Abschnittsbeschriftungen bleiben links, neben ihrer Linie).</li>
+            <li>Ein <code>KanteScope</code> als Property oder mit eigenem Inhalt findet sein Fenster über sein Ziel und schreibt keine Themes mehr, wenn das Ziel das Fenster verlassen hat oder ein Teil darunter abgebaut wurde.</li>
+            <li><code>KanteSettingRow.resetText</code> ist <code>qsTr("Reset")</code>, vorher deutsch: eine App ohne eigenen Text oder Übersetzung zeigt jetzt "Reset".</li>
+            <li>Bildschirmleser drücken Segmente von <code>KanteSegmented</code>, Tabs von <code>KanteTabBar</code> und <code>KantePageBar</code> und das Kreuz von <code>KanteCallout</code>; vorher ging das nur per Tippen.</li>
+            <li><code>KanteButton</code> baut Schatten, Fokusring und Symbol nur, wenn sie zu sehen sind (etwa ein Zehntel weniger Zeit für einen Knopf).</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="note"><h3><span lang="en">Note</span><span lang="de">Hinweis</span></h3>
+          <ul lang="en">
+            <li><code>KanteNoteState</code> and <code>KanteStaffFrame</code> (non-visual) hold the code that the bass and tab views and lanes kept four times. No change for apps.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteNoteState</code> und <code>KanteStaffFrame</code> (nicht sichtbar) halten den Code, den Bass- und Tabulatur-Ansichten und -Lanes vierfach hatten. Für Apps ändert sich nichts.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.81-command-palette.png" alt="The command palette over a plan in dark Kante: search field, commands grouped by Datei, Ansicht and Werkzeuge with key caps, one dimmed" loading="lazy"><figcaption><span lang="en">The command palette</span><span lang="de">Die Befehlspalette</span></figcaption></figure>
+          <figure><img src="shots/release-1.81-plan-canvas.png" alt="A floor plan in dark Kante: walls, a table, two figures with a dashed path, a floating tool panel at the top left" loading="lazy"><figcaption><span lang="en">A plan with a floating panel</span><span lang="de">Ein Plan mit schwebendem Panel</span></figcaption></figure>
+          <figure><img src="shots/release-1.81-steps-min-width.png" alt="Eight steps in 848 px in dark Kante: compact with the default 110, with names at 96" loading="lazy"><figcaption><span lang="en">Eight steps in 848 px: default and 96</span><span lang="de">Acht Schritte in 848 px: Vorgabe und 96</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.80.0">
       <div class="release-head"><b class="release-version">1.80.0</b><time datetime="2026-11-11">11 Nov 2026</time></div>
       <div class="release-body">
@@ -189,6 +260,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-179"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.78.0">
       <div class="release-head"><b class="release-version">1.78.0</b><time datetime="2026-11-10">10 Nov 2026</time></div>
       <div class="release-body">
@@ -222,9 +296,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.77.0">
       <div class="release-head"><b class="release-version">1.77.0</b><time datetime="2026-11-10">10 Nov 2026</time></div>
       <div class="release-body">
@@ -1694,7 +1765,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.80.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.81.0</a></p></div>
 </footer>
 
 <script>
