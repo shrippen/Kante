@@ -792,7 +792,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 ### Added in Kante 1.81
 
-From Klecks (a desktop app that sorts video frames): what its screens built locally. All generic.
+From Klecks, Kontra, Klappe and Mitori: what their screens built locally. All generic.
 
 | Element | Web | QML |
 |---|---|---|
