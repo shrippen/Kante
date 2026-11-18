@@ -54,9 +54,9 @@ import "."
  * lies in it). Pan: middle button, space held, or left button on empty ground. Zoom: wheel or
  * pinch about the pointer. Keyboard (the item takes Tab): plus and minus zoom, 0 fits, arrows pan.
  *
- * Drawn with one Canvas, repainted when a property changes; 600 shapes with 272 captions take about
- * 15 ms to draw (offscreen), about 6 ms zoomed in, as shapes and captions out of view are left out.
- * Captions are the dear part (fillText, about 45 µs each): keep the text for what needs it.
+ * One Canvas, painted on its own thread, repainted when a property changes; building the commands for
+ * 600 shapes with 272 captions takes about 14 ms (offscreen), less zoomed in (what is out of view is
+ * left out). Captions are the dear part (fillText, about 35 µs each): keep text for what needs it.
  */
 FocusScope {
     id: root
@@ -342,7 +342,7 @@ FocusScope {
 
     Canvas {
         id: canvas
-        anchors.fill: parent
+        anchors.fill: parent; renderStrategy: Canvas.Threaded
 
         // Image sources already asked for.
         property var _asked: ({})
