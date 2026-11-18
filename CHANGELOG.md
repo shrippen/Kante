@@ -5,6 +5,30 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.82.0] — 2026-11-17
+
+### English
+
+A caption on a plan can be turned, so a note card turned on the plan carries its text with it.
+
+#### New
+- `KanteShapeCanvas`: a shape's `textRotation` (degrees, clockwise, like an image's `rotation`) draws its caption, all lines, turned about its anchor. A polygon with `textAnchor: "topLeft"` turns its caption about its first point, the card's top left corner when the corners are listed from there clockwise; give the card's points and the caption the same angle and the text stays inside the card. Without it (or 0) nothing changes, not a pixel, not a millisecond.
+
+![Three note cards on a plan in dark Kante, turned 0, 30 and 90 degrees, each with its two-line caption turned the same way inside the card](https://shrippen.github.io/Kante/shots/release-1.82-text-rotation.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-182
+
+### Deutsch
+
+Eine Beschriftung auf dem Plan lässt sich drehen, so trägt eine gedrehte Notizkarte ihren Text mit.
+
+#### Neu
+- `KanteShapeCanvas`: `textRotation` einer Form (Grad, im Uhrzeigersinn, wie `rotation` eines Bilds) zeichnet ihre Beschriftung, alle Zeilen, um ihren Ankerpunkt gedreht. Ein Polygon mit `textAnchor: "topLeft"` dreht sie um seinen ersten Punkt, die obere linke Ecke der Karte, wenn die Ecken von dort im Uhrzeigersinn stehen; mit demselben Winkel für Punkte und Beschriftung bleibt der Text in der Karte. Ohne Angabe (oder 0) ändert sich nichts, kein Pixel und keine Millisekunde.
+
+![Drei Notizkarten auf einem Plan in dunklem Kante, um 0, 30 und 90 Grad gedreht, jede mit ihrer zweizeiligen Beschriftung im gleichen Winkel in der Karte](https://shrippen.github.io/Kante/shots/release-1.82-text-rotation.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-182
+
 ## [1.81.1] — 2026-11-17
 
 ### English

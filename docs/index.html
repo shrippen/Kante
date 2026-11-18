@@ -131,6 +131,25 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.82.0">
+      <div class="release-head"><b class="release-version">1.82.0</b><time datetime="2026-11-17">17 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A caption on a plan can be turned, so a note card turned on the plan carries its text with it.</p>
+        <p class="release-lead" lang="de">Eine Beschriftung auf dem Plan lässt sich drehen, so trägt eine gedrehte Notizkarte ihren Text mit.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteShapeCanvas</code>: a shape's <code>textRotation</code> (degrees, clockwise, like an image's <code>rotation</code>) draws its caption, all lines, turned about its anchor. A polygon with <code>textAnchor: &quot;topLeft&quot;</code> turns its caption about its first point, the card's top left corner when the corners are listed from there clockwise; give the card's points and the caption the same angle and the text stays inside the card. Without it (or 0) nothing changes, not a pixel, not a millisecond.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteShapeCanvas</code>: <code>textRotation</code> einer Form (Grad, im Uhrzeigersinn, wie <code>rotation</code> eines Bilds) zeichnet ihre Beschriftung, alle Zeilen, um ihren Ankerpunkt gedreht. Ein Polygon mit <code>textAnchor: &quot;topLeft&quot;</code> dreht sie um seinen ersten Punkt, die obere linke Ecke der Karte, wenn die Ecken von dort im Uhrzeigersinn stehen; mit demselben Winkel für Punkte und Beschriftung bleibt der Text in der Karte. Ohne Angabe (oder 0) ändert sich nichts, kein Pixel und keine Millisekunde.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.82-text-rotation.png" alt="Three note cards on a plan in dark Kante, turned 0, 30 and 90 degrees, each with its two-line caption turned the same way inside the card" loading="lazy"><figcaption><span lang="en">Captions turn with their cards: 0, 30 and 90 degrees</span><span lang="de">Beschriftungen drehen mit ihren Karten: 0, 30 und 90 Grad</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-182"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.81.1">
       <div class="release-head"><b class="release-version">1.81.1</b><time datetime="2026-11-17">17 Nov 2026</time></div>
       <div class="release-body">
@@ -220,6 +239,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.80.0">
       <div class="release-head"><b class="release-version">1.80.0</b><time datetime="2026-11-11">11 Nov 2026</time></div>
       <div class="release-body">
@@ -251,9 +273,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.79.0">
       <div class="release-head"><b class="release-version">1.79.0</b><time datetime="2026-11-11">11 Nov 2026</time></div>
       <div class="release-body">
@@ -1783,7 +1802,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.81.1</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.82.0</a></p></div>
 </footer>
 
 <script>
