@@ -689,7 +689,7 @@ Item {
         width: chart.plotWidth
         height: chart.plotHeight
         property int paints: 0
-        readonly property int pathChunk: 50
+        // A path of 20 000 marks takes about a second to fill: off the GUI thread.
         renderStrategy: Canvas.Threaded
         onPaint: {
             const ctx = getContext("2d")
@@ -736,13 +736,9 @@ Item {
                     } else {
                         ctx.rect(cx - s / 2, cy - s / 2, s, s)
                     }
-                    // One huge path fills in about a second; short ones in milliseconds.
-                    if (k % pathChunk !== pathChunk - 1 && k !== idx.length - 1) {
-                        continue
-                    }
-                    ctx[grp.shape === "cross" ? "stroke" : "fill"]()
-                    ctx.beginPath()
                 }
+                // One path per group: overlapping translucent marks blend once, not twice.
+                ctx[grp.shape === "cross" ? "stroke" : "fill"]()
             }
             paints++
         }

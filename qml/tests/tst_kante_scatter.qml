@@ -240,11 +240,12 @@ TestCase {
             pointSize: 12, pointColor: "#ff0000",
             points: [{ x: 0, y: 0 }, { x: 10, y: 2, shape: "triangle", series: 1, angle: 0 }]
         })
-        const canvas = findChild(c, "kanteScatterCanvas")
-        tryVerify(function () { return canvas.paints > 0 })
-        waitForRendering(c)
-        const img = grabImage(c)
-        compare(String(img.pixel(Math.round(c.xOf(0)), Math.round(c.yOf(0)))), "#ff0000")
+        // The canvas draws on its own thread: wait for the mark, not for onPaint.
+        let img = null
+        tryVerify(function () {
+            img = grabImage(c)
+            return String(img.pixel(Math.round(c.xOf(0)), Math.round(c.yOf(0)))) === "#ff0000"
+        }, 5000, "the first mark is drawn")
         // The triangle points right (angle 0): filled ahead of its centre, empty behind its base.
         const s = c.markSize(1)
         const ahead = img.pixel(Math.round(c.xOf(10) + s * 0.3), Math.round(c.yOf(2)))
