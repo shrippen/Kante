@@ -240,11 +240,12 @@ TestCase {
             pointSize: 12, pointColor: "#ff0000",
             points: [{ x: 0, y: 0 }, { x: 10, y: 2, shape: "triangle", series: 1, angle: 0 }]
         })
-        const canvas = findChild(c, "kanteScatterCanvas")
-        tryVerify(function () { return canvas.paints > 0 })
-        waitForRendering(c)
-        const img = grabImage(c)
-        compare(String(img.pixel(Math.round(c.xOf(0)), Math.round(c.yOf(0)))), "#ff0000")
+        // The canvas draws on its own thread: wait for the mark, not for onPaint.
+        let img = null
+        tryVerify(function () {
+            img = grabImage(c)
+            return String(img.pixel(Math.round(c.xOf(0)), Math.round(c.yOf(0)))) === "#ff0000"
+        }, 5000, "the first mark is drawn")
         // The triangle points right (angle 0): filled ahead of its centre, empty behind its base.
         const s = c.markSize(1)
         const ahead = img.pixel(Math.round(c.xOf(10) + s * 0.3), Math.round(c.yOf(2)))
@@ -272,6 +273,25 @@ TestCase {
         verify(c._groups.length <= 4, "groups " + c._groups.length)
         const i = c.pointAt(c.xOf(pts[123].x), c.yOf(pts[123].y))
         verify(i >= 0)
+    }
+
+    // Handing over 20 000 points must not hold the GUI thread (was 1.3 s: one huge path, one pass per property).
+    function test_manyPointsNoStall() {
+        const pts = []
+        for (let i = 0; i < 20000; i++) {
+            pts.push({ x: (i * 7919) % 10007, y: (i * 104729) % 10009, views: i % 13 })
+        }
+        const c = createTemporaryObject(chartComponent, stage(),
+                                        { width: 780, height: 580, valueKey: "views", minValue: 0, maxValue: 12 })
+        waitForRendering(c)
+        const canvas = findChild(c, "kanteScatterCanvas")
+        const before = canvas.paints
+        const t0 = Date.now()
+        c.points = pts
+        tryVerify(function () { return canvas.paints > before }, 5000)
+        wait(50)
+        const blocked = Date.now() - t0 - 50
+        verify(blocked < 300, "GUI thread held for " + blocked + " ms")
     }
 
     function test_noValueNoLegend() {
