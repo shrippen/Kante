@@ -103,16 +103,20 @@ Item {
         return padTop + mark / 2 + (plotHeight - mark) - (v - minValue) / (scaleTop - minValue) * (plotHeight - mark)
     }
 
-    /** Decimals the axis step needs: 0.25 -> 2, 2.5 -> 1, 5 -> 0 (at most 6). */
-    function stepDecimals(step) {
+    /** Decimals `x` needs, at most 6 (a smaller step repeats its labels): 0.25 -> 2, 2.5 -> 1, 5 -> 0. */
+    function decimalsOf(x) {
         for (let d = 0; d < 6; d++) {
             const scale = Math.pow(10, d)
-            if (Math.abs(step * scale - Math.round(step * scale)) < 1e-9
-                    && Math.abs(minValue * scale - Math.round(minValue * scale)) < 1e-9) {
+            if (Math.abs(x * scale - Math.round(x * scale)) < 1e-9) {
                 return d
             }
         }
         return 6
+    }
+
+    /** Decimals the axis labels need: those of the step and of `minValue`. */
+    function stepDecimals(step) {
+        return Math.max(decimalsOf(step), decimalsOf(minValue))
     }
 
     /** The label of axis line `index` (0 = bottom, 4 = top), in `locale` with `unit`. */
@@ -121,9 +125,9 @@ Item {
         return Number(minValue + index * step).toLocaleString(locale, 'f', stepDecimals(step)) + unit
     }
 
-    /** A value of the read-out in `locale`, without trailing zeros, with `unit`. */
+    /** A value of the read-out in `locale`: fixed notation, up to 6 decimals, none trailing, with `unit`. */
     function valueText(v) {
-        return Number(v).toLocaleString(locale, 'g', 10) + unit
+        return Number(v).toLocaleString(locale, 'f', decimalsOf(v)) + unit
     }
 
     function colorOfThreshold(t) {

@@ -70,4 +70,17 @@ TestCase {
         compare(chart.valueText(3), "3 px")
         compare(chart.valueText(0.1 + 0.2), "0,3 px")
     }
+
+    // Without axis labels the scale is `m` itself: all zeros must not give a zero-height scale.
+    function test_allZeroWithoutAxisStaysDrawable() {
+        const chart = createTemporaryObject(lineChart, this, { series: [[0, 0]], minSpan: 0, axis: false })
+        compare(chart.scaleTop, 1)
+        verify(isFinite(chart.yOf(0)))
+    }
+
+    function test_readoutNeverUsesAnExponent() {
+        const chart = createTemporaryObject(lineChart, this, { locale: Qt.locale("de_DE") })
+        compare(chart.valueText(0.00001), "0,00001")
+        compare(chart.valueText(1234.5), "1.234,5")
+    }
 }

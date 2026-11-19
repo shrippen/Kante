@@ -503,7 +503,7 @@ Tested with the real Plasma style (`org.kde.desktop`, Breeze Light and Breeze Da
 | Hero watermark never widens the page | `.hero:has(>.hero-wm){overflow-x:clip}` | – |
 | Accent text on the platform colours | – | `KanteStyle.accentTextColor` in System / Kante Light lifts the system accent's lightness until it reads at 4.5:1 (`readable()`, `contrastOf()`) |
 | Empty check box, radio and switch edge | – | `KanteCheckSkin` draws it in `mutedTextColor` (was `frameColor`, 1.5:1) |
-| Line chart axis | – | `KanteLineChart` with `axis` rounds the scale to 1-2-5 steps and formats with `locale` (default `Qt.locale()`), with the decimals the step needs (0.25 reads "0,25"); the read-out is written in `locale` too. `minSpan` (default 1) is the least height of the scale above `minValue`: a series below 1 sits in the bottom of the plot; `minSpan: 0` fits the scale to the data |
+| Line chart axis | – | `KanteLineChart` with `axis` rounds the scale to 1-2-5 steps and formats with `Qt.locale()` |
 | Dense list rows | – | `KanteListRow.Density.Dense` (24 px): opt-in for long navigation lists only, below the control heights |
 | Checked segment in a Plasma widget | – | `KantePlasmaToolButton` checked: sunken tint plus a 3 px accent bar (the accent fill needed dark text that Plasma's runtime did not pass to the label) |
 
@@ -789,6 +789,15 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 | Key geometry | – | `KanteKeyLayout` (non-visual, shared by keyboard and lane): `low`, `high` (MIDI, 60 = middle C), `width`; `noteNames` (12 names from C, default C, C♯, D, E♭, E, F, F♯, G, A♭, A, B♭, B; the app sets its language, e.g. German H for B), `middleCOctave` (4: MIDI 60 is C4). Piano proportions: white keys equally wide (`whiteWidth`), black keys 0.58 wide and 0.63 long, set off the boundary as on a real keyboard. `x(m)`, `keyWidth(m)`, `isBlack(m)`, `nameOf(m)` ("E1"), `keyAt(px, blackLevel)`, `count`. A range that starts or ends on a black key starts or ends at its edge |
 | Keyboard | – | `KanteKeyboard`: keys `low`..`high`; `noteNames`, `middleCOctave`; `keyNames` CKeys (default: "C2" on every C), WhiteKeys, None; `markers` [{midi, role, label, cents}] with a shape per role as on `KanteFretboard` (`current` filled square and the key tinted, `next` hollow square, `root` diamond, `scale` round dot; `label` inside) and the note states `hit`, `wrong`, `missed`, `early`, `late`, `offpitch` as `KanteNoteMark` signs (offpitch with its cents); markers outside the range are left out. White keys in the lighter of ground and text colour, black keys in the darker, so it reads as a piano in dark and light. `interactive` (default false, a display like the other instrument components): Tab focus, Left / Right, Home / End move a cyan focus ring (`focusKey`), Enter / Space or a click fire `activated(midi)`. Screen readers hear the markers ("Aktuell: D2; Nächste: E2"; `roleNames`, `markerText`) |
 | Key lane | – | `KanteKeyLane`: falling notes over the keys, `KanteTabLane`'s twin for keys: `notes` [{time, duration, midi, state, label, cents}] (the tab lane's notes with `midi` instead of string and fret), `position`, `pixelsPerSecond`, `playLine` (0..1 from the bottom, default 0.2 as the lane), `bars` (with `number`), `loopStart` / `loopEnd`, `marks` Full / Quiet / Off, `showCents`, `setNoteState(index, state[, cents])`, `resetStates()`, `stateOf(i)`, `centsOf(i)`, `stateRevision`, `nextIndex`. Same width, `low` and `high` as a `KanteKeyboard` below it: its columns stand over the keys. A note is a block in its key's column with a square head at its onset (key name or `label` on it, `names`), pending in `noteColor` (info), states by sign as on the lane. Black key columns tinted, a line at every C. Same speed design as the lane: one moving strip, note visuals made asynchronously near the view; signs only while their head is in view (the software renderer does not clip a Shape) |
+
+### Added in Kante 1.84
+
+From Klecks: a line chart for values below 1, with labels that read right.
+
+| Element | Web | QML |
+|---|---|---|
+| Line chart scale | – | `KanteLineChart.minSpan`: the least height of the scale above `minValue`. Default 1, as before: a series that stays below 1 sits in the bottom of the plot. `minSpan: 0` fits the scale to the data (1-2-5 steps with `axis`); without data, or with only values at `minValue`, a span of 1 stays |
+| Line chart labels | – | `KanteLineChart.locale` (default `Qt.locale()`): the axis labels carry the decimals their step needs (0.25 reads "0,25", not "0,3"; 2.5 reads "2,5"), and the read-out writes its values in fixed notation in the locale, with its decimal point and thousands separator ("0,25", "1.234"), never as an exponent. At most 6 decimals: a step below 0.000001 repeats its labels, and a read-out value shows 6 decimals. `tickText(i)`, `valueText(v)` give the texts |
 
 ### Added in Kante 1.83
 
