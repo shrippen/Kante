@@ -503,7 +503,7 @@ Tested with the real Plasma style (`org.kde.desktop`, Breeze Light and Breeze Da
 | Hero watermark never widens the page | `.hero:has(>.hero-wm){overflow-x:clip}` | – |
 | Accent text on the platform colours | – | `KanteStyle.accentTextColor` in System / Kante Light lifts the system accent's lightness until it reads at 4.5:1 (`readable()`, `contrastOf()`) |
 | Empty check box, radio and switch edge | – | `KanteCheckSkin` draws it in `mutedTextColor` (was `frameColor`, 1.5:1) |
-| Line chart axis | – | `KanteLineChart` with `axis` rounds the scale to 1-2-5 steps and formats with `Qt.locale()` |
+| Line chart axis | – | `KanteLineChart` with `axis` rounds the scale to 1-2-5 steps and formats with `locale` (default `Qt.locale()`), with the decimals the step needs (0.25 reads "0,25"); the read-out is written in `locale` too. `minSpan` (default 1) is the least height of the scale above `minValue`: a series below 1 sits in the bottom of the plot; `minSpan: 0` fits the scale to the data |
 | Dense list rows | – | `KanteListRow.Density.Dense` (24 px): opt-in for long navigation lists only, below the control heights |
 | Checked segment in a Plasma widget | – | `KantePlasmaToolButton` checked: sunken tint plus a 3 px accent bar (the accent fill needed dark text that Plasma's runtime did not pass to the label) |
 
