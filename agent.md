@@ -27,7 +27,7 @@ Kante holds the shrippen design system and its Kimai parts:
 
 - Run `./build.sh` after every change and commit the generated files: `docs/v1/`, `qml/Kante/` (`KantePalette.qml`, `qmldir`, `KantePlasmaButton.qml`), `tokens/palette.qml`, `tokens/variables.css` and `kimai/knust/Resources/public/css/knust-palette.css`. It also runs every check (tokens, structure limits, QML tests, Knust palette, kit lint) and writes `dist/KnustBundle-<version>.zip`.
 - `shrippen.github.io` copies `docs/v1/` in its own build; after a change here run its `./build.sh` too, so `https://shrippen.github.io/v1/` follows.
-- Colours live only in `tokens/palette.json`; `build.sh` writes them into `tokens/variables.css` (never edit that file) from `tokens/variables.src.css`, where the roles, sizes and motion are written by hand. Lines and levels stand in both and must match (`check-tokens.py`).
+- Colours live only in `tokens/palette.json`. It stays JSON despite the YAML rule (owner, 19.11.2026): other projects copy it as an exchange file (e.g. hansei's TUI). `build.sh` writes the colours into `tokens/variables.css` (never edit that file) from `tokens/variables.src.css`, where the roles, sizes and motion are written by hand. Lines and levels stand in both and must match (`check-tokens.py`).
 - New motion goes into the `prefers-reduced-motion: no-preference` block at the end of `components.css` and follows `KanteStyle.motion` in QML.
 - Every new QML component gets a test in `qml/tests` and an entry in `qml/demo/Gallery.qml`.
 - QML lint: `tools/qmllint.sh` (also in CI, reports without blocking). Fix a finding here first, then the apps take Kante over.
