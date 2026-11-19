@@ -106,10 +106,8 @@ Item {
         interactive: false
         clip: true
 
-        // Drags and flicks (touch) move the position under the easing's feet.
         onContentHeightChanged: area.refresh()
         onHeightChanged: area.refresh()
-        onMovementStarted: ease.stop()
         onContentYChanged: {
             if (!ease.running) {
                 area.target = contentY
