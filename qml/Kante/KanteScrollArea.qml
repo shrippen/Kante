@@ -17,7 +17,8 @@ import "."
  * Page Up / Down, Home, End. Notches ease over `durationFast` with KanteStyle.animate, else jump.
  * A child that scrolls itself (a ListView, a Flickable) keeps its wheel events while it can
  * move in that direction; at its end the area takes them. Kante, Kante Light and System: all
- * colours and sizes from KanteStyle.
+ * colours and sizes from KanteStyle. Wheel with Ctrl, Shift or another modifier is not taken: it
+ * goes on to the parent. No touch drag or flick: wheel, touchpad, bar and keys scroll.
  */
 Item {
     id: area
@@ -100,6 +101,9 @@ Item {
         contentHeight: holder.implicitHeight
         boundsBehavior: Flickable.StopAtBounds
         flickableDirection: Flickable.VerticalFlick
+        // Off: the Flickable's own wheel handling (Qt's slow step, also with Ctrl or Shift) is
+        // gone, so a wheel with a modifier reaches the parent's handlers. Touch drag goes with it.
+        interactive: false
         clip: true
 
         // Drags and flicks (touch) move the position under the easing's feet.

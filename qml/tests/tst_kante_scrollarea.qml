@@ -21,10 +21,17 @@ TestCase {
     Component {
         id: scene
         Item {
+            id: host
             width: 300
             height: 200
             property alias area: sa
             property alias rows: col
+            property int ctrlWheels: 0
+            WheelHandler {
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                acceptedModifiers: Qt.ControlModifier
+                onWheel: ++host.ctrlWheels
+            }
             KanteScrollArea {
                 id: sa
                 anchors.fill: parent
@@ -116,6 +123,15 @@ TestCase {
             mouseWheel(s.area, 100, 100, 0, -120)
         }
         compare(s.area.contentY, 800)
+    }
+
+    // A wheel with Ctrl goes to the parent, the area does not move.
+    function test_modifierWheel() {
+        const s = make(scene)
+        mouseWheel(s.area, 100, 100, 0, -120, Qt.NoButton, Qt.ControlModifier)
+        wait(300)
+        compare(s.ctrlWheels, 1)
+        compare(s.area.contentY, 0)
     }
 
     // A fraction of a notch (a high-resolution wheel) scrolls that fraction of a step.
