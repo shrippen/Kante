@@ -1710,6 +1710,22 @@ Rectangle {
                     ]
                 }
             }
+
+            Section {
+                title: "1.83 · scrollbereich"
+                KanteScrollArea {
+                    Layout.preferredWidth: KanteStyle.unit(320)
+                    Layout.preferredHeight: KanteStyle.unit(180)
+                    ColumnLayout {
+                        width: parent.width
+                        spacing: KanteStyle.unit(6)
+                        Repeater {
+                            model: 12
+                            KanteSwitch { Layout.fillWidth: true; text: "Einstellung " + (index + 1); checked: index % 3 === 0 }
+                        }
+                    }
+                }
+            }
         }
     }
 }

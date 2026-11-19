@@ -131,6 +131,26 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.83.0">
+      <div class="release-head"><b class="release-version">1.83.0</b><time datetime="2026-11-19">19 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A side panel can scroll, and its scroll bar can be seen.</p>
+        <p class="release-lead" lang="de">Ein Seitenpanel kann scrollen, und seine Scrollleiste ist zu sehen.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteScrollArea</code>: a vertical scroll container for content that is taller than its space, such as a side panel. Its bar stays visible while there is something to scroll, not only while it moves; drag the handle or click the track to page. One wheel notch scrolls three lines (Qt's own step is slow on Linux), a touchpad scrolls 1:1, Page Up, Page Down, Home and End work when it has focus, and a list inside it keeps its own wheel until it reaches its end. Made for the desktop: no touch drag.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteScrollArea</code>: ein senkrechter Scrollbereich für Inhalt, der höher ist als sein Platz, etwa ein Seitenpanel. Die Leiste bleibt sichtbar, solange es etwas zu scrollen gibt, nicht nur in Bewegung; den Griff ziehen oder die Bahn anklicken blättert. Eine Rasterstufe des Mausrads scrollt drei Zeilen (Qts eigene Schrittweite ist unter Linux langsam), ein Touchpad scrollt 1:1, Bild auf, Bild ab, Pos1 und Ende gehen mit Fokus, und eine Liste darin behält ihr Rad, bis sie am Ende ist. Für den Desktop gemacht: kein Ziehen per Touch.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.83-scroll-area-dark.png" alt="A side panel of switches in dark Kante, scrolled down a little, the scroll bar on the right with its handle in the middle" loading="lazy"><figcaption><span lang="en">The bar is there before anything moves</span><span lang="de">Die Leiste ist da, bevor sich etwas bewegt</span></figcaption></figure>
+          <figure><img src="shots/release-1.83-scroll-area-leinen.png" alt="The same side panel in Leinen" loading="lazy"><figcaption><span lang="en">In Leinen</span><span lang="de">In Leinen</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-183"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.82.0">
       <div class="release-head"><b class="release-version">1.82.0</b><time datetime="2026-11-17">17 Nov 2026</time></div>
       <div class="release-body">
@@ -168,6 +188,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.81.0">
       <div class="release-head"><b class="release-version">1.81.0</b><time datetime="2026-11-17">17 Nov 2026</time></div>
       <div class="release-body">
@@ -239,9 +262,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.80.0">
       <div class="release-head"><b class="release-version">1.80.0</b><time datetime="2026-11-11">11 Nov 2026</time></div>
       <div class="release-body">
@@ -1802,7 +1822,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.82.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.83.0</a></p></div>
 </footer>
 
 <script>
