@@ -88,6 +88,7 @@ KanteRubyText 1.0 KanteRubyText.qml
 KanteRunner 1.0 KanteRunner.qml
 KanteScatterChart 1.0 KanteScatterChart.qml
 KanteScope 1.0 KanteScope.qml
+KanteScrollArea 1.0 KanteScrollArea.qml
 KanteScrollMeter 1.0 KanteScrollMeter.qml
 KanteSearchCombo 1.0 KanteSearchCombo.qml
 KanteSectionLabel 1.0 KanteSectionLabel.qml

@@ -5,6 +5,32 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [1.83.0] — 2026-11-19
+
+### English
+
+A side panel can scroll, and its scroll bar can be seen.
+
+#### New
+- `KanteScrollArea`: a vertical scroll container for content that is taller than its space, such as a side panel. Its bar stays visible while there is something to scroll, not only while it moves; drag the handle or click the track to page. One wheel notch scrolls three lines (Qt's own step is slow on Linux), a touchpad scrolls 1:1, Page Up, Page Down, Home and End work when it has focus, and a list inside it keeps its own wheel until it reaches its end.
+
+![A side panel of switches in dark Kante, scrolled down a little, the scroll bar on the right with its handle in the middle](https://shrippen.github.io/Kante/shots/release-1.83-scroll-area-dark.png)
+![The same side panel in Leinen](https://shrippen.github.io/Kante/shots/release-1.83-scroll-area-leinen.png)
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-183
+
+### Deutsch
+
+Ein Seitenpanel kann scrollen, und seine Scrollleiste ist zu sehen.
+
+#### Neu
+- `KanteScrollArea`: ein senkrechter Scrollbereich für Inhalt, der höher ist als sein Platz, etwa ein Seitenpanel. Die Leiste bleibt sichtbar, solange es etwas zu scrollen gibt, nicht nur in Bewegung; den Griff ziehen oder die Bahn anklicken blättert. Eine Rasterstufe des Mausrads scrollt drei Zeilen (Qts eigene Schrittweite ist unter Linux langsam), ein Touchpad scrollt 1:1, Bild auf, Bild ab, Pos1 und Ende gehen mit Fokus, und eine Liste darin behält ihr Rad, bis sie am Ende ist.
+
+![Ein Seitenpanel mit Schaltern in dunklem Kante, ein Stück nach unten gescrollt, rechts die Scrollleiste mit dem Griff in der Mitte](https://shrippen.github.io/Kante/shots/release-1.83-scroll-area-dark.png)
+![Dasselbe Seitenpanel in Leinen](https://shrippen.github.io/Kante/shots/release-1.83-scroll-area-leinen.png)
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-183
+
 ## [1.82.0] — 2026-11-17
 
 ### English
