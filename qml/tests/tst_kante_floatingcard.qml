@@ -45,12 +45,21 @@ TestCase {
         compare(c.box.mapToItem(c, 0, 0).y, c.padding)
     }
 
+    function cleanup() {
+        KanteStyle.kind = KanteStyle.Kind.System
+    }
+
     function test_shadowOnlyWhenThemed() {
         const c = createTemporaryObject(cardComponent, tc)
         const s = shadowOf(c)
         verify(s !== undefined, "shadow exists")
-        compare(s.visible, KanteStyle.themed)
+
+        KanteStyle.kind = KanteStyle.Kind.Kante
+        verify(s.visible, "shadow in Kante")
         compare(s.width, c.width)
         compare(s.height, c.height)
+
+        KanteStyle.kind = KanteStyle.Kind.System
+        verify(!s.visible, "no shadow in the system style")
     }
 }
