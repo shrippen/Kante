@@ -1726,6 +1726,23 @@ Rectangle {
                     }
                 }
             }
+
+            Section {
+                title: "1.85 · schwebende karte"
+                Item {
+                    Layout.preferredWidth: KanteStyle.unit(320)
+                    Layout.preferredHeight: KanteStyle.unit(90)
+                    KanteFloatingCard {
+                        x: KanteStyle.unit(4)
+                        y: KanteStyle.unit(4)
+                        Row {
+                            spacing: KanteStyle.unit(8)
+                            KanteButton { text: "Suchen"; size: KanteButton.Size.Small }
+                            KanteButton { text: "Weiter"; size: KanteButton.Size.Small }
+                        }
+                    }
+                }
+            }
         }
     }
 }

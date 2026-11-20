@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [Unreleased]
+
+### English
+
+A floating card without a head line.
+
+#### New
+- `KanteFloatingCard`: a card with a hard shadow that floats over content, such as a search card over a floor plan, for the places where `KanteFloatingPanel` is too much because it needs no head line to fold. Its size follows its content plus a padding. The panel is drawn with it, so both look the same.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
+
+### Deutsch
+
+Eine schwebende Karte ohne Kopfzeile.
+
+#### Neu
+- `KanteFloatingCard`: eine Karte mit hartem Schatten, die über dem Inhalt schwebt, etwa eine Suchkarte über einem Grundriss, für Stellen, an denen `KanteFloatingPanel` zu viel ist, weil keine Kopfzeile zum Einklappen nötig ist. Ihre Größe folgt dem Inhalt plus einem Innenabstand. Das Panel wird damit gezeichnet, beide sehen also gleich aus.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
+
 ## [1.83.0] — 2026-11-19
 
 ### English
@@ -42,7 +62,7 @@ A caption on a plan can be turned, so a note card turned on the plan carries its
 
 ![Three note cards on a plan in dark Kante, turned 0, 30 and 90 degrees, each with its two-line caption turned the same way inside the card](https://shrippen.github.io/Kante/shots/release-1.82-text-rotation.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-182
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-182
 
 ### Deutsch
 
@@ -65,7 +85,7 @@ Buttons are built faster while Kante is off.
 - `KanteToolButton` built Kante's ground, layout, icon and label in every style and hid them in System, so each tool button cost about twice a plain one. In Kurrent's task list that is three tool buttons per row. They are now built in Kante only. It looks the same.
 - `KanteButton` and `KantePlasmaButton` did the same with their cut-corner shape, the ground of a quiet button and their own label. These are now built only where Kante draws the button. A button in System takes about a third less time to create. It looks the same.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811
 
 ### Deutsch
 
@@ -114,7 +134,7 @@ Kante 1.81 collects what Klecks, Kontra, Klappe and Mitori built locally: a plan
 
 ![Eight steps in 848 px in dark Kante: compact with the default 110, with names at 96](https://shrippen.github.io/Kante/shots/release-1.81-steps-min-width.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-181
 
 ### Deutsch
 
@@ -169,7 +189,7 @@ The state of a run shows in shape, sign and word, not by colour alone: pills, a 
 
 ![Pills, result strip, lane chart with a focused mark and duration bars with legends in dark Kante](https://shrippen.github.io/Kante/shots/release-1.80-run-states.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-180
 
 ### Deutsch
 
@@ -201,7 +221,7 @@ A dialog's reject button can be named after what it does: "Keep going" instead o
 
 ![A dialog in dark Kante: "Discard the round?" with the buttons Keep going and Discard](https://shrippen.github.io/Kante/shots/release-1.79-reject-text.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-179
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-179
 
 ### Deutsch
 
@@ -235,7 +255,7 @@ A list row and a path node fit a window 533 px wide; Kirigami's toolbars take Ka
 ![A path node with a sentence under its title and meta line](https://shrippen.github.io/Kante/shots/release-1.78-path-text.png)
 ![A Kirigami window in dark Kante: the toolbar with page title and an action on the page ground, a rule below it](https://shrippen.github.io/Kante/shots/release-1.78-window-bar.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-178
 
 ### Deutsch
 
@@ -269,7 +289,7 @@ A busy indicator that has stopped no longer keeps the window drawing.
 
 ![Diagram: a hidden stopped indicator kept the window drawing 90 frames a second; the new one is absent while stopped, so nothing draws](https://shrippen.github.io/Kante/shots/release-1.77-busy-frames.svg)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-177
 
 ### Deutsch
 
@@ -295,7 +315,7 @@ Buttons, fields and pickers with icons are built up to ten times faster on Plasm
 - `KanteButton` and `KantePlasmaButton`: every button carried its three hopping squares hidden, though at most a few are busy at a time. They are now built while `busy` only. In the Plasmai widget they were 2860 of the 20650 objects created at its start. It looks the same.
 - `KanteIcon`: before its size was known, and on every new width or height, the icon had no name and no file. Qt then looks up an empty name in the icon theme, uncached, about 6.5 ms each on Plasma, and a layout changes the size several times. Buttons took 9 ms each to create instead of 1 ms as before 1.73, pages of the Plasmai app with date and time fields opened five to eight times slower. A transparent placeholder stands in until the icon is picked, and a new size picks once, after width and height. It looks the same.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1763
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1763
 
 ### Deutsch
 
@@ -316,7 +336,7 @@ Apps with many items under a KanteScope no longer stand still when a view fills.
 #### Improved
 - `KanteScope` looked at an item once for every child it got. When a list or a staff made hundreds of items at once, it went through all of them hundreds of times. Kontra's notation view stood still for 2.7 s when it opened and for up to a second on the next line while playing. Now each item is looked at once: opening takes 17 ms and the next line 10 ms.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1762
 
 ### Deutsch
 
@@ -337,7 +357,7 @@ A long song map starts at bar 1 in right-to-left layouts, and a shorter song kee
 - `KanteSongMap`, right to left and too long for its width: the view started at the end of the piece, so the last bars showed. It now starts at bar 1, also when the number of bars changes; a new width keeps the view where it was, counted from bar 1.
 - `KanteSongMap`: when the piece got shorter, the chosen range stayed, for example bars 6 to 8 of a piece with two bars, and a loop bound to it named bars that do not exist. The range now ends at the last bar, or is cleared when none of its bars is left.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1761
 
 ### Deutsch
 
@@ -360,7 +380,7 @@ A strip over a whole song shows where it goes well and where to practise.
 
 ![A song map: sixteen bars as columns of different heights, bars 5 to 8 chosen as the loop, one bar not played yet](https://shrippen.github.io/Kante/shots/release-1.76-song-map.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-176
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-176
 
 ### Deutsch
 
@@ -382,7 +402,7 @@ Calendars with many days open faster and follow a new width at once.
 #### Improved
 - `KanteCalendarHeatmap`: each day was an item of its own with its name for screen readers, 1800 of them on Mitori's page of five years. The days are now drawn as one shape, and a screen reader hears a week at a time, every day of it with its date and tip. The page opened in 744 ms, now in about 525 ms with this alone; a new width moves no items any more, which made a calendar that fits its weeks to the width slow. It looks the same.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1751
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1751
 
 ### Deutsch
 
@@ -405,7 +425,7 @@ A document can show where the fields' values stand.
 
 ![A receipt in its frame with a bar on top, amount and date marked](https://shrippen.github.io/Kante/shots/release-1.75-doc-mark.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-175
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-175
 
 ### Deutsch
 
@@ -429,7 +449,7 @@ Tiles answer to Enter, and long hints stay readable.
 - `KanteOptionTile`: Return and Enter did nothing, only Space chose a tile. `KanteTile` also takes the keypad's Enter now.
 - `KanteOptionTile`: title and hint were cut after one line. They now show in up to two lines.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1743
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1743
 
 ### Deutsch
 
@@ -450,7 +470,7 @@ Calendars with many days open twice as fast.
 #### Improved
 - `KanteCalendarHeatmap`: a year of days took about 95 ms to create, each day with its own handlers, tooltip and date calculations. The days now share one tooltip and one pair of handlers and read their dates from one list: about 47 ms. A page with several years opens noticeably sooner on a phone. It looks and behaves as before, and screen readers still hear each day.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1742
 
 ### Deutsch
 
@@ -473,7 +493,7 @@ Symbols sharp again on Plasma, and buttons with a margin under the desktop style
 
 ![Buttons with an icon and label, the upper row with 1.73.0: a grey, soft floppy disk and text against the edge; the lower row with 1.74.1: sharp symbols and a margin](https://shrippen.github.io/Kante/shots/release-1.74.1-symbole.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1741
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1741
 
 ### Deutsch
 
@@ -499,7 +519,7 @@ A workbench that keeps the receipt in view, with each field's sources side by si
 
 ![A workbench with a list, a comparison of date and category from bank, receipt and suggestion, and a document area on the right](https://shrippen.github.io/Kante/shots/release-1.74-bench-doc.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-174
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-174
 
 ### Deutsch
 
@@ -529,7 +549,7 @@ Everything sits where it should: buttons centred, icons in their colour on every
 
 ![Controls in Leinen: transport bar with centred symbols and label, a note line with its placeholder in the field, a search field](https://shrippen.github.io/Kante/shots/release-1.73-mittig.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-173
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-173
 
 ### Deutsch
 
@@ -558,7 +578,7 @@ A suggestion under a field: the app offers values, the user picks one with a cli
 
 ![Three fields with a suggestion line below each: Kategorie with Hosting, EÜR-Zeile with Arbeitsmittel taken and two more values, Lieferant with two suppliers](https://shrippen.github.io/Kante/shots/release-1.72-field-suggest.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-172
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-172
 
 ### Deutsch
 
@@ -582,7 +602,7 @@ A dialog with a wrapping text no longer reports a binding loop while it is built
 
 ![Diagram: before, a wrapping text changed its height inside the dialog's own height, a binding loop; now the height follows after the build](https://shrippen.github.io/Kante/shots/release-1.71-content-height.svg)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-171
 
 ### Deutsch
 
@@ -606,7 +626,7 @@ A dialog of its content's size measures its content.
 
 ![A KanteDialog of size Fit in dark Kante: the dialog is as wide and tall as its text and buttons](https://shrippen.github.io/Kante/shots/release-1.70-dialog-fit.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-170
 
 ### Deutsch
 
@@ -630,7 +650,7 @@ A chip that is one choice of a set keeps the app's choice.
 
 ![Four grade chips with choice in dark Kante, the second one chosen](https://shrippen.github.io/Kante/shots/release-1.69-chip-choice.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-169
 
 ### Deutsch
 
@@ -654,7 +674,7 @@ A heading that may wrap shows its whole text in Kante too.
 
 ![A long KanteHeading title broken into two lines in dark Kante](https://shrippen.github.io/Kante/shots/release-1.68-heading-wrap.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-168
 
 ### Deutsch
 
@@ -678,7 +698,7 @@ An app can offer Leinen as a choice of its own: Kante's light palette no longer 
 
 ![Heading, text, two buttons and a chip in Leinen, the light palette, with KanteStyle.preferLight set](https://shrippen.github.io/Kante/shots/release-1.67-prefer-light.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-167
 
 ### Deutsch
 
@@ -702,7 +722,7 @@ A window with a Kante dialog or page scope that the garbage collector takes leav
 
 ![Diagram: a pending step fires after the garbage collector took its function and writes a TypeError; now it checks and is skipped](https://shrippen.github.io/Kante/shots/release-1.66-pending-step.svg)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-166
 
 ### Deutsch
 
@@ -726,7 +746,7 @@ A window that holds a Kante dialog goes down without a crash.
 
 ![Diagram: before, the dialog's bindings give the old background back to a popup Qt is deleting, a crash; now they give nothing back](https://shrippen.github.io/Kante/shots/release-1.65-teardown.svg)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-165
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-165
 
 ### Deutsch
 
@@ -762,7 +782,7 @@ The heat grid keeps the focus where it was and fills a width; bar charts can sta
 
 ![Twelve forms filling the width, eight a row; beside them the average per round on an axis from 1 to 4](https://shrippen.github.io/Kante/shots/release-1.64-forms-exam.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-164
 
 ### Deutsch
 
@@ -802,7 +822,7 @@ A heat grid with labels: rows, columns, a number in every cell and a legend, als
 
 ![Techniques by attack with upright attack names, levels 1 to 4, blank places, a scroll bar and a focused cell](https://shrippen.github.io/Kante/shots/release-1.63-technique-map.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-163
 
 ### Deutsch
 
@@ -829,7 +849,7 @@ The practice calendar sits right also in a wide layout, and a single week names 
 - Right to left, `KanteCalendarHeatmap` stayed at the left edge when a layout gave it more width than it needs.
 - A calendar of one week ending on 30 November was labelled December.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1621
 
 ### Deutsch
 
@@ -852,7 +872,7 @@ Practice days on a calendar, with weekdays, months and a tooltip per day.
 
 ![Twenty-six weeks of practice days in four shades of teal, weekdays at the left, months above, below a legend from 1–2 techniques to 10 and more](https://shrippen.github.io/Kante/shots/release-1.62-calendar.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-162
 
 ### Deutsch
 
@@ -874,7 +894,7 @@ A tap in a sheet stays in the sheet.
 #### Fixed
 - A `KanteListRow` under a modal sheet or dialog took taps meant for it, when the tap landed on a `TapHandler` such as the buttons of `KanteLevelPicker`. In Mitori a rating in the technique sheet also opened the row underneath.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1611
 
 ### Deutsch
 
@@ -898,7 +918,7 @@ Shares by level get colours from one scale and a legend that explains them.
 
 ![A bar of shares by level in four steps of the focus colour, below it the legend with counts](https://shrippen.github.io/Kante/shots/release-1.61-legend.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-161
 
 ### Deutsch
 
@@ -925,7 +945,7 @@ Kante can show and pick a level of four, for ratings such as how well a techniqu
 
 ![A list with dots per technique, below four buttons 1 to 4 with 3 chosen](https://shrippen.github.io/Kante/shots/release-1.60-levels.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-160
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-160
 
 ### Deutsch
 
@@ -954,7 +974,7 @@ Kante gets the pieces for a video player and a start menu of tiles.
 
 ![Three launch tiles with kanji, below a transport bar with single frames and four tempi](https://shrippen.github.io/Kante/shots/release-1.59-video.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-159
 
 ### Deutsch
 
@@ -982,7 +1002,7 @@ A dialog can have buttons of its own at the start of its footer.
 
 ![An own button at the start of the footer, Close at its end](https://shrippen.github.io/Kante/shots/release-1.58-footer.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-158
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-158
 
 ### Deutsch
 
@@ -1006,7 +1026,7 @@ A menu row gets room at its end.
 
 ![An effect menu: the direction as ◀ ▶ and the lengths as segments at the row's end](https://shrippen.github.io/Kante/shots/release-1.57-menu.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-157
 
 ### Deutsch
 
@@ -1037,7 +1057,7 @@ Line weights, markers, tint levels and the sizes of an hour grid are Kante roles
 
 ![An hour grid drawn from the roles: grid lines, free time, a planned block with its colour edge, the now line, day dots, a load meter and the four tint levels](https://shrippen.github.io/Kante/shots/release-1.56-lines.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-156
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-156
 
 ### Deutsch
 
@@ -1073,7 +1093,7 @@ Dialogs come in three widths, and a destructive question is red.
 
 ![A destructive question: red bar, the button names what goes, Cancel first](https://shrippen.github.io/Kante/shots/release-1.55-dialog.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-155
 
 ### Deutsch
 
@@ -1105,7 +1125,7 @@ The page bar can be lower, down to a coloured strip, and the month grid marks it
 
 ![Day dots and a range in the month grid](https://shrippen.github.io/Kante/shots/release-1.54-calendar.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-154
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-154
 
 ### Deutsch
 
@@ -1131,7 +1151,7 @@ Every row of a list takes a click again.
 - `KanteListRow` in a scrolling list reacted only on its first row; a click on any other row did nothing (Qt 6.11).
 - `KanteScope` no longer logs a script error when a page or dialog closes right after its content changed.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-153
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-153
 
 ### Deutsch
 
@@ -1152,7 +1172,7 @@ The workbench desk stays in view beside a long list.
 #### Fixed
 - `.bench-desk` moves along while the list scrolls. Before, a click on an entry far down showed its desk at the top of the page, out of view. A desk taller than the window scrolls itself; on a phone nothing changes.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-152
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-152
 
 ### Deutsch
 
@@ -1187,7 +1207,7 @@ Kontra's QA of 28 October: a sidebar that stays dark in Kante on a light system,
 
 ![Before (left) and after (right): sidebar in Kante on a light system, callout with a title only, string colours in Kante Light](https://shrippen.github.io/Kante/shots/release-1.51-qa.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-151
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-151
 
 ### Deutsch
 
@@ -1227,7 +1247,7 @@ Rehearsal marks: tab, notation and the lanes show where Intro, verse, chorus or 
 
 ![Rehearsal marks in tab, notation and lane, in Kante and Leinen](https://shrippen.github.io/Kante/shots/release-1.50-probenzeichen.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-150
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-150
 
 ### Deutsch
 
@@ -1259,7 +1279,7 @@ For players on the keyboard alone, at 200 % and with deuteranopia: Return presse
 
 ![Skipped step, framed wrong note, axis title, in Kante and Leinen](https://shrippen.github.io/Kante/shots/release-1.49-qa.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-149
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-149
 
 ### Deutsch
 
@@ -1290,7 +1310,7 @@ A workbench: a list to scan beside a desk for one entry, receipts to pick, and a
 
 ![Pick and sum bar, in Kante and Leinen](https://shrippen.github.io/Kante/shots/release-1.48-parts.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-148
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-148
 
 ### Deutsch
 
@@ -1317,7 +1337,7 @@ Waiting gets one look: a bar on top, the clicked link runs a light, old content 
 
 ![Busy region, loading word, button status and step time](https://shrippen.github.io/Kante/shots/release-1.47-busy.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-147
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-147
 
 ### Deutsch
 
@@ -1345,7 +1365,7 @@ Status cards can be a choice: a period picked by its state.
 
 ![Busy buttons: stripes across the whole button](https://shrippen.github.io/Kante/shots/release-1.46-busy.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-146
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-146
 
 ### Deutsch
 
@@ -1368,7 +1388,7 @@ The audio meter no longer hides its size factor.
 #### Breaking
 - `KanteAudioMeter`: the labels' switch is `showScale`; `scale` is the item's size factor again, as on every `Item`. Old code: a literal `scale: true` or `scale: false` no longer loads (number expected), nor does the page that holds it; a binding loads and goes wrong silently, at 0 the meter shrinks to nothing. Search for `scale:` on every `KanteAudioMeter`.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-145
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-145
 
 ### Deutsch
 
@@ -1391,7 +1411,7 @@ The timing histogram shows the target band.
 
 ![Laid-back aim: the band from +10 to +30 ms (demo data)](https://shrippen.github.io/Kante/shots/release-1.44-band.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-144
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-144
 
 ### Deutsch
 
@@ -1421,7 +1441,7 @@ Parts for a mixing desk: drag a pane's size, menus with sections and shortcuts, 
 
 ![The new parts in Kante (top) and Kante Light](https://shrippen.github.io/Kante/shots/release-1.43-lmix.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-143
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-143
 
 ### Deutsch
 
@@ -1453,7 +1473,7 @@ Menus stay opaque after leaving Kante.
 
 ![The same menu after leaving Kante, before and after](https://shrippen.github.io/Kante/shots/release-1.42-menu.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-142
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-142
 
 ### Deutsch
 
@@ -1476,7 +1496,7 @@ Staves without notes stay quiet.
 #### Fixed
 - `KanteTabStaff`, `KanteBassStaff`: emptying the notes during playback logged a `TypeError`; the description for screen readers now waits for the current note.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-140
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-140
 
 ### Deutsch
 
@@ -1501,7 +1521,7 @@ Wizard steps fit narrow windows.
 
 ![The same steps wide and narrow (demo data)](https://shrippen.github.io/Kante/shots/release-1.39-steps.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-139
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-139
 
 ### Deutsch
 
@@ -1526,7 +1546,7 @@ One main button in the transport: play.
 
 ![Metronome and count-in on, loop off: the lamp tells the state (Kante and Leinen)](https://shrippen.github.io/Kante/shots/release-1.38-transport.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-138
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-138
 
 ### Deutsch
 
@@ -1548,7 +1568,7 @@ Ghost notes in tab as printed: the fret in parentheses, nothing more.
 
 ![Ghost notes in lane and tab: the fret in parentheses; a result frames it (demo data)](https://shrippen.github.io/Kante/shots/release-1.37-ghost.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-137
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#changed-in-kante-137
 
 ### Deutsch
 
@@ -1568,7 +1588,7 @@ Key figures read as one: screen readers hear "Practised: 7 min".
 #### Fixed
 - `KanteKpi` has one accessible name of label and value, the change as description. Before, figure and label were read as two loose texts.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-136
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-136
 
 ### Deutsch
 
@@ -1599,7 +1619,7 @@ Loops in tab and notes: tablature and bass staff show the loop range the tab lan
 
 ![Page bar, picture area and vertical sliders, in Kante and Leinen](https://shrippen.github.io/Kante/shots/release-1.35-pagebar.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-135
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-135
 
 ### Deutsch
 
@@ -1631,7 +1651,7 @@ A date field with a two-digit year keeps the year it shows.
 
 ![What the field reads back from its own text, German and US format](https://shrippen.github.io/Kante/shots/release-1.34.1-years.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1341
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1341
 
 ### Deutsch
 
@@ -1657,7 +1677,7 @@ Japanese in pieces gets a Japanese face, not a Chinese one.
 #### Fixed
 - Ruby text, pitch curve and correction diff draw Japanese in a Japanese face. Under a German or English locale single kanji fell back to a Chinese face: other glyph forms, a lower baseline, a centred 。.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-134
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-134
 
 ### Deutsch
 
@@ -1683,7 +1703,7 @@ Words to look up in Japanese text: a click on a word, for Kaiwa's dictionary.
 #### Note
 - Additions only: existing calls keep working.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-133
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-133
 
 ### Deutsch
 
@@ -1710,7 +1730,7 @@ Dead notes for Kontra: a note muted without pitch gets its own sign.
 #### Note
 - Additions only: existing calls keep working.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-132
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-132
 
 ### Deutsch
 
@@ -1740,7 +1760,7 @@ Technique marks for Kontra: tab, lane and staff show how a note is to be played,
 
 ![Technique signs in lane, tab and staff (demo data)](https://shrippen.github.io/Kante/shots/release-1.31-techniques.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-131
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-131
 
 ### Deutsch
 
@@ -1771,7 +1791,7 @@ A keyboard for Kontra's bass over MIDI: players who play bass lines on keys see 
 
 ![Key lane over the keyboard (demo data)](https://shrippen.github.io/Kante/shots/release-1.30-keyboard.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-130
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-130
 
 ### Deutsch
 
@@ -1800,7 +1820,7 @@ Colour labels in apps and an audio meter for mixers, for lmix's Qt Console.
 #### Note
 - Web: `data-label` also takes `orange` and `cyan`. `KanteLevelMeter` stays the input check with zones in words.
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-129
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-129
 
 ### Deutsch
 
@@ -1841,7 +1861,7 @@ More wishes from Kontra, the bass trainer: choices that are not available yet, h
 
 ![Volta brackets in the tablature (demo data)](https://shrippen.github.io/Kante/shots/release-1.28-volta.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-128
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-128
 
 ### Deutsch
 
@@ -1890,7 +1910,7 @@ Wishes from a QA round of Kontra, the bass trainer: Kante controls instead of li
 
 ![Chord symbols and key changes (demo data)](https://shrippen.github.io/Kante/shots/release-1.27-chords-keys.png)
 
-All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-127
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-127
 
 ### Deutsch
 
