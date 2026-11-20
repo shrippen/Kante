@@ -5,6 +5,26 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
+## [Unreleased]
+
+### English
+
+A floating card without a head line.
+
+#### New
+- `KanteFloatingCard`: a card with a hard shadow that floats over content, such as a search card over a floor plan, for the places where `KanteFloatingPanel` is too much because it needs no head line to fold. Its size follows its content plus a padding. The panel is drawn with it, so both look the same.
+
+All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
+
+### Deutsch
+
+Eine schwebende Karte ohne Kopfzeile.
+
+#### Neu
+- `KanteFloatingCard`: eine Karte mit hartem Schatten, die über dem Inhalt schwebt, etwa eine Suchkarte über einem Grundriss, für Stellen, an denen `KanteFloatingPanel` zu viel ist, weil keine Kopfzeile zum Einklappen nötig ist. Ihre Größe folgt dem Inhalt plus einem Innenabstand. Das Panel wird damit gezeichnet, beide sehen also gleich aus.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
+
 ## [1.83.0] — 2026-11-19
 
 ### English
