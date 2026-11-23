@@ -32,10 +32,10 @@ Eine schwebende Karte ohne Kopfzeile, und eine Planansicht, die ihre Beschriftun
 #### Verbessert
 - `KanteShapeCanvas` zeichnet seine Beschriftungen als Textelemente über dem Plan statt in die Leinwand. Ein Plan mit 610 Formen und 272 Beschriftungen malt in 5 ms statt 20 ms, ein Bild beim Verschieben dauert etwa 28 ms statt 45 ms. Lage, Größe, Farbe, Ausblendung und Drehung bleiben gleich; nur die Glyphenränder weichen etwas ab. Ein Bild, in dem sich die Zahl der Beschriftungen ändert, behält die vorhandenen und dauert etwa 19 ms statt 38 ms.
 
-Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
-
 #### Behoben
 - `KanteChip` in natürlicher Breite kürzt seinen Namen nicht mehr ("ILVA" zeigte "IL…"): die Breite zählt den Namen so, wie das Label ihn misst, und das Kreuz aufgerundet.
+
+Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
 ## [1.83.0] — 2026-11-19
 
