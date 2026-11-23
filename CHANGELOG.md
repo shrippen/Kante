@@ -15,7 +15,7 @@ A floating card without a head line, and a plan view that draws its captions fas
 - `KanteFloatingCard`: a card with a hard shadow that floats over content, such as a search card over a floor plan, for the places where `KanteFloatingPanel` is too much because it needs no head line to fold. Its size follows its content plus a padding. The panel is drawn with it, so both look the same.
 
 #### Improved
-- `KanteShapeCanvas` draws its captions as text items over the plan instead of into the canvas. A plan of 610 shapes with 272 captions paints in 5 ms instead of 20 ms, and a frame while panning takes about 28 ms instead of 45 ms. Position, size, colour, fade and turn are the same; only the glyph edges differ a little.
+- `KanteShapeCanvas` draws its captions as text items over the plan instead of into the canvas. A plan of 610 shapes with 272 captions paints in 5 ms instead of 20 ms, and a frame while panning takes about 28 ms instead of 45 ms. Position, size, colour, fade and turn are the same; only the glyph edges differ a little. A frame that changes the number of captions keeps the existing ones and takes about 19 ms instead of 38 ms.
 
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
@@ -27,7 +27,7 @@ Eine schwebende Karte ohne Kopfzeile, und eine Planansicht, die ihre Beschriftun
 - `KanteFloatingCard`: eine Karte mit hartem Schatten, die über dem Inhalt schwebt, etwa eine Suchkarte über einem Grundriss, für Stellen, an denen `KanteFloatingPanel` zu viel ist, weil keine Kopfzeile zum Einklappen nötig ist. Ihre Größe folgt dem Inhalt plus einem Innenabstand. Das Panel wird damit gezeichnet, beide sehen also gleich aus.
 
 #### Verbessert
-- `KanteShapeCanvas` zeichnet seine Beschriftungen als Textelemente über dem Plan statt in die Leinwand. Ein Plan mit 610 Formen und 272 Beschriftungen malt in 5 ms statt 20 ms, ein Bild beim Verschieben dauert etwa 28 ms statt 45 ms. Lage, Größe, Farbe, Ausblendung und Drehung bleiben gleich; nur die Glyphenränder weichen etwas ab.
+- `KanteShapeCanvas` zeichnet seine Beschriftungen als Textelemente über dem Plan statt in die Leinwand. Ein Plan mit 610 Formen und 272 Beschriftungen malt in 5 ms statt 20 ms, ein Bild beim Verschieben dauert etwa 28 ms statt 45 ms. Lage, Größe, Farbe, Ausblendung und Drehung bleiben gleich; nur die Glyphenränder weichen etwas ab. Ein Bild, in dem sich die Zahl der Beschriftungen ändert, behält die vorhandenen und dauert etwa 19 ms statt 38 ms.
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 

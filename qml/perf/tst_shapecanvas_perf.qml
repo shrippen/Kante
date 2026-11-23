@@ -48,6 +48,11 @@ TestCase {
         return list
     }
 
+    // A circle with a caption, off the plan's grid.
+    function captioned(n) {
+        return { key: "extra" + n, kind: "circle", points: [1 + n, 25], radius: 0.4, label: "red", text: "Extra " + n }
+    }
+
     function canvasOf(item) {
         for (let i = 0; i < item.children.length; i++) {
             if (typeof item.children[i].getContext === "function") {
@@ -134,6 +139,18 @@ TestCase {
         console.log("PERF frame pan=" + msFrame(view, v => { v.panX += 1 }).toFixed(1) + " ms")
         // Replacing the shapes (an edit, a selection): the same count, then the plan built anew.
         console.log("PERF frame shapes=" + msFrame(view, v => { v.shapes = v.shapes.slice() }).toFixed(1) + " ms")
+        // Frames that change the caption count: every other frame one captioned shape fewer and two
+        // more, as in Klappe.
+        const base = plan()
+        view.shapes = base
+        waitForRendering(view, 1000)
+        let flip = false
+        const countStep = v => {
+            flip = !flip
+            v.shapes = flip ? base.slice(0, 609).concat([captioned(1), captioned(2)]) : base
+        }
+        console.log("PERF frame count change=" + msFrame(view, countStep).toFixed(1) + " ms")
+        view.shapes = base
         const t0 = Date.now()
         view.shapes = []
         view.shapes = plan()

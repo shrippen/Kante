@@ -201,6 +201,7 @@ FocusScope {
     onHeightChanged: _maybeFit()
     Component.onCompleted: {
         _ready = true
+        _fitCaptionRows()
         _maybeFit()
     }
 
@@ -396,6 +397,20 @@ FocusScope {
         return c
     }
     readonly property var _captions: _spots(shapes)
+    on_CaptionsChanged: _fitCaptionRows()
+
+    // One row per caption. Rows are only added or removed at the end, so the Text items of the
+    // others stay; an integer model would recreate them all when the count changes.
+    ListModel { id: captionRows }
+    function _fitCaptionRows() {
+        const n = _captions.length
+        if (captionRows.count > n) {
+            captionRows.remove(n, captionRows.count - n)
+        }
+        while (captionRows.count < n) {
+            captionRows.append({})
+        }
+    }
     readonly property real _fontPx: KanteStyle.fontPixels(KanteStyle.smallFont)
 
     // The theme and the font repaint the canvas.
@@ -630,7 +645,7 @@ FocusScope {
         Accessible.ignored: true
 
         Repeater {
-            model: root._captions.length
+            model: captionRows
 
             Item {
                 id: spot
