@@ -75,6 +75,22 @@ TestCase {
         return best
     }
 
+    // Ms per frame, all of it: change, polish, paint handler, scene graph sync and render. The
+    // paint handler alone leaves out the caption items and the upload of the canvas.
+    // Fastest of 5 rounds of 20 frames; `step` moves the view for every frame.
+    function msFrame(view, step) {
+        let best = Infinity
+        for (let round = 0; round < 5; round++) {
+            const t0 = Date.now()
+            for (let i = 0; i < 20; i++) {
+                step(view)
+                waitForRendering(view, 1000)
+            }
+            best = Math.min(best, (Date.now() - t0) / 20)
+        }
+        return best
+    }
+
     Component {
         id: viewComponent
         KanteShapeCanvas {
@@ -109,5 +125,20 @@ TestCase {
         view.panY = -100
         console.log("PERF zoomed in: paint=" + msPaint(view).toFixed(1) + " ms")
         verify(full > 0)
+
+        // Whole frames, with the plan back in full view: panning, then zooming.
+        view.zoom = 10
+        view.panX = 0
+        view.panY = 0
+        waitForRendering(view, 1000)
+        console.log("PERF frame pan=" + msFrame(view, v => { v.panX += 1 }).toFixed(1) + " ms")
+        // Replacing the shapes (an edit, a selection): the same count, then the plan built anew.
+        console.log("PERF frame shapes=" + msFrame(view, v => { v.shapes = v.shapes.slice() }).toFixed(1) + " ms")
+        const t0 = Date.now()
+        view.shapes = []
+        view.shapes = plan()
+        waitForRendering(view, 1000)
+        console.log("PERF frame new plan=" + (Date.now() - t0) + " ms")
+        console.log("PERF frame zoom=" + msFrame(view, v => { v.zoom *= 1.001 }).toFixed(1) + " ms")
     }
 }
