@@ -15,6 +15,11 @@ TestCase {
     height: 600
     when: windowShown
 
+    // A delegate left over for a moment must not read a caption that is gone.
+    function init() {
+        failOnWarning(/TypeError/)
+    }
+
     Component {
         id: canvasComponent
         KanteShapeCanvas {
