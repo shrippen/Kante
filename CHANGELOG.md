@@ -17,6 +17,9 @@ A floating card without a head line, and a plan view that draws its captions fas
 #### Improved
 - `KanteShapeCanvas` draws its captions as text items over the plan instead of into the canvas. A plan of 610 shapes with 272 captions paints in 5 ms instead of 20 ms, and a frame while panning takes about 28 ms instead of 45 ms. Position, size, colour, fade and turn are the same; only the glyph edges differ a little. A frame that changes the number of captions keeps the existing ones and takes about 19 ms instead of 38 ms.
 
+#### Fixed
+- `KanteChip` at its natural width no longer elides its name ("ILVA" showed "IL…"): the width counts the name as the label measures it and the cross rounded up.
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
 ### Deutsch
@@ -28,6 +31,9 @@ Eine schwebende Karte ohne Kopfzeile, und eine Planansicht, die ihre Beschriftun
 
 #### Verbessert
 - `KanteShapeCanvas` zeichnet seine Beschriftungen als Textelemente über dem Plan statt in die Leinwand. Ein Plan mit 610 Formen und 272 Beschriftungen malt in 5 ms statt 20 ms, ein Bild beim Verschieben dauert etwa 28 ms statt 45 ms. Lage, Größe, Farbe, Ausblendung und Drehung bleiben gleich; nur die Glyphenränder weichen etwas ab. Ein Bild, in dem sich die Zahl der Beschriftungen ändert, behält die vorhandenen und dauert etwa 19 ms statt 38 ms.
+
+#### Behoben
+- `KanteChip` in natürlicher Breite kürzt seinen Namen nicht mehr ("ILVA" zeigte "IL…"): die Breite zählt den Namen so, wie das Label ihn misst, und das Kreuz aufgerundet.
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
