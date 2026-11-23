@@ -402,6 +402,8 @@ FocusScope {
     // One row per caption. Rows are only added or removed at the end, so the Text items of the
     // others stay; an integer model would recreate them all when the count changes.
     ListModel { id: captionRows }
+    readonly property var _noCaption: ({ text: "", label: "", size: 0, rot: 0, alpha: 0, mx: 0, my: 0, r: 0,
+                                         gx: 0, gy: 0, topLeft: false, center: false })
     function _fitCaptionRows() {
         const n = _captions.length
         if (captionRows.count > n) {
@@ -651,7 +653,8 @@ FocusScope {
                 id: spot
 
                 required property int index
-                readonly property var c: root._captions[index]
+                // Fewer captions: until its row goes, a delegate at the end reads an empty one.
+                readonly property var c: root._captions[index] ?? root._noCaption
                 readonly property bool sized: c.size > 0
                 // Font size on screen; 0 when too small to read.
                 readonly property real px: !sized ? root._fontPx : (c.size * root.zoom < root._minCaptionPx ? 0 : c.size * root.zoom)
