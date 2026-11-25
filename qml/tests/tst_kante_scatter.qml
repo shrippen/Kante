@@ -496,8 +496,13 @@ TestCase {
         compare(c.yTickItems[0].label, "∞")
         compare(c.yTickItems[1].label, "2")
         verify(c.yOf(0.5) < c.yOf(0))
-        // Its tooltip stays.
+        // Its tooltip stays, and `yFormatter` words the y value in the axis' unit.
         verify(c.tipOf(0).indexOf("x 0") === 0, c.tipOf(0))
+        c.yFormatter = function (d) { return d < 0.01 ? "∞" : (1 / d).toFixed(1) + " m" }
+        verify(c.tipOf(1).indexOf("y 1.0 m") >= 0, c.tipOf(1))
+        verify(c.tipOf(1).indexOf("x 1") === 0, c.tipOf(1))
+        c.points = [{ x: 0, y: 0 }]
+        verify(c.tipOf(0).indexOf("y ∞") >= 0, c.tipOf(0))
         // Without own ticks the automatic ones stay.
         const a = createTemporaryObject(chartComponent, stage())
         compare(a.yTickItems.length, a.yTicks.length)

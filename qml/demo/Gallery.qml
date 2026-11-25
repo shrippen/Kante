@@ -308,8 +308,9 @@ Rectangle {
                     yMin: 0
                     yMax: 1.7
                     xTitle: "Bild"
-                    yTitle: "Fokus"
-                    yUnit: "m"
+                    yTitle: "Fokus (m)"
+                    // The data are dioptres; the tooltip names metres like the ticks.
+                    yFormatter: function (d) { return d < 0.01 ? "∞" : (1 / d).toLocaleString(Qt.locale(), 'f', 2) + " m" }
                     accessibleName: "Fokusabstand"
                     yTickMarks: [{ value: 0, label: "∞" }, { value: 0.2, label: "5" }, { value: 0.5, label: "2" },
                                  { value: 1, label: "1" }, { value: 1.67, label: "0,6" }]

@@ -31,6 +31,8 @@ import "."
  *               in metres: [{ value: 0, label: "∞" }, { value: 0.5, label: "2" }]. The ends
  *               stay as without ticks, so fix them (`yMin`, `yMax`) to show every tick; a tick
  *               outside is left out. [] (default): automatic ticks
+ *   yFormatter  function (value) -> string for the y coordinate in the tooltip (default null:
+ *               `formatter`, else the number), so it can speak the language of `yTickMarks`
  *   yInverted   larger y lies lower (default false); with ticks that start at 0 = "∞" the
  *               far end then lies at the top
  *   xTitle, yTitle, xUnit, yUnit   axis names; the unit follows the title in brackets and the
@@ -80,6 +82,9 @@ Item {
     property string yUnit: unit
     /** function (value) -> string for the tooltip and the legend; default by locale. */
     property var formatter: null
+    /** function (value) -> string for the y value in the tooltip only, before `formatter`; for
+     *  own y ticks in another unit (dioptres shown as metres). null: as `formatter`. */
+    property var yFormatter: null
     /** Colour of a point without value and series. */
     property color pointColor: KanteStyle.dataColor(0)
     /** Base of the value scale (level 4 is this colour, lower levels fade it). */
@@ -421,7 +426,7 @@ Item {
             lines.push(String(p.label))
         }
         const u = function (t) { return t === "" ? "" : " " + t }
-        lines.push("x " + numberText(p.x, xDecimals + 1) + u(xUnit) + " · y " + numberText(p.y, yDecimals + 1) + u(yUnit))
+        lines.push("x " + numberText(p.x, xDecimals + 1) + u(xUnit) + " · y " + (yFormatter ? yFormatter(p.y) : numberText(p.y, yDecimals + 1)) + u(yUnit))
         const v = _scan.vals[i]
         if (isFinite(v)) {
             const name = valueTitle !== "" ? valueTitle : valueKey
