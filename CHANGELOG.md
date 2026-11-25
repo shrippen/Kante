@@ -19,6 +19,7 @@ A floating card without a head line, and a plan view that draws its captions fas
 
 #### Fixed
 - `KanteChip` at its natural width no longer elides its name ("ILVA" showed "IL…"): the width counts the name as the label measures it and the cross rounded up.
+- A hidden `KanteMenuItem` (`visible: false`) no longer leaves an empty row in its menu.
 
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
@@ -34,6 +35,7 @@ Eine schwebende Karte ohne Kopfzeile, und eine Planansicht, die ihre Beschriftun
 
 #### Behoben
 - `KanteChip` in natürlicher Breite kürzt seinen Namen nicht mehr ("ILVA" zeigte "IL…"): die Breite zählt den Namen so, wie das Label ihn misst, und das Kreuz aufgerundet.
+- Ein verstecktes `KanteMenuItem` (`visible: false`) lässt in seinem Menü keine leere Zeile mehr.
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
