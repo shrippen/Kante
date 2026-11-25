@@ -485,6 +485,33 @@ TestCase {
         compare(b.axes.y1, 5)
     }
 
+    function test_ownYTicks() {
+        const marks = [{ value: 0, label: "∞" }, { value: 0.5, label: "2" }, { value: 1, label: "1" },
+                       { value: 5, label: "out" }]
+        const c = createTemporaryObject(chartComponent, stage(),
+                                        { yMin: 0, yMax: 1.25, yTickMarks: marks,
+                                          points: [{ x: 0, y: 0.2 }, { x: 1, y: 1 }] })
+        // The tick outside the axis is left out; the rest keep their labels and sit by value.
+        compare(c.yTickItems.length, 3)
+        compare(c.yTickItems[0].label, "∞")
+        compare(c.yTickItems[1].label, "2")
+        verify(c.yOf(0.5) < c.yOf(0))
+        // Its tooltip stays.
+        verify(c.tipOf(0).indexOf("x 0") === 0, c.tipOf(0))
+        // Without own ticks the automatic ones stay.
+        const a = createTemporaryObject(chartComponent, stage())
+        compare(a.yTickItems.length, a.yTicks.length)
+        compare(a.yTickItems[0].value, a.yTicks[0])
+    }
+
+    function test_yInverted() {
+        const c = createTemporaryObject(chartComponent, stage(), { yInverted: true })
+        verify(c.yOf(2) > c.yOf(0), "larger y lies lower")
+        compare(c.pointAt(c.xOf(10), c.yOf(2)), 1)
+        const d = createTemporaryObject(chartComponent, stage())
+        verify(d.yOf(2) < d.yOf(0), "default stays up")
+    }
+
     function watch(target, name) {
         spy.signalName = ""
         spy.target = target
