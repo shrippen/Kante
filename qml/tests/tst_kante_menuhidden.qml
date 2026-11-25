@@ -51,4 +51,18 @@ TestCase {
         // The ListView lays out on the next frame.
         tryCompare(o.last, "y", o.first.height, 2000, "last item sits directly under the first")
     }
+
+    // A binding may show or hide an item while the menu is open.
+    function test_item_shown_while_open_takes_its_row() {
+        const o = createTemporaryObject(menuComponent, tc.Window.contentItem)
+        o.menu.open()
+        tryVerify(() => o.menu.opened)
+
+        o.middle.visible = true
+        tryCompare(o.last, "y", o.first.height + o.middle.height, 2000, "row comes back")
+        verify(o.middle.height > 0)
+
+        o.middle.visible = false
+        tryCompare(o.last, "y", o.first.height, 2000, "row goes again")
+    }
 }
