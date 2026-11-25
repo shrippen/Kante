@@ -298,6 +298,24 @@ Rectangle {
                         return out
                     }
                 }
+                // Own y ticks and an inverted axis: a focus distance in dioptres (1/m), labelled in metres,
+                // infinity at the top.
+                KanteScatterChart {
+                    objectName: "galleryScatterTicks"
+                    Layout.preferredWidth: KanteStyle.unit(480)
+                    Layout.preferredHeight: KanteStyle.unit(200)
+                    yInverted: true
+                    yMin: 0
+                    yMax: 1.7
+                    xTitle: "Bild"
+                    yTitle: "Fokus (m)"
+                    // The data are dioptres; the tooltip names metres like the ticks.
+                    yFormatter: function (d) { return d < 0.01 ? "∞" : (1 / d).toLocaleString(Qt.locale(), 'f', 2) + " m" }
+                    accessibleName: "Fokusabstand"
+                    yTickMarks: [{ value: 0, label: "∞" }, { value: 0.2, label: "5" }, { value: 0.5, label: "2" },
+                                 { value: 1, label: "1" }, { value: 1.67, label: "0,6" }]
+                    points: [{ x: 1, y: 0.1 }, { x: 2, y: 0.25 }, { x: 3, y: 0.5 }, { x: 4, y: 1 }, { x: 5, y: 1.4 }]
+                }
                 // 1.76: a song map, hit rate per bar over the last runs; bars 5–8 chosen as the loop.
                 KanteSongMap {
                     objectName: "gallerySongMap"
