@@ -87,15 +87,34 @@ TestCase {
         verify(!ph.visible)
     }
 
-    // The skin is the field's background: it stays put while the text scrolls.
+    // The skin sits in the field's skin item (control === inner area), wherever it ended up.
+    function findSkin(item) {
+        let kids = Array.from(item.children)
+        if (item.contentItem) {
+            kids.push(item.contentItem)
+        }
+        for (let kid of kids) {
+            if (kid.control !== undefined && kid.invalid !== undefined) {
+                return kid
+            }
+            let found = findSkin(kid)
+            if (found) {
+                return found
+            }
+        }
+        return null
+    }
+
+    // The skin stays put while the text scrolls: its top and bottom edge match the field's.
     function test_skinStaysInView() {
         let s = scene()
         s.area.invalid = true
         s.area.text = "a\nb\nc\nd\ne\nf\ng\nh"
         s.area.area.cursorPosition = s.area.text.length
         wait(100)
-        let skin = s.area.background
+        let skin = findSkin(s.area)
         verify(skin !== null)
+        compare(skin.control, s.area.area)
         let top = skin.mapToItem(s.area, 0, 0).y
         let bottom = skin.mapToItem(s.area, 0, skin.height).y
         compare(top, 0)
