@@ -792,7 +792,7 @@ The keyboard view for Kontra's bass over MIDI (persona P5 Aylin, a keyboarder wh
 
 ### Added in Kante 1.85
 
-From Klappe: a floating card without a head line.
+From Klappe: a multi-line text field and a floating card without a head line.
 
 | Element | Web | QML |
 |---|---|---|

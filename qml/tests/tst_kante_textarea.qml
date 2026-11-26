@@ -86,4 +86,19 @@ TestCase {
         let ph = findChild(s.area, "kantePlaceholder")
         verify(!ph.visible)
     }
+
+    // The skin is the field's background: it stays put while the text scrolls.
+    function test_skinStaysInView() {
+        let s = scene()
+        s.area.invalid = true
+        s.area.text = "a\nb\nc\nd\ne\nf\ng\nh"
+        s.area.area.cursorPosition = s.area.text.length
+        wait(100)
+        let skin = s.area.background
+        verify(skin !== null)
+        let top = skin.mapToItem(s.area, 0, 0).y
+        let bottom = skin.mapToItem(s.area, 0, skin.height).y
+        compare(top, 0)
+        compare(bottom, s.area.height)
+    }
 }

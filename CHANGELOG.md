@@ -9,7 +9,7 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 
 ### English
 
-Revision colours for screenplays, a floating card without a head line, a plan view that draws its captions faster, and scatter charts with their own axis ticks.
+A multi-line text field, revision colours for screenplays, a floating card without a head line, a plan view that draws its captions faster, and scatter charts with their own axis ticks.
 
 #### New
 - `KanteTextArea`: a multi-line text field with `KanteTextField`'s look (sunken box, cyan bottom edge on focus, `invalid`, placeholder inside the box). It grows with its text up to `maxLines` (default 6) and then scrolls. Enter starts a new line; Tab leaves the field instead of typing a tab character.
@@ -28,7 +28,7 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kant
 
 ### Deutsch
 
-Revisionsfarben für Drehbücher, eine schwebende Karte ohne Kopfzeile, eine Planansicht, die ihre Beschriftungen schneller zeichnet, und Streudiagramme mit eigenen Achsenteilstrichen.
+Ein mehrzeiliges Textfeld, Revisionsfarben für Drehbücher, eine schwebende Karte ohne Kopfzeile, eine Planansicht, die ihre Beschriftungen schneller zeichnet, und Streudiagramme mit eigenen Achsenteilstrichen.
 
 #### Neu
 - `KanteTextArea`: ein mehrzeiliges Textfeld mit dem Aussehen von `KanteTextField` (vertiefter Kasten, cyanfarbene Unterkante bei Fokus, `invalid`, Platzhalter im Feld). Es wächst mit dem Text bis `maxLines` (Standard 6) und scrollt dann. Enter beginnt eine neue Zeile; Tab verlässt das Feld, statt ein Tabulatorzeichen zu schreiben.

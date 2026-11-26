@@ -42,7 +42,8 @@ QQC2.ScrollView {
         font: area.font
     }
 
-    KanteFieldSkin {
+    // As background, so the skin stays put while the text scrolls.
+    background: KanteFieldSkin {
         control: area
         invalid: control.invalid
     }
