@@ -78,7 +78,7 @@ Rectangle {
                 RowLayout {
                     spacing: KanteStyle.unit(14)
                     KanteTextField { text: "Kader"; Layout.preferredWidth: KanteStyle.unit(160) }
-                    KanteTextField { text: "kader plasmoid"; invalid: true; Layout.preferredWidth: KanteStyle.unit(160) }
+                    KanteTextField { text: "kader plasmoid"; invalid: true; Layout.preferredWidth: KanteStyle.unit(160) } KanteTextArea { placeholderText: "Kontakt"; maxLines: 4; Accessible.name: "Kontakt"; Layout.preferredWidth: KanteStyle.unit(160); Layout.alignment: Qt.AlignTop }
                     QQC2.ComboBox { model: ["Negativ, Farbe", "Dia"]; Layout.preferredWidth: KanteStyle.unit(160); KanteFieldSkin { control: parent } }
                     QQC2.Slider { value: 0.6; Layout.preferredWidth: KanteStyle.unit(160); KanteSliderSkin { control: parent } }
                     // vertical: a fader, filled from the bottom
