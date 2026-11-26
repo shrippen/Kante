@@ -59,6 +59,16 @@
   --rev-buff: #d4b483;
   --rev-salmon: #f78670;
   --rev-cherry: #ee5a72;
+  /* The dark values stay available for surfaces that are dark in every theme (.stage, .strip button) */
+  --rev-dark-white: #f2efe6;
+  --rev-dark-blue: #6e9df0;
+  --rev-dark-pink: #f58fb5;
+  --rev-dark-yellow: #f2dc4a;
+  --rev-dark-green: #6fd072;
+  --rev-dark-goldenrod: #e0a21a;
+  --rev-dark-buff: #d4b483;
+  --rev-dark-salmon: #f78670;
+  --rev-dark-cherry: #ee5a72;
 
   /* ── Roles (follow the theme; see Light theme below) ── */
   --field:    var(--bg-hard); /* input fields, nested surfaces */
