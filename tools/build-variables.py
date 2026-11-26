@@ -31,12 +31,18 @@ def flat(theme):
     return colours
 
 
+def revision(palette, scheme):
+    """Custom property name -> hex of the revision colours (rev-white, ...) in dark or light."""
+    return {"rev-" + n: v for n, v in palette["revision"][scheme].items()}
+
+
 def dark(palette):
     """The default theme: bright and neutral (-n) semantic colours, plus the extras."""
     colours = {"accent": palette["accent"]}
     colours.update(palette["backgrounds"])
     colours.update(palette["foregrounds"])
     colours.update(palette["extra"])
+    colours.update(revision(palette, "dark"))
     for name, shades in palette["semantic"].items():
         colours[name] = shades["bright"]
         colours[name + "-n"] = shades["neutral"]
@@ -48,9 +54,9 @@ def themes(palette):
     kante_light = palette["kanteLight"]
     return {
         "dark": dark(palette),
-        "light": flat(palette["light"]),
-        "kanteLight": flat(kante_light["light"]),
-        "kanteLightDark": flat(kante_light["dark"]),
+        "light": {**flat(palette["light"]), **revision(palette, "light")},
+        "kanteLight": {**flat(kante_light["light"]), **revision(palette, "light")},
+        "kanteLightDark": {**flat(kante_light["dark"]), **revision(palette, "dark")},
         "gold": flat(palette["gold"]),
     }
 

@@ -9,9 +9,10 @@ per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELO
 
 ### English
 
-A floating card without a head line, a plan view that draws its captions faster, and scatter charts with their own axis ticks.
+Revision colours for screenplays, a floating card without a head line, a plan view that draws its captions faster, and scatter charts with their own axis ticks.
 
 #### New
+- Revision colours: the nine page colours of screenplay revisions in their fixed order (white, blue, pink, yellow, green, goldenrod, buff, salmon, cherry) as `KanteStyle.revisions` and `revisionColor(name)`, and on the web as `data-revision` and `--rev-<name>`. Each reads at 3:1 or more on the ground in dark and light; white is a grey in the light theme.
 - `KanteScatterChart.xTickMarks` and `yTickMarks` (`[{ value, label }]`) draw an axis with the app's own ticks and labels, such as dioptres labelled in metres ("∞", "5", "2"), `yFormatter` words the y value in the tooltip in the same unit, and `yInverted` puts larger y at the bottom, so "∞" can sit at the top.
 - `KanteFloatingCard`: a card with a hard shadow that floats over content, such as a search card over a floor plan, for the places where `KanteFloatingPanel` is too much because it needs no head line to fold. Its size follows its content plus a padding. The panel is drawn with it, so both look the same.
 
@@ -26,9 +27,10 @@ All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kant
 
 ### Deutsch
 
-Eine schwebende Karte ohne Kopfzeile, eine Planansicht, die ihre Beschriftungen schneller zeichnet, und Streudiagramme mit eigenen Achsenteilstrichen.
+Revisionsfarben für Drehbücher, eine schwebende Karte ohne Kopfzeile, eine Planansicht, die ihre Beschriftungen schneller zeichnet, und Streudiagramme mit eigenen Achsenteilstrichen.
 
 #### Neu
+- Revisionsfarben: die neun Seitenfarben der Drehbuchrevisionen in ihrer festen Reihenfolge (Weiß, Blau, Rosa, Gelb, Grün, Goldgelb, Chamois, Lachs, Kirsche) als `KanteStyle.revisions` und `revisionColor(name)`, im Web als `data-revision` und `--rev-<name>`. Jede hat auf dem Grund in Dunkel und Hell mindestens 3:1; Weiß ist im hellen Thema ein Grau.
 - `KanteScatterChart.xTickMarks` und `yTickMarks` (`[{ value, label }]`) beschriften eine Achse mit eigenen Teilstrichen, etwa Dioptrien in Metern ("∞", "5", "2"); `yFormatter` formuliert den y-Wert im Tooltip in derselben Einheit; `yInverted` legt größere y nach unten, damit "∞" oben stehen kann.
 - `KanteFloatingCard`: eine Karte mit hartem Schatten, die über dem Inhalt schwebt, etwa eine Suchkarte über einem Grundriss, für Stellen, an denen `KanteFloatingPanel` zu viel ist, weil keine Kopfzeile zum Einklappen nötig ist. Ihre Größe folgt dem Inhalt plus einem Innenabstand. Das Panel wird damit gezeichnet, beide sehen also gleich aus.
 

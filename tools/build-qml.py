@@ -30,6 +30,7 @@ def theme_tokens(theme):
         t.update({name: v["bright"] for name, v in PALETTE["semantic"].items()})
         t["accent-brand"] = PALETTE["accent"]
         t.update(PALETTE.get("extra", {}))
+        t.update({"revision-" + n: v for n, v in PALETTE["revision"]["dark"].items()})
         return t
     light = PALETTE["light"]
     t = dict(theme_tokens("dark"))
@@ -38,6 +39,7 @@ def theme_tokens(theme):
     t.update(light["semantic"])
     t["accent-brand"] = light["accent"]
     t.update(light.get("extra", {}))
+    t.update({"revision-" + n: v for n, v in PALETTE["revision"]["light"].items()})
     return t
 
 
