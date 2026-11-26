@@ -50,6 +50,27 @@
   --purple-n: #b16286;
   --cyan-n:   #3f9a94;   /* quiet lines only (4.4:1 on cards) */
 
+  /* Script revision colours in their fixed order (data-revision) */
+  --rev-white: #f2efe6;
+  --rev-blue: #6e9df0;
+  --rev-pink: #f58fb5;
+  --rev-yellow: #f2dc4a;
+  --rev-green: #6fd072;
+  --rev-goldenrod: #e0a21a;
+  --rev-buff: #d4b483;
+  --rev-salmon: #f78670;
+  --rev-cherry: #ee5a72;
+  /* The dark values stay available for surfaces that are dark in every theme (.stage, .strip button) */
+  --rev-dark-white: #f2efe6;
+  --rev-dark-blue: #6e9df0;
+  --rev-dark-pink: #f58fb5;
+  --rev-dark-yellow: #f2dc4a;
+  --rev-dark-green: #6fd072;
+  --rev-dark-goldenrod: #e0a21a;
+  --rev-dark-buff: #d4b483;
+  --rev-dark-salmon: #f78670;
+  --rev-dark-cherry: #ee5a72;
+
   /* ── Roles (follow the theme; see Light theme below) ── */
   --field:    var(--bg-hard); /* input fields, nested surfaces */
   --score:    var(--yellow);  /* scores, points, "how good is it" */
@@ -178,6 +199,15 @@
   --yellow-hi: #fcc845;
   --yellow-lo: #e5a823;
   --on-state: #fbf8ee;
+  --rev-white: #717171;
+  --rev-blue: #2b66c0;
+  --rev-pink: #c03d7c;
+  --rev-yellow: #8f7400;
+  --rev-green: #2f7f35;
+  --rev-goldenrod: #9a6500;
+  --rev-buff: #8a6f3f;
+  --rev-salmon: #bf4c36;
+  --rev-cherry: #a3122f;
 }
 
 /*
@@ -227,6 +257,15 @@
   --yellow-hi: #3daee9;
   --yellow-lo: #2e9bd4;
   --on-state: #ffffff;
+  --rev-white: #717171;
+  --rev-blue: #2b66c0;
+  --rev-pink: #c03d7c;
+  --rev-yellow: #8f7400;
+  --rev-green: #2f7f35;
+  --rev-goldenrod: #9a6500;
+  --rev-buff: #8a6f3f;
+  --rev-salmon: #bf4c36;
+  --rev-cherry: #a3122f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -264,6 +303,15 @@
     --yellow-hi: #3daee9;
     --yellow-lo: #2e9bd4;
     --on-state: #202326;
+    --rev-white: #f2efe6;
+    --rev-blue: #6e9df0;
+    --rev-pink: #f58fb5;
+    --rev-yellow: #f2dc4a;
+    --rev-green: #6fd072;
+    --rev-goldenrod: #e0a21a;
+    --rev-buff: #d4b483;
+    --rev-salmon: #f78670;
+    --rev-cherry: #ee5a72;
   }
 }
 
@@ -723,7 +771,8 @@ a.feat:focus-visible::after{inset:6px;background:var(--brk)}
    green = --aqua, yellow = --yellow, red = --red; status is never colour alone. */
 .stage,.tile-img,.strip button{--bg0:#282828;--bg1:#3c3836;--bg2:#504945;--bg-hard:#1d2021;--bg-void:#141312;
   --fg2:#d5c4a1;--fg3:#a89984;--aqua:#8ec07c;--yellow:#fabd2f;--red:#fb4934;--danger:var(--red);--warn:var(--orange);--info:var(--cyan);--blue:#83a598;--purple:#d3869b;--orange:#fe8019;--cyan:#5ccfc4;--cyan-tint:#1e2b2a;
-  --scrim:rgba(20,19,18,.62);--grid:rgba(251,241,199,.22)}
+  --scrim:rgba(20,19,18,.62);--grid:rgba(251,241,199,.22);
+  --rev-white:var(--rev-dark-white);--rev-blue:var(--rev-dark-blue);--rev-pink:var(--rev-dark-pink);--rev-yellow:var(--rev-dark-yellow);--rev-green:var(--rev-dark-green);--rev-goldenrod:var(--rev-dark-goldenrod);--rev-buff:var(--rev-dark-buff);--rev-salmon:var(--rev-dark-salmon);--rev-cherry:var(--rev-dark-cherry)}
 
 /* 0 · Buttons: see "Buttons" above; they work as <a> and <button>. */
 
@@ -737,6 +786,15 @@ a.feat:focus-visible::after{inset:6px;background:var(--brk)}
 :is(.tile,.band,.strip button)[data-label="red"]{--tier:var(--red)}:is(.tile,.band,.strip button)[data-label="blue"]{--tier:var(--blue)}
 :is(.tile,.band,.strip button)[data-label="purple"]{--tier:var(--purple)}
 :is(.tile,.band,.strip button)[data-label="orange"]{--tier:var(--orange)}:is(.tile,.band,.strip button)[data-label="cyan"]{--tier:var(--cyan)}
+:is(.tile,.band,.strip button)[data-revision="white"]{--tier:var(--rev-white)}
+:is(.tile,.band,.strip button)[data-revision="blue"]{--tier:var(--rev-blue)}
+:is(.tile,.band,.strip button)[data-revision="pink"]{--tier:var(--rev-pink)}
+:is(.tile,.band,.strip button)[data-revision="yellow"]{--tier:var(--rev-yellow)}
+:is(.tile,.band,.strip button)[data-revision="green"]{--tier:var(--rev-green)}
+:is(.tile,.band,.strip button)[data-revision="goldenrod"]{--tier:var(--rev-goldenrod)}
+:is(.tile,.band,.strip button)[data-revision="buff"]{--tier:var(--rev-buff)}
+:is(.tile,.band,.strip button)[data-revision="salmon"]{--tier:var(--rev-salmon)}
+:is(.tile,.band,.strip button)[data-revision="cherry"]{--tier:var(--rev-cherry)}
 .tile::after{content:"";position:absolute;inset:0;border:2px solid transparent;pointer-events:none;transition:border-color .12s}
 .tile:hover::after{border-color:var(--bg2)}
 .tile:focus-visible{outline:0}.tile:focus-visible::after{border-color:transparent;inset:5px;background:var(--brk)}
@@ -1176,12 +1234,21 @@ label.field{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;t
 .fact[data-tier="yellow"]{border-top-color:var(--yellow)}.fact[data-tier="yellow"] b{color:var(--yellow)}
 .fact[data-tier="red"]{border-top-color:var(--red)}.fact[data-tier="red"] b{color:var(--red)}
 .fact[data-tier="cyan"]{border-top-color:var(--cyan)}.fact[data-tier="cyan"] b{color:var(--cyan)}
-.fact[data-label]{--l:var(--fg3);border-top-color:var(--l)}.fact[data-label] b{color:var(--l)}
-.progress-bar>i[data-label]{--l:var(--primary);background:var(--l)}
+.fact:is([data-label],[data-revision]){--l:var(--fg3);border-top-color:var(--l)}.fact:is([data-label],[data-revision]) b{color:var(--l)}
+.progress-bar>i:is([data-label],[data-revision]){--l:var(--primary);background:var(--l)}
 :is(.fact,.progress-bar>i)[data-label="green"]{--l:var(--aqua)}:is(.fact,.progress-bar>i)[data-label="yellow"]{--l:var(--yellow)}
 :is(.fact,.progress-bar>i)[data-label="red"]{--l:var(--red)}:is(.fact,.progress-bar>i)[data-label="blue"]{--l:var(--blue)}
 :is(.fact,.progress-bar>i)[data-label="purple"]{--l:var(--purple)}
 :is(.fact,.progress-bar>i)[data-label="orange"]{--l:var(--orange)}:is(.fact,.progress-bar>i)[data-label="cyan"]{--l:var(--cyan)}
+:is(.fact,.progress-bar>i)[data-revision="white"]{--l:var(--rev-white)}
+:is(.fact,.progress-bar>i)[data-revision="blue"]{--l:var(--rev-blue)}
+:is(.fact,.progress-bar>i)[data-revision="pink"]{--l:var(--rev-pink)}
+:is(.fact,.progress-bar>i)[data-revision="yellow"]{--l:var(--rev-yellow)}
+:is(.fact,.progress-bar>i)[data-revision="green"]{--l:var(--rev-green)}
+:is(.fact,.progress-bar>i)[data-revision="goldenrod"]{--l:var(--rev-goldenrod)}
+:is(.fact,.progress-bar>i)[data-revision="buff"]{--l:var(--rev-buff)}
+:is(.fact,.progress-bar>i)[data-revision="salmon"]{--l:var(--rev-salmon)}
+:is(.fact,.progress-bar>i)[data-revision="cherry"]{--l:var(--rev-cherry)}
 /* Swatch: entity colours are squares; the ring tells where the colour comes from */
 .swatch{--c:var(--cyan);--ring:color-mix(in srgb,var(--c) 55%,var(--fg0));display:inline-block;width:18px;height:18px;background:var(--c);flex:none;box-shadow:inset 0 0 0 1px var(--bg2)}
 .swatch[data-src="own"]{outline:2px solid var(--ring);outline-offset:2px}

@@ -49,6 +49,27 @@
   --purple-n: #b16286;
   --cyan-n:   #3f9a94;   /* quiet lines only (4.4:1 on cards) */
 
+  /* Script revision colours in their fixed order (data-revision) */
+  --rev-white: #f2efe6;
+  --rev-blue: #6e9df0;
+  --rev-pink: #f58fb5;
+  --rev-yellow: #f2dc4a;
+  --rev-green: #6fd072;
+  --rev-goldenrod: #e0a21a;
+  --rev-buff: #d4b483;
+  --rev-salmon: #f78670;
+  --rev-cherry: #ee5a72;
+  /* The dark values stay available for surfaces that are dark in every theme (.stage, .strip button) */
+  --rev-dark-white: #f2efe6;
+  --rev-dark-blue: #6e9df0;
+  --rev-dark-pink: #f58fb5;
+  --rev-dark-yellow: #f2dc4a;
+  --rev-dark-green: #6fd072;
+  --rev-dark-goldenrod: #e0a21a;
+  --rev-dark-buff: #d4b483;
+  --rev-dark-salmon: #f78670;
+  --rev-dark-cherry: #ee5a72;
+
   /* ── Roles (follow the theme; see Light theme below) ── */
   --field:    var(--bg-hard); /* input fields, nested surfaces */
   --score:    var(--yellow);  /* scores, points, "how good is it" */
@@ -177,6 +198,15 @@
   --yellow-hi: #fcc845;
   --yellow-lo: #e5a823;
   --on-state: #fbf8ee;
+  --rev-white: #717171;
+  --rev-blue: #2b66c0;
+  --rev-pink: #c03d7c;
+  --rev-yellow: #8f7400;
+  --rev-green: #2f7f35;
+  --rev-goldenrod: #9a6500;
+  --rev-buff: #8a6f3f;
+  --rev-salmon: #bf4c36;
+  --rev-cherry: #a3122f;
 }
 
 /*
@@ -226,6 +256,15 @@
   --yellow-hi: #3daee9;
   --yellow-lo: #2e9bd4;
   --on-state: #ffffff;
+  --rev-white: #717171;
+  --rev-blue: #2b66c0;
+  --rev-pink: #c03d7c;
+  --rev-yellow: #8f7400;
+  --rev-green: #2f7f35;
+  --rev-goldenrod: #9a6500;
+  --rev-buff: #8a6f3f;
+  --rev-salmon: #bf4c36;
+  --rev-cherry: #a3122f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -263,6 +302,15 @@
     --yellow-hi: #3daee9;
     --yellow-lo: #2e9bd4;
     --on-state: #202326;
+    --rev-white: #f2efe6;
+    --rev-blue: #6e9df0;
+    --rev-pink: #f58fb5;
+    --rev-yellow: #f2dc4a;
+    --rev-green: #6fd072;
+    --rev-goldenrod: #e0a21a;
+    --rev-buff: #d4b483;
+    --rev-salmon: #f78670;
+    --rev-cherry: #ee5a72;
   }
 }
 

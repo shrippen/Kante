@@ -49,6 +49,27 @@
   --purple-n: {{dark.purple-n}};
   --cyan-n:   {{dark.cyan-n}};   /* quiet lines only (4.4:1 on cards) */
 
+  /* Script revision colours in their fixed order (data-revision) */
+  --rev-white: {{dark.rev-white}};
+  --rev-blue: {{dark.rev-blue}};
+  --rev-pink: {{dark.rev-pink}};
+  --rev-yellow: {{dark.rev-yellow}};
+  --rev-green: {{dark.rev-green}};
+  --rev-goldenrod: {{dark.rev-goldenrod}};
+  --rev-buff: {{dark.rev-buff}};
+  --rev-salmon: {{dark.rev-salmon}};
+  --rev-cherry: {{dark.rev-cherry}};
+  /* The dark values stay available for surfaces that are dark in every theme (.stage, .strip button) */
+  --rev-dark-white: {{dark.rev-white}};
+  --rev-dark-blue: {{dark.rev-blue}};
+  --rev-dark-pink: {{dark.rev-pink}};
+  --rev-dark-yellow: {{dark.rev-yellow}};
+  --rev-dark-green: {{dark.rev-green}};
+  --rev-dark-goldenrod: {{dark.rev-goldenrod}};
+  --rev-dark-buff: {{dark.rev-buff}};
+  --rev-dark-salmon: {{dark.rev-salmon}};
+  --rev-dark-cherry: {{dark.rev-cherry}};
+
   /* ── Roles (follow the theme; see Light theme below) ── */
   --field:    var(--bg-hard); /* input fields, nested surfaces */
   --score:    var(--yellow);  /* scores, points, "how good is it" */
@@ -177,6 +198,15 @@
   --yellow-hi: {{light.yellow-hi}};
   --yellow-lo: {{light.yellow-lo}};
   --on-state: {{light.on-state}};
+  --rev-white: {{light.rev-white}};
+  --rev-blue: {{light.rev-blue}};
+  --rev-pink: {{light.rev-pink}};
+  --rev-yellow: {{light.rev-yellow}};
+  --rev-green: {{light.rev-green}};
+  --rev-goldenrod: {{light.rev-goldenrod}};
+  --rev-buff: {{light.rev-buff}};
+  --rev-salmon: {{light.rev-salmon}};
+  --rev-cherry: {{light.rev-cherry}};
 }
 
 /*
@@ -226,6 +256,15 @@
   --yellow-hi: {{kanteLight.yellow-hi}};
   --yellow-lo: {{kanteLight.yellow-lo}};
   --on-state: {{kanteLight.on-state}};
+  --rev-white: {{kanteLight.rev-white}};
+  --rev-blue: {{kanteLight.rev-blue}};
+  --rev-pink: {{kanteLight.rev-pink}};
+  --rev-yellow: {{kanteLight.rev-yellow}};
+  --rev-green: {{kanteLight.rev-green}};
+  --rev-goldenrod: {{kanteLight.rev-goldenrod}};
+  --rev-buff: {{kanteLight.rev-buff}};
+  --rev-salmon: {{kanteLight.rev-salmon}};
+  --rev-cherry: {{kanteLight.rev-cherry}};
 }
 
 @media (prefers-color-scheme: dark) {
@@ -263,6 +302,15 @@
     --yellow-hi: {{kanteLightDark.yellow-hi}};
     --yellow-lo: {{kanteLightDark.yellow-lo}};
     --on-state: {{kanteLightDark.on-state}};
+    --rev-white: {{kanteLightDark.rev-white}};
+    --rev-blue: {{kanteLightDark.rev-blue}};
+    --rev-pink: {{kanteLightDark.rev-pink}};
+    --rev-yellow: {{kanteLightDark.rev-yellow}};
+    --rev-green: {{kanteLightDark.rev-green}};
+    --rev-goldenrod: {{kanteLightDark.rev-goldenrod}};
+    --rev-buff: {{kanteLightDark.rev-buff}};
+    --rev-salmon: {{kanteLightDark.rev-salmon}};
+    --rev-cherry: {{kanteLightDark.rev-cherry}};
   }
 }
 
