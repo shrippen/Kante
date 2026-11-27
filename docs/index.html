@@ -131,6 +131,55 @@
 <section class="section" id="changes">
   <h2 lang="en">Changes</h2><h2 lang="de">Änderungen</h2>
   <ol class="changelog">
+    <li class="release" id="v1.85.0">
+      <div class="release-head"><b class="release-version">1.85.0</b><time datetime="2026-11-27">27 Nov 2026</time></div>
+      <div class="release-body">
+        <p class="release-lead" lang="en">A multi-line text field, revision colours for screenplays, a floating card without a head line, a plan view that draws its captions faster, scatter charts with their own axis ticks, and line charts for small values.</p>
+        <p class="release-lead" lang="de">Ein mehrzeiliges Textfeld, Revisionsfarben für Drehbücher, eine schwebende Karte ohne Kopfzeile, eine Planansicht, die ihre Beschriftungen schneller zeichnet, Streudiagramme mit eigenen Achsenteilstrichen und Liniendiagramme für kleine Werte.</p>
+        <div class="release-group" data-kind="new"><h3><span lang="en">New</span><span lang="de">Neu</span></h3>
+          <ul lang="en">
+            <li><code>KanteTextArea</code>: a multi-line text field with <code>KanteTextField</code>&#x27;s look (sunken box, cyan bottom edge on focus, <code>invalid</code>, placeholder inside the box). It grows with its text up to <code>maxLines</code> (default 6) and then scrolls. Enter starts a new line; Tab leaves the field instead of typing a tab character.</li>
+            <li>Revision colours: the nine page colours of screenplay revisions in their fixed order (white, blue, pink, yellow, green, goldenrod, buff, salmon, cherry) as <code>KanteStyle.revisions</code> and <code>revisionColor(name)</code>, and on the web as <code>data-revision</code> and <code>--rev-*</code>. Each reads at 3:1 or more on ground, card and selection in dark and light; white is a grey in the light theme.</li>
+            <li><code>KanteScatterChart.xTickMarks</code> and <code>yTickMarks</code> (<code>[{ value, label }]</code>) draw an axis with the app&#x27;s own ticks and labels, such as dioptres labelled in metres (&quot;∞&quot;, &quot;5&quot;, &quot;2&quot;), <code>yFormatter</code> words the y value in the tooltip in the same unit, and <code>yInverted</code> puts larger y at the bottom, so &quot;∞&quot; can sit at the top.</li>
+            <li><code>KanteFloatingCard</code>: a card with a hard shadow that floats over content, such as a search card over a floor plan, for the places where <code>KanteFloatingPanel</code> is too much because it needs no head line to fold. Its size follows its content plus a padding. The panel is drawn with it, so both look the same.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteTextArea</code>: ein mehrzeiliges Textfeld mit dem Aussehen von <code>KanteTextField</code> (vertiefter Kasten, cyanfarbene Unterkante bei Fokus, <code>invalid</code>, Platzhalter im Feld). Es wächst mit dem Text bis <code>maxLines</code> (Standard 6) und scrollt dann. Enter beginnt eine neue Zeile; Tab verlässt das Feld, statt ein Tabulatorzeichen zu schreiben.</li>
+            <li>Revisionsfarben: die neun Seitenfarben der Drehbuchrevisionen in ihrer festen Reihenfolge (Weiß, Blau, Rosa, Gelb, Grün, Goldgelb, Chamois, Lachs, Kirsche) als <code>KanteStyle.revisions</code> und <code>revisionColor(name)</code>, im Web als <code>data-revision</code> und <code>--rev-*</code>. Jede hat auf Grund, Karte und Auswahl in Dunkel und Hell mindestens 3:1; Weiß ist im hellen Thema ein Grau.</li>
+            <li><code>KanteScatterChart.xTickMarks</code> und <code>yTickMarks</code> (<code>[{ value, label }]</code>) beschriften eine Achse mit eigenen Teilstrichen, etwa Dioptrien in Metern (&quot;∞&quot;, &quot;5&quot;, &quot;2&quot;); <code>yFormatter</code> formuliert den y-Wert im Tooltip in derselben Einheit; <code>yInverted</code> legt größere y nach unten, damit &quot;∞&quot; oben stehen kann.</li>
+            <li><code>KanteFloatingCard</code>: eine Karte mit hartem Schatten, die über dem Inhalt schwebt, etwa eine Suchkarte über einem Grundriss, für Stellen, an denen <code>KanteFloatingPanel</code> zu viel ist, weil keine Kopfzeile zum Einklappen nötig ist. Ihre Größe folgt dem Inhalt plus einem Innenabstand. Das Panel wird damit gezeichnet, beide sehen also gleich aus.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="improved"><h3><span lang="en">Improved</span><span lang="de">Verbessert</span></h3>
+          <ul lang="en">
+            <li><code>KanteLineChart</code> fits a series below 1: <code>minSpan: 0</code> sizes the scale to the data instead of a span of at least 1, so values such as 0.1 to 0.4 fill the plot instead of sitting at its bottom. The default stays 1.</li>
+            <li><code>KanteLineChart</code> labels read right: an axis label carries the decimals its step needs (a step of 0.25 shows 0.25, not 0.3), and the read-out writes its value in the app&#x27;s locale, never as an exponent. <code>locale</code> sets another one.</li>
+            <li><code>KanteShapeCanvas</code> draws its captions as text items over the plan instead of into the canvas. A plan of 610 shapes with 272 captions paints in 5 ms instead of 20 ms, and a frame while panning takes about 28 ms instead of 45 ms. Position, size, colour, fade and turn are the same; only the glyph edges differ a little. A frame that changes the number of captions keeps the existing ones and takes about 19 ms instead of 38 ms.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteLineChart</code> passt eine Reihe unter 1 ein: <code>minSpan: 0</code> richtet die Skala nach den Daten statt nach einer Spanne von mindestens 1, so füllen Werte wie 0,1 bis 0,4 das Diagramm, statt unten zu liegen. Standard bleibt 1.</li>
+            <li><code>KanteLineChart</code> beschriftet richtig: Eine Achsenbeschriftung hat so viele Nachkommastellen, wie ihr Schritt braucht (0,25 statt &quot;0,3&quot;), und die Anzeige schreibt ihren Wert im Gebietsschema der App, nie als Exponent. <code>locale</code> wählt ein anderes.</li>
+            <li><code>KanteShapeCanvas</code> zeichnet seine Beschriftungen als Textelemente über dem Plan statt in die Leinwand. Ein Plan mit 610 Formen und 272 Beschriftungen malt in 5 ms statt 20 ms, ein Bild beim Verschieben dauert etwa 28 ms statt 45 ms. Lage, Größe, Farbe, Ausblendung und Drehung bleiben gleich; nur die Glyphenränder weichen etwas ab. Ein Bild, in dem sich die Zahl der Beschriftungen ändert, behält die vorhandenen und dauert etwa 19 ms statt 38 ms.</li>
+          </ul>
+        </div>
+        <div class="release-group" data-kind="fixed"><h3><span lang="en">Fixed</span><span lang="de">Behoben</span></h3>
+          <ul lang="en">
+            <li><code>KanteChip</code> at its natural width no longer elides its name (&quot;ILVA&quot; showed &quot;IL…&quot;): the width counts the name as the label measures it and the cross rounded up.</li>
+            <li>A hidden <code>KanteMenuItem</code> (<code>visible: false</code>) no longer leaves an empty row in its menu.</li>
+          </ul>
+          <ul lang="de">
+            <li><code>KanteChip</code> in natürlicher Breite kürzt seinen Namen nicht mehr (&quot;ILVA&quot; zeigte &quot;IL…&quot;): die Breite zählt den Namen so, wie das Label ihn misst, und das Kreuz aufgerundet.</li>
+            <li>Ein verstecktes <code>KanteMenuItem</code> (<code>visible: false</code>) lässt in seinem Menü keine leere Zeile mehr.</li>
+          </ul>
+        </div>
+        <div class="release-shots">
+          <figure><img src="shots/release-1.85-revisions-dark.png" alt="Nine revision colours as facts in dark Kante, white to cherry, each with its name and number" loading="lazy"><figcaption><span lang="en">The nine revision colours in their fixed order</span><span lang="de">Die neun Revisionsfarben in ihrer festen Reihenfolge</span></figcaption></figure>
+          <figure><img src="shots/release-1.85-revisions-leinen.png" alt="The same revision colours in Leinen, darker readings, white as a grey" loading="lazy"><figcaption><span lang="en">In Leinen: darker readings, white is a grey</span><span lang="de">In Leinen: dunklere Töne, Weiß ist ein Grau</span></figcaption></figure>
+          <figure><img src="shots/release-1.85-textarea-dark.png" alt="Two KanteTextArea fields in dark Kante: one focused with three lines of notes and a cyan bottom edge, one empty with its placeholder" loading="lazy"><figcaption><span lang="en">KanteTextArea, focused and empty</span><span lang="de">KanteTextArea, mit Fokus und leer</span></figcaption></figure>
+        </div>
+        <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
+      </div>
+    </li>
     <li class="release" id="v1.83.0">
       <div class="release-head"><b class="release-version">1.83.0</b><time datetime="2026-11-19">19 Nov 2026</time></div>
       <div class="release-body">
@@ -170,6 +219,9 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-182"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
+  </ol>
+  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
+  <ol class="changelog">
     <li class="release" id="v1.81.1">
       <div class="release-head"><b class="release-version">1.81.1</b><time datetime="2026-11-17">17 Nov 2026</time></div>
       <div class="release-body">
@@ -188,9 +240,6 @@
         <a class="release-notes" href="https://github.com/shrippen/Kante/blob/main/README.md#fixed-in-kante-1811"><span lang="en">All changes</span><span lang="de">Alle Änderungen</span></a>
       </div>
     </li>
-  </ol>
-  <details class="changelog-more"><summary><span lang="en">Older releases</span><span lang="de">Ältere Versionen</span></summary>
-  <ol class="changelog">
     <li class="release" id="v1.81.0">
       <div class="release-head"><b class="release-version">1.81.0</b><time datetime="2026-11-17">17 Nov 2026</time></div>
       <div class="release-body">
@@ -1822,7 +1871,7 @@
         <a href="https://github.com/shrippen/Kante">GitHub</a><a href="https://github.com/shrippen/Kante/issues">Issues</a></div>
     </nav>
   </div>
-  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.83.0</a></p></div>
+  <div class="foot-meta"><p>MIT · shrippen · <a href="#changes">v1.85.0</a></p></div>
 </footer>
 
 <script>

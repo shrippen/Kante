@@ -5,43 +5,55 @@ the landing page (`docs/index.html`). Releases before 1.27 are described in the 
 per version. Knust and the plugin kit keep their own logs: `kimai/knust/CHANGELOG.md`,
 `kimai/kit/CHANGELOG.md`.
 
-## [Unreleased]
+## [1.85.0] — 2026-11-27
 
 ### English
 
-A multi-line text field, revision colours for screenplays, a floating card without a head line, a plan view that draws its captions faster, and scatter charts with their own axis ticks.
+A multi-line text field, revision colours for screenplays, a floating card without a head line, a plan view that draws its captions faster, scatter charts with their own axis ticks, and line charts for small values.
 
 #### New
 - `KanteTextArea`: a multi-line text field with `KanteTextField`'s look (sunken box, cyan bottom edge on focus, `invalid`, placeholder inside the box). It grows with its text up to `maxLines` (default 6) and then scrolls. Enter starts a new line; Tab leaves the field instead of typing a tab character.
-- Revision colours: the nine page colours of screenplay revisions in their fixed order (white, blue, pink, yellow, green, goldenrod, buff, salmon, cherry) as `KanteStyle.revisions` and `revisionColor(name)`, and on the web as `data-revision` and `--rev-<name>`. Each reads at 3:1 or more on ground, card and selection in dark and light; white is a grey in the light theme.
+- Revision colours: the nine page colours of screenplay revisions in their fixed order (white, blue, pink, yellow, green, goldenrod, buff, salmon, cherry) as `KanteStyle.revisions` and `revisionColor(name)`, and on the web as `data-revision` and `--rev-*`. Each reads at 3:1 or more on ground, card and selection in dark and light; white is a grey in the light theme.
 - `KanteScatterChart.xTickMarks` and `yTickMarks` (`[{ value, label }]`) draw an axis with the app's own ticks and labels, such as dioptres labelled in metres ("∞", "5", "2"), `yFormatter` words the y value in the tooltip in the same unit, and `yInverted` puts larger y at the bottom, so "∞" can sit at the top.
 - `KanteFloatingCard`: a card with a hard shadow that floats over content, such as a search card over a floor plan, for the places where `KanteFloatingPanel` is too much because it needs no head line to fold. Its size follows its content plus a padding. The panel is drawn with it, so both look the same.
 
 #### Improved
+- `KanteLineChart` fits a series below 1: `minSpan: 0` sizes the scale to the data instead of a span of at least 1, so values such as 0.1 to 0.4 fill the plot instead of sitting at its bottom. The default stays 1.
+- `KanteLineChart` labels read right: an axis label carries the decimals its step needs (a step of 0.25 shows 0.25, not 0.3), and the read-out writes its value in the app's locale, never as an exponent. `locale` sets another one.
 - `KanteShapeCanvas` draws its captions as text items over the plan instead of into the canvas. A plan of 610 shapes with 272 captions paints in 5 ms instead of 20 ms, and a frame while panning takes about 28 ms instead of 45 ms. Position, size, colour, fade and turn are the same; only the glyph edges differ a little. A frame that changes the number of captions keeps the existing ones and takes about 19 ms instead of 38 ms.
 
 #### Fixed
 - `KanteChip` at its natural width no longer elides its name ("ILVA" showed "IL…"): the width counts the name as the label measures it and the cross rounded up.
 - A hidden `KanteMenuItem` (`visible: false`) no longer leaves an empty row in its menu.
 
+![Nine revision colours as facts in dark Kante, white to cherry, each with its name and number](https://shrippen.github.io/Kante/shots/release-1.85-revisions-dark.png)
+![The same revision colours in Leinen, darker readings, white as a grey](https://shrippen.github.io/Kante/shots/release-1.85-revisions-leinen.png)
+![Two KanteTextArea fields in dark Kante: one focused with three lines of notes and a cyan bottom edge, one empty with its placeholder](https://shrippen.github.io/Kante/shots/release-1.85-textarea-dark.png)
+
 All changes: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
 ### Deutsch
 
-Ein mehrzeiliges Textfeld, Revisionsfarben für Drehbücher, eine schwebende Karte ohne Kopfzeile, eine Planansicht, die ihre Beschriftungen schneller zeichnet, und Streudiagramme mit eigenen Achsenteilstrichen.
+Ein mehrzeiliges Textfeld, Revisionsfarben für Drehbücher, eine schwebende Karte ohne Kopfzeile, eine Planansicht, die ihre Beschriftungen schneller zeichnet, Streudiagramme mit eigenen Achsenteilstrichen und Liniendiagramme für kleine Werte.
 
 #### Neu
 - `KanteTextArea`: ein mehrzeiliges Textfeld mit dem Aussehen von `KanteTextField` (vertiefter Kasten, cyanfarbene Unterkante bei Fokus, `invalid`, Platzhalter im Feld). Es wächst mit dem Text bis `maxLines` (Standard 6) und scrollt dann. Enter beginnt eine neue Zeile; Tab verlässt das Feld, statt ein Tabulatorzeichen zu schreiben.
-- Revisionsfarben: die neun Seitenfarben der Drehbuchrevisionen in ihrer festen Reihenfolge (Weiß, Blau, Rosa, Gelb, Grün, Goldgelb, Chamois, Lachs, Kirsche) als `KanteStyle.revisions` und `revisionColor(name)`, im Web als `data-revision` und `--rev-<name>`. Jede hat auf Grund, Karte und Auswahl in Dunkel und Hell mindestens 3:1; Weiß ist im hellen Thema ein Grau.
+- Revisionsfarben: die neun Seitenfarben der Drehbuchrevisionen in ihrer festen Reihenfolge (Weiß, Blau, Rosa, Gelb, Grün, Goldgelb, Chamois, Lachs, Kirsche) als `KanteStyle.revisions` und `revisionColor(name)`, im Web als `data-revision` und `--rev-*`. Jede hat auf Grund, Karte und Auswahl in Dunkel und Hell mindestens 3:1; Weiß ist im hellen Thema ein Grau.
 - `KanteScatterChart.xTickMarks` und `yTickMarks` (`[{ value, label }]`) beschriften eine Achse mit eigenen Teilstrichen, etwa Dioptrien in Metern ("∞", "5", "2"); `yFormatter` formuliert den y-Wert im Tooltip in derselben Einheit; `yInverted` legt größere y nach unten, damit "∞" oben stehen kann.
 - `KanteFloatingCard`: eine Karte mit hartem Schatten, die über dem Inhalt schwebt, etwa eine Suchkarte über einem Grundriss, für Stellen, an denen `KanteFloatingPanel` zu viel ist, weil keine Kopfzeile zum Einklappen nötig ist. Ihre Größe folgt dem Inhalt plus einem Innenabstand. Das Panel wird damit gezeichnet, beide sehen also gleich aus.
 
 #### Verbessert
+- `KanteLineChart` passt eine Reihe unter 1 ein: `minSpan: 0` richtet die Skala nach den Daten statt nach einer Spanne von mindestens 1, so füllen Werte wie 0,1 bis 0,4 das Diagramm, statt unten zu liegen. Standard bleibt 1.
+- `KanteLineChart` beschriftet richtig: Eine Achsenbeschriftung hat so viele Nachkommastellen, wie ihr Schritt braucht (0,25 statt "0,3"), und die Anzeige schreibt ihren Wert im Gebietsschema der App, nie als Exponent. `locale` wählt ein anderes.
 - `KanteShapeCanvas` zeichnet seine Beschriftungen als Textelemente über dem Plan statt in die Leinwand. Ein Plan mit 610 Formen und 272 Beschriftungen malt in 5 ms statt 20 ms, ein Bild beim Verschieben dauert etwa 28 ms statt 45 ms. Lage, Größe, Farbe, Ausblendung und Drehung bleiben gleich; nur die Glyphenränder weichen etwas ab. Ein Bild, in dem sich die Zahl der Beschriftungen ändert, behält die vorhandenen und dauert etwa 19 ms statt 38 ms.
 
 #### Behoben
 - `KanteChip` in natürlicher Breite kürzt seinen Namen nicht mehr ("ILVA" zeigte "IL…"): die Breite zählt den Namen so, wie das Label ihn misst, und das Kreuz aufgerundet.
 - Ein verstecktes `KanteMenuItem` (`visible: false`) lässt in seinem Menü keine leere Zeile mehr.
+
+![Neun Revisionsfarben als Kennzahlen in dunklem Kante, Weiß bis Kirsche, jede mit Name und Nummer](https://shrippen.github.io/Kante/shots/release-1.85-revisions-dark.png)
+![Dieselben Revisionsfarben in Leinen, dunklere Töne, Weiß als Grau](https://shrippen.github.io/Kante/shots/release-1.85-revisions-leinen.png)
+![Zwei KanteTextArea-Felder in dunklem Kante: eins mit Fokus, drei Zeilen Notizen und cyanfarbener Unterkante, eins leer mit Platzhalter](https://shrippen.github.io/Kante/shots/release-1.85-textarea-dark.png)
 
 Alle Änderungen: https://github.com/shrippen/Kante/blob/main/README.md#added-in-kante-185
 
